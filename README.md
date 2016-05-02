@@ -16,4 +16,4 @@ This is a project for an open-source CMS called 'Tagus', inspired by the beautif
 It will use the **MEAN** stack to be developed.
 
 
-Later on this file will have all the steps it takes to install this CMS in your localhost.
+Later on, this file will have all the instructions to install this CMS in your localhost.
