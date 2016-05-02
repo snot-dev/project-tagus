@@ -10,7 +10,7 @@ Goncalo_snot
 
 Hello, world!
 
-This is a project for an open-source CMS called 'Tagus', inspired by the beatiful Tagus river, in Lisbon, Portugal.
+This is a project for an open-source CMS called 'Tagus', inspired by the beautiful Tagus river, in Lisbon, Portugal.
 
 
 It will use the **MEAN** stack to be developed.
