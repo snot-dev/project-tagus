@@ -1,0 +1,21 @@
+{
+  "name": "base",
+  "description": "a simple server project that will serve as base to future projects. Using grunt as task runner, bower to manage independicies and Scss as css pre compiler. The default view engine in this project is handlebars.",
+  "main": "app.js",
+  "authors": [
+    "Snot"
+  ],
+  "license": "ISC",
+  "moduleType": [
+    "node"
+  ],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
