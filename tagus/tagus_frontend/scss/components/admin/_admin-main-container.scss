@@ -1,0 +1,32 @@
+@mixin admin-main-container ($color, $bcolor) {
+  @media (min-width: $screen-xs) {
+    #admin-main-container {
+      position: absolute;
+      top: 36px;
+      left: 250px;
+      right: 0;
+      bottom: 0;
+      color: $color;
+      padding: $spacing;
+      overflow: auto;
+
+      #admin-content-container {
+        height: 100%;
+
+        #main-title {
+          @include font-size(20px);
+          margin: $spacing 0;
+        }
+
+        .section {
+          padding: $spacing;
+          height: 100%;
+          background-color: $bcolor;
+          border: 5px solid transparent;
+          background-clip: padding-box;
+          overflow-y: auto;
+        }
+      }
+    }
+  }
+}

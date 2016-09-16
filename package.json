@@ -4,7 +4,7 @@
   "description": "a simple server project that will serve as base to future projects. Using grunt as task runner, bower to manage independicies and Scss as css pre compiler. The default view engine in this project is handlebars.",
   "main": "app.js",
   "scripts": {
-    "test": "mocha ./app/**/tests.js"
+    "test": "mocha ./tagus/**/tests.js"
   },
   "author": "Snot",
   "license": "ISC",
@@ -29,11 +29,14 @@
     "path": "^0.12.7",
     "react": "^15.3.1",
     "react-dom": "^15.3.1",
+    "react-quill": "^0.4.1",
     "react-router": "^2.7.0",
     "reactify": "^1.1.1",
+    "redux": "^3.6.0",
     "sass": "^0.5.0"
   },
   "devDependencies": {
+    "babelify": "^7.3.0",
     "chai": "^3.5.0",
     "chai-http": "^2.0.1",
     "grunt-browserify": "^5.0.0",

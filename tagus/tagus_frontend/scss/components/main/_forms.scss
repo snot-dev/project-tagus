@@ -1,0 +1,76 @@
+@mixin forms($color, $aColor, $bColor, $borderColor) {
+  .form-field {
+    @include font-size(14px);
+    display: block;
+    height: 44px;
+    padding: 6px 12px;
+    color: $color;
+    background-color: $bColor;
+    border: 1px solid $borderColor;
+    border-radius: 4px;
+    margin-bottom: $gutter;
+    outline: none;
+    width: 100%;
+    transition: all 0.25s;
+
+
+    &:focus {
+      border: 2px solid $aColor;
+    }
+    &.textarea {
+      height: 100px;
+    }
+  }
+
+  .form-label {
+    width:100%;
+    float: left;
+
+    &.error {
+      color: $red;
+    }
+  }
+
+  .radio {
+    margin-bottom: $spacing;
+  }
+
+  .checkbox-container,
+  .radio-container {
+    margin-bottom: $gutter;
+  }
+
+  .richtext-container {
+      width: 650px;
+      max-width: 650px;
+      height: 257px;
+      max-height: 257px;
+      margin-bottom: $spacing;
+
+      .ql-container { //depends on quill
+          border: 1px solid $borderColor;
+          border-radius: 4px;
+          max-height: 200px;
+      }
+  }
+
+  @media(min-width: $screen-xs) {
+    .button {
+      width: auto;
+
+    }
+
+    .form-field {
+      height: 40px;
+      width: 400px;
+      max-width: 400px;
+    }
+
+    .error-message,
+    .info-text {
+      margin-bottom: $gutter;
+    }
+
+
+  }
+}

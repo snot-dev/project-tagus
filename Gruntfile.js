@@ -1,23 +1,15 @@
-/**
- * Created by GoncaloAssuncao on 21/03/2016.
- */
-/**
- * Created by Gonçalo Assunção on 11/03/2016.
- */
-
-
 module.exports = function(grunt){
   grunt.initConfig({
     concat: {
       dist: {
-        src: ['app/**/*.js', '!app/a_build/*', '!app/a_build/**/*.js'],
-        dest: 'app/a_build/main.js'
+        src: ['tagus/**/*.js', '!tagus/tagus_build/*', '!tagus/tagus_build/**/*.js'],
+        dest: 'tagus/tagus_build/main.js'
       }
     },
     sass: {
       dist: {
         files: {
-          'app/a_build/css/main.css': 'app/a_frontend/scss/main.scss'
+          'tagus/tagus_build/css/styles.css': 'tagus/tagus_frontend/scss/styles.scss'
         }
       }
     },
@@ -28,41 +20,41 @@ module.exports = function(grunt){
           transform: ['reactify']
         },
         files: {
-          'app/a_build/js/main.js': 'app/a_frontend/components/app.jsx'
+          'tagus/tagus_build/js/main.js': 'tagus/tagus_frontend/components/app.jsx'
         }
       }
     },
     watch: {
       browserify: {
-        files: ['app/**/*.jsx','app/**/*.js', 'Gruntfile.js'],
+        files: ['tagus/**/*.jsx','tagus/**/*.js', 'Gruntfile.js'],
         tasks: ['browserify:dev', 'express:dev'],
         options: {
           spawn: false
         }
       },
       js: {
-        files: 'app/**/*.js',
+        files: 'tagus/**/*.js',
         tasks: ['express:dev'],
         options: {
           spawn: false
         }
       },
       sass: {
-        files: 'app/a_frontend/scss/*.scss',
+        files: 'tagus/tagus_frontend/scss/**/*.scss',
         tasks: ['sass', 'express:dev'],
         options: {
           spawn: false
         }
       },
       views: {
-        files: 'app/**/*.hbs',
+        files: 'tagus/**/*.hbs',
         tasks: ['express:dev'],
         options: {
           spawn: false
         }
       },
       express: {
-        files: ['app.js', 'Gruntfile.js', 'app/a_routes/*.js'],
+        files: ['app.js', 'Gruntfile.js', 'tagus/tagus_routes/*.js'],
         tasks: ['express:dev'],
         options: {
           spawn: false
@@ -82,7 +74,13 @@ module.exports = function(grunt){
     copy: {
       main: {
         files: [
-          {expand: false, src: ['bower_components/bootstrap/dist/css/bootstrap.min.css'], dest: 'public/a_build/bootstrap.min.css'}
+          {expand: false, src: ['bower_components/bootstrap/dist/css/bootstrap.min.css'], dest: 'tagus/tagus_build/css/libraries/bootstrap.min.css'},
+          {expand: false, src: ['bower_components/font-awesome/css/font-awesome.min.css'], dest: 'tagus/tagus_build/css/libraries/font-awesome.min.css'},
+          {expand: true, cwd: 'bower_components/font-awesome/fonts/', src: '*',  dest: 'tagus/tagus_build/css/fonts'},
+          {expand: false, src: ['bower_components/font-awesome/scss/_variables.scss'], dest: 'tagus/tagus_frontend/scss/_fa-variables.scss'},
+          {expand: false, src: ['bower_components/jquery/dist/jquery.min.js'], dest: 'tagus/tagus_build/js/libraries/jquery.min.js'},
+          {expand: false, src: ['bower_components/bootstrap/dist/js/bootstrap.min.js'], dest: 'tagus/tagus_build/js/libraries/bootstrap.min.js'},
+          {expand: true, cwd: 'bower_components/font-awesome/fonts/', src: '*',  dest: 'tagus/tagus_build/css/fonts'}
         ]
       }
     }

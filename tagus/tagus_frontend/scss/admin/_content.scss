@@ -1,0 +1,31 @@
+#page-list {
+  .page {
+    margin-bottom: 0;
+
+    .child-list {
+      margin-left: $spacing;
+    }
+
+    .fa {
+      margin-right: $spacing;
+    }
+
+    .link {
+
+      .options {
+          padding: 0 $subtle;
+          display:none;
+      }
+
+      &:hover {
+        .options {
+            display: block;
+        }
+      }
+    }
+  }
+}
+
+#content-page-detail {
+
+}

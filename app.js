@@ -2,17 +2,17 @@ require('./config');
 var express = require('express'),
   bodyParser = require('body-parser'),
   path = require('path'),
-  pages = require('./app/a_api/a_pages/pagesRouter'),
-  units = require('./app/a_api/a_units/unitsRouter'),
-  unitFields = require('./app/a_api/a_unitFields/unitFieldsRouter'),
-  users = require('./app/a_api/a_users/usersRouter'),
-  UserModel = require('./app/a_api/a_users/userModel'),
-  translates = require('./app/a_api/a_translates/translatesRouter'),
-  settings = require('./app/a_api/a_settings/settingsRouter'),
-  apiInitializer = require('./app/a_api/a_initializer/initializer'),
-  routeManager = require('./app/a_api/a_pages/routeManager'),
-  admin = require('./app/a_routes/admin'),
-  db = require('./app/a_dbConfig/db_config'),
+  pages = require('./tagus/tagus_api/tagus_pages/pagesRouter'),
+  units = require('./tagus/tagus_api/tagus_units/unitsRouter'),
+  unitFields = require('./tagus/tagus_api/tagus_unitFields/unitFieldsRouter'),
+  users = require('./tagus/tagus_api/tagus_users/usersRouter'),
+  UserModel = require('./tagus/tagus_api/tagus_users/userModel'),
+  translates = require('./tagus/tagus_api/tagus_translates/translatesRouter'),
+  settings = require('./tagus/tagus_api/tagus_settings/settingsRouter'),
+  apiInitializer = require('./tagus/tagus_api/tagus_initializer/initializer'),
+  routeManager = require('./tagus/tagus_api/tagus_pages/routeManager'),
+  admin = require('./tagus/tagus_routes/admin'),
+  db = require('./tagus/tagus_dbConfig/db_config'),
   morgan = require('morgan'),
   flash = require('connect-flash'),
   passport = require('passport'),
@@ -20,11 +20,11 @@ var express = require('express'),
   app = express();
 
 require('./config');
-require('./app/a_lib/lib').auth.strategies(passport, UserModel, bcrypt);
+require('./tagus/tagus_lib/lib').auth.strategies(passport, UserModel, bcrypt);
 
 var portNumber = process.env.PORT_NUMBER;
 
-app.set('views', [path.join(__dirname, 'SiteName/templates'), path.join(__dirname, 'app/a_build/views'),]);
+app.set('views', [path.join(__dirname, 'SiteName/templates'), path.join(__dirname, 'tagus/tagus_build/views')]);
 // override this setting to choose the view engine to be used
 app.set('view engine', 'hbs');
 db.connect(db.connectionSettings.url);
@@ -33,7 +33,7 @@ db.checkIfConnected();
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('app/a_build'));
+app.use(express.static('tagus/tagus_build'));
 app.use(express.static('SiteName'));
 
 app.use(passport.initialize());
@@ -49,7 +49,7 @@ app.use('/api/unitFields', unitFields);
 app.use('/api/users', users);
 app.use('/api/translates', translates);
 app.use('/api/settings', settings);
-app.use('/api/initializeapi', apiInitializer);
+app.use('/api/initializer', apiInitializer);
 
 
 app.listen(portNumber, function () {

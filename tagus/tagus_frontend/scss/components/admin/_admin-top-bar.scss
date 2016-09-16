@@ -1,0 +1,17 @@
+@mixin admin-top-bar ($bcolor, $aColor) {
+  #admin-top-bar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    background-color: $bcolor;
+    z-index: 100;
+
+    .logo-container {
+      width: 250px;
+      float:left;
+      text-align: center;
+      padding: $subtle 0;
+      //border-bottom: 2px solid $aColor;
+    }
+  }
+}

@@ -1,0 +1,8 @@
+@mixin content($color, $bColor: transparent) {
+  .content-container {
+    color: $color;
+    background-color: $bColor;
+    padding: $gutter $spacing;
+
+  }
+}
