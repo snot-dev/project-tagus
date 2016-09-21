@@ -50656,7 +50656,7 @@ function symbolObservablePonyfill(root) {
 },{}],273:[function(require,module,exports){
 arguments[4][20][0].apply(exports,arguments)
 },{"_process":26,"dup":20}],274:[function(require,module,exports){
-var constants = require('../constants/constants');
+var constants = require('./constants');
 var $ = require('jquery');
 
 
@@ -50703,7 +50703,33 @@ var getPages = function() {
 module.exports = {
   getPagesIfNeeded : getPagesIfNeeded
 };
-},{"../constants/constants":282,"jquery":23}],275:[function(require,module,exports){
+},{"./constants":283,"jquery":23}],275:[function(require,module,exports){
+var Redux = require('redux');
+var thunk = require('redux-thunk').default;
+var pageReducer = require('./reducers/pages');
+var testReducer = require('./reducers/test');
+
+
+var rootReducer = Redux.combineReducers({
+  pages: pageReducer
+  //test: testReducer
+});
+
+//check if 'null' works for this...
+var initialState = {
+  pages: null
+};
+
+var middleTest = function(store) {
+  return function(next) {
+    return function(action) {
+      return next(action);
+    }
+  };
+};
+
+module.exports = Redux.applyMiddleware(thunk, middleTest)(Redux.createStore)(rootReducer,initialState);
+},{"./reducers/pages":284,"./reducers/test":285,"redux":262,"redux-thunk":256}],276:[function(require,module,exports){
 var React = require('react');
 var Link = require('react-router').Link;
 
@@ -50742,11 +50768,11 @@ var Content = React.createClass( {displayName: "Content",
 });
 
 module.exports = Content;
-},{"react":255,"react-router":76}],276:[function(require,module,exports){
+},{"react":255,"react-router":76}],277:[function(require,module,exports){
 var React = require('react');
 var RichTextEditor = require('react-quill');
-var store = require('../../../../stores/adminStore');
-var actions = require('../../../../actions/adminActions');
+var store = require('../../../adminStore');
+var actions = require('../../../adminActions');
 var ReactRedux = require('react-redux');
 
 var PageDetail = React.createClass ( {displayName: "PageDetail",
@@ -50822,7 +50848,7 @@ var mapStateToProps = function(state) {
 //};
 
 module.exports = ReactRedux.connect(mapStateToProps)(PageDetail);
-},{"../../../../actions/adminActions":274,"../../../../stores/adminStore":286,"react":255,"react-quill":33,"react-redux":38}],277:[function(require,module,exports){
+},{"../../../adminActions":274,"../../../adminStore":275,"react":255,"react-quill":33,"react-redux":38}],278:[function(require,module,exports){
 var React = require('react');
 
 var Dashboard = React.createClass( {displayName: "Dashboard",
@@ -50841,7 +50867,7 @@ var Dashboard = React.createClass( {displayName: "Dashboard",
 
 module.exports = Dashboard;
 
-},{"react":255}],278:[function(require,module,exports){
+},{"react":255}],279:[function(require,module,exports){
 var React = require('react');
 
 var Editor = React.createClass( {displayName: "Editor",
@@ -50856,25 +50882,10 @@ var Editor = React.createClass( {displayName: "Editor",
 
 module.exports = Editor;
 
-},{"react":255}],279:[function(require,module,exports){
-var React = require('react');
-
-var Settings = React.createClass( {displayName: "Settings",
-  render: function() {
-    return (
-      React.createElement("div", null, 
-        "hello world Settings!"
-      )
-    );
-  }
-});
-
-module.exports = Settings;
-
 },{"react":255}],280:[function(require,module,exports){
 var React = require('react');
 var Link = require('react-router').Link;
-var translates = require('../../constants/translates');
+var translates = require('../../translates');
 
 var Index = React.createClass( {displayName: "Index",
     render: function() {
@@ -50910,7 +50921,22 @@ var Index = React.createClass( {displayName: "Index",
 });
 
 module.exports = Index;
-},{"../../constants/translates":283,"react":255,"react-router":76}],281:[function(require,module,exports){
+},{"../../translates":286,"react":255,"react-router":76}],281:[function(require,module,exports){
+var React = require('react');
+
+var Settings = React.createClass( {displayName: "Settings",
+  render: function() {
+    return (
+      React.createElement("div", null, 
+        "hello world Settings!"
+      )
+    );
+  }
+});
+
+module.exports = Settings;
+
+},{"react":255}],282:[function(require,module,exports){
 var React = require('react');
 var ReactDOM = require('react-dom');
 var Router = require('react-router').Router;
@@ -50918,14 +50944,14 @@ var Route = require('react-router').Route;
 var IndexRoute = require('react-router').IndexRoute;
 var hashHistory = require('react-router').hashHistory;
 var Index = require('./admin/index.jsx');
-var Dashboard = require('./admin/childs/dashboard.jsx');
-var Content = require('./admin/childs/content.jsx');
-var PageDetail = require('./admin/childs/content/pageDetail.jsx');
-var Editor = require('./admin/childs/editor.jsx');
-var Settings = require('./admin/childs/settings.jsx');
+var Dashboard = require('./admin/dashboard.jsx');
+var Content = require('./admin/content.jsx');
+var ContentDetail = require('./admin/content/contentDetail.jsx');
+var Editor = require('./admin/editor.jsx');
+var Settings = require('./admin/settings.jsx');
 var Provider = require('react-redux').Provider;
-var store = require('../stores/adminStore');
-var constants = require('../constants/constants');
+var store = require('../adminStore');
+var constants = require('../constants');
 var $ = require('jquery');
 
 var Routes =  (
@@ -50933,7 +50959,7 @@ var Routes =  (
         React.createElement(IndexRoute, {component: Content}), 
         React.createElement(Route, {component: Dashboard, path: "/dashboard"}), 
         React.createElement(Route, {component: Content, path: "/content"}, 
-            React.createElement(Route, {component: PageDetail, path: "/content/id"})
+            React.createElement(Route, {component: ContentDetail, path: "/content/id"})
         ), 
         React.createElement(Route, {component: Editor, path: "/editor"}), 
         React.createElement(Route, {component: Settings, path: "/settings"})
@@ -50945,7 +50971,7 @@ ReactDOM.render(
         React.createElement(Router, {history: hashHistory, routes: Routes})
     ),
     document.getElementById('admin'));
-},{"../constants/constants":282,"../stores/adminStore":286,"./admin/childs/content.jsx":275,"./admin/childs/content/pageDetail.jsx":276,"./admin/childs/dashboard.jsx":277,"./admin/childs/editor.jsx":278,"./admin/childs/settings.jsx":279,"./admin/index.jsx":280,"jquery":23,"react":255,"react-dom":30,"react-redux":38,"react-router":76}],282:[function(require,module,exports){
+},{"../adminStore":275,"../constants":283,"./admin/content.jsx":276,"./admin/content/contentDetail.jsx":277,"./admin/dashboard.jsx":278,"./admin/editor.jsx":279,"./admin/index.jsx":280,"./admin/settings.jsx":281,"jquery":23,"react":255,"react-dom":30,"react-redux":38,"react-router":76}],283:[function(require,module,exports){
 var keyMirror = require('key-mirror');
 
 module.exports = keyMirror({
@@ -50953,27 +50979,8 @@ module.exports = keyMirror({
     GETTING_PAGES: null
 
 });
-},{"key-mirror":24}],283:[function(require,module,exports){
-module.exports = {
-  'content': {
-    'en': 'Content',
-    'pt': 'Conteúdo'
-  },
-  'dashboard': {
-    'en': 'Dashboard',
-    'pt': 'Painel'
-  },
-  'editor': {
-    'en': 'Editor',
-    'pt': 'Editor'
-  },
-  'settings': {
-    'en': 'Settings',
-    'pt': 'Definições'
-  }
-};
-},{}],284:[function(require,module,exports){
-var constants = require('../constants/constants');
+},{"key-mirror":24}],284:[function(require,module,exports){
+var constants = require('../constants');
 var _ = require('underscore');
 
 
@@ -50994,8 +51001,8 @@ module.exports = function( state, action ) {
       return state || {};
   }
 };
-},{"../constants/constants":282,"underscore":272}],285:[function(require,module,exports){
-var constants = require('../constants/constants');
+},{"../constants":283,"underscore":272}],285:[function(require,module,exports){
+var constants = require('../constants');
 var _ = require('underscore');
 
 
@@ -51016,33 +51023,23 @@ module.exports = function( state, action ) {
       return state || {};
   }
 };
-
-},{"../constants/constants":282,"underscore":272}],286:[function(require,module,exports){
-var Redux = require('redux');
-var thunk = require('redux-thunk').default;
-var pageReducer = require('../reducers/pages');
-var testReducer = require('../reducers/test');
-
-
-var rootReducer = Redux.combineReducers({
-  pages: pageReducer
-  //test: testReducer
-});
-
-var initialState = {
-  pages: {
-      list: [],
-      fetching: false
+},{"../constants":283,"underscore":272}],286:[function(require,module,exports){
+module.exports = {
+  'content': {
+    'en': 'Content',
+    'pt': 'Conteúdo'
+  },
+  'dashboard': {
+    'en': 'Dashboard',
+    'pt': 'Painel'
+  },
+  'editor': {
+    'en': 'Editor',
+    'pt': 'Editor'
+  },
+  'settings': {
+    'en': 'Settings',
+    'pt': 'Definições'
   }
 };
-
-var middleTest = function(store) {
-  return function(next) {
-    return function(action) {
-      return next(action);
-    }
-  };
-};
-
-module.exports = Redux.applyMiddleware(thunk, middleTest)(Redux.createStore)(rootReducer,initialState);
-},{"../reducers/pages":284,"../reducers/test":285,"redux":262,"redux-thunk":256}]},{},[281]);
+},{}]},{},[282]);

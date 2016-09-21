@@ -1,4 +1,4 @@
-var constants = require('../constants/constants');
+var constants = require('./constants');
 var $ = require('jquery');
 
 

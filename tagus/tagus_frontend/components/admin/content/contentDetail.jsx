@@ -1,7 +1,7 @@
 var React = require('react');
 var RichTextEditor = require('react-quill');
-var store = require('../../../../stores/adminStore');
-var actions = require('../../../../actions/adminActions');
+var store = require('../../../adminStore');
+var actions = require('../../../adminActions');
 var ReactRedux = require('react-redux');
 
 var PageDetail = React.createClass ( {

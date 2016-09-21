@@ -1,7 +1,7 @@
 var Redux = require('redux');
 var thunk = require('redux-thunk').default;
-var pageReducer = require('../reducers/pages');
-var testReducer = require('../reducers/test');
+var pageReducer = require('./reducers/pages');
+var testReducer = require('./reducers/test');
 
 
 var rootReducer = Redux.combineReducers({
@@ -9,11 +9,9 @@ var rootReducer = Redux.combineReducers({
   //test: testReducer
 });
 
+//check if 'null' works for this...
 var initialState = {
-  pages: {
-      list: [],
-      fetching: false
-  }
+  pages: null
 };
 
 var middleTest = function(store) {
