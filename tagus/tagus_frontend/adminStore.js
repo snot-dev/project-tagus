@@ -9,9 +9,11 @@ var rootReducer = Redux.combineReducers({
   //test: testReducer
 });
 
-//check if 'null' works for this...
 var initialState = {
-  pages: null
+  pages: {
+      list: [],
+      isFetching: false
+  }
 };
 
 var middleTest = function(store) {

@@ -50715,9 +50715,11 @@ var rootReducer = Redux.combineReducers({
   //test: testReducer
 });
 
-//check if 'null' works for this...
 var initialState = {
-  pages: null
+  pages: {
+      list: [],
+      isFetching: false
+  }
 };
 
 var middleTest = function(store) {
@@ -50738,27 +50740,29 @@ var Content = React.createClass( {displayName: "Content",
     return (
       React.createElement("div", {id: "admin-content-container", className: "container-fluid"}, 
         React.createElement("div", {className: "row"}, 
-          React.createElement("section", {className: "col-xs-3 section content-page-list"}, 
-            React.createElement("h2", {id: "main-title"}, "Content"), 
-            React.createElement("ul", {id: "page-list", className: "list"}, 
-              React.createElement("li", {className: "page item"}, React.createElement(Link, {to: "/content/id", className: "link"}, React.createElement("i", {className: "fa fa-home", "aria-hidden": "true"}), "Home ", React.createElement("i", {className: "fa fa-list pull-right options", "aria-hidden": "true"}))), 
-              React.createElement("li", {className: "page item"}, React.createElement("a", {className: "active link"}, React.createElement("i", {className: "fa fa-file", "aria-hidden": "true"}), "Contacts ", React.createElement("i", {className: "fa fa-list pull-right options", "aria-hidden": "true"}))), 
-              React.createElement("li", {className: "page item"}, 
-                React.createElement("a", {className: "link"}, React.createElement("i", {className: "fa fa-file", "aria-hidden": "true"}), "News ", React.createElement("i", {className: "fa fa-list pull-right options", "aria-hidden": "true"})), 
-                React.createElement("ul", {className: "child-list"}, 
-                  React.createElement("li", {className: "page item"}, React.createElement("a", {className: "link"}, React.createElement("i", {className: "fa fa-file", "aria-hidden": "true"}), "One ", React.createElement("i", {className: "fa fa-list pull-right options", "aria-hidden": "true"}))), 
-                  React.createElement("li", {className: "page item"}, React.createElement("a", {className: "link"}, React.createElement("i", {className: "fa fa-file", "aria-hidden": "true"}), "Two ", React.createElement("i", {className: "fa fa-list pull-right options", "aria-hidden": "true"}))), 
-                  React.createElement("li", {className: "page item"}, 
-                    React.createElement("a", {className: "link"}, React.createElement("i", {className: "fa fa-file", "aria-hidden": "true"}), "Three ", React.createElement("i", {className: "fa fa-list pull-right options", "aria-hidden": "true"})), 
-                    React.createElement("ul", {className: "child-list"}, 
-                      React.createElement("li", {className: "page item"}, React.createElement("a", {className: "link"}, React.createElement("i", {className: "fa fa-file", "aria-hidden": "true"}), "Uno ", React.createElement("i", {className: "fa fa-list pull-right options", "aria-hidden": "true"}))), 
-                      React.createElement("li", {className: "page item"}, React.createElement("a", {className: "link"}, React.createElement("i", {className: "fa fa-file", "aria-hidden": "true"}), "Dos ", React.createElement("i", {className: "fa fa-list pull-right options", "aria-hidden": "true"})))
+            React.createElement("div", {className: "col-xs-3"}, 
+                React.createElement("section", {className: "section content-page-list"}, 
+                    React.createElement("h2", {className: "title"}, "Content"), 
+                    React.createElement("ul", {id: "page-list", className: "list"}, 
+                        React.createElement("li", {className: "page item"}, React.createElement(Link, {to: "/content/id", className: "link"}, React.createElement("i", {className: "fa fa-home", "aria-hidden": "true"}), "Home ", React.createElement("i", {className: "fa fa-list pull-right options", "aria-hidden": "true"}))), 
+                        React.createElement("li", {className: "page item"}, React.createElement("a", {className: "active link"}, React.createElement("i", {className: "fa fa-file", "aria-hidden": "true"}), "Contacts ", React.createElement("i", {className: "fa fa-list pull-right options", "aria-hidden": "true"}))), 
+                        React.createElement("li", {className: "page item"}, 
+                            React.createElement("a", {className: "link"}, React.createElement("i", {className: "fa fa-file", "aria-hidden": "true"}), "News ", React.createElement("i", {className: "fa fa-list pull-right options", "aria-hidden": "true"})), 
+                            React.createElement("ul", {className: "child-list"}, 
+                                React.createElement("li", {className: "page item"}, React.createElement("a", {className: "link"}, React.createElement("i", {className: "fa fa-file", "aria-hidden": "true"}), "One ", React.createElement("i", {className: "fa fa-list pull-right options", "aria-hidden": "true"}))), 
+                                React.createElement("li", {className: "page item"}, React.createElement("a", {className: "link"}, React.createElement("i", {className: "fa fa-file", "aria-hidden": "true"}), "Two ", React.createElement("i", {className: "fa fa-list pull-right options", "aria-hidden": "true"}))), 
+                                React.createElement("li", {className: "page item"}, 
+                                    React.createElement("a", {className: "link"}, React.createElement("i", {className: "fa fa-file", "aria-hidden": "true"}), "Three ", React.createElement("i", {className: "fa fa-list pull-right options", "aria-hidden": "true"})), 
+                                    React.createElement("ul", {className: "child-list"}, 
+                                        React.createElement("li", {className: "page item"}, React.createElement("a", {className: "link"}, React.createElement("i", {className: "fa fa-file", "aria-hidden": "true"}), "Uno ", React.createElement("i", {className: "fa fa-list pull-right options", "aria-hidden": "true"}))), 
+                                        React.createElement("li", {className: "page item"}, React.createElement("a", {className: "link"}, React.createElement("i", {className: "fa fa-file", "aria-hidden": "true"}), "Dos ", React.createElement("i", {className: "fa fa-list pull-right options", "aria-hidden": "true"})))
+                                    )
+                                )
+                            )
+                        )
                     )
-                  )
                 )
-              )
-            )
-          ), 
+            ), 
 
             this.props.children
         )
@@ -50782,47 +50786,49 @@ var PageDetail = React.createClass ( {displayName: "PageDetail",
     render: function() {
         console.log(this.props);
         return (
-            React.createElement("section", {className: "col-xs-9 section content-page-detail"}, 
-                React.createElement("div", {className: "row"}, 
-                    React.createElement("nav", {className: "col-xs-12 tab-navigation"}, 
-                        React.createElement("ul", null, 
-                            React.createElement("li", null, React.createElement("a", {className: "tab block"}, "Content")), 
-                            React.createElement("li", null, React.createElement("a", {className: "tab block"}, "Settings"))
+            React.createElement("div", {className: "col-xs-9"}, 
+                React.createElement("section", {className: "section content-page-detail"}, 
+                    React.createElement("div", {className: "row"}, 
+                        React.createElement("nav", {className: "col-xs-12 tab-navigation"}, 
+                            React.createElement("ul", null, 
+                                React.createElement("li", null, React.createElement("a", {className: "tab block"}, "Content")), 
+                                React.createElement("li", null, React.createElement("a", {className: "tab block"}, "Settings"))
+                            )
                         )
-                    )
-                ), 
-                React.createElement("div", {className: "row"}, 
-                    React.createElement("div", {className: "col-xs-12 content-container"}, 
-                        React.createElement("label", {className: "form-label"}, "This is a label"), 
-                        React.createElement("input", {type: "text", className: "form-field"}), 
-                        React.createElement("label", {className: "form-label"}, "This is a label"), 
-                        React.createElement("div", {className: "checkbox-container"}, 
-                          React.createElement("input", {type: "checkbox"})
-                        ), 
-                      React.createElement("label", {className: "form-label"}, "This is a label"), 
-                      React.createElement("textarea", {className: "form-field textarea"}), 
-                      React.createElement("label", {className: "form-label"}, "This is a label"), 
-                      React.createElement("select", {className: "form-field"}, 
-                        React.createElement("option", null, "1"), 
-                        React.createElement("option", null, "2")
-                      ), 
-                      React.createElement("label", {className: "form-label"}, "This is a label"), 
-                      React.createElement("div", {className: "checkbox-container"}, 
-                        React.createElement("label", null, React.createElement("input", {type: "radio", name: "radio", value: "1"}), " 1 "), React.createElement("br", null), 
-                        React.createElement("label", null, React.createElement("input", {type: "radio", name: "radio", value: "2"}), " 2 "), React.createElement("br", null), 
-                        React.createElement("label", null, React.createElement("input", {type: "radio", name: "radio", value: "3"}), " 3 "), React.createElement("br", null)
-                      ), 
-                      React.createElement("label", {className: "form-label"}, "This is a label"), 
-                      React.createElement("div", {className: "richtext-container"}, 
-                          React.createElement(RichTextEditor, {theme: "snow"})
-                      ), 
+                    ), 
+                    React.createElement("div", {className: "row"}, 
+                        React.createElement("div", {className: "col-xs-12 content-container"}, 
+                            React.createElement("label", {className: "form-label"}, "This is a label"), 
+                            React.createElement("input", {type: "text", className: "form-field"}), 
+                            React.createElement("label", {className: "form-label"}, "This is a label"), 
+                            React.createElement("div", {className: "checkbox-container"}, 
+                                React.createElement("input", {type: "checkbox"})
+                            ), 
+                            React.createElement("label", {className: "form-label"}, "This is a label"), 
+                            React.createElement("textarea", {className: "form-field textarea"}), 
+                            React.createElement("label", {className: "form-label"}, "This is a label"), 
+                            React.createElement("select", {className: "form-field"}, 
+                                React.createElement("option", null, "1"), 
+                                React.createElement("option", null, "2")
+                            ), 
+                            React.createElement("label", {className: "form-label"}, "This is a label"), 
+                            React.createElement("div", {className: "checkbox-container"}, 
+                                React.createElement("label", null, React.createElement("input", {type: "radio", name: "radio", value: "1"}), " 1 "), React.createElement("br", null), 
+                                React.createElement("label", null, React.createElement("input", {type: "radio", name: "radio", value: "2"}), " 2 "), React.createElement("br", null), 
+                                React.createElement("label", null, React.createElement("input", {type: "radio", name: "radio", value: "3"}), " 3 "), React.createElement("br", null)
+                            ), 
+                            React.createElement("label", {className: "form-label"}, "This is a label"), 
+                            React.createElement("div", {className: "richtext-container"}, 
+                                React.createElement(RichTextEditor, {theme: "snow"})
+                            ), 
 
-                    React.createElement("div", null, 
-                        React.createElement("button", {className: "button", onClick: this.props.getPages}, "Standard"), 
-                        React.createElement("button", {className: "button submit"}, "Submit"), 
-                        React.createElement("button", {className: "button add"}, "Add"), 
-                        React.createElement("button", {className: "button delete"}, "Delete")
-                    )
+                            React.createElement("div", null, 
+                                React.createElement("button", {className: "button", onClick: this.props.getPages}, "Standard"), 
+                                React.createElement("button", {className: "button submit"}, "Submit"), 
+                                React.createElement("button", {className: "button add"}, "Add"), 
+                                React.createElement("button", {className: "button delete"}, "Delete")
+                            )
+                        )
                     )
                 )
             )

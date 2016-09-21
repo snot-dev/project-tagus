@@ -267,21 +267,28 @@ html, body {
     right: 0;
     bottom: 0;
     color: #000000;
-    padding: 15px;
+    padding: 15px 0;
     overflow: auto; }
     #admin-main-container #admin-content-container {
       height: 100%; }
-      #admin-main-container #admin-content-container #main-title {
-        font-size: 20px;
-        line-height: 22px;
-        margin: 15px 0; }
       #admin-main-container #admin-content-container .section {
-        padding: 15px;
+        padding: 0 15px 15px;
         height: 100%;
         background-color: #ffffff;
-        border: 5px solid transparent;
-        background-clip: padding-box;
-        overflow-y: auto; } }
+        overflow-y: auto;
+        border-radius: 5px; }
+        #admin-main-container #admin-content-container .section .title {
+          padding: 5px 15px;
+          color: #ffffff;
+          background-color: #a61d30;
+          margin: 0;
+          font-size: 20px;
+          line-height: 22px;
+          border-top-left-radius: 5px;
+          border-top-right-radius: 5px;
+          margin-bottom: 30px;
+          margin-left: -15px;
+          margin-right: -15px; } }
 .content-container {
   color: #333333;
   background-color: transparent;
