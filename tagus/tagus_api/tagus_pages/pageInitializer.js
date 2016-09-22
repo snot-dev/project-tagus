@@ -17,6 +17,7 @@ module.exports = [
                         },
                         template: "index",
                         child: "",
-                        parent: ""
+                        parent: "",
+                        isHome: true
                     }
                 ];

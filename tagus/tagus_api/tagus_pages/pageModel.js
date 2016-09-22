@@ -12,9 +12,9 @@ var pageSchema = new mongoose.Schema({
         unitFields: { type : Array , "default" : [] }
     },
     template: {type: String, required: true},
-    child: Number,
-    parent: Number,
-    sortOrder: {type: Number}
+    parent: String,
+    sortOrder: {type: Number},
+    isHome: {type: Boolean, default: false}
 });
 
 module.exports = mongoose.model('Page', pageSchema);

@@ -1,7 +1,6 @@
 var constants = require('../constants');
 var _ = require('underscore');
 
-
 module.exports = function( state, action ) {
   var newState = _.extend({}, state);
 
