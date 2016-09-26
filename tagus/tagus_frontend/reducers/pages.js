@@ -6,6 +6,7 @@ module.exports = function( state, action ) {
 
   switch( action.type ) {
     case constants.GET_PAGES: {
+      console.log(action);
       newState.fetching = false;
       newState.list = action.pages;
       return newState;

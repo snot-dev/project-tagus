@@ -5,11 +5,7 @@ var actions = require('../../../adminActions');
 var ReactRedux = require('react-redux');
 
 var PageDetail = React.createClass ( {
-    componentWillMount: function() {
-        store.dispatch(actions.getPagesIfNeeded());
-    },
     render: function() {
-        console.log(this.props);
         return (
             <div className="col-xs-9">
                 <section className="section content-page-detail">

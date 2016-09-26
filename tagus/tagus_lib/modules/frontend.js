@@ -3,60 +3,26 @@ var loadContentTree = function(options) {
         //error
     }
 
-    var list = {};
+    var list = {},
+        treeList = [];
 
-    for(var i = 0, l = options.list.lenght; i < l;  i+=1) {
-        var thisItem = options.list[i];
-        
-        if(!_existsInList(list, thisItem.name)) {
-            listItem[thisItem.name] = _createItem(thisItem);
+    options.list.forEach(function(item){
+        list[item._id] = item;
+        item.children = [];
+    }) ;
+
+    options.list.forEach(function(item){
+        if(item.parent) {
+            list[item.parent].children.push(item);
         }
         else {
-            if(!list[thisItem.name].hasOwnProperty("id")) {
-                list[thisItem.name].id = thisItem._id;
-            }
-
-            if(!list[thisItem.name].hasOwnProperty("children")) {
-                list[thisItem.name].children = [];
-            }
+            treeList.push(item);
         }
+    });
 
-        if(_hasParent(thisItem)) {
-            if(_existsInList(list, thisItem.parent)) {
-                list[thisItem.parent].children.push(_createItem(thisItem));
-            }
-        }
-
-       
-    }
+    return treeList;
 };
 
-var _hasParent = function(item) {
-    return item.parent;
-}
-
-var _existsInList = function(list, key) {
-    //improve
-    if(list[key]) {
-        return true
-    }
-    else{
-        return false;
-    }
-}
-
-
-var _createItem = function(item) {
-    return {
-        name: item.name,
-        id: item._id,
-        children: []
-    }
-}
-
-//is created? create.
-// has parent? is created? create
-
-
-
-module.exports = {};
+module.exports = {
+    loadContentTree: loadContentTree
+};

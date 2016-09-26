@@ -50659,12 +50659,13 @@ arguments[4][20][0].apply(exports,arguments)
 var constants = require('./constants');
 var $ = require('jquery');
 
-
 //actions
 var receivedPages = function(pages) {
+  var list = _loadContentTree(pages);
+
   return {
     type: constants.GET_PAGES,
-    pages: pages
+    pages: list
   };
 };
 
@@ -50694,10 +50695,35 @@ var getPages = function() {
   return function(dispatch) {
     dispatch(gettingPages());
 
-    $.get('/api/pages', function(data){
+    $.get('/api/pages?contenttree=true', function(data){
       dispatch(receivedPages(data));
     });
   }
+};
+
+var _loadContentTree = function(list) {
+    if(!list) {
+        //error
+    }
+
+    var lookoutList = {},
+        treeList = [];
+
+    list.forEach(function(item){
+        lookoutList[item._id] = item;
+        item.children = [];
+    }) ;
+
+    list.forEach(function(item){
+        if(item.parent) {
+            lookoutList[item.parent].children.push(item);
+        }
+        else {
+            treeList.push(item);
+        }
+    });
+
+    return treeList;
 };
 
 module.exports = {
@@ -50734,45 +50760,60 @@ module.exports = Redux.applyMiddleware(thunk, middleTest)(Redux.createStore)(roo
 },{"./reducers/pages":284,"./reducers/test":285,"redux":262,"redux-thunk":256}],276:[function(require,module,exports){
 var React = require('react');
 var Link = require('react-router').Link;
+var store = require('../../adminStore');
+var actions = require('../../adminActions');
+var ReactRedux = require('react-redux');
 
 var Content = React.createClass( {displayName: "Content",
-  render: function() {
-    return (
-      React.createElement("div", {id: "admin-content-container", className: "container-fluid"}, 
-        React.createElement("div", {className: "row"}, 
-            React.createElement("div", {className: "col-xs-3"}, 
-                React.createElement("section", {className: "section content-page-list"}, 
-                    React.createElement("h2", {className: "title"}, "Content"), 
-                    React.createElement("ul", {id: "page-list", className: "list"}, 
-                        React.createElement("li", {className: "page item"}, React.createElement(Link, {to: "/content/id", className: "link"}, React.createElement("i", {className: "fa fa-home", "aria-hidden": "true"}), "Home ", React.createElement("i", {className: "fa fa-list pull-right options", "aria-hidden": "true"}))), 
-                        React.createElement("li", {className: "page item"}, React.createElement("a", {className: "active link"}, React.createElement("i", {className: "fa fa-file", "aria-hidden": "true"}), "Contacts ", React.createElement("i", {className: "fa fa-list pull-right options", "aria-hidden": "true"}))), 
-                        React.createElement("li", {className: "page item"}, 
-                            React.createElement("a", {className: "link"}, React.createElement("i", {className: "fa fa-file", "aria-hidden": "true"}), "News ", React.createElement("i", {className: "fa fa-list pull-right options", "aria-hidden": "true"})), 
-                            React.createElement("ul", {className: "child-list"}, 
-                                React.createElement("li", {className: "page item"}, React.createElement("a", {className: "link"}, React.createElement("i", {className: "fa fa-file", "aria-hidden": "true"}), "One ", React.createElement("i", {className: "fa fa-list pull-right options", "aria-hidden": "true"}))), 
-                                React.createElement("li", {className: "page item"}, React.createElement("a", {className: "link"}, React.createElement("i", {className: "fa fa-file", "aria-hidden": "true"}), "Two ", React.createElement("i", {className: "fa fa-list pull-right options", "aria-hidden": "true"}))), 
-                                React.createElement("li", {className: "page item"}, 
-                                    React.createElement("a", {className: "link"}, React.createElement("i", {className: "fa fa-file", "aria-hidden": "true"}), "Three ", React.createElement("i", {className: "fa fa-list pull-right options", "aria-hidden": "true"})), 
-                                    React.createElement("ul", {className: "child-list"}, 
-                                        React.createElement("li", {className: "page item"}, React.createElement("a", {className: "link"}, React.createElement("i", {className: "fa fa-file", "aria-hidden": "true"}), "Uno ", React.createElement("i", {className: "fa fa-list pull-right options", "aria-hidden": "true"}))), 
-                                        React.createElement("li", {className: "page item"}, React.createElement("a", {className: "link"}, React.createElement("i", {className: "fa fa-file", "aria-hidden": "true"}), "Dos ", React.createElement("i", {className: "fa fa-list pull-right options", "aria-hidden": "true"})))
-                                    )
-                                )
-                            )
-                        )
-                    )
+    componentWillMount: function() {
+       store.dispatch(actions.getPagesIfNeeded());
+    },  
+    _buildChildTree: function _buildChild(item, index) {
+       
+    },
+    render: function() {
+        var that = this;
+        var buildTree = function build(item, index) {
+            return(
+                React.createElement("li", {className: "page item", key: index}, 
+                   "hello"
                 )
-            ), 
+            );
+        };
+        return (
+        React.createElement("div", {id: "admin-content-container", className: "container-fluid"}, 
+            React.createElement("div", {className: "row"}, 
+                React.createElement("div", {className: "col-xs-3"}, 
+                    React.createElement("section", {className: "section content-page-list"}, 
+                        React.createElement("h2", {className: "title"}, "Content"), 
+                        this.props.pages.list && this.props.pages.list.length > 0 ? 
+                            React.createElement("ul", {id: "page-list", className: "list"}, 
+                            this.props.pages.list.map(function(item, index) {
+                                {buildTree(item, index)}
+                            })
+                            )
+                        :null
+                    )
+                ), 
 
-            this.props.children
+                this.props.children
+            )
         )
-      )
-    );
-  }
+        );
+    }
 });
 
-module.exports = Content;
-},{"react":255,"react-router":76}],277:[function(require,module,exports){
+var mapStateToProps = function(state) {
+  return {
+    pages:  state.pages,
+    isFetching: false,
+    received: false
+  };
+};
+
+
+module.exports = ReactRedux.connect(mapStateToProps)(Content);
+},{"../../adminActions":274,"../../adminStore":275,"react":255,"react-redux":38,"react-router":76}],277:[function(require,module,exports){
 var React = require('react');
 var RichTextEditor = require('react-quill');
 var store = require('../../../adminStore');
@@ -50780,11 +50821,7 @@ var actions = require('../../../adminActions');
 var ReactRedux = require('react-redux');
 
 var PageDetail = React.createClass ( {displayName: "PageDetail",
-    componentWillMount: function() {
-        store.dispatch(actions.getPagesIfNeeded());
-    },
     render: function() {
-        console.log(this.props);
         return (
             React.createElement("div", {className: "col-xs-9"}, 
                 React.createElement("section", {className: "section content-page-detail"}, 
@@ -50994,6 +51031,7 @@ module.exports = function( state, action ) {
 
   switch( action.type ) {
     case constants.GET_PAGES: {
+      console.log(action);
       newState.fetching = false;
       newState.list = action.pages;
       return newState;

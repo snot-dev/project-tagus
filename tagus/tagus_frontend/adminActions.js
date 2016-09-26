@@ -1,12 +1,13 @@
 var constants = require('./constants');
 var $ = require('jquery');
 
-
 //actions
 var receivedPages = function(pages) {
+  var list = _loadContentTree(pages);
+
   return {
     type: constants.GET_PAGES,
-    pages: pages
+    pages: list
   };
 };
 
@@ -36,10 +37,35 @@ var getPages = function() {
   return function(dispatch) {
     dispatch(gettingPages());
 
-    $.get('/api/pages', function(data){
+    $.get('/api/pages?contenttree=true', function(data){
       dispatch(receivedPages(data));
     });
   }
+};
+
+var _loadContentTree = function(list) {
+    if(!list) {
+        //error
+    }
+
+    var lookoutList = {},
+        treeList = [];
+
+    list.forEach(function(item){
+        lookoutList[item._id] = item;
+        item.children = [];
+    }) ;
+
+    list.forEach(function(item){
+        if(item.parent) {
+            lookoutList[item.parent].children.push(item);
+        }
+        else {
+            treeList.push(item);
+        }
+    });
+
+    return treeList;
 };
 
 module.exports = {
