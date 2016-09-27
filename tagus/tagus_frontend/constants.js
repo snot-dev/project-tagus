@@ -1,7 +1,9 @@
 var keyMirror = require('key-mirror');
 
 module.exports = keyMirror({
-    GET_PAGES: null,
-    GETTING_PAGES: null
+    RECEIVED_PAGELIST: null,
+    GETTING_PAGELIST: null,
+    RECEIVED_PAGEDETAIL: null,
+    GETTING_PAGEDETAIL: null
 
 });

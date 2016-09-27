@@ -5,7 +5,11 @@ var actions = require('../../../adminActions');
 var ReactRedux = require('react-redux');
 
 var PageDetail = React.createClass ( {
+    componentWillMount: function() {
+       store.dispatch(actions.getPageDetailIfNeeded(this.props.params.id));
+    },
     render: function() {
+        console.log(this.props.pages);
         return (
             <div className="col-xs-9">
                 <section className="section content-page-detail">
@@ -60,9 +64,7 @@ var PageDetail = React.createClass ( {
 
 var mapStateToProps = function(state) {
   return {
-    pages:  state.pages,
-    isFetching: false,
-    received: false
+    pages:  state.pages
   };
 };
 

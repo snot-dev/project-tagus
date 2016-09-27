@@ -50658,77 +50658,95 @@ arguments[4][20][0].apply(exports,arguments)
 },{"_process":26,"dup":20}],274:[function(require,module,exports){
 var constants = require('./constants');
 var $ = require('jquery');
+var lib = require('./tagus_lib');
 
 //actions
-var receivedPages = function(pages) {
-    var list = _loadContentTree(pages);
-
+var _fetchingPageList = function() {
     return {
-        type: constants.GET_PAGES,
-        pages: list
-    };
-};
-
-var gettingPages = function() {
-    return {
-        type: constants.GETTING_PAGES
+        type: constants.GETTING_PAGELIST
     }
 };
 
+var _receivedPageList = function(pageList) {
+    var list = lib.loadContentTree(pageList);
+
+    return {
+        type: constants.RECEIVED_PAGELIST,
+        pageList: list
+    };
+};
+
+var _fetchingPageDetail = function() {
+    return {
+        type: constants.GETTING_PAGEDETAIL
+    }
+}
+
+var _receivedPageDetail = function(page) {
+    return {
+        type: constants.RECEIVED_PAGEDETAIL,
+        page: page
+    }
+}
 
 //actions creators
-var getPagesIfNeeded = function() {
+var _getPageListIfNeeded = function() {
     return function(dispatch, getState) {
-        if (shouldGetPages(getState())) {
-            dispatch(getPages());
+        if (_shouldGetPageList(getState())) {
+            dispatch(_getPageList());
         }
     }
 };
 
-var shouldGetPages = function(state) {
+var _shouldGetPageList = function(state) {
     //TODO: add more debug code
     return state.pages.list.length === 0;
 };
 
-var getPages = function() {
+var _getPageList = function() {
     return function(dispatch) {
-        dispatch(gettingPages());
+        //add Error handling
+
+        dispatch(_fetchingPageList());
 
         $.get('/api/pages?contenttree=true', function(data) {
-            dispatch(receivedPages(data));
+            dispatch(_receivedPageList(data));
         });
     }
 };
 
-var _loadContentTree = function(list) {
-    if (!list) {
-        //error
-    }
-
-    var lookoutList = {},
-        treeList = [];
-
-    list.forEach(function(item) {
-        lookoutList[item._id] = item;
-        item.children = [];
-    });
-
-    list.forEach(function(item) {
-        if (item.parent) {
-            lookoutList[item.parent].children.push(item);
-        } else {
-            treeList.push(item);
+var _getPageDetailIfNeeded = function(id) {
+    return function(dispatch, getState) {
+        if (_shouldGetPageDetail(getState(), id)) {
+            dispatch(getPageDetail(id));
         }
-    });
+    }
+}
 
-    return treeList;
+var _shouldGetPageDetail = function(state, id) {
+    //TODO: add more debug code
+
+    return !state.pages.detail.id || state.pages.detail.id !== id;
+};
+
+var getPageDetail = function(id) {
+    return function(dispatch) {
+        dispatch(_fetchingPageDetail);
+
+        $.get('/api/pages/' + id, function(data) {
+            //add Error handling
+
+            dispatch(_receivedPageDetail(data))
+        });
+    }
 };
 
 module.exports = {
-    getPagesIfNeeded: getPagesIfNeeded
+    getPageListIfNeeded: _getPageListIfNeeded,
+    getPageDetailIfNeeded: _getPageDetailIfNeeded
 };
 
-},{"./constants":283,"jquery":23}],275:[function(require,module,exports){
+},{"./constants":283,"./tagus_lib":286,"jquery":23}],275:[function(require,module,exports){
 var Redux = require('redux');
 var thunk = require('redux-thunk').default;
 var pageReducer = require('./reducers/pages');
@@ -50736,26 +50754,29 @@ var testReducer = require('./reducers/test');
 
 
 var rootReducer = Redux.combineReducers({
-  pages: pageReducer
-  //test: testReducer
+    pages: pageReducer
+        //test: testReducer
 });
 
 var initialState = {
-  pages: {
-      list: [],
-      isFetching: false
-  }
+    pages: {
+        list: [],
+        detail: {},
+        fetchingPageList: false,
+        fetchingPageDetail: false
+    }
 };
 
 var middleTest = function(store) {
-  return function(next) {
-    return function(action) {
-      return next(action);
-    }
-  };
+    return function(next) {
+        return function(action) {
+            return next(action);
+        }
+    };
 };
 
-module.exports = Redux.applyMiddleware(thunk, middleTest)(Redux.createStore)(rootReducer,initialState);
+module.exports = Redux.applyMiddleware(thunk, middleTest)(Redux.createStore)(rootReducer, initialState);
+
 },{"./reducers/pages":284,"./reducers/test":285,"redux":262,"redux-thunk":256}],276:[function(require,module,exports){
 var React = require('react');
 var Link = require('react-router').Link;
@@ -50765,7 +50786,7 @@ var ReactRedux = require('react-redux');
 
 var Content = React.createClass( {displayName: "Content",
     componentWillMount: function() {
-       store.dispatch(actions.getPagesIfNeeded());
+       store.dispatch(actions.getPageListIfNeeded());
     },
     _buildPageList: function() {
         var that = this;
@@ -50775,7 +50796,7 @@ var Content = React.createClass( {displayName: "Content",
                 ?   that.props.pages.list.map(function(page, index) {
                         return (
                             React.createElement("li", {className: "page item", key: index}, 
-                                React.createElement("a", {className: "link"}, React.createElement("i", {className: "fa fa-file", "aria-hidden": "true"}), page.name), 
+                                React.createElement(Link, {to: "/content/" + (page._id), activeClassName: "active", className: "link"}, React.createElement("i", {className: "fa fa-home", "aria-hidden": "true"}), page.name), 
                                     page.children.length > 0 ?
                                         that._childList(page)
                                     : null
@@ -50796,7 +50817,7 @@ var Content = React.createClass( {displayName: "Content",
                 ?   item.children.map(function(child, index) {
                         return(
                             React.createElement("li", {className: "page item", key: index}, 
-                                React.createElement("a", {className: "link"}, React.createElement("i", {className: "fa fa-file", "aria-hidden": "true"}), child.name), 
+                                React.createElement(Link, {to: "/content/" + (child._id), activeClassName: "active", className: "link"}, React.createElement("i", {className: "fa fa-file", "aria-hidden": "true"}), child.name), 
                                 that._childList(child)
                             )
                         );
@@ -50807,7 +50828,6 @@ var Content = React.createClass( {displayName: "Content",
         );
     }, 
     render: function() {
-        console.log(this.props);
         return (
         React.createElement("div", {id: "admin-content-container", className: "container-fluid"}, 
             React.createElement("div", {className: "row"}, 
@@ -50847,7 +50867,11 @@ var actions = require('../../../adminActions');
 var ReactRedux = require('react-redux');
 
 var PageDetail = React.createClass ( {displayName: "PageDetail",
+    componentWillMount: function() {
+       store.dispatch(actions.getPageDetailIfNeeded(this.props.params.id));
+    },
     render: function() {
+        console.log(this.props.pages);
         return (
             React.createElement("div", {className: "col-xs-9"}, 
                 React.createElement("section", {className: "section content-page-detail"}, 
@@ -50902,9 +50926,7 @@ var PageDetail = React.createClass ( {displayName: "PageDetail",
 
 var mapStateToProps = function(state) {
   return {
-    pages:  state.pages,
-    isFetching: false,
-    received: false
+    pages:  state.pages
   };
 };
 
@@ -50990,7 +51012,7 @@ var Index = React.createClass( {displayName: "Index",
 });
 
 module.exports = Index;
-},{"../../translates":286,"react":255,"react-router":76}],281:[function(require,module,exports){
+},{"../../translates":287,"react":255,"react-router":76}],281:[function(require,module,exports){
 var React = require('react');
 
 var Settings = React.createClass( {displayName: "Settings",
@@ -51028,7 +51050,7 @@ var Routes =  (
         React.createElement(IndexRoute, {component: Content}), 
         React.createElement(Route, {component: Dashboard, path: "/dashboard"}), 
         React.createElement(Route, {component: Content, path: "/content"}, 
-            React.createElement(Route, {component: ContentDetail, path: "/content/id"})
+            React.createElement(Route, {component: ContentDetail, path: "/content/:id"})
         ), 
         React.createElement(Route, {component: Editor, path: "/editor"}), 
         React.createElement(Route, {component: Settings, path: "/settings"})
@@ -51044,31 +51066,48 @@ ReactDOM.render(
 var keyMirror = require('key-mirror');
 
 module.exports = keyMirror({
-    GET_PAGES: null,
-    GETTING_PAGES: null
+    RECEIVED_PAGELIST: null,
+    GETTING_PAGELIST: null,
+    RECEIVED_PAGEDETAIL: null,
+    GETTING_PAGEDETAIL: null
 
 });
+
 },{"key-mirror":24}],284:[function(require,module,exports){
 var constants = require('../constants');
 var _ = require('underscore');
 
-module.exports = function( state, action ) {
-  var newState = _.extend({}, state);
+module.exports = function(state, action) {
+    var newState = _.extend({}, state);
 
-  switch( action.type ) {
-    case constants.GET_PAGES: {
-      newState.isFetching = false;
-      newState.list = action.pages;
-      return newState;
+    switch (action.type) {
+        case constants.GETTING_PAGELIST:
+            {
+                newState.fetchingPageList = true;
+                return newState;
+            }
+        case constants.RECEIVED_PAGELIST:
+            {
+                newState.fetchingPageList = false;
+                newState.list = action.pageList;
+                return newState;
+            }
+        case constants.GETTING_PAGEDETAIL:
+            {
+                newState.fetchingPageDetail = true;
+                return newState;
+            }
+        case constants.RECEIVED_PAGEDETAIL:
+            {
+                newState.fetchingPageDetail = false;
+                newState.detail = action.page;
+                return newState;
+            }
+        default:
+            return state || {};
     }
-    case constants.GETTING_PAGES: {
-      newState.isFetching = true;
-      return newState;
-    }
-    default:
-      return state || {};
-  }
 };
+
 },{"../constants":283,"underscore":272}],285:[function(require,module,exports){
 var constants = require('../constants');
 var _ = require('underscore');
@@ -51095,6 +51134,110 @@ module.exports = function( state, action ) {
   }
 };
 },{"../constants":283,"underscore":272}],286:[function(require,module,exports){
+var _loadContentTree = function(list) {
+    if (!list) {
+        //error
+    }
+
+    var lookoutList = {},
+        treeList = [];
+
+    list.forEach(function(item) {
+        lookoutList[item._id] = item;
+        item.children = [];
+    });
+
+    list.forEach(function(item) {
+        if (item.parent) {
+            lookoutList[item.parent].children.push(item);
+        } else {
+            treeList.push(item);
+        }
+    });
+
+    return treeList;
+};
+
+
+var _renderFieldType = function(type) {
+    return _fields(type);
+}
+
+
+var _fields = {
+    "text": function(options) {
+        return (
+            React.createElement("input", {type: "text", className: "form-field", name: options.name})
+        );
+    },
+    "textarea": function(options) {
+        return (
+            React.createElement("textarea", {className: "form-field textarea", name: options.name})
+        );
+    },
+    "richText": function(options) {
+        return (
+            React.createElement("div", {className: "richtext-container"}, 
+                React.createElement(RichTextEditor, {theme: "snow", name: options.name})
+            )
+        );
+    },
+    "number": function(options) {
+        return (
+            React.createElement("input", {type: "number", className: "form-field", name: options.name})
+        );
+    },
+    "boolean": function(options){
+        return (
+            React.createElement("div", {className: "checkbox-container"}, 
+                React.createElement("input", {type: "checkbox", name: options.name})
+            )
+        );
+
+    },
+    "email": function(options) {
+        return (
+            React.createElement("input", {type: "email", className: "form-field"})
+        );
+    },
+    "radio": function(options) {
+        return (
+            React.createElement("div", {className: "checkbox-container"}, 
+                options.options.length > 0 
+                ?   options.options.map(function(option, index) {
+                        return(
+                         React.createElement("div", {key: index}, 
+                            React.createElement("label", null, React.createElement("input", {type: "radio", name: options.name, value: option.value}), " ", option.name, " "), React.createElement("br", null)
+                         )       
+                        )
+                    })   
+                :   null
+                
+            )
+        );
+    },
+    "dropdown": function(options) {
+        return (
+           React.createElement("select", {className: "form-field", name: options.name}, 
+            options.options.length > 0 
+            ?   options.options.map(function(option, index) {
+                    return(
+                        React.createElement("option", {value: option.value, key: index}, options.name)      
+                    )
+                })   
+            :   null
+            
+        )  
+        );
+    }
+};
+
+module.exports = {
+    loadContentTree: _loadContentTree,
+    renderFieldType: _renderFieldType
+};
+
+},{}],287:[function(require,module,exports){
 module.exports = {
   'content': {
     'en': 'Content',

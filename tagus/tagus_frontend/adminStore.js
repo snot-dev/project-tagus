@@ -5,23 +5,25 @@ var testReducer = require('./reducers/test');
 
 
 var rootReducer = Redux.combineReducers({
-  pages: pageReducer
-  //test: testReducer
+    pages: pageReducer
+        //test: testReducer
 });
 
 var initialState = {
-  pages: {
-      list: [],
-      isFetching: false
-  }
+    pages: {
+        list: [],
+        detail: {},
+        fetchingPageList: false,
+        fetchingPageDetail: false
+    }
 };
 
 var middleTest = function(store) {
-  return function(next) {
-    return function(action) {
-      return next(action);
-    }
-  };
+    return function(next) {
+        return function(action) {
+            return next(action);
+        }
+    };
 };
 
-module.exports = Redux.applyMiddleware(thunk, middleTest)(Redux.createStore)(rootReducer,initialState);
+module.exports = Redux.applyMiddleware(thunk, middleTest)(Redux.createStore)(rootReducer, initialState);

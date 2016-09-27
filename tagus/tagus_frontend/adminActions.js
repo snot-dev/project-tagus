@@ -1,71 +1,89 @@
 var constants = require('./constants');
 var $ = require('jquery');
+var lib = require('./tagus_lib');
 
 //actions
-var receivedPages = function(pages) {
-    var list = _loadContentTree(pages);
-
+var _fetchingPageList = function() {
     return {
-        type: constants.GET_PAGES,
-        pages: list
-    };
-};
-
-var gettingPages = function() {
-    return {
-        type: constants.GETTING_PAGES
+        type: constants.GETTING_PAGELIST
     }
 };
 
+var _receivedPageList = function(pageList) {
+    var list = lib.loadContentTree(pageList);
+
+    return {
+        type: constants.RECEIVED_PAGELIST,
+        pageList: list
+    };
+};
+
+var _fetchingPageDetail = function() {
+    return {
+        type: constants.GETTING_PAGEDETAIL
+    }
+}
+
+var _receivedPageDetail = function(page) {
+    return {
+        type: constants.RECEIVED_PAGEDETAIL,
+        page: page
+    }
+}
 
 //actions creators
-var getPagesIfNeeded = function() {
+var _getPageListIfNeeded = function() {
     return function(dispatch, getState) {
-        if (shouldGetPages(getState())) {
-            dispatch(getPages());
+        if (_shouldGetPageList(getState())) {
+            dispatch(_getPageList());
         }
     }
 };
 
-var shouldGetPages = function(state) {
+var _shouldGetPageList = function(state) {
     //TODO: add more debug code
     return state.pages.list.length === 0;
 };
 
-var getPages = function() {
+var _getPageList = function() {
     return function(dispatch) {
-        dispatch(gettingPages());
+        //add Error handling
+
+        dispatch(_fetchingPageList());
 
         $.get('/api/pages?contenttree=true', function(data) {
-            dispatch(receivedPages(data));
+            dispatch(_receivedPageList(data));
         });
     }
 };
 
-var _loadContentTree = function(list) {
-    if (!list) {
-        //error
-    }
-
-    var lookoutList = {},
-        treeList = [];
-
-    list.forEach(function(item) {
-        lookoutList[item._id] = item;
-        item.children = [];
-    });
-
-    list.forEach(function(item) {
-        if (item.parent) {
-            lookoutList[item.parent].children.push(item);
-        } else {
-            treeList.push(item);
+var _getPageDetailIfNeeded = function(id) {
+    return function(dispatch, getState) {
+        if (_shouldGetPageDetail(getState(), id)) {
+            dispatch(getPageDetail(id));
         }
-    });
+    }
+}
 
-    return treeList;
+var _shouldGetPageDetail = function(state, id) {
+    //TODO: add more debug code
+
+    return !state.pages.detail.id || state.pages.detail.id !== id;
+};
+
+var getPageDetail = function(id) {
+    return function(dispatch) {
+        dispatch(_fetchingPageDetail);
+
+        $.get('/api/pages/' + id, function(data) {
+            //add Error handling
+
+            dispatch(_receivedPageDetail(data))
+        });
+    }
 };
 
 module.exports = {
-    getPagesIfNeeded: getPagesIfNeeded
+    getPageListIfNeeded: _getPageListIfNeeded,
+    getPageDetailIfNeeded: _getPageDetailIfNeeded
 };

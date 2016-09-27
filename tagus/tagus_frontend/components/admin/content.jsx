@@ -6,7 +6,7 @@ var ReactRedux = require('react-redux');
 
 var Content = React.createClass( {
     componentWillMount: function() {
-       store.dispatch(actions.getPagesIfNeeded());
+       store.dispatch(actions.getPageListIfNeeded());
     },
     _buildPageList: function() {
         var that = this;
@@ -15,8 +15,8 @@ var Content = React.createClass( {
                 {that.props.pages.list && that.props.pages.list.length > 0 
                 ?   that.props.pages.list.map(function(page, index) {
                         return (
-                            <li className="page item" key={index}>
-                                <a className="link"><i className="fa fa-file" aria-hidden="true"></i>{page.name}</a>
+                            <li  className="page item" key={index}>
+                                <Link to={"/content/" + (page._id)} activeClassName="active" className="link"><i className="fa fa-home" aria-hidden="true"></i>{page.name}</Link>
                                     {page.children.length > 0 ?
                                         that._childList(page)
                                     : null
@@ -37,7 +37,7 @@ var Content = React.createClass( {
                 ?   item.children.map(function(child, index) {
                         return(
                             <li className="page item" key={index}>
-                                <a className="link"><i className="fa fa-file" aria-hidden="true"></i>{child.name}</a>
+                                <Link to={"/content/" + (child._id)} activeClassName="active" className="link"><i className="fa fa-file" aria-hidden="true"></i>{child.name}</Link>
                                 {that._childList(child)}
                             </li>
                         );
@@ -48,7 +48,6 @@ var Content = React.createClass( {
         );
     }, 
     render: function() {
-        console.log(this.props);
         return (
         <div id="admin-content-container" className="container-fluid">
             <div className="row">
