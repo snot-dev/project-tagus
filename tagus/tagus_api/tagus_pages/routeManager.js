@@ -9,8 +9,10 @@ pageModel.find({}, function(err, docs) {
 
     docs.forEach(function(doc) {
         var viewBag = {};
-        doc.unitType.unitFields.forEach(function(unitField) {
-            viewBag[unitField.alias] = unitField.value;
+        doc.unitType.tabs.forEach(function(tab) {
+            tab.unitFields.forEach(function(unitFiel) {
+                viewBag[unitField.alias] = unitField.value;
+            })
         });
 
         router.get(doc.url, function(req, res, next) {

@@ -8,12 +8,17 @@ module.exports = [
                         published: new Date(),
                         unitType: {
                             name: "Home",
-                            unitFields: [{
-                                name: "Site Name",
-                                alias: "siteName",
-                                type: "text",
-                                value: "Example Site"
-                            }]
+                            tabs: [
+                                {
+                                    name: "Content",
+                                    unitFields: [{
+                                        name: "Site Name",
+                                        alias: "siteName",
+                                        type: "text",
+                                        value: "Example Site"
+                                    }]
+                                }
+                            ]
                         },
                         template: "index",
                         parent: "",
