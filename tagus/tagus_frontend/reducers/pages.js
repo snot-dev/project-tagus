@@ -25,6 +25,7 @@ module.exports = function(state, action) {
             {
                 newState.fetchingPageDetail = false;
                 newState.detail = action.page;
+                newState.tabs = action.tabs;
                 return newState;
             }
         default:

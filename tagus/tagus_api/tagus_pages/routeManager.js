@@ -10,7 +10,7 @@ pageModel.find({}, function(err, docs) {
     docs.forEach(function(doc) {
         var viewBag = {};
         doc.unitType.tabs.forEach(function(tab) {
-            tab.unitFields.forEach(function(unitFiel) {
+            tab.unitFields.forEach(function(unitField) {
                 viewBag[unitField.alias] = unitField.value;
             })
         });

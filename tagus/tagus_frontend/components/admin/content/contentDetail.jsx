@@ -1,12 +1,32 @@
 var React = require('react');
 var RichTextEditor = require('react-quill');
 var store = require('../../../adminStore');
-var actions = require('../../../adminActions');
+var pagesActions = require('../../../actions/pagesActions');
 var ReactRedux = require('react-redux');
 
 var PageDetail = React.createClass ( {
     componentWillMount: function() {
-       store.dispatch(actions.getPageDetailIfNeeded(this.props.params.id));
+       store.dispatch(pagesActions.getPageDetailIfNeeded(this.props.params.id));
+    },
+    renderTabs: function() {
+        console.log("here!");
+
+        return (
+            <nav className="col-xs-12 tab-navigation">
+                    {this.props.pages.tabs.length > 0
+                    ?   <ul>
+                            {this.props.pages.tabs.map(function(tab, index) {
+                                return(
+                                    <li key={index}><a className="tab block">{tab}</a></li>
+                                )
+                            })}
+                        </ul>
+                    : null}
+            </nav>
+        );
+    },
+    displayTabContent: function() {
+
     },
     render: function() {
         console.log(this.props.pages);
@@ -14,12 +34,7 @@ var PageDetail = React.createClass ( {
             <div className="col-xs-9">
                 <section className="section content-page-detail">
                     <div className="row">
-                        <nav className="col-xs-12 tab-navigation">
-                            <ul>
-                                <li><a className="tab block">Content</a></li>
-                                <li><a className="tab block">Settings</a></li>
-                            </ul>
-                        </nav>
+                        {this.renderTabs()}
                     </div>
                     <div className="row">
                         <div className="col-xs-12 content-container" >
@@ -64,7 +79,9 @@ var PageDetail = React.createClass ( {
 
 var mapStateToProps = function(state) {
   return {
-    pages:  state.pages
+    pages:  state.pages,
+    tab: 0,
+    tabs: []
   };
 };
 

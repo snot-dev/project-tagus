@@ -50691,9 +50691,9 @@ function symbolObservablePonyfill(root) {
 }.call(this));
 
 },{}],278:[function(require,module,exports){
-var constants = require('./constants');
+var constants = require('../constants');
 var $ = require('jquery');
-var lib = require('./tagus_lib');
+var lib = require('../tagus_lib');
 
 //actions
 var _fetchingPageList = function() {
@@ -50720,7 +50720,8 @@ var _fetchingPageDetail = function() {
 var _receivedPageDetail = function(page) {
     return {
         type: constants.RECEIVED_PAGEDETAIL,
-        page: page
+        page: page,
+        tabs: lib.buildTabs(page.unitType.tabs)
     }
 }
 
@@ -50766,7 +50767,7 @@ var _shouldGetPageDetail = function(state, id) {
 
 var getPageDetail = function(id) {
     return function(dispatch) {
-        dispatch(_fetchingPageDetail);
+        dispatch(_fetchingPageDetail());
 
         $.get('/api/pages/' + id, function(data) {
             //add Error handling
@@ -50781,7 +50782,7 @@ module.exports = {
     getPageDetailIfNeeded: _getPageDetailIfNeeded
 };
 
-},{"./constants":287,"./tagus_lib":290,"jquery":2}],279:[function(require,module,exports){
+},{"../constants":287,"../tagus_lib":290,"jquery":2}],279:[function(require,module,exports){
 var Redux = require('redux');
 var thunk = require('redux-thunk').default;
 var pageReducer = require('./reducers/pages');
@@ -50798,7 +50799,9 @@ var initialState = {
         list: [],
         detail: {},
         fetchingPageList: false,
-        fetchingPageDetail: false
+        fetchingPageDetail: false,
+        tabs: [],
+        tab: 0
     }
 };
 
@@ -50816,12 +50819,12 @@ module.exports = Redux.applyMiddleware(thunk, middleTest)(Redux.createStore)(roo
 var React = require('react');
 var Link = require('react-router').Link;
 var store = require('../../adminStore');
-var actions = require('../../adminActions');
+var pagesActions = require('../../actions/pagesActions');
 var ReactRedux = require('react-redux');
 
 var Content = React.createClass( {displayName: "Content",
     componentWillMount: function() {
-       store.dispatch(actions.getPageListIfNeeded());
+       store.dispatch(pagesActions.getPageListIfNeeded());
     },
     _buildPageList: function() {
         var that = this;
@@ -50895,16 +50898,36 @@ var mapStateToProps = function(state) {
 
 module.exports = ReactRedux.connect(mapStateToProps)(Content);
 
-},{"../../adminActions":278,"../../adminStore":279,"react":260,"react-redux":14,"react-router":55}],281:[function(require,module,exports){
+},{"../../actions/pagesActions":278,"../../adminStore":279,"react":260,"react-redux":14,"react-router":55}],281:[function(require,module,exports){
 var React = require('react');
 var RichTextEditor = require('react-quill');
 var store = require('../../../adminStore');
-var actions = require('../../../adminActions');
+var pagesActions = require('../../../actions/pagesActions');
 var ReactRedux = require('react-redux');
 
 var PageDetail = React.createClass ( {displayName: "PageDetail",
     componentWillMount: function() {
-       store.dispatch(actions.getPageDetailIfNeeded(this.props.params.id));
+       store.dispatch(pagesActions.getPageDetailIfNeeded(this.props.params.id));
+    },
+    renderTabs: function() {
+        console.log("here!");
+
+        return (
+            React.createElement("nav", {className: "col-xs-12 tab-navigation"}, 
+                    this.props.pages.tabs.length > 0
+                    ?   React.createElement("ul", null, 
+                            this.props.pages.tabs.map(function(tab, index) {
+                                return(
+                                    React.createElement("li", {key: index}, React.createElement("a", {className: "tab block"}, tab))
+                                )
+                            })
+                        )
+                    : null
+            )
+        );
+    },
+    displayTabContent: function() {
+
     },
     render: function() {
         console.log(this.props.pages);
@@ -50912,12 +50935,7 @@ var PageDetail = React.createClass ( {displayName: "PageDetail",
             React.createElement("div", {className: "col-xs-9"}, 
                 React.createElement("section", {className: "section content-page-detail"}, 
                     React.createElement("div", {className: "row"}, 
-                        React.createElement("nav", {className: "col-xs-12 tab-navigation"}, 
-                            React.createElement("ul", null, 
-                                React.createElement("li", null, React.createElement("a", {className: "tab block"}, "Content")), 
-                                React.createElement("li", null, React.createElement("a", {className: "tab block"}, "Settings"))
-                            )
-                        )
+                        this.renderTabs()
                     ), 
                     React.createElement("div", {className: "row"}, 
                         React.createElement("div", {className: "col-xs-12 content-container"}, 
@@ -50962,7 +50980,9 @@ var PageDetail = React.createClass ( {displayName: "PageDetail",
 
 var mapStateToProps = function(state) {
   return {
-    pages:  state.pages
+    pages:  state.pages,
+    tab: 0,
+    tabs: []
   };
 };
 
@@ -50976,7 +50996,7 @@ var mapStateToProps = function(state) {
 
 module.exports = ReactRedux.connect(mapStateToProps)(PageDetail);
 
-},{"../../../adminActions":278,"../../../adminStore":279,"react":260,"react-quill":9,"react-redux":14}],282:[function(require,module,exports){
+},{"../../../actions/pagesActions":278,"../../../adminStore":279,"react":260,"react-quill":9,"react-redux":14}],282:[function(require,module,exports){
 var React = require('react');
 
 var Dashboard = React.createClass( {displayName: "Dashboard",
@@ -51140,6 +51160,7 @@ module.exports = function(state, action) {
             {
                 newState.fetchingPageDetail = false;
                 newState.detail = action.page;
+                newState.tabs = action.tabs;
                 return newState;
             }
         default:
@@ -51198,6 +51219,17 @@ var _loadContentTree = function(list) {
     return treeList;
 };
 
+var _buildTabs = function(tabList) {
+    var tabs = [];
+    
+    tabList.forEach(function(tab) {
+        tabs.push(tab.name);
+    });
+
+    tabs.push("Settings");
+
+    return tabs;
+};
 
 var _renderFieldType = function(type) {
     return _fields(type);
@@ -51274,6 +51306,7 @@ var _fields = {
 
 module.exports = {
     loadContentTree: _loadContentTree,
+    buildTabs: _buildTabs,
     renderFieldType: _renderFieldType
 };
 

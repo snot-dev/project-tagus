@@ -1,6 +1,6 @@
-var constants = require('./constants');
+var constants = require('../constants');
 var $ = require('jquery');
-var lib = require('./tagus_lib');
+var lib = require('../tagus_lib');
 
 //actions
 var _fetchingPageList = function() {
@@ -27,7 +27,8 @@ var _fetchingPageDetail = function() {
 var _receivedPageDetail = function(page) {
     return {
         type: constants.RECEIVED_PAGEDETAIL,
-        page: page
+        page: page,
+        tabs: lib.buildTabs(page.unitType.tabs)
     }
 }
 
@@ -73,7 +74,7 @@ var _shouldGetPageDetail = function(state, id) {
 
 var getPageDetail = function(id) {
     return function(dispatch) {
-        dispatch(_fetchingPageDetail);
+        dispatch(_fetchingPageDetail());
 
         $.get('/api/pages/' + id, function(data) {
             //add Error handling

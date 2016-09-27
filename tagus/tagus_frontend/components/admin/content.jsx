@@ -1,12 +1,12 @@
 var React = require('react');
 var Link = require('react-router').Link;
 var store = require('../../adminStore');
-var actions = require('../../adminActions');
+var pagesActions = require('../../actions/pagesActions');
 var ReactRedux = require('react-redux');
 
 var Content = React.createClass( {
     componentWillMount: function() {
-       store.dispatch(actions.getPageListIfNeeded());
+       store.dispatch(pagesActions.getPageListIfNeeded());
     },
     _buildPageList: function() {
         var that = this;

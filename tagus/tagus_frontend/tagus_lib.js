@@ -22,6 +22,17 @@ var _loadContentTree = function(list) {
     return treeList;
 };
 
+var _buildTabs = function(tabList) {
+    var tabs = [];
+    
+    tabList.forEach(function(tab) {
+        tabs.push(tab.name);
+    });
+
+    tabs.push("Settings");
+
+    return tabs;
+};
 
 var _renderFieldType = function(type) {
     return _fields(type);
@@ -98,5 +109,6 @@ var _fields = {
 
 module.exports = {
     loadContentTree: _loadContentTree,
+    buildTabs: _buildTabs,
     renderFieldType: _renderFieldType
 };
