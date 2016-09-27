@@ -4,6 +4,8 @@
 
 @include buttons();
 
+@include loader();
+
 @include admin-top-bar($bridgeRed,$lightBlue2); //$bcolor, $aColor
 
 @include admin-side-bar ($lightGray, $white ,$lightBlue2, $darkBlue3,$lightBlue2, $darkGray); //$color, $aColor, $hColor, $bColor, $baColor, $bhColor

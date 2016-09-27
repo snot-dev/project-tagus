@@ -212,6 +212,14 @@ html, body {
   .button {
     width: 150px;
     min-width: 150px; } }
+.loader {
+  text-align: center;
+  background-image: url("/assets/images/loader.gif");
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 64px;
+  width: 100%; }
+
 #admin-top-bar {
   width: 100%;
   position: fixed;

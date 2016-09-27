@@ -6,12 +6,12 @@ module.exports = function( state, action ) {
 
   switch( action.type ) {
     case constants.GET_PAGES: {
-      newState.fetching = false;
+      newState.isFetching = false;
       newState.list = action.pages;
       return newState;
     }
     case constants.GETTING_PAGES: {
-      newState.fetching = true;
+      newState.isFetching = true;
       return newState;
     }
     default:

@@ -48,14 +48,22 @@ var Content = React.createClass( {
         );
     }, 
     render: function() {
+        console.log(this.props);
         return (
         <div id="admin-content-container" className="container-fluid">
             <div className="row">
                 <div className="col-xs-3">
                     <section className="section content-page-list">
                         <h2 className="title">Content</h2>
-                            {this._buildPageList()}
-                    </section>
+                        {this.props.pages.isFetching ? 
+                            <div className="loader"></div>
+                        :  
+                            <div>
+                                {this._buildPageList()}
+                            </div>
+                        }
+                    </section>     
+                    
                 </div>
                 {this.props.children}
             </div>
@@ -66,9 +74,7 @@ var Content = React.createClass( {
 
 var mapStateToProps = function(state) {
   return {
-    pages:  state.pages,
-    isFetching: false,
-    received: false
+    pages:  state.pages
   };
 };
 

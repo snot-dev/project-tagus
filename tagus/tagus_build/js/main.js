@@ -50661,63 +50661,62 @@ var $ = require('jquery');
 
 //actions
 var receivedPages = function(pages) {
-  var list = _loadContentTree(pages);
+    var list = _loadContentTree(pages);
 
-  return {
-    type: constants.GET_PAGES,
-    pages: list
-  };
+    return {
+        type: constants.GET_PAGES,
+        pages: list
+    };
 };
 
 var gettingPages = function() {
-  return {
-    type: constants.GETTING_PAGES
-  }
+    return {
+        type: constants.GETTING_PAGES
+    }
 };
 
 
 //actions creators
 var getPagesIfNeeded = function() {
-  return function(dispatch, getState) {
-    if(shouldGetPages(getState())) {
-      dispatch(getPages());
+    return function(dispatch, getState) {
+        if (shouldGetPages(getState())) {
+            dispatch(getPages());
+        }
     }
-  }
 };
 
 var shouldGetPages = function(state) {
-  //TODO: add more debug code
-  return state.pages.list.length === 0
+    //TODO: add more debug code
+    return state.pages.list.length === 0;
 };
 
 var getPages = function() {
-  return function(dispatch) {
-    dispatch(gettingPages());
+    return function(dispatch) {
+        dispatch(gettingPages());
 
-    $.get('/api/pages?contenttree=true', function(data){
-      dispatch(receivedPages(data));
-    });
-  }
+        $.get('/api/pages?contenttree=true', function(data) {
+            dispatch(receivedPages(data));
+        });
+    }
 };
 
 var _loadContentTree = function(list) {
-    if(!list) {
+    if (!list) {
         //error
     }
 
     var lookoutList = {},
         treeList = [];
 
-    list.forEach(function(item){
+    list.forEach(function(item) {
         lookoutList[item._id] = item;
         item.children = [];
-    }) ;
+    });
 
-    list.forEach(function(item){
-        if(item.parent) {
+    list.forEach(function(item) {
+        if (item.parent) {
             lookoutList[item.parent].children.push(item);
-        }
-        else {
+        } else {
             treeList.push(item);
         }
     });
@@ -50726,8 +50725,9 @@ var _loadContentTree = function(list) {
 };
 
 module.exports = {
-  getPagesIfNeeded : getPagesIfNeeded
+    getPagesIfNeeded: getPagesIfNeeded
 };
+
 },{"./constants":283,"jquery":23}],275:[function(require,module,exports){
 var Redux = require('redux');
 var thunk = require('redux-thunk').default;
@@ -50807,14 +50807,22 @@ var Content = React.createClass( {displayName: "Content",
         );
     }, 
     render: function() {
+        console.log(this.props);
         return (
         React.createElement("div", {id: "admin-content-container", className: "container-fluid"}, 
             React.createElement("div", {className: "row"}, 
                 React.createElement("div", {className: "col-xs-3"}, 
                     React.createElement("section", {className: "section content-page-list"}, 
                         React.createElement("h2", {className: "title"}, "Content"), 
-                            this._buildPageList()
+                        this.props.pages.isFetching ? 
+                            React.createElement("div", {className: "loader"})
+                        :  
+                            React.createElement("div", null, 
+                                this._buildPageList()
+                            )
+                        
                     )
+                    
                 ), 
                 this.props.children
             )
@@ -50825,9 +50833,7 @@ var Content = React.createClass( {displayName: "Content",
 
 var mapStateToProps = function(state) {
   return {
-    pages:  state.pages,
-    isFetching: false,
-    received: false
+    pages:  state.pages
   };
 };
 
@@ -51051,12 +51057,12 @@ module.exports = function( state, action ) {
 
   switch( action.type ) {
     case constants.GET_PAGES: {
-      newState.fetching = false;
+      newState.isFetching = false;
       newState.list = action.pages;
       return newState;
     }
     case constants.GETTING_PAGES: {
-      newState.fetching = true;
+      newState.isFetching = true;
       return newState;
     }
     default:
