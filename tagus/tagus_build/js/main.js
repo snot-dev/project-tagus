@@ -50687,7 +50687,6 @@ var getPagesIfNeeded = function() {
 
 var shouldGetPages = function(state) {
   //TODO: add more debug code
-  console.log(state);
   return state.pages.list.length === 0
 };
 
@@ -50767,35 +50766,56 @@ var ReactRedux = require('react-redux');
 var Content = React.createClass( {displayName: "Content",
     componentWillMount: function() {
        store.dispatch(actions.getPagesIfNeeded());
-    },  
-    _buildChildTree: function _buildChild(item, index) {
-       
     },
-    render: function() {
+    _buildPageList: function() {
         var that = this;
-        var buildTree = function build(item, index) {
-            return(
-                React.createElement("li", {className: "page item", key: index}, 
-                   "hello"
-                )
-            );
-        };
+         return (
+            React.createElement("ul", {id: "page-list", className: "list"}, 
+                that.props.pages.list && that.props.pages.list.length > 0 
+                ?   that.props.pages.list.map(function(page, index) {
+                        return (
+                            React.createElement("li", {className: "page item", key: index}, 
+                                React.createElement("a", {className: "link"}, React.createElement("i", {className: "fa fa-file", "aria-hidden": "true"}), page.name), 
+                                    page.children.length > 0 ?
+                                        that._childList(page)
+                                    : null
+                                    
+                            )
+                        );
+                    }) 
+                :  null
+                
+            )
+        );
+    },
+    _childList: function(item) {
+        var that = this;
+        return (
+            React.createElement("ul", {className: "child-list"}, 
+                 item.children.length > 0 
+                ?   item.children.map(function(child, index) {
+                        return(
+                            React.createElement("li", {className: "page item", key: index}, 
+                                React.createElement("a", {className: "link"}, React.createElement("i", {className: "fa fa-file", "aria-hidden": "true"}), child.name), 
+                                that._childList(child)
+                            )
+                        );
+                    }) 
+                :  null
+                
+            )
+        );
+    }, 
+    render: function() {
         return (
         React.createElement("div", {id: "admin-content-container", className: "container-fluid"}, 
             React.createElement("div", {className: "row"}, 
                 React.createElement("div", {className: "col-xs-3"}, 
                     React.createElement("section", {className: "section content-page-list"}, 
                         React.createElement("h2", {className: "title"}, "Content"), 
-                        this.props.pages.list && this.props.pages.list.length > 0 ? 
-                            React.createElement("ul", {id: "page-list", className: "list"}, 
-                            this.props.pages.list.map(function(item, index) {
-                                {buildTree(item, index)}
-                            })
-                            )
-                        :null
+                            this._buildPageList()
                     )
                 ), 
-
                 this.props.children
             )
         )
@@ -51031,7 +51051,6 @@ module.exports = function( state, action ) {
 
   switch( action.type ) {
     case constants.GET_PAGES: {
-      console.log(action);
       newState.fetching = false;
       newState.list = action.pages;
       return newState;

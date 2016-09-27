@@ -29,7 +29,6 @@ var getPagesIfNeeded = function() {
 
 var shouldGetPages = function(state) {
   //TODO: add more debug code
-  console.log(state);
   return state.pages.list.length === 0
 };
 
