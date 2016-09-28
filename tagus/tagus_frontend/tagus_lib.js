@@ -45,7 +45,7 @@ var _renderFieldType = function(options) {
 var _fields = {
     "text": function(options) {
         return (
-            <input type="text" className="form-field" name={options.name} />
+            <input type="text" className="form-field" defaultValue={options.value} name={options.name} />
         );
     },
     "textarea": function(options) {

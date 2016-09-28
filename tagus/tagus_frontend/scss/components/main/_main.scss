@@ -43,23 +43,6 @@
         .spacing {
             margin-right: $spacing;
         }
-        .tab-navigation {
-            border-bottom: 2px solid $borderColor;
-            width: 100%;
-            li {
-                display: inline-block;
-                margin-bottom: 0;
-                border-right: 2px solid $borderColor;
-                &:last-child {
-                    border-right: none;
-                }
-            }
-            .tab {
-                padding: $spacing $column;
-                display: block;
-                @include font-size(16px);
-            }
-        }
         .list {
             .item {
                 a {

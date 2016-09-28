@@ -1,0 +1,29 @@
+@mixin reactTabs ($aColor, $bColor, $borderColor) {
+        .tab-navigation {
+            border-bottom: 2px solid $borderColor;
+            width: 100%;
+            li {
+                display: inline-block;
+                margin-bottom: 0;
+                border-right: 2px solid $borderColor;
+                &:last-child {
+                    border-right: none;
+                }
+
+                &.ReactTabs__Tab--selected {
+                    .tab {
+                        background: $bColor;
+                        color: $aColor;
+                    }
+                }
+
+                
+                .tab {
+                    padding: $spacing $column;
+                    display: block;
+                    font-size: 16px;
+                    line-height: 22px;
+                }
+            }
+        }
+}

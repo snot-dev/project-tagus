@@ -51,7 +51,7 @@ var PageDetail = React.createClass ( {
     },
     render: function() {
         var that = this;
-        console.log(this.props);
+
         return (
             <div className="col-xs-9">
                 <section className="section content-page-detail">
@@ -72,9 +72,6 @@ var PageDetail = React.createClass ( {
                         </Tabs>
                     :  null
                     }
-                    
-                       
-               
                     </div>
                 </section>
             </div>

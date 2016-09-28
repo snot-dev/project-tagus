@@ -15,8 +15,7 @@ var initialState = {
         detail: {},
         fetchingPageList: false,
         fetchingPageDetail: false,
-        tabs: [],
-        tab: 0
+        tabs: []
     }
 };
 

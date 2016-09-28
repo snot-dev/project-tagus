@@ -43,24 +43,6 @@ body {
   html .spacing,
   body .spacing {
     margin-right: 15px; }
-  html .tab-navigation,
-  body .tab-navigation {
-    border-bottom: 2px solid #89949B;
-    width: 100%; }
-    html .tab-navigation li,
-    body .tab-navigation li {
-      display: inline-block;
-      margin-bottom: 0;
-      border-right: 2px solid #89949B; }
-      html .tab-navigation li:last-child,
-      body .tab-navigation li:last-child {
-        border-right: none; }
-    html .tab-navigation .tab,
-    body .tab-navigation .tab {
-      padding: 15px 60px;
-      display: block;
-      font-size: 16px;
-      line-height: 18px; }
   html .list .item a,
   body .list .item a {
     display: block;
@@ -240,8 +222,29 @@ body {
   background-image: url("/assets/images/loader.gif");
   background-repeat: no-repeat;
   background-position: center;
-  height: 64px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0; }
+
+.tab-navigation {
+  border-bottom: 2px solid #89949B;
   width: 100%; }
+  .tab-navigation li {
+    display: inline-block;
+    margin-bottom: 0;
+    border-right: 2px solid #89949B; }
+    .tab-navigation li:last-child {
+      border-right: none; }
+    .tab-navigation li.ReactTabs__Tab--selected .tab {
+      background: #a61d30;
+      color: #ffffff; }
+    .tab-navigation li .tab {
+      padding: 15px 60px;
+      display: block;
+      font-size: 16px;
+      line-height: 22px; }
 
 #admin-top-bar {
   width: 100%;
@@ -309,7 +312,7 @@ body {
         overflow-y: auto;
         border-radius: 5px; }
         #admin-main-container #admin-content-container .section .title {
-          padding: 5px 15px;
+          padding: 15px;
           color: #ffffff;
           background-color: #a61d30;
           margin: 0;
@@ -319,7 +322,8 @@ body {
           border-top-right-radius: 5px;
           margin-bottom: 30px;
           margin-left: -15px;
-          margin-right: -15px; } }
+          margin-right: -15px;
+          border-bottom: 2px solid #89949B; } }
 .content-container {
   color: #333333;
   background-color: transparent;
