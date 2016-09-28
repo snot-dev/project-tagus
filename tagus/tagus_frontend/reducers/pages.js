@@ -28,6 +28,11 @@ module.exports = function(state, action) {
                 newState.tabs = action.tabs;
                 return newState;
             }
+        case constants.CHANGE_TAB:
+            {
+                newState.tab = action.tab;
+                return newState;
+            }
         default:
             return state || {};
     }

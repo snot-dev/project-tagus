@@ -1,3 +1,5 @@
+var React = require('react');
+
 var _loadContentTree = function(list) {
     if (!list) {
         //error
@@ -34,8 +36,9 @@ var _buildTabs = function(tabList) {
     return tabs;
 };
 
-var _renderFieldType = function(type) {
-    return _fields(type);
+var _renderFieldType = function(options) {
+    console.log("here!");
+    return _fields[options.type](options);
 }
 
 

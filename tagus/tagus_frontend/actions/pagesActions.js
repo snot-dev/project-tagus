@@ -32,6 +32,14 @@ var _receivedPageDetail = function(page) {
     }
 }
 
+var _changeTab = function(tab) {
+    console.log(tab);
+    return {
+        type: constants.CHANGE_TAB,
+        tab: tab
+    }
+}
+
 //actions creators
 var _getPageListIfNeeded = function() {
     return function(dispatch, getState) {
@@ -61,7 +69,7 @@ var _getPageList = function() {
 var _getPageDetailIfNeeded = function(id) {
     return function(dispatch, getState) {
         if (_shouldGetPageDetail(getState(), id)) {
-            dispatch(getPageDetail(id));
+            dispatch(_getPageDetail(id));
         }
     }
 }
@@ -72,7 +80,7 @@ var _shouldGetPageDetail = function(state, id) {
     return !state.pages.detail.id || state.pages.detail.id !== id;
 };
 
-var getPageDetail = function(id) {
+var _getPageDetail = function(id) {
     return function(dispatch) {
         dispatch(_fetchingPageDetail());
 
@@ -82,6 +90,16 @@ var getPageDetail = function(id) {
             dispatch(_receivedPageDetail(data))
         });
     }
+};
+
+var _changeSelectedTab = function(tab, name) {
+    return function(dispatch, getState) {
+        console.log("toasty");
+        console.log(getState());
+        if (getState().tab !== tab) {
+            dispatch(_changeTab(tab));
+        }
+    };
 };
 
 module.exports = {

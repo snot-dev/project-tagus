@@ -1,60 +1,83 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans);
-html, body {
+html,
+body {
   padding: 0;
   margin: 0;
   background-color: #ecf0f5; }
-  html *, body * {
+  html *,
+  body * {
     font-family: 'Open Sans', sans-serif; }
-  html ul, body ul {
+  html ul,
+  body ul {
     padding: 0;
     margin: 0;
     list-style: none; }
-    html ul li, body ul li {
+    html ul li,
+    body ul li {
       margin-bottom: 15px; }
-  html a, body a {
+  html a,
+  body a {
     color: #333333; }
-    html a:hover, body a:hover {
+    html a:hover,
+    body a:hover {
       text-decoration: none;
       color: #333333; }
-    html a.block, body a.block {
+    html a:focus,
+    body a:focus {
+      outline: 0;
+      text-decoration: none; }
+    html a.block,
+    body a.block {
       display: block;
       transition: all 0.25s; }
-      html a.block:hover, body a.block:hover {
+      html a.block:hover,
+      body a.block:hover {
         background-color: #263238;
         color: #26a69a;
         cursor: pointer; }
-      html a.block.active, body a.block.active {
+      html a.block.active,
+      body a.block.active {
         background-color: #26a69a;
         color: #a61d30;
         text-decoration: none; }
-  html .spacing, body .spacing {
+  html .spacing,
+  body .spacing {
     margin-right: 15px; }
-  html .tab-navigation ul, body .tab-navigation ul {
-    border-bottom: 2px solid #89949B; }
-    html .tab-navigation ul li, body .tab-navigation ul li {
+  html .tab-navigation,
+  body .tab-navigation {
+    border-bottom: 2px solid #89949B;
+    width: 100%; }
+    html .tab-navigation li,
+    body .tab-navigation li {
       display: inline-block;
       margin-bottom: 0;
       border-right: 2px solid #89949B; }
-      html .tab-navigation ul li:last-child, body .tab-navigation ul li:last-child {
+      html .tab-navigation li:last-child,
+      body .tab-navigation li:last-child {
         border-right: none; }
-    html .tab-navigation ul .tab, body .tab-navigation ul .tab {
+    html .tab-navigation .tab,
+    body .tab-navigation .tab {
       padding: 15px 60px;
       display: block;
       font-size: 16px;
       line-height: 18px; }
-  html .list .item a, body .list .item a {
+  html .list .item a,
+  body .list .item a {
     display: block;
     width: 100%;
     padding: 5px; }
-    html .list .item a:hover, body .list .item a:hover {
+    html .list .item a:hover,
+    body .list .item a:hover {
       color: #26a69a;
       cursor: pointer; }
-    html .list .item a.active, body .list .item a.active {
+    html .list .item a.active,
+    body .list .item a.active {
       color: #a61d30;
       font-weight: bold; }
 
 @media (min-width: 480px) {
-  html, body {
+  html,
+  body {
     background-color: #ecf0f5; } }
 .form-field {
   font-size: 14px;
