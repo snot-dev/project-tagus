@@ -1,4 +1,5 @@
 var React = require('react');
+var dateFormat = require('dateformat');
 
 var _loadContentTree = function(list) {
     if (!list) {
@@ -37,7 +38,6 @@ var _buildTabs = function(tabList) {
 };
 
 var _renderFieldType = function(options) {
-    console.log("here!");
     return _fields[options.type](options);
 }
 
@@ -110,8 +110,30 @@ var _fields = {
     }
 };
 
+var _renderSettings = function(page) {
+    return (
+        <div>
+            <label htmlFor="name" className="form-label">Name</label>
+            <input type="text" name="name" className="form-field" defaultValue={page.name} />
+            <label htmlFor="url" className="form-label">Url</label>
+            <input type="text" name="url" className="form-field" defaultValue={page.url} />
+            <label className="form-label">Unit Type</label>
+            <p>{page.unitType.name}</p>
+            <label className="form-label">Created</label>
+            <p>{dateFormat(page.created, "dddd, mmmm dS, yyyy, h:MM TT")}</p>
+            <label className="form-label">Created By</label>
+            <p>{page.createdBy}</p>
+            <label className="form-label">Edited</label>
+            <p>{dateFormat(page.edited, "dddd, mmmm dS, yyyy, h:MM TT")}</p>
+            
+
+        </div>
+    );
+}
+
 module.exports = {
     loadContentTree: _loadContentTree,
     buildTabs: _buildTabs,
-    renderFieldType: _renderFieldType
+    renderFieldType: _renderFieldType,
+    renderSettingsTab: _renderSettings
 };

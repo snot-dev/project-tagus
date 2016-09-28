@@ -8,6 +8,7 @@ var Tabs = require('react-tabs').Tabs;
 var TabList = require('react-tabs').TabList;
 var TabPanel = require('react-tabs').TabPanel;
 var renderField = require('../../../tagus_lib').renderFieldType;
+var renderSettingsTab = require('../../../tagus_lib').renderSettingsTab;
 
 var PageDetail = React.createClass ( {
     componentWillMount: function() {
@@ -29,9 +30,9 @@ var PageDetail = React.createClass ( {
     renderSettings: function() {
        return (
            <TabPanel>
-                <section className="col-xs-12 content-container" >
-                    Settings
-                </section>
+           <section className="col-xs-12 content-container">
+                {renderSettingsTab(this.props.pages.detail)}
+           </section>
            </TabPanel>
        )
     },
