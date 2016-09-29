@@ -33,6 +33,16 @@ module.exports = function(state, action) {
                 newState.tab = action.tab;
                 return newState;
             }
+        case constants.TAB_FIELD_CHANGED_VALUE:
+            {
+                newState.detail.unitType.tabs[action.tab].unitFields[action.field].value = action.value;
+                return newState;
+            }
+        case constants.SETTINGS_FIELD_CHANGED_VALUE:
+            {
+                newState.detail[action.field.name] = action.field.value;
+                return newState;
+            }
         default:
             return state || {};
     }

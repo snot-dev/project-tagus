@@ -1,5 +1,6 @@
 var React = require('react');
 var dateFormat = require('dateformat');
+var RichTextEditor = require('react-quill');
 
 var _loadContentTree = function(list) {
     if (!list) {
@@ -25,6 +26,8 @@ var _loadContentTree = function(list) {
     return treeList;
 };
 
+
+
 var _buildTabs = function(tabList) {
     var tabs = [];
     
@@ -37,26 +40,26 @@ var _buildTabs = function(tabList) {
     return tabs;
 };
 
-var _renderFieldType = function(options) {
-    return _fields[options.type](options);
+var _renderFieldType = function(index, options, blurHandler, tabIndex) {
+    return _fields[options.type](index, options, blurHandler, tabIndex);
 }
 
 
 var _fields = {
-    "text": function(options) {
+    "text": function(index, options, blurHandler, tabIndex) {
         return (
-            <input type="text" className="form-field" defaultValue={options.value} name={options.name} />
+            <input type="text" className="form-field" onBlur={blurHandler()} defaultValue={options.value} name={options.name} />
         );
     },
-    "textarea": function(options) {
+    "textarea": function(index, options, blurHandler, tabIndex) {
         return (
-            <textarea className="form-field textarea" name={options.name} ></textarea>
+            <textarea className="form-field textarea" onBlur={blurHandler()} defaultValue={options.value}  name={options.name} ></textarea>
         );
     },
-    "richText": function(options) {
+    "richText": function(index, options, blurHandler, tabIndex) {
         return (
             <div className="richtext-container">
-                <RichTextEditor  theme="snow" name={options.name}/>
+                <RichTextEditor  theme="snow" onChange={blurHandler()} defaultValue={options.value}  name={options.name}/>
             </div>
         );
     },
@@ -110,13 +113,13 @@ var _fields = {
     }
 };
 
-var _renderSettings = function(page) {
+var _renderSettings = function(page, blurHandler) {
     return (
         <div>
             <label htmlFor="name" className="form-label">Name</label>
-            <input type="text" name="name" className="form-field" defaultValue={page.name} />
+            <input type="text" name="name" onBlur={blurHandler()} className="form-field" defaultValue={page.name} />
             <label htmlFor="url" className="form-label">Url</label>
-            <input type="text" name="url" className="form-field" defaultValue={page.url} />
+            <input type="text" name="url" onBlur={blurHandler()} className="form-field" defaultValue={page.url} />
             <label className="form-label">Unit Type</label>
             <p>{page.unitType.name}</p>
             <label className="form-label">Created</label>

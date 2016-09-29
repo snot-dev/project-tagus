@@ -32,6 +32,21 @@ var _receivedPageDetail = function(page) {
     }
 }
 
+var _tabFieldChanged = function(tab, field, value) {
+    return {
+        type: constants.TAB_FIELD_CHANGED_VALUE,
+        tab: tab,
+        field: field,
+        value: value
+    }
+}
+
+var _settingsFieldChanged = function(field) {
+    return {
+        type: constants.SETTINGS_FIELD_CHANGED_VALUE,
+        field: field
+    };
+}
 
 //actions creators
 var _getPageListIfNeeded = function() {
@@ -85,8 +100,21 @@ var _getPageDetail = function(id) {
     }
 };
 
+var _changedTabFieldValue = function(tab, field, value) {
+    return function(dispatch, getState) {
+        dispatch(_tabFieldChanged(tab, field, value));
+    }
+}
+
+var _changedSettingsFieldValue = function(field) {
+    return function(dispatch, getState) {
+        //dispatch(_changed)
+    }
+}
 
 module.exports = {
     getPageListIfNeeded: _getPageListIfNeeded,
-    getPageDetailIfNeeded: _getPageDetailIfNeeded
+    getPageDetailIfNeeded: _getPageDetailIfNeeded,
+    changedTabFieldValue: _changedTabFieldValue,
+    changedSettingsFieldValue: _changedSettingsFieldValue
 };

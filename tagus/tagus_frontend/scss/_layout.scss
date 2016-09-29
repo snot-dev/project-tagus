@@ -10,7 +10,7 @@
 
 @include admin-top-bar($bridgeRed,$lightBlue2); //$bcolor, $aColor
 
-@include admin-side-bar ($lightGray, $white ,$lightBlue2, $darkBlue3,$lightBlue2, $darkGray); //$color, $aColor, $hColor, $bColor, $baColor, $bhColor
+@include admin-side-bar ($lightGray, $white ,$lightBlue2, $darkBlue3,$bridgeRed, $darkGray); //$color, $aColor, $hColor, $bColor, $baColor, $bhColor
 
 @include admin-main-container($black, $white, $lightGray); //$color, $bcolor, $borderColor
 
