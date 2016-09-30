@@ -51866,7 +51866,7 @@ var _changedTabFieldValue = function(tab, field, value) {
 
 var _changedSettingsFieldValue = function(field) {
     return function(dispatch, getState) {
-        //dispatch(_changed)
+        dispatch(_settingsFieldChanged(field));
     }
 }
 
@@ -52087,8 +52087,11 @@ var PageDetail = React.createClass ( {displayName: "PageDetail",
                         )
                     :  null
                     
+                    ), 
+                    React.createElement("div", {className: "col-xs-12 buttons-container"}, 
+                        React.createElement("button", {className: "button"}, " Cancel"), 
+                        React.createElement("button", {className: "button submit pull-right"}, "Save")
                     )
-
                 )
             )
         )

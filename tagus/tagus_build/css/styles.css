@@ -327,7 +327,7 @@ body {
 .content-container {
   color: #333333;
   background-color: transparent;
-  padding: 30px 15px; }
+  padding: 30px 15px 120px; }
 
 /*! Quill Editor v0.20.1
  *  https://quilljs.com/
@@ -1255,5 +1255,11 @@ body {
     display: none; }
   #page-list .page .link:hover .options {
     display: block; }
+
+#content-page-detail {
+  position: relative; }
+  #content-page-detail .buttons-container {
+    position: absolute;
+    bottom: 0; }
 
 /*# sourceMappingURL=styles.css.map */

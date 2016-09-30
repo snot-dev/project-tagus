@@ -108,7 +108,7 @@ var _changedTabFieldValue = function(tab, field, value) {
 
 var _changedSettingsFieldValue = function(field) {
     return function(dispatch, getState) {
-        //dispatch(_changed)
+        dispatch(_settingsFieldChanged(field));
     }
 }
 

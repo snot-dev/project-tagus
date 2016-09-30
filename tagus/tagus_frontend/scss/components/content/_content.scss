@@ -2,7 +2,7 @@
   .content-container {
     color: $color;
     background-color: $bColor;
-    padding: $gutter $spacing;
+    padding: $gutter $spacing $column*2;
 
   }
 }

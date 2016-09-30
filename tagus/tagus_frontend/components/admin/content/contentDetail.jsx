@@ -89,7 +89,10 @@ var PageDetail = React.createClass ( {
                     :  null
                     }
                     </div>
-
+                    <div className="col-xs-12 buttons-container">
+                        <button className="button"> Cancel</button>
+                        <button className="button submit pull-right">Save</button>
+                    </div>
                 </section>
             </div>
         )
