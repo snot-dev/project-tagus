@@ -14,6 +14,6 @@
 
 @include admin-main-container($black, $white, $lightGray); //$color, $bcolor, $borderColor
 
-@include content($darkGray);
+@include content($darkGray, $white);
 
 @include quill();

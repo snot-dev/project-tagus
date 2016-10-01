@@ -1,7 +1,18 @@
 @mixin reactTabs ($aColor, $bColor, $borderColor) {
+        .ReactTabs  {
+            height: 100%;
+            margin-bottom: -$column;
+            padding-top: $column;
+            position: relative;
+        }
+
         .tab-navigation {
             border-bottom: 2px solid $borderColor;
-            width: 100%;
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+
             li {
                 display: inline-block;
                 margin-bottom: 0;

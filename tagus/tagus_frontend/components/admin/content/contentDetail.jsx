@@ -29,9 +29,9 @@ var PageDetail = React.createClass ( {
     renderSettings: function(blurHandler) {
        return (
            <TabPanel>
-           <section className="col-xs-12 content-container">
-                {renderSettingsTab(this.props.pages.detail, blurHandler)}
-           </section>
+            <section className="col-xs-12 content-container">
+                    {renderSettingsTab(this.props.pages.detail, blurHandler)}
+            </section>
            </TabPanel>
        )
     },
@@ -55,13 +55,12 @@ var PageDetail = React.createClass ( {
         return function() {
             return function(e) {
                 var value = e.target ? e.target.value : e;
-                store.dispatch(pagesActions.changedFieldValue(tab, field, value));
+                store.dispatch(pagesActions.changedTabFieldValue(tab, field, value));
             }.bind(this);
         }
     },
     handleSettingsBlur: function() {
         return function(e) {
-                console.log(e.target);
                 store.dispatch(pagesActions.changedSettingsFieldValue(e.target));
             }.bind(this);
     },
@@ -70,7 +69,7 @@ var PageDetail = React.createClass ( {
 
         return (
             <div className="col-xs-9">
-                <section className="section content-page-detail">
+                <section id="content-page-detail" className="section">
                     <div className="row">
                     {this.props.pages.fetchingPageDetail 
                     ?   <div className="loader"></div> 
@@ -89,10 +88,15 @@ var PageDetail = React.createClass ( {
                     :  null
                     }
                     </div>
-                    <div className="col-xs-12 buttons-container">
-                        <button className="button"> Cancel</button>
-                        <button className="button submit pull-right">Save</button>
-                    </div>
+                    {!this.props.pages.fetchingPageDetail 
+                    ?   <div className="row">
+                            <div className="col-xs-12 buttons-container">
+                                <button className="button"> Cancel</button>
+                                <button className="button submit pull-right">Save</button>
+                            </div>
+                        </div>
+                    :   null
+                    }
                 </section>
             </div>
         )
