@@ -64,6 +64,12 @@ var PageDetail = React.createClass ( {
                 store.dispatch(pagesActions.changedSettingsFieldValue(e.target));
             }.bind(this);
     },
+    savePage: function() {
+        store.dispatch(pagesActions.savePageDetail(this.props.pages.detail));
+    },
+    resetPage: function() {
+        store.dispatch(pagesActions.resetPageDetail(this.props.pages.detail._id));
+    },
     render: function() {
         var that = this;
 
@@ -71,7 +77,7 @@ var PageDetail = React.createClass ( {
             <div className="col-xs-9">
                 <section id="content-page-detail" className="section">
                     <div className="row">
-                    {this.props.pages.fetchingPageDetail 
+                    {this.props.showLoader
                     ?   <div className="loader"></div> 
                     :   this.props.pages.tabs.length > 0 
                     ?    <Tabs>
@@ -88,11 +94,11 @@ var PageDetail = React.createClass ( {
                     :  null
                     }
                     </div>
-                    {!this.props.pages.fetchingPageDetail 
+                    {!this.props.pages.fetchingPageDetail && !this.props.pages.savingPageDetail
                     ?   <div className="row">
                             <div className="col-xs-12 buttons-container">
-                                <button className="button"> Cancel</button>
-                                <button className="button submit pull-right">Save</button>
+                                <button className="button" onClick={this.resetPage}> Cancel</button>
+                                <button className="button submit pull-right" onClick={this.savePage}>Save</button>
                             </div>
                         </div>
                     :   null
@@ -106,7 +112,8 @@ var PageDetail = React.createClass ( {
 
 var mapStateToProps = function(state) {
   return {
-    pages:  state.pages
+    pages:  state.pages,
+    showLoader: state.pages.fetchingPageDetail || state.pages.savingPageDetail
   };
 };
 

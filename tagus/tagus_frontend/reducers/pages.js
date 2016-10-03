@@ -43,6 +43,17 @@ module.exports = function(state, action) {
                 newState.detail[action.field.name] = action.field.value;
                 return newState;
             }
+        case constants.SAVING_PAGEDETAIL: {
+            newState.savingPageDetail = true;
+            return newState;
+        }
+        case constants.SAVED_PAGEDETAIL: {
+            newState.savingPageDetail = false;
+            newState.detail = action.pageDetail;
+            newState.list = action.pageList;
+
+            return newState;
+        }
         default:
             return state || {};
     }

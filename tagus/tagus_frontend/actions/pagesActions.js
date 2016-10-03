@@ -48,6 +48,22 @@ var _settingsFieldChanged = function(field) {
     };
 }
 
+var _savingPageDetail = function() {
+    return {
+        type: constants.SAVING_PAGEDETAIL
+    }
+};
+
+var _savedPage = function(pageDetail, pageList) {
+    var list = lib.loadContentTree(pageList);
+
+    return {
+        type: constants.SAVED_PAGEDETAIL,
+        pageDetail: pageDetail,
+        pageList: list
+    }
+}
+
 //actions creators
 var _getPageListIfNeeded = function() {
     return function(dispatch, getState) {
@@ -84,7 +100,7 @@ var _getPageDetailIfNeeded = function(id) {
 
 var _shouldGetPageDetail = function(state, id) {
     //TODO: add more debug code
-    console.log(state.pages.detail._id !== id);
+
     return !state.pages.detail._id || state.pages.detail._id !== id;
 };
 
@@ -112,9 +128,30 @@ var _changedSettingsFieldValue = function(field) {
     }
 }
 
+var _savePageDetail = function(page) {
+    return function(dispatch) {
+        dispatch(_savingPageDetail());
+
+        $.post('/api/pages/' + page._id, page, function(pageDetail) {
+            $.get('/api/pages?contenttree=true', function(pageList) {
+                dispatch(_savedPage(pageDetail, pageList));
+            });
+        });
+
+    }
+};
+
+var _resetPageDetail = function(id) {
+    return function(dispatch) {
+        dispatch(_getPageDetail(id));
+    }
+}
+
 module.exports = {
     getPageListIfNeeded: _getPageListIfNeeded,
     getPageDetailIfNeeded: _getPageDetailIfNeeded,
     changedTabFieldValue: _changedTabFieldValue,
-    changedSettingsFieldValue: _changedSettingsFieldValue
+    changedSettingsFieldValue: _changedSettingsFieldValue,
+    savePageDetail: _savePageDetail,
+    resetPageDetail: _resetPageDetail
 };
