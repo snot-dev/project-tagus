@@ -51902,7 +51902,8 @@ var _getPageDetail = function(id) {
         dispatch(_fetchingPageDetail());
 
         $.get('/api/pages/' + id, function(data) {
-            //add Error handling
+            //TODO: add Error handling
+
 
             dispatch(_receivedPageDetail(data))
         });
