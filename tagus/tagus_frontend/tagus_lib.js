@@ -40,26 +40,26 @@ var _buildTabs = function(tabList) {
     return tabs;
 };
 
-var _renderFieldType = function(index, options, blurHandler, tabIndex) {
-    return _fields[options.type](index, options, blurHandler, tabIndex);
+var _renderFieldType = function(index, options, blurHandler, tabIndex, value) {
+    return _fields[options.type](index, options, blurHandler, tabIndex, value);
 }
 
 
 var _fields = {
-    "text": function(index, options, blurHandler, tabIndex) {
+    "text": function(index, options, blurHandler, tabIndex, value) {
         return (
-            <input type="text" className="form-field" onBlur={blurHandler()} defaultValue={options.value} name={options.name} />
+            <input type="text" className="form-field" onBlur={blurHandler()} defaultValue={value} name={options.name} />
         );
     },
-    "textarea": function(index, options, blurHandler, tabIndex) {
+    "textarea": function(index, options, blurHandler, tabIndex, value) {
         return (
-            <textarea className="form-field textarea" onBlur={blurHandler()} defaultValue={options.value}  name={options.name} ></textarea>
+            <textarea className="form-field textarea" onBlur={blurHandler()} defaultValue={value}  name={options.name} ></textarea>
         );
     },
-    "richText": function(index, options, blurHandler, tabIndex) {
+    "richText": function(index, options, blurHandler, tabIndex, value) {
         return (
             <div className="richtext-container">
-                <RichTextEditor  theme="snow" onChange={blurHandler()} defaultValue={options.value}  name={options.name}/>
+                <RichTextEditor  theme="snow" onChange={blurHandler()} defaultValue={value}  name={options.name}/>
             </div>
         );
     },

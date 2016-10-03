@@ -8,6 +8,7 @@ var TabList = require('react-tabs').TabList;
 var TabPanel = require('react-tabs').TabPanel;
 var renderField = require('../../../tagus_lib').renderFieldType;
 var renderSettingsTab = require('../../../tagus_lib').renderSettingsTab;
+var _ = require('underscore');
 
 var PageDetail = React.createClass ( {
     componentWillMount: function() {
@@ -37,14 +38,23 @@ var PageDetail = React.createClass ( {
     },
     renderTabContent: function(tab, tabIndex) {
         var that = this;
+        var pageTab = that.props.pages.detail.unitType.tabs[tabIndex]; //TODO: check if this tab exists in the page already
 
         return (
             <section className="col-xs-12 content-container" >
                 {tab.unitFields.map(function(field, index) {
+                    if(!pageTab.unitFields[index] || pageTab.unitFields[index].alias !== field.alias) {
+                        //create new field in the page with an empty value
+                        console.log("created!");
+                        var newField = _.extend({}, field);
+                        newField.value = null;
+                        pageTab.unitFields.push(newField);
+                    }
+
                     return (
                         <div key={index}>
                             <label className="form-label">{field.name}</label>
-                            {renderField(index, field, that.handleBlur(tabIndex, index), tabIndex)}
+                            {renderField(index, field, that.handleBlur(tabIndex, index), tabIndex, pageTab.unitFields[index].value)}
                         </div>
                     );
                 })}
@@ -52,10 +62,12 @@ var PageDetail = React.createClass ( {
         )
     },
     handleBlur: function(tab, field) {
+
         return function() {
             return function(e) {
                 var value = e.target ? e.target.value : e;
                 store.dispatch(pagesActions.changedTabFieldValue(tab, field, value));
+                console.log(this);
             }.bind(this);
         }
     },
@@ -82,7 +94,7 @@ var PageDetail = React.createClass ( {
                     :   this.props.pages.tabs.length > 0 
                     ?    <Tabs>
                             {this.renderTabs()}
-                             {this.props.pages.detail.unitType.tabs.map(function(tab, index) {
+                             {this.props.pages.unit.tabs.map(function(tab, index) {
                                 return (
                                     <TabPanel key={index}>
                                         {that.renderTabContent(tab, index)}

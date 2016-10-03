@@ -51795,6 +51795,7 @@ var constants = require('../constants');
 var $ = require('jquery');
 var lib = require('../tagus_lib');
 
+
 //actions
 var _fetchingPageList = function() {
     return {
@@ -51817,12 +51818,19 @@ var _fetchingPageDetail = function() {
     }
 }
 
-var _receivedPageDetail = function(page) {
-    return {
+var _receivedPageDetail = function(pageDetail, unit) {
+    var obj = {
         type: constants.RECEIVED_PAGEDETAIL,
-        page: page,
-        tabs: lib.buildTabs(page.unitType.tabs)
+        page: pageDetail
     }
+
+    if(unit) {
+        console.log(unit);
+        obj.tabs = lib.buildTabs(unit.tabs);
+        obj.unit = unit;
+    }
+
+    return obj;
 }
 
 var _tabFieldChanged = function(tab, field, value) {
@@ -51901,11 +51909,12 @@ var _getPageDetail = function(id) {
     return function(dispatch) {
         dispatch(_fetchingPageDetail());
 
-        $.get('/api/pages/' + id, function(data) {
+        $.get('/api/pages/' + id, function(pageDetail) {
             //TODO: add Error handling
+            $.get('/api/units/'+ pageDetail.unitType.id, function(unit) {
+                dispatch(_receivedPageDetail(pageDetail, unit));
+            });
 
-
-            dispatch(_receivedPageDetail(data))
         });
     }
 };
@@ -51926,6 +51935,7 @@ var _savePageDetail = function(page) {
     return function(dispatch) {
         dispatch(_savingPageDetail());
 
+        console.log(page);
         $.post('/api/pages/' + page._id, page, function(pageDetail) {
             $.get('/api/pages?contenttree=true', function(pageList) {
                 dispatch(_savedPage(pageDetail, pageList));
@@ -51968,6 +51978,7 @@ var initialState = {
         detail: {},
         fetchingPageList: false,
         fetchingPageDetail: false,
+        unit: {},
         tabs: [],
         savingPageDetail: false
     }
@@ -52082,6 +52093,7 @@ var TabList = require('react-tabs').TabList;
 var TabPanel = require('react-tabs').TabPanel;
 var renderField = require('../../../tagus_lib').renderFieldType;
 var renderSettingsTab = require('../../../tagus_lib').renderSettingsTab;
+var _ = require('underscore');
 
 var PageDetail = React.createClass ( {displayName: "PageDetail",
     componentWillMount: function() {
@@ -52111,14 +52123,23 @@ var PageDetail = React.createClass ( {displayName: "PageDetail",
     },
     renderTabContent: function(tab, tabIndex) {
         var that = this;
+        var pageTab = that.props.pages.detail.unitType.tabs[tabIndex]; //TODO: check if this tab exists in the page already
 
         return (
             React.createElement("section", {className: "col-xs-12 content-container"}, 
                 tab.unitFields.map(function(field, index) {
+                    if(!pageTab.unitFields[index] || pageTab.unitFields[index].alias !== field.alias) {
+                        //create new field in the page with an empty value
+                        console.log("created!");
+                        var newField = _.extend({}, field);
+                        newField.value = null;
+                        pageTab.unitFields.push(newField);
+                    }
+
                     return (
                         React.createElement("div", {key: index}, 
                             React.createElement("label", {className: "form-label"}, field.name), 
-                            renderField(index, field, that.handleBlur(tabIndex, index), tabIndex)
+                            renderField(index, field, that.handleBlur(tabIndex, index), tabIndex, pageTab.unitFields[index].value)
                         )
                     );
                 })
@@ -52126,10 +52147,12 @@ var PageDetail = React.createClass ( {displayName: "PageDetail",
         )
     },
     handleBlur: function(tab, field) {
+
         return function() {
             return function(e) {
                 var value = e.target ? e.target.value : e;
                 store.dispatch(pagesActions.changedTabFieldValue(tab, field, value));
+                console.log(this);
             }.bind(this);
         }
     },
@@ -52156,7 +52179,7 @@ var PageDetail = React.createClass ( {displayName: "PageDetail",
                     :   this.props.pages.tabs.length > 0 
                     ?    React.createElement(Tabs, null, 
                             this.renderTabs(), 
-                             this.props.pages.detail.unitType.tabs.map(function(tab, index) {
+                             this.props.pages.unit.tabs.map(function(tab, index) {
                                 return (
                                     React.createElement(TabPanel, {key: index}, 
                                         that.renderTabContent(tab, index)
@@ -52194,7 +52217,7 @@ var mapStateToProps = function(state) {
 
 module.exports = ReactRedux.connect(mapStateToProps)(PageDetail);
 
-},{"../../../actions/pagesActions":289,"../../../adminStore":290,"../../../tagus_lib":301,"react":271,"react-redux":15,"react-tabs":97}],293:[function(require,module,exports){
+},{"../../../actions/pagesActions":289,"../../../adminStore":290,"../../../tagus_lib":301,"react":271,"react-redux":15,"react-tabs":97,"underscore":288}],293:[function(require,module,exports){
 var React = require('react');
 
 var Dashboard = React.createClass( {displayName: "Dashboard",
@@ -52362,7 +52385,12 @@ module.exports = function(state, action) {
             {
                 newState.fetchingPageDetail = false;
                 newState.detail = action.page;
-                newState.tabs = action.tabs;
+                if(action.tabs) {
+                    newState.tabs = action.tabs;
+                }
+                if(action.unit) {
+                    newState.unit = action.unit;
+                }
                 return newState;
             }
         case constants.CHANGE_TAB:
@@ -52465,26 +52493,26 @@ var _buildTabs = function(tabList) {
     return tabs;
 };
 
-var _renderFieldType = function(index, options, blurHandler, tabIndex) {
-    return _fields[options.type](index, options, blurHandler, tabIndex);
+var _renderFieldType = function(index, options, blurHandler, tabIndex, value) {
+    return _fields[options.type](index, options, blurHandler, tabIndex, value);
 }
 
 
 var _fields = {
-    "text": function(index, options, blurHandler, tabIndex) {
+    "text": function(index, options, blurHandler, tabIndex, value) {
         return (
-            React.createElement("input", {type: "text", className: "form-field", onBlur: blurHandler(), defaultValue: options.value, name: options.name})
+            React.createElement("input", {type: "text", className: "form-field", onBlur: blurHandler(), defaultValue: value, name: options.name})
         );
     },
-    "textarea": function(index, options, blurHandler, tabIndex) {
+    "textarea": function(index, options, blurHandler, tabIndex, value) {
         return (
-            React.createElement("textarea", {className: "form-field textarea", onBlur: blurHandler(), defaultValue: options.value, name: options.name})
+            React.createElement("textarea", {className: "form-field textarea", onBlur: blurHandler(), defaultValue: value, name: options.name})
         );
     },
-    "richText": function(index, options, blurHandler, tabIndex) {
+    "richText": function(index, options, blurHandler, tabIndex, value) {
         return (
             React.createElement("div", {className: "richtext-container"}, 
-                React.createElement(RichTextEditor, {theme: "snow", onChange: blurHandler(), defaultValue: options.value, name: options.name})
+                React.createElement(RichTextEditor, {theme: "snow", onChange: blurHandler(), defaultValue: value, name: options.name})
             )
         );
     },

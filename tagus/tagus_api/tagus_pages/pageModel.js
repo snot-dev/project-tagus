@@ -9,7 +9,8 @@ var pageSchema = new mongoose.Schema({
     published: {type: Date, default: Date.now()},
     unitType: {
         name: String,
-        tabs: { type : Array , "default" : [] }
+        tabs: { type : Array , "default" : [] },
+        id: String
     },
     template: {type: String, required: true},
     parent: String,

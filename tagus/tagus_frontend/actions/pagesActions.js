@@ -2,6 +2,7 @@ var constants = require('../constants');
 var $ = require('jquery');
 var lib = require('../tagus_lib');
 
+
 //actions
 var _fetchingPageList = function() {
     return {
@@ -24,12 +25,19 @@ var _fetchingPageDetail = function() {
     }
 }
 
-var _receivedPageDetail = function(page) {
-    return {
+var _receivedPageDetail = function(pageDetail, unit) {
+    var obj = {
         type: constants.RECEIVED_PAGEDETAIL,
-        page: page,
-        tabs: lib.buildTabs(page.unitType.tabs)
+        page: pageDetail
     }
+
+    if(unit) {
+        console.log(unit);
+        obj.tabs = lib.buildTabs(unit.tabs);
+        obj.unit = unit;
+    }
+
+    return obj;
 }
 
 var _tabFieldChanged = function(tab, field, value) {
@@ -108,10 +116,12 @@ var _getPageDetail = function(id) {
     return function(dispatch) {
         dispatch(_fetchingPageDetail());
 
-        $.get('/api/pages/' + id, function(data) {
+        $.get('/api/pages/' + id, function(pageDetail) {
             //TODO: add Error handling
+            $.get('/api/units/'+ pageDetail.unitType.id, function(unit) {
+                dispatch(_receivedPageDetail(pageDetail, unit));
+            });
 
-            dispatch(_receivedPageDetail(data))
         });
     }
 };
@@ -132,6 +142,7 @@ var _savePageDetail = function(page) {
     return function(dispatch) {
         dispatch(_savingPageDetail());
 
+        console.log(page);
         $.post('/api/pages/' + page._id, page, function(pageDetail) {
             $.get('/api/pages?contenttree=true', function(pageList) {
                 dispatch(_savedPage(pageDetail, pageList));

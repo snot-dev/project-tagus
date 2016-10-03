@@ -7,6 +7,7 @@ module.exports = [{
         published: new Date(),
         unitType: {
             name: "Home",
+            id: "",
             tabs: [{
                 name: "Content",
                 unitFields: [{

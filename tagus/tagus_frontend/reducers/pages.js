@@ -25,7 +25,12 @@ module.exports = function(state, action) {
             {
                 newState.fetchingPageDetail = false;
                 newState.detail = action.page;
-                newState.tabs = action.tabs;
+                if(action.tabs) {
+                    newState.tabs = action.tabs;
+                }
+                if(action.unit) {
+                    newState.unit = action.unit;
+                }
                 return newState;
             }
         case constants.CHANGE_TAB:
