@@ -16,6 +16,11 @@ module.exports = [{
                 name: "True or False",
                 alias: "trueOrFalse",
                 type: "boolean"
+            },
+            {
+                name: "Another Field",
+                alias: "anotherField",
+                type: "text"
             }
         ]
     }],
