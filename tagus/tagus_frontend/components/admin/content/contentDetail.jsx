@@ -38,17 +38,19 @@ var PageDetail = React.createClass ( {
     },
     renderTabContent: function(tab, tabIndex) {
         var that = this;
-        var pageTab = that.props.pages.detail.unitType.tabs[tabIndex]; //TODO: check if this tab exists in the page already
+
+        if(!that.props.pages.detail.unitType.tabs[tabIndex] || that.props.pages.detail.unitType.tabs[tabIndex].name !== tab.name) {
+            this._createTabInPage(this.props.pages.detail, tab, tabIndex);
+        } 
+       
+        var pageTab = that.props.pages.detail.unitType.tabs[tabIndex];
 
         return (
             <section className="col-xs-12 content-container" >
                 {tab.unitFields.map(function(field, index) {
+
                     if(!pageTab.unitFields[index] || pageTab.unitFields[index].alias !== field.alias) {
-                        //create new field in the page with an empty value
-                        console.log("created!");
-                        var newField = _.extend({}, field);
-                        newField.value = null;
-                        pageTab.unitFields.push(newField);
+                        that._createFieldInPageTab(pageTab, field);
                     }
 
                     return (
@@ -61,13 +63,19 @@ var PageDetail = React.createClass ( {
             </section>
         )
     },
+    _createTabInPage(page, tab, index) {
+        page.unitType.tabs.splice(index, 0, tab);
+    },
+    _createFieldInPage(tab, field) {
+        var newField = _.extend({}, field);
+        newField.value = null;
+        tab.unitFields.push(newField);
+    },
     handleBlur: function(tab, field) {
-
         return function() {
             return function(e) {
                 var value = e.target ? e.target.value : e;
                 store.dispatch(pagesActions.changedTabFieldValue(tab, field, value));
-                console.log(this);
             }.bind(this);
         }
     },
