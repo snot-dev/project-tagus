@@ -8,7 +8,8 @@ var TabList = require('react-tabs').TabList;
 var TabPanel = require('react-tabs').TabPanel;
 var renderField = require('../../../tagus_lib').renderFieldType;
 var renderSettingsTab = require('../../../tagus_lib').renderSettingsTab;
-var _ = require('underscore');
+var createTabinPage = require('../../../tagus_lib').createTabInPage;
+var createFieldInPage = require('../../../tagus_lib').createFieldInPage;
 
 var PageDetail = React.createClass ( {
     componentWillMount: function() {
@@ -40,7 +41,7 @@ var PageDetail = React.createClass ( {
         var that = this;
 
         if(!that.props.pages.detail.unitType.tabs[tabIndex] || that.props.pages.detail.unitType.tabs[tabIndex].name !== tab.name) {
-            this._createTabInPage(this.props.pages.detail, tab, tabIndex);
+            createTabInPage(this.props.pages.detail, tab, tabIndex);
         } 
        
         var pageTab = that.props.pages.detail.unitType.tabs[tabIndex];
@@ -50,7 +51,7 @@ var PageDetail = React.createClass ( {
                 {tab.unitFields.map(function(field, index) {
 
                     if(!pageTab.unitFields[index] || pageTab.unitFields[index].alias !== field.alias) {
-                        that._createFieldInPageTab(pageTab, field);
+                        createFieldInPageTab(pageTab, field);
                     }
 
                     return (
@@ -63,18 +64,13 @@ var PageDetail = React.createClass ( {
             </section>
         )
     },
-    _createTabInPage(page, tab, index) {
-        page.unitType.tabs.splice(index, 0, tab);
-    },
-    _createFieldInPage(tab, field) {
-        var newField = _.extend({}, field);
-        newField.value = null;
-        tab.unitFields.push(newField);
-    },
     handleBlur: function(tab, field) {
         return function() {
             return function(e) {
-                var value = e.target ? e.target.value : e;
+                console.log(e.target.type);
+                console.log(e.target.checked);
+                console.log(e.target.value);
+                var value = e.target ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value ): e;
                 store.dispatch(pagesActions.changedTabFieldValue(tab, field, value));
             }.bind(this);
         }

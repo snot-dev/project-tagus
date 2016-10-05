@@ -1,6 +1,7 @@
 var React = require('react');
 var dateFormat = require('dateformat');
 var RichTextEditor = require('react-quill');
+var _ = require('underscore');
 
 var _loadContentTree = function(list) {
     if (!list) {
@@ -41,75 +42,79 @@ var _buildTabs = function(tabList) {
 };
 
 var _renderFieldType = function(index, options, blurHandler, tabIndex, value) {
-    return _fields[options.type](index, options, blurHandler, tabIndex, value);
+    return _fields(index, options, blurHandler, tabIndex, value)[options.type]();
 }
 
 
-var _fields = {
-    "text": function(index, options, blurHandler, tabIndex, value) {
-        return (
-            <input type="text" className="form-field" onBlur={blurHandler()} defaultValue={value} name={options.name} />
-        );
-    },
-    "textarea": function(index, options, blurHandler, tabIndex, value) {
-        return (
-            <textarea className="form-field textarea" onBlur={blurHandler()} defaultValue={value}  name={options.name} ></textarea>
-        );
-    },
-    "richText": function(index, options, blurHandler, tabIndex, value) {
-        return (
-            <div className="richtext-container">
-                <RichTextEditor  theme="snow" onChange={blurHandler()} defaultValue={value}  name={options.name}/>
-            </div>
-        );
-    },
-    "number": function(options) {
-        return (
-            <input type="number" className="form-field" name={options.name} />
-        );
-    },
-    "boolean": function(options){
-        return (
-            <div className="checkbox-container">
-                <input type="checkbox"  name={options.name}/>
-            </div>
-        );
+var _fields = function(index, options, blurHandler, tabIndex, value){
+    return {
+        "text": function() {
+            return (
+                <input type="text" className="form-field" onBlur={blurHandler()} defaultValue={value} name={options.alias} />
+            );
+        },
+        "textarea": function() {
+            return (
+                <textarea className="form-field textarea" onBlur={blurHandler()} defaultValue={value}  name={options.alias} ></textarea>
+            );
+        },
+        "richText": function() {
+            return (
+                <div className="richtext-container">
+                    <RichTextEditor  theme="snow" onChange={blurHandler()} defaultValue={value}  name={options.alias}/>
+                </div>
+            );
+        },
+        "number": function() {
+            return (
+                <input type="number" className="form-field" name={options.alias} />
+            );
+        },
+        "boolean": function(){
+            console.log("called!");
+            console.log(value);
+            return (
+                <div className="checkbox-container">
+                    <input type="checkbox" onChange={blurHandler()} name={options.alias} checked={value} />
+                </div>
+            );
 
-    },
-    "email": function(options) {
-        return (
-            <input type="email" className="form-field" />
-        );
-    },
-    "radio": function(options) {
-        return (
-            <div className="checkbox-container">
+        },
+        "email": function() {
+            return (
+                <input type="email" className="form-field" />
+            );
+        },
+        "radio": function() {
+            return (
+                <div className="checkbox-container">
+                    {options.options.length > 0 
+                    ?   options.options.map(function(option, index) {
+                            return(
+                            <div key={index}>
+                                <label><input type="radio" name={options.alias} value={option.value} /> {option.name} </label><br/>
+                            </div>       
+                            )
+                        })   
+                    :   null
+                    }
+                </div>
+            );
+        },
+        "dropdown": function() {
+            return (
+            <select className="form-field" name={options.alias}>
                 {options.options.length > 0 
                 ?   options.options.map(function(option, index) {
                         return(
-                         <div key={index}>
-                            <label><input type="radio" name={options.name} value={option.value} /> {option.name} </label><br/>
-                         </div>       
+                            <option value={option.value} key={index}>{options.name}</option>      
                         )
                     })   
                 :   null
                 }
-            </div>
-        );
-    },
-    "dropdown": function(options) {
-        return (
-           <select className="form-field" name={options.name}>
-            {options.options.length > 0 
-            ?   options.options.map(function(option, index) {
-                    return(
-                        <option value={option.value} key={index}>{options.name}</option>      
-                    )
-                })   
-            :   null
-            }
-        </select>  
-        );
+            </select>  
+            );
+        }
     }
 };
 
@@ -134,9 +139,20 @@ var _renderSettings = function(page, blurHandler) {
     );
 }
 
+var _createTabInPage = function(page, tab, index) {
+        page.unitType.tabs.splice(index, 0, tab);
+};
+var _createFieldInPage = function(tab, field) {
+        var newField = _.extend({}, field);
+        newField.value = null;
+        tab.unitFields.push(newField);
+};
+
 module.exports = {
     loadContentTree: _loadContentTree,
     buildTabs: _buildTabs,
     renderFieldType: _renderFieldType,
-    renderSettingsTab: _renderSettings
+    renderSettingsTab: _renderSettings,
+    createTabInPage: _createTabInPage,
+    createFieldInPage: _createFieldInPage
 };
