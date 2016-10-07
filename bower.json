@@ -1,27 +1,26 @@
 {
-  "name": "base",
-  "description": "a simple server project that will serve as base to future projects. Using grunt as task runner, bower to manage independicies and Scss as css pre compiler. The default view engine in this project is handlebars.",
-  "main": "app.js",
-  "authors": [
-    "Snot"
-  ],
-  "license": "ISC",
-  "moduleType": [
-    "node"
-  ],
-  "homepage": "",
-  "private": true,
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
-  "dependencies": {
-    "open-sans-fontface": "^1.4.2",
-    "font-awesome": "^4.6.3",
-    "bootstrap": "^3.3.7",
-    "react-quill": "^0.4.1"
-  }
+    "name": "Project Tagus",
+    "description": "a simple server project that will serve as base to future projects. Using grunt as task runner, bower to manage independicies and Scss as css pre compiler. The default view engine in this project is handlebars.",
+    "main": "app.js",
+    "authors": [
+        "Snot"
+    ],
+    "license": "ISC",
+    "moduleType": [
+        "node"
+    ],
+    "homepage": "",
+    "private": true,
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ],
+    "dependencies": {
+        "open-sans-fontface": "^1.4.2",
+        "font-awesome": "^4.6.3",
+        "bootstrap": "^3.3.7"
+    }
 }

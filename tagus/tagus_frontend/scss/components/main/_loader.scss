@@ -1,0 +1,14 @@
+@mixin loader() {
+    .loader {
+        text-align: center;
+        background-image: url("/assets/images/loader.gif");
+        background-repeat: no-repeat;
+        background-position: center;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+
+    }
+}

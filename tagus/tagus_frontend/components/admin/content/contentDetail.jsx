@@ -1,60 +1,124 @@
 var React = require('react');
-var RichTextEditor = require('react-quill');
 var store = require('../../../adminStore');
-var actions = require('../../../adminActions');
+var pagesActions = require('../../../actions/pagesActions');
 var ReactRedux = require('react-redux');
+var Tab = require('react-tabs').Tab;
+var Tabs = require('react-tabs').Tabs;
+var TabList = require('react-tabs').TabList;
+var TabPanel = require('react-tabs').TabPanel;
+var renderField = require('../../../tagus_lib').renderFieldType;
+var renderSettingsTab = require('../../../tagus_lib').renderSettingsTab;
+var createTabInPage = require('../../../tagus_lib').createTabInPage;
+var createFieldInPage = require('../../../tagus_lib').createFieldInPage;
 
 var PageDetail = React.createClass ( {
     componentWillMount: function() {
-        store.dispatch(actions.getPagesIfNeeded());
+       Tabs.setUseDefaultStyles(false);
+
+       store.dispatch(pagesActions.getPageDetailIfNeeded(this.props.params.id));
+    },
+    renderTabs: function() {
+        return (
+            <TabList className="tab-navigation">
+                    {this.props.pages.tabs.map(function(tab, index) {
+                        return(
+                            <Tab key={index}><a className="tab block">{tab}</a></Tab>
+                        )
+                    })}
+            </TabList>
+        );
+    },
+    renderSettings: function(blurHandler) {
+       return (
+           <TabPanel>
+            <section className="col-xs-12 content-container">
+                    {renderSettingsTab(this.props.pages.detail, blurHandler)}
+            </section>
+           </TabPanel>
+       )
+    },
+    renderTabContent: function(tab, tabIndex) {
+        var that = this;
+
+        if(!that.props.pages.detail.unitType.tabs[tabIndex] || that.props.pages.detail.unitType.tabs[tabIndex].name !== tab.name) {
+            createTabInPage(this.props.pages.detail, tab, tabIndex);
+        } 
+       
+        var pageTab = that.props.pages.detail.unitType.tabs[tabIndex];
+
+        return (
+            <section className="col-xs-12 content-container" >
+                {tab.unitFields.map(function(field, index) {
+
+                    if(!pageTab.unitFields[index] || pageTab.unitFields[index].alias !== field.alias) {
+                        createFieldInPage(pageTab, field);
+                    }
+
+                    return (
+                        <div key={index}>
+                            <label className="form-label">{field.name}</label>
+                            {renderField(index, field, that.handleBlur(tabIndex, index), tabIndex, pageTab.unitFields[index].value)}
+                        </div>
+                    );
+                })}
+            </section>
+        )
+    },
+    handleBlur: function(tab, field) {
+        return function() {
+            return function(e) {
+                
+                var value = e.target ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value ): e;
+                store.dispatch(pagesActions.changedTabFieldValue(tab, field, value));
+            }.bind(this);
+        }
+    },
+    handleSettingsBlur: function() {
+        return function(e) {
+                store.dispatch(pagesActions.changedSettingsFieldValue(e.target));
+            }.bind(this);
+    },
+    savePage: function() {
+        store.dispatch(pagesActions.savePageDetail(this.props.pages.detail));
+    },
+    resetPage: function() {
+        store.dispatch(pagesActions.resetPageDetail(this.props.pages.detail._id));
     },
     render: function() {
-        console.log(this.props);
-        return (
-            <section className="col-xs-9 section content-page-detail">
-                <div className="row">
-                    <nav className="col-xs-12 tab-navigation">
-                        <ul>
-                            <li><a className="tab block">Content</a></li>
-                            <li><a className="tab block">Settings</a></li>
-                        </ul>
-                    </nav>
-                </div>
-                <div className="row">
-                    <div className="col-xs-12 content-container" >
-                        <label className="form-label" >This is a label</label>
-                        <input type="text" className="form-field" />
-                        <label className="form-label" >This is a label</label>
-                        <div className="checkbox-container">
-                          <input type="checkbox"  />
-                        </div>
-                      <label className="form-label" >This is a label</label>
-                      <textarea className="form-field textarea" ></textarea>
-                      <label className="form-label" >This is a label</label>
-                      <select className="form-field">
-                        <option>1</option>
-                        <option>2</option>
-                      </select>
-                      <label className="form-label" >This is a label</label>
-                      <div className="checkbox-container">
-                        <label><input type="radio" name="radio" value="1" /> 1 </label><br/>
-                        <label><input type="radio" name="radio" value="2"/> 2 </label><br/>
-                        <label><input type="radio" name="radio" value="3"/> 3 </label><br/>
-                      </div>
-                      <label className="form-label" >This is a label</label>
-                      <div className="richtext-container">
-                          <RichTextEditor  theme="snow"/>
-                      </div>
+        var that = this;
 
-                    <div>
-                        <button className="button" onClick={this.props.getPages}>Standard</button>
-                        <button className="button submit">Submit</button>
-                        <button className="button add">Add</button>
-                        <button className="button delete">Delete</button>
+        return (
+            <div className="col-xs-9">
+                <section id="content-page-detail" className="section">
+                    <div className="row">
+                    {this.props.showLoader
+                    ?   <div className="loader"></div> 
+                    :   this.props.pages.tabs.length > 0 
+                    ?    <Tabs>
+                            {this.renderTabs()}
+                             {this.props.pages.unit.tabs.map(function(tab, index) {
+                                return (
+                                    <TabPanel key={index}>
+                                        {that.renderTabContent(tab, index)}
+                                    </TabPanel>
+                                )
+                            })}
+                            {this.renderSettings(this.handleSettingsBlur)}
+                        </Tabs>
+                    :  null
+                    }
                     </div>
-                    </div>
-                </div>
-            </section>
+                    {!this.props.pages.fetchingPageDetail && !this.props.pages.savingPageDetail
+                    ?   <div className="row">
+                            <div className="col-xs-12 buttons-container">
+                                <button className="button" onClick={this.resetPage}> Cancel</button>
+                                <button className="button submit pull-right" onClick={this.savePage}>Save</button>
+                            </div>
+                        </div>
+                    :   null
+                    }
+                </section>
+            </div>
         )
     }
 });
@@ -63,17 +127,9 @@ var PageDetail = React.createClass ( {
 var mapStateToProps = function(state) {
   return {
     pages:  state.pages,
-    isFetching: false,
-    received: false
+    showLoader: state.pages.fetchingPageDetail || state.pages.savingPageDetail
   };
 };
 
-//var mapDispatchToProps = function(dispatch) {
-//  return {
-//    getPagesIfNeeded: function() {
-//      actions.getPagesIfNeeded(dispatch);
-//    }
-//  };
-//};
 
 module.exports = ReactRedux.connect(mapStateToProps)(PageDetail);

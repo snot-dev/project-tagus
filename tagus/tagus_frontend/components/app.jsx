@@ -20,7 +20,7 @@ var Routes =  (
         <IndexRoute component={Content} />
         <Route component={Dashboard} path="/dashboard" />
         <Route component={Content} path="/content" >
-            <Route component={ContentDetail} path="/content/id" />
+            <Route component={ContentDetail} path="/content/:id" />
         </Route>
         <Route component={Editor} path="/editor" />
         <Route component={Settings} path="/settings" />

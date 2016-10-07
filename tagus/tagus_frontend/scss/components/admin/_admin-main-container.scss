@@ -1,4 +1,4 @@
-@mixin admin-main-container ($color, $bcolor) {
+@mixin admin-main-container ($color, $bcolor, $borderColor) {
   @media (min-width: $screen-xs) {
     #admin-main-container {
       position: absolute;
@@ -7,24 +7,32 @@
       right: 0;
       bottom: 0;
       color: $color;
-      padding: $spacing;
+      padding: $spacing 0;
       overflow: auto;
 
       #admin-content-container {
         height: 100%;
 
-        #main-title {
-          @include font-size(20px);
-          margin: $spacing 0;
-        }
-
         .section {
-          padding: $spacing;
+          padding: 0 $spacing $spacing;
           height: 100%;
           background-color: $bcolor;
-          border: 5px solid transparent;
-          background-clip: padding-box;
           overflow-y: auto;
+          border-radius: $subtle;
+
+          .title {
+              padding: $spacing;
+              color: $white;
+              background-color: $bridgeRed;
+              margin: 0 ;
+              @include font-size(20px);
+              border-top-left-radius: $subtle;
+              border-top-right-radius: $subtle;
+              margin-bottom: $gutter;
+              margin-left: -$spacing;
+              margin-right: -$spacing;
+              border-bottom: 2px solid $borderColor;
+          }
         }
       }
     }
