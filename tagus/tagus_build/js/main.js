@@ -52092,6 +52092,7 @@ var TabList = require('react-tabs').TabList;
 var TabPanel = require('react-tabs').TabPanel;
 var dateFormat = require('dateformat');
 var RichTextEditor = require('react-quill');
+var _ = require('underscore');
 
 var PageDetail = React.createClass ( {displayName: "PageDetail",
     componentWillMount: function() {
@@ -52168,7 +52169,7 @@ var PageDetail = React.createClass ( {displayName: "PageDetail",
             },
             "number": function() {
                 return (
-                    React.createElement("input", {type: "number", className: "form-field", name: options.alias})
+                    React.createElement("input", {type: "number", className: "form-field", onBlur: that.handleBlur(tabIndex, index), defaultValue: value, name: options.alias})
                 );
             },
             "boolean": function(){
@@ -52181,7 +52182,7 @@ var PageDetail = React.createClass ( {displayName: "PageDetail",
             },
             "email": function() {
                 return (
-                    React.createElement("input", {type: "email", className: "form-field"})
+                    React.createElement("input", {type: "email", className: "form-field", onBlur: that.handleBlur(tabIndex, index), defaultValue: value, name: options.alias})
                 );
             },
             "radio": function() {
@@ -52239,13 +52240,12 @@ var PageDetail = React.createClass ( {displayName: "PageDetail",
        )
     },
     handleBlur: function(tab, field) {
-        return function() {
-            return function(e) {
-                
-                var value = e.target ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value ): e;
-                store.dispatch(pagesActions.changedTabFieldValue(tab, field, value));
-            }.bind(this);
-        }
+        return function(e) {
+            console.log(this.props.pages.detail);
+
+            var value = e.target ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value ): e;
+            store.dispatch(pagesActions.changedTabFieldValue(tab, field, value));
+        }.bind(this);
     },
     handleSettingsBlur: function() {
         return function(e) {
@@ -52308,7 +52308,7 @@ var mapStateToProps = function(state) {
 
 module.exports = ReactRedux.connect(mapStateToProps)(PageDetail);
 
-},{"../../../actions/pagesActions":289,"../../../adminStore":290,"dateformat":2,"react":271,"react-quill":10,"react-redux":15,"react-tabs":97}],293:[function(require,module,exports){
+},{"../../../actions/pagesActions":289,"../../../adminStore":290,"dateformat":2,"react":271,"react-quill":10,"react-redux":15,"react-tabs":97,"underscore":288}],293:[function(require,module,exports){
 var React = require('react');
 
 var Dashboard = React.createClass( {displayName: "Dashboard",
@@ -52542,11 +52542,6 @@ module.exports = function( state, action ) {
 };
 
 },{"../constants":298,"underscore":288}],301:[function(require,module,exports){
-var React = require('react');
-var dateFormat = require('dateformat');
-var RichTextEditor = require('react-quill');
-var _ = require('underscore');
-
 var _loadContentTree = function(list) {
     if (!list) {
         //error
@@ -52586,14 +52581,10 @@ var _buildTabs = function(tabList) {
 
 module.exports = {
     loadContentTree: _loadContentTree,
-    buildTabs: _buildTabs,
-    renderFieldType: _renderFieldType,
-    renderSettingsTab: _renderSettings,
-    createTabInPage: _createTabInPage,
-    createFieldInPage: _createFieldInPage
+    buildTabs: _buildTabs
 };
 
-},{"dateformat":2,"react":271,"react-quill":10,"underscore":288}],302:[function(require,module,exports){
+},{}],302:[function(require,module,exports){
 module.exports = {
   'content': {
     'en': 'Content',

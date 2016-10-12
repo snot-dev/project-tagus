@@ -8,6 +8,7 @@ var TabList = require('react-tabs').TabList;
 var TabPanel = require('react-tabs').TabPanel;
 var dateFormat = require('dateformat');
 var RichTextEditor = require('react-quill');
+var _ = require('underscore');
 
 var PageDetail = React.createClass ( {
     componentWillMount: function() {
@@ -84,7 +85,7 @@ var PageDetail = React.createClass ( {
             },
             "number": function() {
                 return (
-                    <input type="number" className="form-field" name={options.alias} />
+                    <input type="number" className="form-field" onBlur={that.handleBlur(tabIndex, index)} defaultValue={value} name={options.alias} />
                 );
             },
             "boolean": function(){
@@ -97,7 +98,7 @@ var PageDetail = React.createClass ( {
             },
             "email": function() {
                 return (
-                    <input type="email" className="form-field" />
+                    <input type="email" className="form-field" onBlur={that.handleBlur(tabIndex, index)} defaultValue={value} name={options.alias} />
                 );
             },
             "radio": function() {
@@ -155,13 +156,10 @@ var PageDetail = React.createClass ( {
        )
     },
     handleBlur: function(tab, field) {
-        return function() {
-            return function(e) {
-                
-                var value = e.target ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value ): e;
-                store.dispatch(pagesActions.changedTabFieldValue(tab, field, value));
-            }.bind(this);
-        }
+        return function(e) {
+            var value = e.target ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value ): e;
+            store.dispatch(pagesActions.changedTabFieldValue(tab, field, value));
+        }.bind(this);
     },
     handleSettingsBlur: function() {
         return function(e) {

@@ -1,8 +1,3 @@
-var React = require('react');
-var dateFormat = require('dateformat');
-var RichTextEditor = require('react-quill');
-var _ = require('underscore');
-
 var _loadContentTree = function(list) {
     if (!list) {
         //error
@@ -42,9 +37,5 @@ var _buildTabs = function(tabList) {
 
 module.exports = {
     loadContentTree: _loadContentTree,
-    buildTabs: _buildTabs,
-    renderFieldType: _renderFieldType,
-    renderSettingsTab: _renderSettings,
-    createTabInPage: _createTabInPage,
-    createFieldInPage: _createFieldInPage
+    buildTabs: _buildTabs
 };
