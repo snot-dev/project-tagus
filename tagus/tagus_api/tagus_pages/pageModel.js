@@ -10,7 +10,7 @@ var pageSchema = new mongoose.Schema({
     unitType: {
         id: String
     },
-    content: { required: true, default: {} },
+    content: {},
     template: { type: String, required: true },
     parent: String,
     sortOrder: { type: Number },

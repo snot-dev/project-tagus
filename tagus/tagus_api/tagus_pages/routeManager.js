@@ -3,17 +3,12 @@ var pageModel = require('./pageModel');
 var router = require('express').Router();
 
 pageModel.find({}, function(err, docs) {
-    if(err) {
+    if (err) {
         console.log(err);
     }
 
     docs.forEach(function(doc) {
-        var viewBag = {};
-        doc.unitType.tabs.forEach(function(tab) {
-            tab.unitFields.forEach(function(unitField) {
-                viewBag[unitField.alias] = unitField.value;
-            })
-        });
+        var viewBag = doc.content;
 
         router.get(doc.url, function(req, res, next) {
             res.render(doc.template, viewBag);

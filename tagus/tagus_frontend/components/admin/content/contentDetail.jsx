@@ -16,14 +16,6 @@ var PageDetail = React.createClass ( {
 
        store.dispatch(pagesActions.getPageDetailIfNeeded(this.props.params.id));
     },
-     _createTabInPage: function(page, tab, index) {
-        this.props.pages.detail.unitType.tabs.splice(index, 0, tab); //TODO: Change this to an action
-    },
-    _createFieldInPage: function(tab, field) {
-        var newField = _.extend({}, field);
-        newField.value = null;
-        tab.unitFields.push(newField);
-    },
     renderTabs: function() {
         return (
             <TabList className="tab-navigation">
@@ -39,67 +31,56 @@ var PageDetail = React.createClass ( {
     renderTabContent: function(tab, tabIndex) {
         var that = this;
 
-        if(!that.props.pages.detail.unitType.tabs[tabIndex] || that.props.pages.detail.unitType.tabs[tabIndex].name !== tab.name) {
-            this._createTabInPage(tab, tabIndex);
-        } 
        
-        var pageTab = that.props.pages.detail.unitType.tabs[tabIndex];
-
         return (
             <section className="col-xs-12 content-container" >
                 {tab.unitFields.map(function(field, index) {
-
-                        console.log("inside" +  pageTab.unitFields[index].value);
-                    if(!pageTab.unitFields[index] || pageTab.unitFields[index].alias !== field.alias) {
-                        that._createFieldInPage(pageTab, field);
-                    }
-
                     return (
                         <div key={index}>
                             <label className="form-label">{field.name}</label>
-                            {that.renderField(index, field, tabIndex, pageTab.unitFields[index].value)[field.type]()}
+                            {that.renderField(field)[field.type]()}
                         </div>
                     );
                 })}
             </section>
         )
     },
-    renderField: function(index, options, tabIndex, value){
+    renderField: function(options){
         var that = this;
         return {
             "text": function() {
                 return (
-                    <input type="text" className="form-field" onBlur={that.handleBlur(tabIndex, index)} defaultValue={value} name={options.alias} />
+                    <input type="text" className="form-field" onBlur={that.handleBlur(options)} defaultValue={that.props.pages.detail.content[options.alias]} name={options.alias} />
                 );
             },
             "textarea": function() {
                 return (
-                    <textarea className="form-field textarea" onBlur={that.handleBlur(tabIndex, index)} defaultValue={value}  name={options.alias} ></textarea>
+                    <textarea className="form-field textarea" onBlur={that.handleBlur(options)} defaultValue={that.props.pages.detail.content[options.alias]}  name={options.alias} ></textarea>
                 );
             },
             "richText": function() {
                 return (
                     <div className="richtext-container">
-                        <RichTextEditor  theme="snow" onChange={that.handleBlur(tabIndex, index)} defaultValue={value}  name={options.alias}/>
+                        <RichTextEditor  theme="snow" onChange={that.handleBlur(options)} defaultValue={that.props.pages.detail.content[options.alias]}  name={options.alias}/>
                     </div>
                 );
             },
             "number": function() {
                 return (
-                    <input type="number" className="form-field" onBlur={that.handleBlur(tabIndex, index)} defaultValue={value} name={options.alias} />
+                    <input type="number" className="form-field" onBlur={that.handleBlur(options)} defaultValue={that.props.pages.detail.content[options.alias]} name={options.alias} />
                 );
             },
             "boolean": function(){
                 return (
-                    <div key={index} className="checkbox-container">
-                        <input type="checkbox" onChange={that.handleBlur(tabIndex, index)} name={options.alias} checked={ JSON.parse(value) } />
+                    <div className="checkbox-container">
+                        <input type="checkbox" onChange={that.handleBlur(options)} name={options.alias} checked="" />
                     </div>
                 );
 
             },
             "email": function() {
                 return (
-                    <input type="email" className="form-field" onBlur={that.handleBlur(tabIndex, index)} defaultValue={value} name={options.alias} />
+                    <input type="email" className="form-field" onBlur={that.handleBlur(options)} defaultValue={that.props.pages.detail.content[options.alias]} name={options.alias} />
                 );
             },
             "radio": function() {
@@ -156,10 +137,10 @@ var PageDetail = React.createClass ( {
            </TabPanel>
        )
     },
-    handleBlur: function(tab, field) {
+    handleBlur: function(field) {
         return function(e) {
             var value = e.target ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value ): e;
-            store.dispatch(pagesActions.changedTabFieldValue(tab, field, value));
+            store.dispatch(pagesActions.changedTabFieldValue(field, value));
         }.bind(this);
     },
     handleSettingsBlur: function() {

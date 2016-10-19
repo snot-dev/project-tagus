@@ -31,7 +31,7 @@ var _receivedPageDetail = function(pageDetail, unit) {
         page: pageDetail
     }
 
-    if(unit) {
+    if (unit) {
         console.log(unit);
         obj.tabs = lib.buildTabs(unit.tabs);
         obj.unit = unit;
@@ -40,10 +40,9 @@ var _receivedPageDetail = function(pageDetail, unit) {
     return obj;
 }
 
-var _tabFieldChanged = function(tab, field, value) {
+var _tabFieldChanged = function(field, value) {
     return {
         type: constants.TAB_FIELD_CHANGED_VALUE,
-        tab: tab,
         field: field,
         value: value
     }
@@ -118,7 +117,7 @@ var _getPageDetail = function(id) {
 
         $.get('/api/pages/' + id, function(pageDetail) {
             //TODO: add Error handling
-            $.get('/api/units/'+ pageDetail.unitType.id, function(unit) {
+            $.get('/api/units/' + pageDetail.unitType.id, function(unit) {
                 dispatch(_receivedPageDetail(pageDetail, unit));
             });
 
@@ -126,9 +125,9 @@ var _getPageDetail = function(id) {
     }
 };
 
-var _changedTabFieldValue = function(tab, field, value) {
+var _changedTabFieldValue = function(field, value) {
     return function(dispatch, getState) {
-        dispatch(_tabFieldChanged(tab, field, value));
+        dispatch(_tabFieldChanged(field, value));
     }
 }
 

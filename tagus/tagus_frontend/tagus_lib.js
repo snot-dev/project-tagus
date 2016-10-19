@@ -25,7 +25,7 @@ var _loadContentTree = function(list) {
 
 var _buildTabs = function(tabList) {
     var tabs = [];
-    
+
     tabList.forEach(function(tab) {
         tabs.push(tab.name);
     });

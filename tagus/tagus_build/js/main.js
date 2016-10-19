@@ -51789,7 +51789,7 @@ var _receivedPageDetail = function(pageDetail, unit) {
         page: pageDetail
     }
 
-    if(unit) {
+    if (unit) {
         console.log(unit);
         obj.tabs = lib.buildTabs(unit.tabs);
         obj.unit = unit;
@@ -51798,10 +51798,9 @@ var _receivedPageDetail = function(pageDetail, unit) {
     return obj;
 }
 
-var _tabFieldChanged = function(tab, field, value) {
+var _tabFieldChanged = function(field, value) {
     return {
         type: constants.TAB_FIELD_CHANGED_VALUE,
-        tab: tab,
         field: field,
         value: value
     }
@@ -51876,7 +51875,7 @@ var _getPageDetail = function(id) {
 
         $.get('/api/pages/' + id, function(pageDetail) {
             //TODO: add Error handling
-            $.get('/api/units/'+ pageDetail.unitType.id, function(unit) {
+            $.get('/api/units/' + pageDetail.unitType.id, function(unit) {
                 dispatch(_receivedPageDetail(pageDetail, unit));
             });
 
@@ -51884,9 +51883,9 @@ var _getPageDetail = function(id) {
     }
 };
 
-var _changedTabFieldValue = function(tab, field, value) {
+var _changedTabFieldValue = function(field, value) {
     return function(dispatch, getState) {
-        dispatch(_tabFieldChanged(tab, field, value));
+        dispatch(_tabFieldChanged(field, value));
     }
 }
 
@@ -52054,30 +52053,15 @@ var Tab = require('react-tabs').Tab;
 var Tabs = require('react-tabs').Tabs;
 var TabList = require('react-tabs').TabList;
 var TabPanel = require('react-tabs').TabPanel;
-<<<<<<< HEAD
-var renderField = require('../../../tagus_lib').renderFieldType;
-var renderSettingsTab = require('../../../tagus_lib').renderSettingsTab;
-var createTabInPage = require('../../../tagus_lib').createTabInPage;
-var createFieldInPage = require('../../../tagus_lib').createFieldInPage;
-=======
 var dateFormat = require('dateformat');
 var RichTextEditor = require('react-quill');
 var _ = require('underscore');
->>>>>>> 9a5874910b493fbf6be510a412c735c67bf6ab81
 
 var PageDetail = React.createClass ( {displayName: "PageDetail",
     componentWillMount: function() {
        Tabs.setUseDefaultStyles(false);
 
        store.dispatch(pagesActions.getPageDetailIfNeeded(this.props.params.id));
-    },
-     _createTabInPage: function(page, tab, index) {
-        this.props.pages.detail.unitType.tabs.splice(index, 0, tab); //TODO: Change this to an action
-    },
-    _createFieldInPage: function(tab, field) {
-        var newField = _.extend({}, field);
-        newField.value = null;
-        tab.unitFields.push(newField);
     },
     renderTabs: function() {
         return (
@@ -52094,76 +52078,56 @@ var PageDetail = React.createClass ( {displayName: "PageDetail",
     renderTabContent: function(tab, tabIndex) {
         var that = this;
 
-        if(!that.props.pages.detail.unitType.tabs[tabIndex] || that.props.pages.detail.unitType.tabs[tabIndex].name !== tab.name) {
-            this._createTabInPage(tab, tabIndex);
-        } 
        
-        var pageTab = that.props.pages.detail.unitType.tabs[tabIndex];
-
         return (
             React.createElement("section", {className: "col-xs-12 content-container"}, 
                 tab.unitFields.map(function(field, index) {
-
-                        console.log("inside" +  pageTab.unitFields[index].value);
-                    if(!pageTab.unitFields[index] || pageTab.unitFields[index].alias !== field.alias) {
-                        that._createFieldInPage(pageTab, field);
-                    }
-
                     return (
                         React.createElement("div", {key: index}, 
                             React.createElement("label", {className: "form-label"}, field.name), 
-                            that.renderField(index, field, tabIndex, pageTab.unitFields[index].value)[field.type]()
+                            that.renderField(field)[field.type]()
                         )
                     );
                 })
             )
         )
     },
-<<<<<<< HEAD
-    handleBlur: function(tab, field) {
-        //value = undefined when rendering
-        return function() {
-            return function(e) {
-                var value = e.target ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value ): e;
-                store.dispatch(pagesActions.changedTabFieldValue(tab, field, value));
-            }.bind(this);
-=======
-    renderField: function(index, options, tabIndex, value){
+    renderField: function(options){
         var that = this;
         return {
             "text": function() {
                 return (
-                    React.createElement("input", {type: "text", className: "form-field", onBlur: that.handleBlur(tabIndex, index), defaultValue: value, name: options.alias})
+                    React.createElement("input", {type: "text", className: "form-field", onBlur: that.handleBlur(options), defaultValue: that.props.pages.detail.content[options.alias], name: options.alias})
                 );
             },
             "textarea": function() {
                 return (
-                    React.createElement("textarea", {className: "form-field textarea", onBlur: that.handleBlur(tabIndex, index), defaultValue: value, name: options.alias})
+                    React.createElement("textarea", {className: "form-field textarea", onBlur: that.handleBlur(options), defaultValue: that.props.pages.detail.content[options.alias], name: options.alias})
                 );
             },
             "richText": function() {
                 return (
                     React.createElement("div", {className: "richtext-container"}, 
-                        React.createElement(RichTextEditor, {theme: "snow", onChange: that.handleBlur(tabIndex, index), defaultValue: value, name: options.alias})
+                        React.createElement(RichTextEditor, {theme: "snow", onChange: that.handleBlur(options), defaultValue: that.props.pages.detail.content[options.alias], name: options.alias})
                     )
                 );
             },
             "number": function() {
                 return (
-                    React.createElement("input", {type: "number", className: "form-field", onBlur: that.handleBlur(tabIndex, index), defaultValue: value, name: options.alias})
+                    React.createElement("input", {type: "number", className: "form-field", onBlur: that.handleBlur(options), defaultValue: that.props.pages.detail.content[options.alias], name: options.alias})
                 );
             },
             "boolean": function(){
                 return (
-                    React.createElement("div", {key: index, className: "checkbox-container"}, 
-                        React.createElement("input", {type: "checkbox", onChange: that.handleBlur(tabIndex, index), name: options.alias, checked:  JSON.parse(value) })
+                    React.createElement("div", {className: "checkbox-container"}, 
+                        React.createElement("input", {type: "checkbox", onChange: that.handleBlur(options), name: options.alias, checked: ""})
                     )
                 );
 
             },
             "email": function() {
                 return (
-                    React.createElement("input", {type: "email", className: "form-field", onBlur: that.handleBlur(tabIndex, index), defaultValue: value, name: options.alias})
+                    React.createElement("input", {type: "email", className: "form-field", onBlur: that.handleBlur(options), defaultValue: that.props.pages.detail.content[options.alias], name: options.alias})
                 );
             },
             "radio": function() {
@@ -52196,7 +52160,6 @@ var PageDetail = React.createClass ( {displayName: "PageDetail",
                     )  
                 );
             }
->>>>>>> 9a5874910b493fbf6be510a412c735c67bf6ab81
         }
     },
     renderSettings: function() {
@@ -52221,12 +52184,10 @@ var PageDetail = React.createClass ( {displayName: "PageDetail",
            )
        )
     },
-    handleBlur: function(tab, field) {
+    handleBlur: function(field) {
         return function(e) {
-            console.log(this.props.pages.detail);
-
             var value = e.target ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value ): e;
-            store.dispatch(pagesActions.changedTabFieldValue(tab, field, value));
+            store.dispatch(pagesActions.changedTabFieldValue(field, value));
         }.bind(this);
     },
     handleSettingsBlur: function() {
@@ -52289,12 +52250,7 @@ var mapStateToProps = function(state) {
 
 
 module.exports = ReactRedux.connect(mapStateToProps)(PageDetail);
-<<<<<<< HEAD
-},{"../../../actions/pagesActions":285,"../../../adminStore":286,"../../../tagus_lib":297,"react":266,"react-redux":41,"react-tabs":95}],289:[function(require,module,exports){
-=======
-
-},{"../../../actions/pagesActions":289,"../../../adminStore":290,"dateformat":2,"react":271,"react-quill":10,"react-redux":15,"react-tabs":97,"underscore":288}],293:[function(require,module,exports){
->>>>>>> 9a5874910b493fbf6be510a412c735c67bf6ab81
+},{"../../../actions/pagesActions":285,"../../../adminStore":286,"dateformat":2,"react":266,"react-quill":36,"react-redux":41,"react-tabs":95,"underscore":283}],289:[function(require,module,exports){
 var React = require('react');
 
 var Dashboard = React.createClass( {displayName: "Dashboard",
@@ -52460,10 +52416,10 @@ module.exports = function(state, action) {
             {
                 newState.fetchingPageDetail = false;
                 newState.detail = action.page;
-                if(action.tabs) {
+                if (action.tabs) {
                     newState.tabs = action.tabs;
                 }
-                if(action.unit) {
+                if (action.unit) {
                     newState.unit = action.unit;
                 }
                 return newState;
@@ -52475,25 +52431,27 @@ module.exports = function(state, action) {
             }
         case constants.TAB_FIELD_CHANGED_VALUE:
             {
-                newState.detail.unitType.tabs[action.tab].unitFields[action.field].value = action.value;
+                newState.detail.content[action.field.alias] = action.value;
                 return newState;
             }
         case constants.SETTINGS_FIELD_CHANGED_VALUE:
             {
-                newState.detail[action.field.name] = action.field.value;
+                newState.detail[action.field.alias] = action.field.value;
                 return newState;
             }
-        case constants.SAVING_PAGEDETAIL: {
-            newState.savingPageDetail = true;
-            return newState;
-        }
-        case constants.SAVED_PAGEDETAIL: {
-            newState.savingPageDetail = false;
-            newState.detail = action.pageDetail;
-            newState.list = action.pageList;
+        case constants.SAVING_PAGEDETAIL:
+            {
+                newState.savingPageDetail = true;
+                return newState;
+            }
+        case constants.SAVED_PAGEDETAIL:
+            {
+                newState.savingPageDetail = false;
+                newState.detail = action.pageDetail;
+                newState.list = action.pageList;
 
-            return newState;
-        }
+                return newState;
+            }
         default:
             return state || {};
     }
@@ -52524,17 +52482,7 @@ module.exports = function( state, action ) {
       return state || {};
   }
 };
-<<<<<<< HEAD
 },{"../constants":294,"underscore":283}],297:[function(require,module,exports){
-var React = require('react');
-var dateFormat = require('dateformat');
-var RichTextEditor = require('react-quill');
-var _ = require('underscore');
-
-=======
-
-},{"../constants":298,"underscore":288}],301:[function(require,module,exports){
->>>>>>> 9a5874910b493fbf6be510a412c735c67bf6ab81
 var _loadContentTree = function(list) {
     if (!list) {
         //error
@@ -52562,7 +52510,7 @@ var _loadContentTree = function(list) {
 
 var _buildTabs = function(tabList) {
     var tabs = [];
-    
+
     tabList.forEach(function(tab) {
         tabs.push(tab.name);
     });
@@ -52572,126 +52520,12 @@ var _buildTabs = function(tabList) {
     return tabs;
 };
 
-<<<<<<< HEAD
-var _renderFieldType = function(index, options, blurHandler, tabIndex, value) {
-    return _fields(index, options, blurHandler, tabIndex, value)[options.type]();
-}
-
-
-var _fields = function(index, options, blurHandler, tabIndex, value){
-    return {
-        "text": function() {
-            return (
-                React.createElement("input", {type: "text", className: "form-field", onBlur: blurHandler(), defaultValue: value, name: options.alias})
-            );
-        },
-        "textarea": function() {
-            return (
-                React.createElement("textarea", {className: "form-field textarea", onBlur: blurHandler(), defaultValue: value, name: options.alias})
-            );
-        },
-        "richText": function() {
-            return (
-                React.createElement("div", {className: "richtext-container"}, 
-                    React.createElement(RichTextEditor, {theme: "snow", onChange: blurHandler(), defaultValue: value, name: options.alias})
-                )
-            );
-        },
-        "number": function() {
-            return (
-                React.createElement("input", {type: "number", className: "form-field", name: options.alias})
-            );
-        },
-        "boolean": function(){
-            console.log("called!");
-            console.log(value);
-            return (
-                React.createElement("div", {className: "checkbox-container"}, 
-                    React.createElement("input", {type: "checkbox", onChange: blurHandler(), name: options.alias, selected: value})
-                )
-            );
-
-        },
-        "email": function() {
-            return (
-                React.createElement("input", {type: "email", className: "form-field"})
-            );
-        },
-        "radio": function() {
-            return (
-                React.createElement("div", {className: "checkbox-container"}, 
-                    options.options.length > 0 
-                    ?   options.options.map(function(option, index) {
-                            return(
-                            React.createElement("div", {key: index}, 
-                                React.createElement("label", null, React.createElement("input", {type: "radio", name: options.alias, value: option.value}), " ", option.name, " "), React.createElement("br", null)
-                            )       
-                            )
-                        })   
-                    :   null
-                    
-                )
-            );
-        },
-        "dropdown": function() {
-            return (
-            React.createElement("select", {className: "form-field", name: options.alias}, 
-                options.options.length > 0 
-                ?   options.options.map(function(option, index) {
-                        return(
-                            React.createElement("option", {value: option.value, key: index}, options.name)      
-                        )
-                    })   
-                :   null
-                
-            )  
-            );
-        }
-    }
-};
-
-var _renderSettings = function(page, blurHandler) {
-    return (
-        React.createElement("div", null, 
-            React.createElement("label", {htmlFor: "name", className: "form-label"}, "Name"), 
-            React.createElement("input", {type: "text", name: "name", onBlur: blurHandler(), className: "form-field", defaultValue: page.name}), 
-            React.createElement("label", {htmlFor: "url", className: "form-label"}, "Url"), 
-            React.createElement("input", {type: "text", name: "url", onBlur: blurHandler(), className: "form-field", defaultValue: page.url}), 
-            React.createElement("label", {className: "form-label"}, "Unit Type"), 
-            React.createElement("p", null, page.unitType.name), 
-            React.createElement("label", {className: "form-label"}, "Created"), 
-            React.createElement("p", null, dateFormat(page.created, "dddd, mmmm dS, yyyy, h:MM TT")), 
-            React.createElement("label", {className: "form-label"}, "Created By"), 
-            React.createElement("p", null, page.createdBy), 
-            React.createElement("label", {className: "form-label"}, "Edited"), 
-            React.createElement("p", null, dateFormat(page.edited, "dddd, mmmm dS, yyyy, h:MM TT"))
-            
-
-        )
-    );
-}
-
-var _createTabInPage = function(page, tab, index) {
-        page.unitType.tabs.splice(index, 0, tab);
-};
-var _createFieldInPage = function(tab, field) {
-        var newField = _.extend({}, field);
-        newField.value = null;
-        tab.unitFields.push(newField);
-};
-
-=======
->>>>>>> 9a5874910b493fbf6be510a412c735c67bf6ab81
 module.exports = {
     loadContentTree: _loadContentTree,
     buildTabs: _buildTabs
 };
 
-<<<<<<< HEAD
-},{"dateformat":2,"react":266,"react-quill":36,"underscore":283}],298:[function(require,module,exports){
-=======
-},{}],302:[function(require,module,exports){
->>>>>>> 9a5874910b493fbf6be510a412c735c67bf6ab81
+},{}],298:[function(require,module,exports){
 module.exports = {
   'content': {
     'en': 'Content',

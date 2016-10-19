@@ -25,17 +25,14 @@ module.exports = [{
         edited: new Date(),
         published: new Date(),
         unitType: {
-            name: "Home",
-            unitFields: [{
-                name: "Site Name",
-                alias: "siteName",
-                type: "text",
-                value: "Example Site"
-            }]
+            id: ''
         },
         template: "index",
         parent: "",
-        isHome: false
+        isHome: false,
+        content: {
+            'siteName': "Example Site"
+        }
     },
     {
         name: "Emails",
@@ -45,17 +42,14 @@ module.exports = [{
         edited: new Date(),
         published: new Date(),
         unitType: {
-            name: "Home",
-            unitFields: [{
-                name: "Site Name",
-                alias: "siteName",
-                type: "text",
-                value: "Example Site"
-            }]
+            id: '',
         },
         template: "index",
         parent: "",
-        isHome: false
+        isHome: false,
+        content: {
+            'siteName': "Example Site"
+        }
     },
     {
         name: "About",
@@ -65,16 +59,13 @@ module.exports = [{
         edited: new Date(),
         published: new Date(),
         unitType: {
-            name: "Home",
-            unitFields: [{
-                name: "Site Name",
-                alias: "siteName",
-                type: "text",
-                value: "Example Site"
-            }]
+            id: "",
         },
         template: "index",
         parent: "",
-        isHome: false
+        isHome: false,
+        content: {
+            'siteName': "Example Site"
+        }
     }
 ];

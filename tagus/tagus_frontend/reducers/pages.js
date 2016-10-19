@@ -25,10 +25,10 @@ module.exports = function(state, action) {
             {
                 newState.fetchingPageDetail = false;
                 newState.detail = action.page;
-                if(action.tabs) {
+                if (action.tabs) {
                     newState.tabs = action.tabs;
                 }
-                if(action.unit) {
+                if (action.unit) {
                     newState.unit = action.unit;
                 }
                 return newState;
@@ -40,25 +40,27 @@ module.exports = function(state, action) {
             }
         case constants.TAB_FIELD_CHANGED_VALUE:
             {
-                newState.detail.unitType.tabs[action.tab].unitFields[action.field].value = action.value;
+                newState.detail.content[action.field.alias] = action.value;
                 return newState;
             }
         case constants.SETTINGS_FIELD_CHANGED_VALUE:
             {
-                newState.detail[action.field.name] = action.field.value;
+                newState.detail[action.field.alias] = action.field.value;
                 return newState;
             }
-        case constants.SAVING_PAGEDETAIL: {
-            newState.savingPageDetail = true;
-            return newState;
-        }
-        case constants.SAVED_PAGEDETAIL: {
-            newState.savingPageDetail = false;
-            newState.detail = action.pageDetail;
-            newState.list = action.pageList;
+        case constants.SAVING_PAGEDETAIL:
+            {
+                newState.savingPageDetail = true;
+                return newState;
+            }
+        case constants.SAVED_PAGEDETAIL:
+            {
+                newState.savingPageDetail = false;
+                newState.detail = action.pageDetail;
+                newState.list = action.pageList;
 
-            return newState;
-        }
+                return newState;
+            }
         default:
             return state || {};
     }
