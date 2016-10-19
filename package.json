@@ -1,5 +1,5 @@
 {
-    "name": "Project Tagus",
+    "name": "ProjectTagus",
     "version": "0.0.1",
     "description": "a simple server project that will serve as base to future projects. Using grunt as task runner, bower to manage independicies and Scss as css pre compiler. The default view engine in this project is handlebars.",
     "main": "app.js",

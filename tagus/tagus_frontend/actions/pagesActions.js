@@ -142,7 +142,6 @@ var _savePageDetail = function(page) {
     return function(dispatch) {
         dispatch(_savingPageDetail());
 
-        console.log(page);
         $.post('/api/pages/' + page._id, page, function(pageDetail) {
             $.get('/api/pages?contenttree=true', function(pageList) {
                 dispatch(_savedPage(pageDetail, pageList));
