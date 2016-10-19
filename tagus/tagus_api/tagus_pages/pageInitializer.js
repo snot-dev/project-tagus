@@ -6,34 +6,16 @@ module.exports = [{
         edited: new Date(),
         published: new Date(),
         unitType: {
-            name: "Home",
-            id: "",
-            tabs: [{
-                name: "Content",
-                unitFields: [{
-                        name: "Site Name",
-                        alias: "siteName",
-                        type: "text",
-                        value: "Example Site"
-                    },
-                    {
-                        name: "Another Field",
-                        alias: "anotherField",
-                        type: "richText",
-                        value: "This is an example sentence"
-                    },
-                    {
-                        name: "True or False",
-                        alias: "trueOrFalse",
-                        type: "boolean",
-                        value: true
-                    }
-                ]
-            }]
+            id: ""
         },
         template: "index",
         parent: "",
-        isHome: true
+        isHome: true,
+        content: {
+            'siteName': "Example Site",
+            'anotherField': "This is an example sentence",
+            'trueOrFalse': true
+        }
     },
     {
         name: "Contacts",

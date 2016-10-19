@@ -75,7 +75,7 @@ var _fields = function(index, options, blurHandler, tabIndex, value){
             console.log(value);
             return (
                 <div className="checkbox-container">
-                    <input type="checkbox" onChange={blurHandler()} name={options.alias} checked={value} />
+                    <input type="checkbox" onChange={blurHandler()} name={options.alias} selected={value} />
                 </div>
             );
 

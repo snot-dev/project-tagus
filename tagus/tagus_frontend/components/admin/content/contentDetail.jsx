@@ -8,7 +8,7 @@ var TabList = require('react-tabs').TabList;
 var TabPanel = require('react-tabs').TabPanel;
 var renderField = require('../../../tagus_lib').renderFieldType;
 var renderSettingsTab = require('../../../tagus_lib').renderSettingsTab;
-var createTabinPage = require('../../../tagus_lib').createTabInPage;
+var createTabInPage = require('../../../tagus_lib').createTabInPage;
 var createFieldInPage = require('../../../tagus_lib').createFieldInPage;
 
 var PageDetail = React.createClass ( {
@@ -50,6 +50,7 @@ var PageDetail = React.createClass ( {
             <section className="col-xs-12 content-container" >
                 {tab.unitFields.map(function(field, index) {
 
+                        console.log("inside" +  pageTab.unitFields[index].value);
                     if(!pageTab.unitFields[index] || pageTab.unitFields[index].alias !== field.alias) {
                         createFieldInPageTab(pageTab, field);
                     }
@@ -65,11 +66,9 @@ var PageDetail = React.createClass ( {
         )
     },
     handleBlur: function(tab, field) {
+        //value = undefined when rendering
         return function() {
             return function(e) {
-                console.log(e.target.type);
-                console.log(e.target.checked);
-                console.log(e.target.value);
                 var value = e.target ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value ): e;
                 store.dispatch(pagesActions.changedTabFieldValue(tab, field, value));
             }.bind(this);
