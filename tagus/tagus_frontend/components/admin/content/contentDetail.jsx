@@ -83,6 +83,11 @@ var PageDetail = React.createClass ( {
                     <input type="email" className="form-field" onBlur={that.handleBlur(options)} defaultValue={that.props.pages.detail.content[options.alias]} name={options.alias} />
                 );
             },
+            "password": function() {
+                return (
+                    <input type="password" className="form-field" onBlur={that.handleBlur(options)} defaultValue={that.props.pages.detail.content[options.alias]} name={options.alias} />
+                );
+            },
             "radio": function() {
                 return (
                     <div className="checkbox-container">
@@ -101,11 +106,11 @@ var PageDetail = React.createClass ( {
             },
             "dropdown": function() {
                 return (
-                    <select className="form-field" name={options.alias}>
+                    <select className="form-field" defaultValue={that.props.pages.detail.content[options.alias]} name={options.alias}>
                         {options.options.length > 0 
                         ?   options.options.map(function(option, index) {
                                 return(
-                                    <option value={option.value} key={index}>{options.name}</option>      
+                                    <option value={option.value} key={index}>{option.name}</option>      
                                 )
                             })   
                         :   null
