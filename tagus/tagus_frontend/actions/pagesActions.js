@@ -32,7 +32,6 @@ var _receivedPageDetail = function(pageDetail, unit) {
     }
 
     if (unit) {
-        console.log(unit);
         obj.tabs = lib.buildTabs(unit.tabs);
         obj.unit = unit;
     }

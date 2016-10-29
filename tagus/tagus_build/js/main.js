@@ -51941,7 +51941,6 @@ var _receivedPageDetail = function(pageDetail, unit) {
     }
 
     if (unit) {
-        console.log(unit);
         obj.tabs = lib.buildTabs(unit.tabs);
         obj.unit = unit;
     }
@@ -52272,7 +52271,7 @@ var PageDetail = React.createClass ( {displayName: "PageDetail",
             "boolean": function(){
                 return (
                     React.createElement("div", {className: "checkbox-container"}, 
-                        React.createElement("input", {type: "checkbox", onChange: that.handleBlur(options), name: options.alias, checked: ""})
+                        React.createElement("input", {type: "checkbox", onChange: that.handleBlur(options), name: options.alias, checked: JSON.parse(that.props.pages.detail.content[options.alias] || 'false')})
                     )
                 );
 
@@ -52294,7 +52293,7 @@ var PageDetail = React.createClass ( {displayName: "PageDetail",
                         ?   options.options.map(function(option, index) {
                                 return(
                                 React.createElement("div", {key: index}, 
-                                    React.createElement("label", null, React.createElement("input", {type: "radio", name: options.alias, value: option.value}), " ", option.name, " "), React.createElement("br", null)
+                                    React.createElement("label", null, React.createElement("input", {type: "radio", onChange: that.handleBlur(options), name: options.alias, value: option.value, checked: JSON.parse(that.props.pages.detail.content[options.alias] === option.value || "false")}), " ", option.name, " "), React.createElement("br", null)
                                 )       
                                 )
                             })   
@@ -52305,7 +52304,7 @@ var PageDetail = React.createClass ( {displayName: "PageDetail",
             },
             "dropdown": function() {
                 return (
-                    React.createElement("select", {className: "form-field", defaultValue: that.props.pages.detail.content[options.alias], name: options.alias}, 
+                    React.createElement("select", {className: "form-field", onChange: that.handleBlur(options), defaultValue: that.props.pages.detail.content[options.alias], name: options.alias}, 
                         options.options.length > 0 
                         ?   options.options.map(function(option, index) {
                                 return(
@@ -52343,6 +52342,7 @@ var PageDetail = React.createClass ( {displayName: "PageDetail",
     },
     handleBlur: function(field) {
         return function(e) {
+            console.log(e.target);
             var value = e.target ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value ): e;
             store.dispatch(pagesActions.changedTabFieldValue(field, value));
         }.bind(this);

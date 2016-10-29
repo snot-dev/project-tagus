@@ -73,7 +73,7 @@ var PageDetail = React.createClass ( {
             "boolean": function(){
                 return (
                     <div className="checkbox-container">
-                        <input type="checkbox" onChange={that.handleBlur(options)} name={options.alias} checked="" />
+                        <input type="checkbox" onChange={that.handleBlur(options)} name={options.alias} checked={JSON.parse(that.props.pages.detail.content[options.alias] || 'false')} />
                     </div>
                 );
 
@@ -95,7 +95,7 @@ var PageDetail = React.createClass ( {
                         ?   options.options.map(function(option, index) {
                                 return(
                                 <div key={index}>
-                                    <label><input type="radio" name={options.alias} value={option.value} /> {option.name} </label><br/>
+                                    <label><input type="radio" onChange={that.handleBlur(options)} name={options.alias} value={option.value} checked={JSON.parse(that.props.pages.detail.content[options.alias] === option.value || "false")} /> {option.name} </label><br/>
                                 </div>       
                                 )
                             })   
@@ -106,7 +106,7 @@ var PageDetail = React.createClass ( {
             },
             "dropdown": function() {
                 return (
-                    <select className="form-field" defaultValue={that.props.pages.detail.content[options.alias]} name={options.alias}>
+                    <select className="form-field" onChange={that.handleBlur(options)} defaultValue={that.props.pages.detail.content[options.alias]} name={options.alias}>
                         {options.options.length > 0 
                         ?   options.options.map(function(option, index) {
                                 return(
@@ -144,6 +144,7 @@ var PageDetail = React.createClass ( {
     },
     handleBlur: function(field) {
         return function(e) {
+            console.log(e.target);
             var value = e.target ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value ): e;
             store.dispatch(pagesActions.changedTabFieldValue(field, value));
         }.bind(this);
