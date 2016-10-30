@@ -3,7 +3,7 @@ var tests = require('./modules/tests');
 var routes = require('./modules/routes');
 var initializer = require('./modules/initializer');
 var auth = require('./modules/auth');
-var frontend = require('./modules/frontend');
+var pages = require('./modules/pages');
 
 module.exports = {
     models: models,
@@ -11,5 +11,5 @@ module.exports = {
     routes: routes,
     initializer: initializer,
     auth: auth,
-    frontend: frontend
+    pages: pages
 };

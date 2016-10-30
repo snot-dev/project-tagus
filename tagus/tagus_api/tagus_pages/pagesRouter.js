@@ -3,11 +3,26 @@ var lib = require('../../tagus_lib/lib');
 
 module.exports = lib.routes.registerRoutes(PageModel, {
     get: function(req, res) {
-        var selectedFields = req.query.contenttree === "true" ?
-            'name parent isHome' : ''; 
+        if(req.query.contenttree === "true") {
+            PageModel.find({}, 'name parent isHome',function(err, docs) {
+                if(err){
+                    res.json(err);
+                } 
 
-        PageModel.find({}, selectedFields ,function(err, result) {
-            res.json(err || result);
-        });
+                if(docs) {
+                    var pageList = docs.map(function(doc) {
+                        return doc.toObject();
+                    })
+
+                    res.json(lib.pages.loadContentTree(pageList));
+                }
+            });
+        }
+        else {
+            PageModel.find({}, function(err, result) {
+                res.json(err || result);
+            });
+
+        }
     }
 });

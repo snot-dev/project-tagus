@@ -11,7 +11,7 @@ var _fetchingPageList = function() {
 };
 
 var _receivedPageList = function(pageList) {
-    var list = lib.loadContentTree(pageList);
+    var list = pageList;
 
     return {
         type: constants.RECEIVED_PAGELIST,
