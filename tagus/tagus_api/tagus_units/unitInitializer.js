@@ -5,7 +5,8 @@ module.exports = [{
             unitFields: [{
                     name: "Site Name",
                     alias: "siteName",
-                    type: "text"
+                    type: "text",
+                    required: true
                 },
                 {
                     name: "Another Field",
@@ -20,7 +21,8 @@ module.exports = [{
                 {
                     name: "Email Field",
                     alias: "emailField",
-                    type: "email"
+                    type: "email",
+                    required: true
                 },
                 {
                     name: "Password Field",
@@ -30,7 +32,8 @@ module.exports = [{
                 {
                     name: "Number Field",
                     alias: "numberField",
-                    type: "number"
+                    type: "number",
+                    required: true
                 },
                 {
                     type: "dropdown",
@@ -55,6 +58,7 @@ module.exports = [{
                     type: "radio",
                     alias: "radioField",
                     name: "Radio Field",
+                    required: true,
                     options: [ 
                         {
                             value: "first",

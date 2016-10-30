@@ -51970,7 +51970,7 @@ var _savingPageDetail = function() {
 };
 
 var _savedPage = function(pageDetail, pageList) {
-    var list = lib.loadContentTree(pageList);
+    var list = pageList;
 
     return {
         type: constants.SAVED_PAGEDETAIL,
@@ -52342,7 +52342,6 @@ var PageDetail = React.createClass ( {displayName: "PageDetail",
     },
     handleBlur: function(field) {
         return function(e) {
-            console.log(e.target);
             var value = e.target ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value ): e;
             store.dispatch(pagesActions.changedTabFieldValue(field, value));
         }.bind(this);
@@ -52353,10 +52352,27 @@ var PageDetail = React.createClass ( {displayName: "PageDetail",
             }.bind(this);
     },
     savePage: function() {
-        store.dispatch(pagesActions.savePageDetail(this.props.pages.detail));
+        if(this.validUnit()) {
+            store.dispatch(pagesActions.savePageDetail(this.props.pages.detail));
+        }
     },
     resetPage: function() {
         store.dispatch(pagesActions.resetPageDetail(this.props.pages.detail._id));
+    },
+    validUnit: function() {
+        for(var i = 0; i < this.props.pages.unit.tabs.length; i++) {
+            for(var k = 0; k < this.props.pages.unit.tabs[i].unitFields.length; k++) {
+                var thisField = this.props.pages.unit.tabs[i].unitFields[k];
+
+                if(thisField.required && this.props.pages.detail.content[thisField.alias] === '') {
+                    console.log(thisField);
+                    console.log("oops");
+                    return false;
+                }
+            }
+        }
+
+        return true;
     },
     render: function() {
         var that = this;

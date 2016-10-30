@@ -20,7 +20,7 @@ module.exports = function(grunt) {
                     transform: ['reactify']
                 },
                 files: {
-                    'tagus/tagus_build/js/main.js': 'tagus/tagus_frontend/components/app.jsx'
+                    'tagus/tagus_build/js/main.js': 'tagus/tagus_frontend/js/components/app.jsx'
                 }
             }
         },
