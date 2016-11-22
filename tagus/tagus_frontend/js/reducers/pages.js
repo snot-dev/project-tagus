@@ -1,8 +1,8 @@
-var constants = require('../constants');
-var _ = require('underscore');
+let constants = require('../constants');
+let _ = require('underscore');
 
 module.exports = function(state, action) {
-    var newState = _.extend({}, state);
+    let newState = _.extend({}, state);
 
     switch (action.type) {
         case constants.GETTING_PAGELIST:

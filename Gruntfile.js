@@ -17,7 +17,7 @@ module.exports = function(grunt) {
             dev: {
                 options: {
                     debug: true,
-                    transform: ['reactify']
+                    transform: [['babelify', { presets: ["react", "es2015"] }]]
                 },
                 files: {
                     'tagus/tagus_build/js/main.js': 'tagus/tagus_frontend/js/components/app.jsx'
