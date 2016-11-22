@@ -1,13 +1,11 @@
-var keyMirror = require('key-mirror');
-
-module.exports = keyMirror({
-    RECEIVED_PAGELIST: null,
-    GETTING_PAGELIST: null,
-    RECEIVED_PAGEDETAIL: null,
-    GETTING_PAGEDETAIL: null,
-    CHANGE_TAB: null,
-    TAB_FIELD_CHANGED_VALUE: null,
-    SETTINGS_FIELD_CHANGED_VALUE: null,
-    SAVING_PAGEDETAIL: null,
-    SAVED_PAGEDETAIL: null
-});
+export let constants = {
+    RECEIVED_PAGELIST,
+    GETTING_PAGELIST,
+    RECEIVED_PAGEDETAIL,
+    GETTING_PAGEDETAIL,
+    CHANGE_TAB,
+    TAB_FIELD_CHANGED_VALUE,
+    SETTINGS_FIELD_CHANGED_VALUE,
+    SAVING_PAGEDETAIL,
+    SAVED_PAGEDETAIL
+};

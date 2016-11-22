@@ -1,15 +1,13 @@
-var Redux = require('redux');
-var thunk = require('redux-thunk').default;
-var pageReducer = require('./reducers/pages');
-var testReducer = require('./reducers/test');
+import Redux from 'redux';
+import thunk from 'redux-thunk';
+import pageReducer from './reducers/pages';
 
 
-var rootReducer = Redux.combineReducers({
+let rootReducer = Redux.combineReducers({
     pages: pageReducer
-        //test: testReducer
 });
 
-var initialState = {
+let initialState = {
     pages: {
         list: [],
         detail: {},
@@ -21,7 +19,7 @@ var initialState = {
     }
 };
 
-var middleTest = function(store) {
+let middleTest = function(store) {
     return function(next) {
         return function(action) {
             return next(action);

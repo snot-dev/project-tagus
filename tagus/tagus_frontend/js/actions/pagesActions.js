@@ -1,17 +1,17 @@
-var constants = require('../constants');
-var $ = require('jquery');
-var lib = require('../tagus_lib');
+import constants from '../constants';
+import lib from '../tagus_lib';
+import $ from 'jquery';
 
 
 //actions
-var _fetchingPageList = function() {
+let _fetchingPageList = function() {
     return {
         type: constants.GETTING_PAGELIST
     }
 };
 
-var _receivedPageList = function(pageList) {
-    var list = pageList;
+let _receivedPageList = function(pageList) {
+    let list = pageList;
 
     return {
         type: constants.RECEIVED_PAGELIST,
@@ -19,14 +19,14 @@ var _receivedPageList = function(pageList) {
     };
 };
 
-var _fetchingPageDetail = function() {
+let _fetchingPageDetail = function() {
     return {
         type: constants.GETTING_PAGEDETAIL
     }
 }
 
-var _receivedPageDetail = function(pageDetail, unit) {
-    var obj = {
+let _receivedPageDetail = function(pageDetail, unit) {
+    let obj = {
         type: constants.RECEIVED_PAGEDETAIL,
         page: pageDetail
     }
@@ -39,7 +39,7 @@ var _receivedPageDetail = function(pageDetail, unit) {
     return obj;
 }
 
-var _tabFieldChanged = function(field, value) {
+let _tabFieldChanged = function(field, value) {
     return {
         type: constants.TAB_FIELD_CHANGED_VALUE,
         field: field,
@@ -47,21 +47,21 @@ var _tabFieldChanged = function(field, value) {
     }
 }
 
-var _settingsFieldChanged = function(field) {
+let _settingsFieldChanged = function(field) {
     return {
         type: constants.SETTINGS_FIELD_CHANGED_VALUE,
         field: field
     };
 }
 
-var _savingPageDetail = function() {
+let _savingPageDetail = function() {
     return {
         type: constants.SAVING_PAGEDETAIL
     }
 };
 
-var _savedPage = function(pageDetail, pageList) {
-    var list = pageList;
+let _savedPage = function(pageDetail, pageList) {
+    let list = pageList;
 
     return {
         type: constants.SAVED_PAGEDETAIL,
@@ -71,7 +71,7 @@ var _savedPage = function(pageDetail, pageList) {
 }
 
 //actions creators
-var _getPageListIfNeeded = function() {
+let _getPageListIfNeeded = function() {
     return function(dispatch, getState) {
         if (_shouldGetPageList(getState())) {
             dispatch(_getPageList());
@@ -79,24 +79,24 @@ var _getPageListIfNeeded = function() {
     }
 };
 
-var _shouldGetPageList = function(state) {
+let _shouldGetPageList = function(state) {
     //TODO: add more debug code
     return state.pages.list.length === 0;
 };
 
-var _getPageList = function() {
+let _getPageList = function() {
     return function(dispatch) {
         //add Error handling
 
         dispatch(_fetchingPageList());
 
-        $.get('/api/pages?contenttree=true', function(data) {
+        $.get('/api/pages?contenttree=true', (data) => {
             dispatch(_receivedPageList(data));
         });
     }
 };
 
-var _getPageDetailIfNeeded = function(id) {
+let _getPageDetailIfNeeded = function(id) {
     return function(dispatch, getState) {
         if (_shouldGetPageDetail(getState(), id)) {
             dispatch(_getPageDetail(id));
@@ -104,19 +104,19 @@ var _getPageDetailIfNeeded = function(id) {
     }
 }
 
-var _shouldGetPageDetail = function(state, id) {
+let _shouldGetPageDetail = function(state, id) {
     //TODO: add more debug code
 
     return !state.pages.detail._id || state.pages.detail._id !== id;
 };
 
-var _getPageDetail = function(id) {
+let _getPageDetail = function(id) {
     return function(dispatch) {
         dispatch(_fetchingPageDetail());
 
-        $.get('/api/pages/' + id, function(pageDetail) {
+        $.get('/api/pages/' + id, (pageDetail) => {
             //TODO: add Error handling
-            $.get('/api/units/' + pageDetail.unitType.id, function(unit) {
+            $.get('/api/units/' + pageDetail.unitType.id, (unit) => {
                 dispatch(_receivedPageDetail(pageDetail, unit));
             });
 
@@ -124,24 +124,24 @@ var _getPageDetail = function(id) {
     }
 };
 
-var _changedTabFieldValue = function(field, value) {
+let _changedTabFieldValue = function(field, value) {
     return function(dispatch, getState) {
         dispatch(_tabFieldChanged(field, value));
     }
 }
 
-var _changedSettingsFieldValue = function(field) {
+let _changedSettingsFieldValue = function(field) {
     return function(dispatch, getState) {
         dispatch(_settingsFieldChanged(field));
     }
 }
 
-var _savePageDetail = function(page) {
+let _savePageDetail = function(page) {
     return function(dispatch) {
         dispatch(_savingPageDetail());
 
-        $.post('/api/pages/' + page._id, page, function(pageDetail) {
-            $.get('/api/pages?contenttree=true', function(pageList) {
+        $.post('/api/pages/' + page._id, page, (pageDetail) => {
+            $.get('/api/pages?contenttree=true', (pageList) => {
                 dispatch(_savedPage(pageDetail, pageList));
             });
         });
@@ -149,13 +149,13 @@ var _savePageDetail = function(page) {
     }
 };
 
-var _resetPageDetail = function(id) {
+let _resetPageDetail = function(id) {
     return function(dispatch) {
         dispatch(_getPageDetail(id));
     }
 }
 
-module.exports = {
+export let pageActions = {
     getPageListIfNeeded: _getPageListIfNeeded,
     getPageDetailIfNeeded: _getPageDetailIfNeeded,
     changedTabFieldValue: _changedTabFieldValue,

@@ -1,18 +1,18 @@
-module.exports = {
-  'content': {
-    'en': 'Content',
-    'pt': 'Conteúdo'
-  },
-  'dashboard': {
-    'en': 'Dashboard',
-    'pt': 'Painel'
-  },
-  'editor': {
-    'en': 'Editor',
-    'pt': 'Editor'
-  },
-  'settings': {
-    'en': 'Settings',
-    'pt': 'Definições'
-  }
+export let translations = {
+    'content': {
+        'en': 'Content',
+        'pt': 'Conteúdo'
+    },
+    'dashboard': {
+        'en': 'Dashboard',
+        'pt': 'Painel'
+    },
+    'editor': {
+        'en': 'Editor',
+        'pt': 'Editor'
+    },
+    'settings': {
+        'en': 'Settings',
+        'pt': 'Definições'
+    }
 };

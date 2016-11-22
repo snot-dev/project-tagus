@@ -1,5 +1,5 @@
-var _buildTabs = function(tabList) {
-    var tabs = [];
+let _buildTabs = function(tabList) {
+    let tabs = [];
 
     tabList.forEach(function(tab) {
         tabs.push(tab.name);
@@ -10,6 +10,6 @@ var _buildTabs = function(tabList) {
     return tabs;
 };
 
-module.exports = {
+export let lib = {
     buildTabs: _buildTabs
 };

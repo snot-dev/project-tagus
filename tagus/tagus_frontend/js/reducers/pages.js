@@ -1,8 +1,7 @@
-let constants = require('../constants');
-let _ = require('underscore');
+import constants from '../constants';
 
-module.exports = function(state, action) {
-    let newState = _.extend({}, state);
+export let pageReducer = function(state, action) {
+    let newState = Object.assign({}, state);
 
     switch (action.type) {
         case constants.GETTING_PAGELIST:
