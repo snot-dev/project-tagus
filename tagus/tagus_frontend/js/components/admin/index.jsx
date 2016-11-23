@@ -1,6 +1,6 @@
 var React = require('react');
 var Link = require('react-router').Link;
-var translates = require('../../translates');
+import { translates } from '../../translates';
 
 var Index = React.createClass( {
     render: function() {

@@ -1,11 +1,13 @@
-import Redux from 'redux';
+import { combineReducers, createStore, applyMiddleware } from "redux";
 import thunk from 'redux-thunk';
-import pageReducer from './reducers/pages';
+import { pageReducer } from './reducers/pages';
 
+console.log(pageReducer);
 
-let rootReducer = Redux.combineReducers({
+let rootReducer = combineReducers({
     pages: pageReducer
 });
+
 
 let initialState = {
     pages: {
@@ -27,4 +29,4 @@ let middleTest = function(store) {
     };
 };
 
-module.exports = Redux.applyMiddleware(thunk, middleTest)(Redux.createStore)(rootReducer, initialState);
+export default applyMiddleware(thunk, middleTest)(createStore)(rootReducer, initialState);

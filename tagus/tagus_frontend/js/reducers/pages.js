@@ -1,4 +1,4 @@
-import constants from '../constants';
+import { constants } from '../constants';
 
 export let pageReducer = function(state, action) {
     let newState = Object.assign({}, state);

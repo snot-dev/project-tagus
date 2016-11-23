@@ -51914,9 +51914,11 @@ var pageActions = exports.pageActions = {
 },{"../constants":293,"../tagus_lib":295,"jquery":25}],285:[function(require,module,exports){
 'use strict';
 
-var _redux = require('redux');
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
-var _redux2 = _interopRequireDefault(_redux);
+var _redux = require('redux');
 
 var _reduxThunk = require('redux-thunk');
 
@@ -51924,12 +51926,12 @@ var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
 var _pages = require('./reducers/pages');
 
-var _pages2 = _interopRequireDefault(_pages);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var rootReducer = _redux2.default.combineReducers({
-    pages: _pages2.default
+console.log(_pages.pageReducer);
+
+var rootReducer = (0, _redux.combineReducers)({
+    pages: _pages.pageReducer
 });
 
 var initialState = {
@@ -51952,26 +51954,35 @@ var middleTest = function middleTest(store) {
     };
 };
 
-module.exports = _redux2.default.applyMiddleware(_reduxThunk2.default, middleTest)(_redux2.default.createStore)(rootReducer, initialState);
+exports.default = (0, _redux.applyMiddleware)(_reduxThunk2.default, middleTest)(_redux.createStore)(rootReducer, initialState);
 
 },{"./reducers/pages":294,"redux":272,"redux-thunk":266}],286:[function(require,module,exports){
 'use strict';
 
+var _adminStore = require('../../adminStore');
+
+var _adminStore2 = _interopRequireDefault(_adminStore);
+
+var _pagesActions = require('../../actions/pagesActions');
+
+var _pagesActions2 = _interopRequireDefault(_pagesActions);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var React = require('react');
 var Link = require('react-router').Link;
-var store = require('../../adminStore');
-var pagesActions = require('../../actions/pagesActions');
+
 var ReactRedux = require('react-redux');
 
 var Content = React.createClass({
     displayName: 'Content',
 
     componentWillMount: function componentWillMount() {
-        store.dispatch(pagesActions.getPageListIfNeeded());
+        _adminStore2.default.dispatch(_pagesActions2.default.getPageListIfNeeded());
     },
     _dispatchPageDetail: function _dispatchPageDetail(id) {
         return function () {
-            store.dispatch(pagesActions.getPageDetailIfNeeded(id));
+            _adminStore2.default.dispatch(_pagesActions2.default.getPageDetailIfNeeded(id));
         };
     },
     _buildPageList: function _buildPageList() {
@@ -52056,9 +52067,16 @@ module.exports = ReactRedux.connect(mapStateToProps)(Content);
 },{"../../actions/pagesActions":284,"../../adminStore":285,"react":265,"react-redux":40,"react-router":78}],287:[function(require,module,exports){
 'use strict';
 
+var _adminStore = require('../../../adminStore');
+
+var _adminStore2 = _interopRequireDefault(_adminStore);
+
+var _pagesActions = require('../../../actions/pagesActions');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var React = require('react');
-var store = require('../../../adminStore');
-var pagesActions = require('../../../actions/pagesActions');
+
 var ReactRedux = require('react-redux');
 var Tab = require('react-tabs').Tab;
 var Tabs = require('react-tabs').Tabs;
@@ -52074,7 +52092,7 @@ var PageDetail = React.createClass({
     componentWillMount: function componentWillMount() {
         Tabs.setUseDefaultStyles(false);
 
-        store.dispatch(pagesActions.getPageDetailIfNeeded(this.props.params.id));
+        _adminStore2.default.dispatch(_pagesActions.pagesActions.getPageDetailIfNeeded(this.props.params.id));
     },
     renderTabs: function renderTabs() {
         return React.createElement(
@@ -52251,21 +52269,21 @@ var PageDetail = React.createClass({
     handleBlur: function handleBlur(field) {
         return function (e) {
             var value = e.target ? e.target.type === 'checkbox' ? e.target.checked : e.target.value : e;
-            store.dispatch(pagesActions.changedTabFieldValue(field, value));
+            _adminStore2.default.dispatch(_pagesActions.pagesActions.changedTabFieldValue(field, value));
         }.bind(this);
     },
     handleSettingsBlur: function handleSettingsBlur() {
         return function (e) {
-            store.dispatch(pagesActions.changedSettingsFieldValue(e.target));
+            _adminStore2.default.dispatch(_pagesActions.pagesActions.changedSettingsFieldValue(e.target));
         }.bind(this);
     },
     savePage: function savePage() {
         if (this.validUnit()) {
-            store.dispatch(pagesActions.savePageDetail(this.props.pages.detail));
+            _adminStore2.default.dispatch(_pagesActions.pagesActions.savePageDetail(this.props.pages.detail));
         }
     },
     resetPage: function resetPage() {
-        store.dispatch(pagesActions.resetPageDetail(this.props.pages.detail._id));
+        _adminStore2.default.dispatch(_pagesActions.pagesActions.resetPageDetail(this.props.pages.detail._id));
     },
     validUnit: function validUnit() {
         for (var i = 0; i < this.props.pages.unit.tabs.length; i++) {
@@ -52389,9 +52407,11 @@ module.exports = Editor;
 },{"react":265}],290:[function(require,module,exports){
 'use strict';
 
+var _translates = require('../../translates');
+
 var React = require('react');
 var Link = require('react-router').Link;
-var translates = require('../../translates');
+
 
 var Index = React.createClass({
   displayName: 'Index',
@@ -52422,7 +52442,7 @@ var Index = React.createClass({
               Link,
               { to: '/content', className: 'block', activeClassName: 'active' },
               React.createElement('i', { className: 'fa fa-file', 'aria-hidden': 'true' }),
-              translates.content.en
+              _translates.translates.content.en
             )
           ),
           React.createElement(
@@ -52432,7 +52452,7 @@ var Index = React.createClass({
               Link,
               { to: '/dashboard', className: 'block', activeClassName: 'active' },
               React.createElement('i', { className: 'fa fa-pie-chart', 'aria-hidden': 'true' }),
-              translates.dashboard.en
+              _translates.translates.dashboard.en
             )
           ),
           React.createElement(
@@ -52442,7 +52462,7 @@ var Index = React.createClass({
               Link,
               { to: '/editor', className: 'block', activeClassName: 'active' },
               React.createElement('i', { className: 'fa fa-laptop', 'aria-hidden': 'true' }),
-              translates.editor.en
+              _translates.translates.editor.en
             )
           ),
           React.createElement(
@@ -52452,7 +52472,7 @@ var Index = React.createClass({
               Link,
               { to: '/settings', className: 'block', activeClassName: 'active' },
               React.createElement('i', { className: 'fa fa-cogs', 'aria-hidden': 'true' }),
-              translates.settings.en
+              _translates.translates.settings.en
             )
           )
         )
@@ -52528,21 +52548,21 @@ ReactDOM.render(React.createElement(
 ), document.getElementById('admin'));
 
 },{"../adminStore":285,"../constants":293,"./admin/content.jsx":286,"./admin/content/contentDetail.jsx":287,"./admin/dashboard.jsx":288,"./admin/editor.jsx":289,"./admin/index.jsx":290,"./admin/settings.jsx":291,"jquery":25,"react":265,"react-dom":32,"react-redux":40,"react-router":78}],293:[function(require,module,exports){
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 var constants = exports.constants = {
-    RECEIVED_PAGELIST: RECEIVED_PAGELIST,
-    GETTING_PAGELIST: GETTING_PAGELIST,
-    RECEIVED_PAGEDETAIL: RECEIVED_PAGEDETAIL,
-    GETTING_PAGEDETAIL: GETTING_PAGEDETAIL,
-    CHANGE_TAB: CHANGE_TAB,
-    TAB_FIELD_CHANGED_VALUE: TAB_FIELD_CHANGED_VALUE,
-    SETTINGS_FIELD_CHANGED_VALUE: SETTINGS_FIELD_CHANGED_VALUE,
-    SAVING_PAGEDETAIL: SAVING_PAGEDETAIL,
-    SAVED_PAGEDETAIL: SAVED_PAGEDETAIL
+    RECEIVED_PAGELIST: 'RECEIVED_PAGELIST',
+    GETTING_PAGELIST: 'GETTING_PAGELIST',
+    RECEIVED_PAGEDETAIL: 'RECEIVED_PAGEDETAIL',
+    GETTING_PAGEDETAIL: 'GETTING_PAGEDETAIL',
+    CHANGE_TAB: 'CHANGE_TAB',
+    TAB_FIELD_CHANGED_VALUE: 'TAB_FIELD_CHANGED_VALUE',
+    SETTINGS_FIELD_CHANGED_VALUE: 'SETTINGS_FIELD_CHANGED_VALUE',
+    SAVING_PAGEDETAIL: 'SAVING_PAGEDETAIL',
+    SAVED_PAGEDETAIL: 'SAVED_PAGEDETAIL'
 };
 
 },{}],294:[function(require,module,exports){
@@ -52555,31 +52575,27 @@ exports.pageReducer = undefined;
 
 var _constants = require('../constants');
 
-var _constants2 = _interopRequireDefault(_constants);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 var pageReducer = exports.pageReducer = function pageReducer(state, action) {
     var newState = Object.assign({}, state);
 
     switch (action.type) {
-        case _constants2.default.GETTING_PAGELIST:
+        case _constants.constants.GETTING_PAGELIST:
             {
                 newState.fetchingPageList = true;
                 return newState;
             }
-        case _constants2.default.RECEIVED_PAGELIST:
+        case _constants.constants.RECEIVED_PAGELIST:
             {
                 newState.fetchingPageList = false;
                 newState.list = action.pageList;
                 return newState;
             }
-        case _constants2.default.GETTING_PAGEDETAIL:
+        case _constants.constants.GETTING_PAGEDETAIL:
             {
                 newState.fetchingPageDetail = true;
                 return newState;
             }
-        case _constants2.default.RECEIVED_PAGEDETAIL:
+        case _constants.constants.RECEIVED_PAGEDETAIL:
             {
                 newState.fetchingPageDetail = false;
                 newState.detail = action.page;
@@ -52591,27 +52607,27 @@ var pageReducer = exports.pageReducer = function pageReducer(state, action) {
                 }
                 return newState;
             }
-        case _constants2.default.CHANGE_TAB:
+        case _constants.constants.CHANGE_TAB:
             {
                 newState.tab = action.tab;
                 return newState;
             }
-        case _constants2.default.TAB_FIELD_CHANGED_VALUE:
+        case _constants.constants.TAB_FIELD_CHANGED_VALUE:
             {
                 newState.detail.content[action.field.alias] = action.value;
                 return newState;
             }
-        case _constants2.default.SETTINGS_FIELD_CHANGED_VALUE:
+        case _constants.constants.SETTINGS_FIELD_CHANGED_VALUE:
             {
                 newState.detail[action.field.alias] = action.field.value;
                 return newState;
             }
-        case _constants2.default.SAVING_PAGEDETAIL:
+        case _constants.constants.SAVING_PAGEDETAIL:
             {
                 newState.savingPageDetail = true;
                 return newState;
             }
-        case _constants2.default.SAVED_PAGEDETAIL:
+        case _constants.constants.SAVED_PAGEDETAIL:
             {
                 newState.savingPageDetail = false;
                 newState.detail = action.pageDetail;
@@ -52652,7 +52668,7 @@ var lib = exports.lib = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-var translations = exports.translations = {
+var translates = exports.translates = {
     'content': {
         'en': 'Content',
         'pt': 'Conteúdo'

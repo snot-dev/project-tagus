@@ -1,7 +1,7 @@
 var React = require('react');
 var Link = require('react-router').Link;
-var store = require('../../adminStore');
-var pagesActions = require('../../actions/pagesActions');
+import store from '../../adminStore';
+import pagesActions from '../../actions/pagesActions';
 var ReactRedux = require('react-redux');
 
 var Content = React.createClass( {

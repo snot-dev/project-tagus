@@ -1,4 +1,4 @@
-export let translations = {
+export let translates = {
     'content': {
         'en': 'Content',
         'pt': 'Conteúdo'
