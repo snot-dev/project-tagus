@@ -1,22 +1,19 @@
-var React = require('react');
+import React from 'react';
 import store from '../../../adminStore';
 import {pagesActions} from '../../../actions/pagesActions';
-var ReactRedux = require('react-redux');
-var Tab = require('react-tabs').Tab;
-var Tabs = require('react-tabs').Tabs;
-var TabList = require('react-tabs').TabList;
-var TabPanel = require('react-tabs').TabPanel;
+import {connect} from 'react-redux';
+import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 var dateFormat = require('dateformat');
 var RichTextEditor = require('react-quill');
-var _ = require('underscore');
 
-var PageDetail = React.createClass ( {
-    componentWillMount: function() {
+class PageDetail extends React.Component { 
+    componentWillMount() {
        Tabs.setUseDefaultStyles(false);
 
        store.dispatch(pagesActions.getPageDetailIfNeeded(this.props.params.id));
-    },
-    renderTabs: function() {
+    };
+
+    renderTabs() {
         return (
             <TabList className="tab-navigation">
                     {this.props.pages.tabs.map(function(tab, index) {
@@ -26,9 +23,9 @@ var PageDetail = React.createClass ( {
                     })}
             </TabList>
         );
-    },
+    };
 
-    renderTabContent: function(tab, tabIndex) {
+    renderTabContent(tab, tabIndex) {
         var that = this;
 
        
@@ -44,9 +41,11 @@ var PageDetail = React.createClass ( {
                 })}
             </section>
         )
-    },
-    renderField: function(options){
+    };
+
+    renderField(options) {
         var that = this;
+        
         return {
             "text": function() {
                 return (
@@ -119,8 +118,9 @@ var PageDetail = React.createClass ( {
                 );
             }
         }
-    },
-    renderSettings: function() {
+    };
+
+    renderSettings() {
        return (
            <TabPanel>
             <section className="col-xs-12 content-container">
@@ -141,42 +141,46 @@ var PageDetail = React.createClass ( {
             </section>
            </TabPanel>
        )
-    },
-    handleBlur: function(field) {
-        return function(e) {
+    };
+
+    handleBlur(field) {
+        return (e)=> {
             var value = e.target ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value ): e;
             store.dispatch(pagesActions.changedTabFieldValue(field, value));
-        }.bind(this);
-    },
-    handleSettingsBlur: function() {
-        return function(e) {
+        };
+    };
+
+    handleSettingsBlur() {
+        return (e) =>{
                 store.dispatch(pagesActions.changedSettingsFieldValue(e.target));
-            }.bind(this);
-    },
-    savePage: function() {
+            };
+    };
+
+    savePage() {
         if(this.validUnit()) {
             store.dispatch(pagesActions.savePageDetail(this.props.pages.detail));
         }
-    },
-    resetPage: function() {
+    };
+
+    resetPage() {
         store.dispatch(pagesActions.resetPageDetail(this.props.pages.detail._id));
-    },
-    validUnit: function() {
+    };
+
+    validUnit() {
         for(var i = 0; i < this.props.pages.unit.tabs.length; i++) {
             for(var k = 0; k < this.props.pages.unit.tabs[i].unitFields.length; k++) {
                 var thisField = this.props.pages.unit.tabs[i].unitFields[k];
 
                 if(thisField.required && this.props.pages.detail.content[thisField.alias] === '') {
-                    console.log(thisField);
-                    console.log("oops");
                     return false;
                 }
             }
         }
 
         return true;
-    },
-    render: function() {
+    };
+
+    render() {
         var that = this;
 
         return (
@@ -212,8 +216,8 @@ var PageDetail = React.createClass ( {
                 </section>
             </div>
         )
-    }
-});
+    };
+};
 
 
 var mapStateToProps = function(state) {
@@ -224,4 +228,4 @@ var mapStateToProps = function(state) {
 };
 
 
-module.exports = ReactRedux.connect(mapStateToProps)(PageDetail);
+export default connect(mapStateToProps)(PageDetail);

@@ -20,13 +20,13 @@ module.exports = function(grunt) {
                     transform: [['babelify', { presets: ["react", "es2015"] }]]
                 },
                 files: {
-                    'tagus/tagus_build/js/main.js': 'tagus/tagus_frontend/js/components/app.jsx'
+                    'tagus/tagus_build/js/main.js': 'tagus/tagus_frontend/js/components/app.js'
                 }
             }
         },
         watch: {
             browserify: {
-                files: ['tagus/**/*.jsx', 'tagus/**/*.js', 'Gruntfile.js'],
+                files: ['tagus/**/*.js', 'Gruntfile.js'],
                 tasks: ['browserify:dev', 'express:dev'],
                 options: {
                     spawn: false

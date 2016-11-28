@@ -1,8 +1,7 @@
 import { combineReducers, createStore, applyMiddleware } from "redux";
-import thunk from 'redux-thunk';
 import { pageReducer } from './reducers/pages';
+import thunk from 'redux-thunk';
 
-console.log(pageReducer);
 
 let rootReducer = combineReducers({
     pages: pageReducer

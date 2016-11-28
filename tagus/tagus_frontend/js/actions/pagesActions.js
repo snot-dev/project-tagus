@@ -1,5 +1,5 @@
-import constants from '../constants';
-import lib from '../tagus_lib';
+import {constants} from '../constants';
+import {lib} from '../tagus_lib';
 import $ from 'jquery';
 
 

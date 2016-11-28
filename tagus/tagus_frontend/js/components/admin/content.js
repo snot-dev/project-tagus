@@ -1,19 +1,21 @@
-var React = require('react');
-var Link = require('react-router').Link;
+import React from 'react';
+import Link from 'react-router';
 import store from '../../adminStore';
-import pagesActions from '../../actions/pagesActions';
-var ReactRedux = require('react-redux');
+import {pageActions} from '../../actions/pagesActions';
+import {connect} from 'react-redux';
 
-var Content = React.createClass( {
-    componentWillMount: function() {
-       store.dispatch(pagesActions.getPageListIfNeeded());
-    },
-    _dispatchPageDetail: function(id) {
-        return function() {
-            store.dispatch(pagesActions.getPageDetailIfNeeded(id));
+class Content extends React.Component {
+    componentWillMount() {
+       store.dispatch(pageActions.getPageListIfNeeded());
+    };
+
+    _dispatchPageDetail(id) {
+        return () => {
+            store.dispatch(pageActions.getPageDetailIfNeeded(id));
         }
-     },
-    _buildPageList: function() {
+     };
+
+    _buildPageList() {
         var that = this;
          return (
             <ul id="page-list" className="list">
@@ -33,8 +35,9 @@ var Content = React.createClass( {
                 }
             </ul>
         );
-    },
-    _childList: function(item) {
+    };
+
+    _childList(item) {
         var that = this;
         return (
             <ul className="child-list">
@@ -51,36 +54,36 @@ var Content = React.createClass( {
                 }
             </ul>
         );
-    }, 
-    render: function() {
-        return (
-        <div id="admin-content-container" className="container-fluid">
-            <div className="row">
-                <div className="col-xs-3">
-                    <section className="section content-page-list">
-                        <h2 className="title">Content</h2>
-                        {this.props.pages.fetchingPageList ? 
-                            <div className="loader"></div>
-                        :  
-                            <div>
-                                {this._buildPageList()}
-                            </div>
-                        }
-                    </section>     
-                    
-                </div>
-                {this.props.children}
-            </div>
-        </div>
-        );
-    }
-});
+    };
 
-var mapStateToProps = function(state) {
+    render() {
+        return (
+            <div id="admin-content-container" className="container-fluid">
+                <div className="row">
+                    <div className="col-xs-3">
+                        <section className="section content-page-list">
+                            <h2 className="title">Content</h2>
+                            {this.props.pages.fetchingPageList ? 
+                                <div className="loader"></div>
+                            :  
+                                <div>
+                                    {this._buildPageList()}
+                                </div>
+                            }
+                        </section>     
+                        
+                    </div>
+                    {this.props.children}
+                </div>
+            </div>
+        );
+    };
+};
+
+let mapStateToProps = function(state) {
   return {
     pages:  state.pages
   };
 };
 
-
-module.exports = ReactRedux.connect(mapStateToProps)(Content);
+export default connect(mapStateToProps)(Content);
