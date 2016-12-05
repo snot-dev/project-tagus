@@ -9,6 +9,7 @@
   "author": "Snot",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.15.3",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.0",
     "bower": "^1.7.7",

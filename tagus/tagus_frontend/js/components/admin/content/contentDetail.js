@@ -1,6 +1,6 @@
 import React from 'react';
 import store from '../../../adminStore';
-import {pagesActions} from '../../../actions/pagesActions';
+import {pageActions} from '../../../actions/pagesActions';
 import {connect} from 'react-redux';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 var dateFormat = require('dateformat');
@@ -10,7 +10,7 @@ class PageDetail extends React.Component {
     componentWillMount() {
        Tabs.setUseDefaultStyles(false);
 
-       store.dispatch(pagesActions.getPageDetailIfNeeded(this.props.params.id));
+       store.dispatch(pageActions.getPageDetailIfNeeded(this.props.params.id));
     };
 
     renderTabs() {
@@ -146,24 +146,24 @@ class PageDetail extends React.Component {
     handleBlur(field) {
         return (e)=> {
             var value = e.target ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value ): e;
-            store.dispatch(pagesActions.changedTabFieldValue(field, value));
+            store.dispatch(pageActions.changedTabFieldValue(field, value));
         };
     };
 
     handleSettingsBlur() {
         return (e) =>{
-                store.dispatch(pagesActions.changedSettingsFieldValue(e.target));
+                store.dispatch(pageActions.changedSettingsFieldValue(e.target));
             };
     };
 
     savePage() {
         if(this.validUnit()) {
-            store.dispatch(pagesActions.savePageDetail(this.props.pages.detail));
+            store.dispatch(pageActions.savePageDetail(this.props.pages.detail));
         }
     };
 
     resetPage() {
-        store.dispatch(pagesActions.resetPageDetail(this.props.pages.detail._id));
+        store.dispatch(pageActions.resetPageDetail(this.props.pages.detail._id));
     };
 
     validUnit() {
