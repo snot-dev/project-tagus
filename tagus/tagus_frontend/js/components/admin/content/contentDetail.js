@@ -1,6 +1,6 @@
 import React from 'react';
 import store from '../../../adminStore';
-import {pageActions} from '../../../actions/pagesActions';
+import {getContentDetailIfNeeded} from '../../../actions/pagesActions';
 import {connect} from 'react-redux';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 var dateFormat = require('dateformat');
@@ -10,7 +10,7 @@ class PageDetail extends React.Component {
     componentWillMount() {
        Tabs.setUseDefaultStyles(false);
 
-       store.dispatch(pageActions.getPageDetailIfNeeded(this.props.params.id));
+       store.dispatch(getContentDetailIfNeeded(this.props.params.id));
     };
 
     renderTabs() {
@@ -222,8 +222,8 @@ class PageDetail extends React.Component {
 
 var mapStateToProps = function(state) {
   return {
-    pages:  state.pages,
-    showLoader: state.pages.fetchingPageDetail || state.pages.savingPageDetail
+    content:  state.content,
+    showLoader: state.content.fetchingPageDetail || state.content.savingPageDetail
   };
 };
 

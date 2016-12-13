@@ -2,7 +2,7 @@ import React from 'react';
 import store from '../../adminStore';
 import {Link} from 'react-router';
 import {pageActions} from '../../actions/pagesActions';
-import {getContentListIfNeeded} from '../../actions/contentActions';
+import {getContentListIfNeeded, getContentDetailIfNeeded} from '../../actions/contentActions';
 import {connect} from 'react-redux';
 
 class Content extends React.Component {
@@ -12,7 +12,7 @@ class Content extends React.Component {
 
     _dispatchPageDetail(id) {
         return () => {
-            store.dispatch(pageActions.getPageDetailIfNeeded(id));
+            store.dispatch(getContentDetailIfNeeded(id));
         }
      };
 
@@ -21,12 +21,12 @@ class Content extends React.Component {
          return (
             <ul id="page-list" className="list">
                 {that.props.content.list && that.props.content.list.length > 0 
-                ?   that.props.content.list.map(function(page, index) {
+                ?   that.props.content.list.map((page, index) => {
                         return (
                             <li  className="page item" key={index}>
-                                <Link to={"/content/" + (page._id)} onClick={that._dispatchPageDetail(page._id)} activeClassName="active" className="link"><i className="fa fa-home" aria-hidden="true"></i>{page.name}</Link>
+                                <Link to={"/content/" + (page._id)} onClick={this._dispatchPageDetail(page._id)} activeClassName="active" className="link"><i className="fa fa-home" aria-hidden="true"></i>{page.name}</Link>
                                     {page.children.length > 0 ?
-                                        that._childList(page)
+                                        this._childList(page)
                                     : null
                                     }
                             </li>

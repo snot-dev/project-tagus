@@ -52601,10 +52601,9 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.getContentListIfNeeded = getContentListIfNeeded;
+exports.getContentDetailIfNeeded = getContentDetailIfNeeded;
 
 var _constants = require('../constants');
-
-var _tagus_lib = require('../tagus_lib');
 
 var _axios = require('../axios');
 
@@ -52615,6 +52614,28 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var _shouldGetPageList = function _shouldGetPageList(state) {
     //TODO: add more debug code
     return state.content.list.length === 0;
+};
+
+var _shouldGetPageDetail = function _shouldGetPageDetail(state, id) {
+    //TODO: add more debug code
+    return !state.content.detail._id || state.content.detail._id !== id;
+};
+
+var _shouldGetContentUnit = function _shouldGetContentUnit(state, id) {
+    return !state.content.unit._id || state.content.unit._id !== id;
+};
+
+var _getContentUnitTypeIfNeeded = function _getContentUnitTypeIfNeeded(dispatch, state, id) {
+    return function (dispatch, state) {
+        if (_shouldGetContentUnit(state, id)) {
+            dispatch({
+                type: _constants.constants.GET_CONTENT_DETAIL_UNITTYPE,
+                payload: (0, _axios2.default)('units/' + id).then(function (results) {
+                    return results;
+                })
+            });
+        }
+    };
 };
 
 function getContentListIfNeeded() {
@@ -52630,7 +52651,22 @@ function getContentListIfNeeded() {
     };
 };
 
-},{"../axios":319,"../constants":327,"../tagus_lib":329}],317:[function(require,module,exports){
+function getContentDetailIfNeeded(id) {
+    return function (dispatch, getState) {
+        if (_shouldGetPageDetail(getState(), id)) {
+            dispatch({
+                type: _constants.constants.GET_CONTENT_DETAIL,
+                payload: (0, _axios2.default)('pages/' + id).then(function (results) {
+                    console.log(results);
+                    _getContentUnitTypeIfNeeded(dispatch, getState(), results.unityType.id);
+                    return results;
+                })
+            });
+        }
+    };
+};
+
+},{"../axios":319,"../constants":327}],317:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52845,7 +52881,7 @@ var initialState = {
         list: [],
         detail: {},
         fetchingContentList: false,
-        fetchingPageDetail: false,
+        fetchingContentDetail: false,
         unit: {},
         tabs: [],
         savingPageDetail: false
@@ -52927,12 +52963,14 @@ var Content = function (_React$Component) {
         key: '_dispatchPageDetail',
         value: function _dispatchPageDetail(id) {
             return function () {
-                _adminStore2.default.dispatch(_pagesActions.pageActions.getPageDetailIfNeeded(id));
+                _adminStore2.default.dispatch((0, _contentActions.getContentDetailIfNeeded)(id));
             };
         }
     }, {
         key: '_buildPageList',
         value: function _buildPageList() {
+            var _this2 = this;
+
             var that = this;
             return _react2.default.createElement(
                 'ul',
@@ -52943,11 +52981,11 @@ var Content = function (_React$Component) {
                         { className: 'page item', key: index },
                         _react2.default.createElement(
                             _reactRouter.Link,
-                            { to: "/content/" + page._id, onClick: that._dispatchPageDetail(page._id), activeClassName: 'active', className: 'link' },
+                            { to: "/content/" + page._id, onClick: _this2._dispatchPageDetail(page._id), activeClassName: 'active', className: 'link' },
                             _react2.default.createElement('i', { className: 'fa fa-home', 'aria-hidden': 'true' }),
                             page.name
                         ),
-                        page.children.length > 0 ? that._childList(page) : null
+                        page.children.length > 0 ? _this2._childList(page) : null
                     );
                 }) : null
             );
@@ -53068,7 +53106,7 @@ var PageDetail = function (_React$Component) {
         value: function componentWillMount() {
             _reactTabs.Tabs.setUseDefaultStyles(false);
 
-            _adminStore2.default.dispatch(_pagesActions.pageActions.getPageDetailIfNeeded(this.props.params.id));
+            _adminStore2.default.dispatch((0, _pagesActions.getContentDetailIfNeeded)(this.props.params.id));
         }
     }, {
         key: 'renderTabs',
@@ -53255,27 +53293,27 @@ var PageDetail = function (_React$Component) {
         value: function handleBlur(field) {
             return function (e) {
                 var value = e.target ? e.target.type === 'checkbox' ? e.target.checked : e.target.value : e;
-                _adminStore2.default.dispatch(_pagesActions.pageActions.changedTabFieldValue(field, value));
+                _adminStore2.default.dispatch(pageActions.changedTabFieldValue(field, value));
             };
         }
     }, {
         key: 'handleSettingsBlur',
         value: function handleSettingsBlur() {
             return function (e) {
-                _adminStore2.default.dispatch(_pagesActions.pageActions.changedSettingsFieldValue(e.target));
+                _adminStore2.default.dispatch(pageActions.changedSettingsFieldValue(e.target));
             };
         }
     }, {
         key: 'savePage',
         value: function savePage() {
             if (this.validUnit()) {
-                _adminStore2.default.dispatch(_pagesActions.pageActions.savePageDetail(this.props.pages.detail));
+                _adminStore2.default.dispatch(pageActions.savePageDetail(this.props.pages.detail));
             }
         }
     }, {
         key: 'resetPage',
         value: function resetPage() {
-            _adminStore2.default.dispatch(_pagesActions.pageActions.resetPageDetail(this.props.pages.detail._id));
+            _adminStore2.default.dispatch(pageActions.resetPageDetail(this.props.pages.detail._id));
         }
     }, {
         key: 'validUnit',
@@ -53350,8 +53388,8 @@ var PageDetail = function (_React$Component) {
 
 var mapStateToProps = function mapStateToProps(state) {
     return {
-        pages: state.pages,
-        showLoader: state.pages.fetchingPageDetail || state.pages.savingPageDetail
+        content: state.content,
+        showLoader: state.content.fetchingPageDetail || state.content.savingPageDetail
     };
 };
 
@@ -53693,8 +53731,14 @@ Object.defineProperty(exports, "__esModule", {
 });
 var constants = exports.constants = {
     GET_CONTENT_LIST: 'GET_CONTENT_LIST',
-    GET_CONTENT_LIST_FULFILLED: 'GET_CONTENT_LIST_FULFILLED',
     GET_CONTENT_LIST_PENDING: 'GET_CONTENT_LIST_PENDING',
+    GET_CONTENT_LIST_FULFILLED: 'GET_CONTENT_LIST_FULFILLED',
+    GET_CONTENT_DETAIL: 'GET_CONTENT_DETAIL',
+    GET_CONTENT_DETAIL_PENDING: 'GET_CONTENT_DETAIL_PENDING',
+    GET_CONTENT_DETAIL_FULFILLED: 'GET_CONTENT_DETAIL_FULFILLED',
+    GET_CONTENT_DETAIL_UNITTYPE: 'GET_CONTENT_DETAIL_UNITTYPE',
+    GET_CONTENT_DETAIL_UNITTYPE_PENDING: 'GET_CONTENT_DETAIL_UNITTYPE_PENDING',
+    GET_CONTENT_DETAIL_UNITTYPE_FULFILLED: 'GET_CONTENT_DETAIL_UNITTYPE_FULFILLED',
     RECEIVED_PAGEDETAIL: 'RECEIVED_PAGEDETAIL',
     GETTING_PAGEDETAIL: 'GETTING_PAGEDETAIL',
     CHANGE_TAB: 'CHANGE_TAB',
@@ -53714,6 +53758,8 @@ exports.contentReducer = undefined;
 
 var _constants = require('../constants');
 
+var _tagus_lib = require('../tagus_lib');
+
 var contentReducer = exports.contentReducer = function contentReducer(state, action) {
     var newState = Object.assign({}, state);
 
@@ -53728,9 +53774,32 @@ var contentReducer = exports.contentReducer = function contentReducer(state, act
                 newState.fetchingContentList = false;
                 newState.list = action.payload.data;
 
-                console.log(action);
                 return newState;
             }
+        case _constants.constants.GET_CONTENT_DETAIL_PENDING:
+            {
+                newState.fetchingContentDetail = true;
+                return newState;
+            }
+        case _constants.constants.GET_CONTENT_DETAIL_FULFILLED:
+            {
+                newState.fetchingContentDetail = false;
+                newState.detail = action.payload.data;
+                return newState;
+            }
+        case _constants.constants.GET_CONTENT_DETAIL_UNITTYPE_PENDING:
+            {
+                newState.fetchingContentDetail = true;
+                return newState;
+            }
+        case _constants.constants.GET_CONTENT_DETAIL_UNITTYPE_FULFILLED:
+            {
+                newState.fetchingContentDetail = false;
+                newState.unit = action.payload.data;
+                newState.tabs = _tagus_lib.lib.buildTabs(action.payload.data.tabs);
+                return newState;
+            }
+
         case _constants.constants.GETTING_PAGEDETAIL:
             {
                 newState.fetchingPageDetail = true;
@@ -53781,7 +53850,7 @@ var contentReducer = exports.contentReducer = function contentReducer(state, act
     }
 };
 
-},{"../constants":327}],329:[function(require,module,exports){
+},{"../constants":327,"../tagus_lib":329}],329:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

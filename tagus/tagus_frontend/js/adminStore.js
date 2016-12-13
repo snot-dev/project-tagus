@@ -15,7 +15,7 @@ let initialState = {
         list: [],
         detail: {},
         fetchingContentList: false,
-        fetchingPageDetail: false,
+        fetchingContentDetail: false,
         unit: {},
         tabs: [],
         savingPageDetail: false

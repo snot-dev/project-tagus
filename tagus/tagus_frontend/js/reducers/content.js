@@ -1,21 +1,40 @@
 import { constants } from '../constants';
+import {lib} from '../tagus_lib';
 
 export let contentReducer = function(state, action) {
     let newState = Object.assign({}, state);
 
     switch (action.type) {
-        case constants.GET_CONTENT_LIST_PENDING:
-            {
-                newState.fetchingContentList = true;
-                return newState;
-            }
-        case constants.GET_CONTENT_LIST_FULFILLED:
-            {
-                newState.fetchingContentList = false;
-                newState.list = action.payload.data;
+        case constants.GET_CONTENT_LIST_PENDING: {
+            newState.fetchingContentList = true;
+            return newState;
+        }
+        case constants.GET_CONTENT_LIST_FULFILLED: {
+            newState.fetchingContentList = false;
+            newState.list = action.payload.data;
 
-                return newState;
-            }
+            return newState;
+        }
+        case constants.GET_CONTENT_DETAIL_PENDING: {
+            newState.fetchingContentDetail = true;
+            return newState;
+        }    
+        case constants.GET_CONTENT_DETAIL_FULFILLED: {
+            newState.fetchingContentDetail = false;
+            newState.detail = action.payload.data;
+            return newState;
+        }    
+        case constants.GET_CONTENT_DETAIL_UNITTYPE_PENDING: {
+            newState.fetchingContentDetail = true;
+            return newState;
+        }    
+        case constants.GET_CONTENT_DETAIL_UNITTYPE_FULFILLED: {
+            newState.fetchingContentDetail = false;
+            newState.unit = action.payload.data;
+            newState.tabs = lib.buildTabs(action.payload.data.tabs);
+            return newState;
+        } 
+
         case constants.GETTING_PAGEDETAIL:
             {
                 newState.fetchingPageDetail = true;
