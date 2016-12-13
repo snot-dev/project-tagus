@@ -1,18 +1,19 @@
 import { constants } from '../constants';
 
-export let pageReducer = function(state, action) {
+export let contentReducer = function(state, action) {
     let newState = Object.assign({}, state);
 
     switch (action.type) {
-        case constants.GETTING_PAGELIST:
+        case constants.GET_CONTENT_LIST_PENDING:
             {
-                newState.fetchingPageList = true;
+                newState.fetchingContentList = true;
                 return newState;
             }
-        case constants.RECEIVED_PAGELIST:
+        case constants.GET_CONTENT_LIST_FULFILLED:
             {
-                newState.fetchingPageList = false;
-                newState.list = action.pageList;
+                newState.fetchingContentList = false;
+                newState.list = action.payload.data;
+
                 return newState;
             }
         case constants.GETTING_PAGEDETAIL:

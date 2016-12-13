@@ -1,18 +1,20 @@
 import { combineReducers, createStore, applyMiddleware } from "redux";
-import { pageReducer } from './reducers/pages';
+import { contentReducer } from './reducers/content';
 import thunk from 'redux-thunk';
+import promise from 'redux-promise-middleware';
+import logger from 'redux-logger';
 
 
 let rootReducer = combineReducers({
-    pages: pageReducer
+    content: contentReducer
 });
 
 
 let initialState = {
-    pages: {
+    content: {
         list: [],
         detail: {},
-        fetchingPageList: false,
+        fetchingContentList: false,
         fetchingPageDetail: false,
         unit: {},
         tabs: [],
@@ -20,12 +22,4 @@ let initialState = {
     }
 };
 
-let middleTest = function(store) {
-    return function(next) {
-        return function(action) {
-            return next(action);
-        }
-    };
-};
-
-export default applyMiddleware(thunk, middleTest)(createStore)(rootReducer, initialState);
+export default applyMiddleware(promise(), thunk, logger())(createStore)(rootReducer, initialState);

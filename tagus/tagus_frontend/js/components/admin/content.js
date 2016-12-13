@@ -2,11 +2,12 @@ import React from 'react';
 import store from '../../adminStore';
 import {Link} from 'react-router';
 import {pageActions} from '../../actions/pagesActions';
+import {getContentListIfNeeded} from '../../actions/contentActions';
 import {connect} from 'react-redux';
 
 class Content extends React.Component {
     componentWillMount() {
-       store.dispatch(pageActions.getPageListIfNeeded());
+       store.dispatch(getContentListIfNeeded());
     };
 
     _dispatchPageDetail(id) {
@@ -19,8 +20,8 @@ class Content extends React.Component {
         var that = this;
          return (
             <ul id="page-list" className="list">
-                {that.props.pages.list && that.props.pages.list.length > 0 
-                ?   that.props.pages.list.map(function(page, index) {
+                {that.props.content.list && that.props.content.list.length > 0 
+                ?   that.props.content.list.map(function(page, index) {
                         return (
                             <li  className="page item" key={index}>
                                 <Link to={"/content/" + (page._id)} onClick={that._dispatchPageDetail(page._id)} activeClassName="active" className="link"><i className="fa fa-home" aria-hidden="true"></i>{page.name}</Link>
@@ -63,7 +64,7 @@ class Content extends React.Component {
                     <div className="col-xs-3">
                         <section className="section content-page-list">
                             <h2 className="title">Content</h2>
-                            {this.props.pages.fetchingPageList ? 
+                            {this.props.content.fetchingContentList ? 
                                 <div className="loader"></div>
                             :  
                                 <div>
@@ -82,7 +83,7 @@ class Content extends React.Component {
 
 let mapStateToProps = function(state) {
   return {
-    pages:  state.pages
+    content:  state.content
   };
 };
 
