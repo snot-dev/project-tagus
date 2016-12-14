@@ -52626,16 +52626,14 @@ var _shouldGetContentUnit = function _shouldGetContentUnit(state, id) {
 };
 
 var _getContentUnitTypeIfNeeded = function _getContentUnitTypeIfNeeded(dispatch, state, id) {
-    return function (dispatch, state) {
-        if (_shouldGetContentUnit(state, id)) {
-            dispatch({
-                type: _constants.constants.GET_CONTENT_DETAIL_UNITTYPE,
-                payload: (0, _axios2.default)('units/' + id).then(function (results) {
-                    return results;
-                })
-            });
-        }
-    };
+    if (_shouldGetContentUnit(state, id)) {
+        dispatch({
+            type: _constants.constants.GET_CONTENT_DETAIL_UNITTYPE,
+            payload: (0, _axios2.default)('units/' + id).then(function (results) {
+                return results;
+            })
+        });
+    }
 };
 
 function getContentListIfNeeded() {
@@ -52652,13 +52650,13 @@ function getContentListIfNeeded() {
 };
 
 function getContentDetailIfNeeded(id) {
+    console.log(id);
     return function (dispatch, getState) {
         if (_shouldGetPageDetail(getState(), id)) {
             dispatch({
                 type: _constants.constants.GET_CONTENT_DETAIL,
                 payload: (0, _axios2.default)('pages/' + id).then(function (results) {
-                    console.log(results);
-                    _getContentUnitTypeIfNeeded(dispatch, getState(), results.unityType.id);
+                    _getContentUnitTypeIfNeeded(dispatch, getState(), results.data.unitType.id);
                     return results;
                 })
             });
@@ -53075,7 +53073,7 @@ var _adminStore = require('../../../adminStore');
 
 var _adminStore2 = _interopRequireDefault(_adminStore);
 
-var _pagesActions = require('../../../actions/pagesActions');
+var _contentActions = require('../../../actions/contentActions');
 
 var _reactRedux = require('react-redux');
 
@@ -53106,7 +53104,7 @@ var PageDetail = function (_React$Component) {
         value: function componentWillMount() {
             _reactTabs.Tabs.setUseDefaultStyles(false);
 
-            _adminStore2.default.dispatch((0, _pagesActions.getContentDetailIfNeeded)(this.props.params.id));
+            _adminStore2.default.dispatch((0, _contentActions.getContentDetailIfNeeded)(this.props.params.id));
         }
     }, {
         key: 'renderTabs',
@@ -53114,7 +53112,7 @@ var PageDetail = function (_React$Component) {
             return _react2.default.createElement(
                 _reactTabs.TabList,
                 { className: 'tab-navigation' },
-                this.props.pages.tabs.map(function (tab, index) {
+                this.props.content.tabs.map(function (tab, index) {
                     return _react2.default.createElement(
                         _reactTabs.Tab,
                         { key: index },
@@ -53156,33 +53154,33 @@ var PageDetail = function (_React$Component) {
 
             return {
                 "text": function text() {
-                    return _react2.default.createElement('input', { type: 'text', className: 'form-field', onBlur: that.handleBlur(options), defaultValue: that.props.pages.detail.content[options.alias], name: options.alias });
+                    return _react2.default.createElement('input', { type: 'text', className: 'form-field', onBlur: that.handleBlur(options), defaultValue: that.props.content.detail.content[options.alias], name: options.alias });
                 },
                 "textarea": function textarea() {
-                    return _react2.default.createElement('textarea', { className: 'form-field textarea', onBlur: that.handleBlur(options), defaultValue: that.props.pages.detail.content[options.alias], name: options.alias });
+                    return _react2.default.createElement('textarea', { className: 'form-field textarea', onBlur: that.handleBlur(options), defaultValue: that.props.content.detail.content[options.alias], name: options.alias });
                 },
                 "richText": function richText() {
                     return _react2.default.createElement(
                         'div',
                         { className: 'richtext-container' },
-                        _react2.default.createElement(RichTextEditor, { theme: 'snow', onChange: that.handleBlur(options), defaultValue: that.props.pages.detail.content[options.alias], name: options.alias })
+                        _react2.default.createElement(RichTextEditor, { theme: 'snow', onChange: that.handleBlur(options), defaultValue: that.props.content.detail.content[options.alias], name: options.alias })
                     );
                 },
                 "number": function number() {
-                    return _react2.default.createElement('input', { type: 'number', className: 'form-field', onBlur: that.handleBlur(options), defaultValue: that.props.pages.detail.content[options.alias], name: options.alias });
+                    return _react2.default.createElement('input', { type: 'number', className: 'form-field', onBlur: that.handleBlur(options), defaultValue: that.props.content.detail.content[options.alias], name: options.alias });
                 },
                 "boolean": function boolean() {
                     return _react2.default.createElement(
                         'div',
                         { className: 'checkbox-container' },
-                        _react2.default.createElement('input', { type: 'checkbox', onChange: that.handleBlur(options), name: options.alias, checked: JSON.parse(that.props.pages.detail.content[options.alias] || 'false') })
+                        _react2.default.createElement('input', { type: 'checkbox', onChange: that.handleBlur(options), name: options.alias, checked: JSON.parse(that.props.content.detail.content[options.alias] || 'false') })
                     );
                 },
                 "email": function email() {
-                    return _react2.default.createElement('input', { type: 'email', className: 'form-field', onBlur: that.handleBlur(options), defaultValue: that.props.pages.detail.content[options.alias], name: options.alias });
+                    return _react2.default.createElement('input', { type: 'email', className: 'form-field', onBlur: that.handleBlur(options), defaultValue: that.props.content.detail.content[options.alias], name: options.alias });
                 },
                 "password": function password() {
-                    return _react2.default.createElement('input', { type: 'password', className: 'form-field', onBlur: that.handleBlur(options), defaultValue: that.props.pages.detail.content[options.alias], name: options.alias });
+                    return _react2.default.createElement('input', { type: 'password', className: 'form-field', onBlur: that.handleBlur(options), defaultValue: that.props.content.detail.content[options.alias], name: options.alias });
                 },
                 "radio": function radio() {
                     return _react2.default.createElement(
@@ -53195,7 +53193,7 @@ var PageDetail = function (_React$Component) {
                                 _react2.default.createElement(
                                     'label',
                                     null,
-                                    _react2.default.createElement('input', { type: 'radio', onChange: that.handleBlur(options), name: options.alias, value: option.value, checked: JSON.parse(that.props.pages.detail.content[options.alias] === option.value || "false") }),
+                                    _react2.default.createElement('input', { type: 'radio', onChange: that.handleBlur(options), name: options.alias, value: option.value, checked: JSON.parse(that.props.content.detail.content[options.alias] === option.value || "false") }),
                                     ' ',
                                     option.name,
                                     ' '
@@ -53208,7 +53206,7 @@ var PageDetail = function (_React$Component) {
                 "dropdown": function dropdown() {
                     return _react2.default.createElement(
                         'select',
-                        { className: 'form-field', onChange: that.handleBlur(options), defaultValue: that.props.pages.detail.content[options.alias], name: options.alias },
+                        { className: 'form-field', onChange: that.handleBlur(options), defaultValue: that.props.content.detail.content[options.alias], name: options.alias },
                         options.options.length > 0 ? options.options.map(function (option, index) {
                             return _react2.default.createElement(
                                 'option',
@@ -53237,13 +53235,13 @@ var PageDetail = function (_React$Component) {
                             { htmlFor: 'name', className: 'form-label' },
                             'Name'
                         ),
-                        _react2.default.createElement('input', { type: 'text', name: 'name', onBlur: this.handleSettingsBlur(), className: 'form-field', defaultValue: this.props.pages.detail.name }),
+                        _react2.default.createElement('input', { type: 'text', name: 'name', onBlur: this.handleSettingsBlur(), className: 'form-field', defaultValue: this.props.content.detail.name }),
                         _react2.default.createElement(
                             'label',
                             { htmlFor: 'url', className: 'form-label' },
                             'Url'
                         ),
-                        _react2.default.createElement('input', { type: 'text', name: 'url', onBlur: this.handleSettingsBlur(), className: 'form-field', defaultValue: this.props.pages.detail.url }),
+                        _react2.default.createElement('input', { type: 'text', name: 'url', onBlur: this.handleSettingsBlur(), className: 'form-field', defaultValue: this.props.content.detail.url }),
                         _react2.default.createElement(
                             'label',
                             { className: 'form-label' },
@@ -53252,7 +53250,7 @@ var PageDetail = function (_React$Component) {
                         _react2.default.createElement(
                             'p',
                             null,
-                            this.props.pages.detail.unitType.name
+                            this.props.content.detail.unitType.name
                         ),
                         _react2.default.createElement(
                             'label',
@@ -53262,7 +53260,7 @@ var PageDetail = function (_React$Component) {
                         _react2.default.createElement(
                             'p',
                             null,
-                            dateFormat(this.props.pages.detail.created, "dddd, mmmm dS, yyyy, h:MM TT")
+                            dateFormat(this.props.content.detail.created, "dddd, mmmm dS, yyyy, h:MM TT")
                         ),
                         _react2.default.createElement(
                             'label',
@@ -53272,7 +53270,7 @@ var PageDetail = function (_React$Component) {
                         _react2.default.createElement(
                             'p',
                             null,
-                            this.props.pages.detail.createdBy
+                            this.props.content.detail.createdBy
                         ),
                         _react2.default.createElement(
                             'label',
@@ -53282,7 +53280,7 @@ var PageDetail = function (_React$Component) {
                         _react2.default.createElement(
                             'p',
                             null,
-                            dateFormat(this.props.pages.detail.edited, "dddd, mmmm dS, yyyy, h:MM TT")
+                            dateFormat(this.props.content.detail.edited, "dddd, mmmm dS, yyyy, h:MM TT")
                         )
                     )
                 )
@@ -53307,22 +53305,22 @@ var PageDetail = function (_React$Component) {
         key: 'savePage',
         value: function savePage() {
             if (this.validUnit()) {
-                _adminStore2.default.dispatch(pageActions.savePageDetail(this.props.pages.detail));
+                _adminStore2.default.dispatch(pageActions.savePageDetail(this.props.content.detail));
             }
         }
     }, {
         key: 'resetPage',
         value: function resetPage() {
-            _adminStore2.default.dispatch(pageActions.resetPageDetail(this.props.pages.detail._id));
+            _adminStore2.default.dispatch(pageActions.resetPageDetail(this.props.content.detail._id));
         }
     }, {
         key: 'validUnit',
         value: function validUnit() {
-            for (var i = 0; i < this.props.pages.unit.tabs.length; i++) {
-                for (var k = 0; k < this.props.pages.unit.tabs[i].unitFields.length; k++) {
-                    var thisField = this.props.pages.unit.tabs[i].unitFields[k];
+            for (var i = 0; i < this.props.content.unit.tabs.length; i++) {
+                for (var k = 0; k < this.props.content.unit.tabs[i].unitFields.length; k++) {
+                    var thisField = this.props.content.unit.tabs[i].unitFields[k];
 
-                    if (thisField.required && this.props.pages.detail.content[thisField.alias] === '') {
+                    if (thisField.required && this.props.content.detail.content[thisField.alias] === '') {
                         return false;
                     }
                 }
@@ -53344,11 +53342,11 @@ var PageDetail = function (_React$Component) {
                     _react2.default.createElement(
                         'div',
                         { className: 'row' },
-                        this.props.showLoader ? _react2.default.createElement('div', { className: 'loader' }) : this.props.pages.tabs.length > 0 ? _react2.default.createElement(
+                        this.props.showLoader ? _react2.default.createElement('div', { className: 'loader' }) : this.props.content.tabs.length > 0 ? _react2.default.createElement(
                             _reactTabs.Tabs,
                             null,
                             this.renderTabs(),
-                            this.props.pages.unit.tabs.map(function (tab, index) {
+                            this.props.content.unit.tabs.map(function (tab, index) {
                                 return _react2.default.createElement(
                                     _reactTabs.TabPanel,
                                     { key: index },
@@ -53358,7 +53356,7 @@ var PageDetail = function (_React$Component) {
                             this.renderSettings()
                         ) : null
                     ),
-                    !this.props.pages.fetchingPageDetail && !this.props.pages.savingPageDetail ? _react2.default.createElement(
+                    !this.props.content.fetchingPageDetail && !this.props.content.savingPageDetail ? _react2.default.createElement(
                         'div',
                         { className: 'row' },
                         _react2.default.createElement(
@@ -53395,7 +53393,7 @@ var mapStateToProps = function mapStateToProps(state) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps)(PageDetail);
 
-},{"../../../actions/pagesActions":317,"../../../adminStore":318,"dateformat":27,"react":291,"react-quill":61,"react-redux":66,"react-tabs":120}],322:[function(require,module,exports){
+},{"../../../actions/contentActions":316,"../../../adminStore":318,"dateformat":27,"react":291,"react-quill":61,"react-redux":66,"react-tabs":120}],322:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

@@ -17,15 +17,13 @@ let _shouldGetContentUnit = function(state, id) {
 };
 
 let _getContentUnitTypeIfNeeded = function(dispatch, state, id) {
-    return function(dispatch, state) {
-        if(_shouldGetContentUnit(state, id)) {
-            dispatch( {
-                type: constants.GET_CONTENT_DETAIL_UNITTYPE,
-                payload: axios('units/' + id).then( results => {
-                    return results
-                })
-            });
-        }
+    if(_shouldGetContentUnit(state, id)) {
+        dispatch( {
+            type: constants.GET_CONTENT_DETAIL_UNITTYPE,
+            payload: axios('units/' + id).then( results => {
+                return results
+            })
+        });
     }
 };
 
@@ -46,8 +44,7 @@ export function getContentDetailIfNeeded(id) {
             dispatch({
                 type: constants.GET_CONTENT_DETAIL,
                 payload: axios('pages/' + id).then(results => {
-                    console.log(results);
-                    _getContentUnitTypeIfNeeded(dispatch, getState(), results.unityType.id);
+                    _getContentUnitTypeIfNeeded(dispatch, getState(), results.data.unitType.id);
                     return results;
                 })
             });
