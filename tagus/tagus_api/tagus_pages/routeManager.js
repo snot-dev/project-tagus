@@ -7,13 +7,15 @@ pageModel.find({}, function(err, docs) {
         console.log(err);
     }
 
-    docs.forEach(function(doc) {
-        var viewBag = doc.content;
+    if( docs || docs.length > 0 ) {
+        docs.forEach(function(doc) {
+            var viewBag = doc.content;
 
-        router.get(doc.url, function(req, res, next) {
-            res.render(doc.template, viewBag);
+            router.get(doc.url, function(req, res, next) {
+                res.render(doc.template, viewBag);
+            });
         });
-    });
+    }
 });
 
 module.exports = router;

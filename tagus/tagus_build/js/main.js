@@ -52650,7 +52650,6 @@ function getContentListIfNeeded() {
 };
 
 function getContentDetailIfNeeded(id) {
-    console.log(id);
     return function (dispatch, getState) {
         if (_shouldGetPageDetail(getState(), id)) {
             dispatch({
