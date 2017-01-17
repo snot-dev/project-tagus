@@ -18,17 +18,19 @@ mongoose.Promise = require('bluebird');
 
 router.get('/', function(req, res) {
     var unit;
+    var contactsPage;
 
     res.render('initializer');
 
     Settings.find({})
     .then(function(settings){
         if(settings.length === 0) {
+            console.log("DB Initializer Started!");
             Settings.collection.insert(settingsSeed);
         }
     })
     .then(function(){
-        console.log('Settings inserted!');
+        console.log('Inserted Settings!');
         return Translate.find({});
     })
     .then(function(translates) {
@@ -37,7 +39,7 @@ router.get('/', function(req, res) {
         }
     })
     .then(function(){
-        console.log("Translates inserted!");
+        console.log("Inserted Translates!");
         return UnitField.find({});
     })
     .then(function(unitFields){
@@ -46,7 +48,7 @@ router.get('/', function(req, res) {
         }
     })
     .then(function(){
-        console.log("UnitFields inserted!!")
+        console.log("Inserted UnitFields!!")
         return Unit.find({});
     })
     .then(function(units) {
@@ -55,7 +57,7 @@ router.get('/', function(req, res) {
         }
     })
     .then(function() {
-        console.log("Units inserted!");
+        console.log("Inserted Units!");
         return Unit.find({});
     })
     .then(function(dbUnits){
@@ -90,7 +92,7 @@ router.get('/', function(req, res) {
         for(var i = 0; i < pagesSeed.length; i++) {
             page = pagesSeed[i];
             if(page.url !== '/' && page.url !== '/contacts/emails'){
-                page.parent = index._id;
+                page.parent = index._id.toString();
                 page.unitType = unit._id.toString();    
                 pagesToSave.push(page);
             }
@@ -99,13 +101,13 @@ router.get('/', function(req, res) {
         return Page.collection.insert(pagesToSave);
     })
     .then(function(){
-        console.log("Contacts and About pages saved!");
+        console.log("Saved Contacts and About pages!");
 
-        return Page.find({name: 'Contacts'});
+        return Page.findOne({name: 'Contacts'});
     })
     .then(function(contacts){
         var emails;
-        console.log(contacts);
+        contactsPage = contacts;
 
         for(var i = 0; i < pagesSeed.length; i++){
             if(pagesSeed[i].name === 'Emails') {
@@ -115,14 +117,16 @@ router.get('/', function(req, res) {
             }
         }
 
-        emails.parent = contacts._id || "hello";
+        emails.parent = contactsPage._id.toString();
         emails.unitType = unit._id.toString();
-         var page = new Page(emails);
+        var page = new Page(emails);
 
         return page.save();
+        
     })
     .then(function(emails) {
-        console.log("Emails page saved!!");
+        console.log("Saved Emails page!");
+        console.log("DB Initializer Finished!");
     })
     .catch(function(err) {
         console.log(err);
