@@ -7,9 +7,7 @@ var pageSchema = new mongoose.Schema({
     created: { type: Date, default: Date.now() },
     edited: Date,
     published: { type: Date, default: Date.now() },
-    unitType: {
-        id: String
-    },
+    unitType: String,
     content: {},
     template: { type: String, required: true },
     parent: String,
