@@ -26,7 +26,7 @@ module.exports = function(grunt) {
         },
         watch: {
             browserify: {
-                files: ['tagus/**/*.js', 'Gruntfile.js'],
+                files: ['tagustagus_frontend/js/components/**/*.js', 'Gruntfile.js'],
                 tasks: ['browserify:dev', 'express:dev'],
                 options: {
                     spawn: false

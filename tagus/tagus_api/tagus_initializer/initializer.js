@@ -1,40 +1,69 @@
 var router = require('express').Router();
-var users = require('../tagus_users/usersInitializer');
-var userModel = require('../tagus_users/userModel');
-var unitFields = require('../tagus_unitFields/unitFieldsInitializer');
-var unitFieldModel = require('../tagus_unitFields/unitFieldModel');
-var units = require('../tagus_units/unitInitializer');
-var unitModel = require('../tagus_units/unitModel');
-var pages = require('../tagus_pages/pageInitializer');
-var pageModel = require('../tagus_pages/pageModel');
-var translates = require('../tagus_translates/translatesInitializer');
-var translateModel = require('../tagus_translates/translateModel');
-var settings = require('../tagus_settings/settingsInitializer');
-var settingsModel = require('../tagus_settings/settingsModel');
+var usersSeed = require('../tagus_users/usersInitializer');
+var User = require('../tagus_users/userModel');
+var unitFieldsSeed = require('../tagus_unitFields/unitFieldsInitializer');
+var UnitField = require('../tagus_unitFields/unitFieldModel');
+var unitsSeed = require('../tagus_units/unitInitializer');
+var Unit = require('../tagus_units/unitModel');
+var pagesSeed = require('../tagus_pages/pageInitializer');
+var Pages = require('../tagus_pages/pageModel');
+var translatesSeed = require('../tagus_translates/translatesInitializer');
+var Translate = require('../tagus_translates/translateModel');
+var settingsSeed = require('../tagus_settings/settingsInitializer');
+var Settings = require('../tagus_settings/settingsModel');
 var initializer = require('../../tagus_lib/lib').initializer;
+var mongoose = require('mongoose');
 
-router.get('/users', function(req, res, next) {
-    initializer.initialize(userModel, users, res);
+mongoose.Promise = require('bluebird');
+
+router.get('/', function(req, res) {
+    var units;
+
+    res.render('initializer');
+
+    Settings.find({})
+    .then(function(settings){
+        if(settings.length === 0) {
+            Settings.collection.insert(settingsSeed);
+        }
+    })
+    .then(function(){
+        console.log('Settings inserted!');
+        return Translate.find({});
+    })
+    .then(function(translates) {
+        if(translates.length === 0) {
+            Translate.collection.insert(translatesSeed);
+        }
+    })
+    .then(function(){
+        console.log("Translates inserted!");
+        return UnitField.find({});
+    })
+    .then(function(unitFields){
+        if(unitFields.length === 0) {
+            UnitField.collection.insert(unitFieldsSeed);
+        }
+    })
+    .then(function(){
+        console.log("UnitFields inserted!!")
+        return Unit.find({});
+    })
+    .then(function(units) {
+        if(units.length ===0) {
+            Unit.collection.insert(unitsSeed);
+        }
+    })
+    .then(function() {
+        console.log("Units inserted!");
+        return Unit.find({});
+    })
+    .then(function(dbUnits){
+        units = dbUnits
+    });
+
+
+
 });
 
-router.get('/unitFields', function(req,res, next) {
-    initializer.initialize(unitFieldModel, unitFields, res);
-});
-
-router.get('/units', function(req, res, next) {
-    initializer.initialize(unitModel, units, res);
-});
-
-router.get('/pages', function(req, res, next) {
-    initializer.initialize(pageModel, pages, res);
-});
-
-router.get('/translates', function(req, res, next) {
-    initializer.initialize(translateModel, translates, res);
-});
-
-router.get('/settings', function(req, res, next) {
-    initializer.initialize(settingsModel, settings, res);
-});
-
-module.exports = router;
+module.exports =  router;

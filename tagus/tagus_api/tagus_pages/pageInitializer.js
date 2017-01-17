@@ -5,9 +5,7 @@ module.exports = [{
         created: new Date(),
         edited: new Date(),
         published: new Date(),
-        unitType: {
-            id: ""
-        },
+        unitType: '',
         template: "index",
         parent: "",
         isHome: true,
@@ -24,9 +22,8 @@ module.exports = [{
         created: new Date(),
         edited: new Date(),
         published: new Date(),
-        unitType: {
-            id: ''
-        },
+        unitType:  ''
+        ,
         template: "index",
         parent: "",
         isHome: false,
@@ -41,9 +38,7 @@ module.exports = [{
         created: new Date(),
         edited: new Date(),
         published: new Date(),
-        unitType: {
-            id: '',
-        },
+        unitType: '',
         template: "index",
         parent: "",
         isHome: false,
@@ -58,9 +53,7 @@ module.exports = [{
         created: new Date(),
         edited: new Date(),
         published: new Date(),
-        unitType: {
-            id: "",
-        },
+        unitType: '',
         template: "index",
         parent: "",
         isHome: false,
