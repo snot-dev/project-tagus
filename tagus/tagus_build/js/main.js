@@ -53698,8 +53698,6 @@ var _adminStore2 = _interopRequireDefault(_adminStore);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-console.log(_content2.default);
-
 var Routes = _react2.default.createElement(
     _reactRouter.Route,
     { path: '/', component: _index2.default },

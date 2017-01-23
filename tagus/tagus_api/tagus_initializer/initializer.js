@@ -84,21 +84,23 @@ router.get('/', function(req, res) {
         }
     })
     .then(function(index){
-        var pagesToSave = [];
-        var page;
-        
-        console.log("Saved Index!");
+        if(index) {
+            var pagesToSave = [];
+            var page;
+            
+            console.log("Saved Index!");
 
-        for(var i = 0; i < pagesSeed.length; i++) {
-            page = pagesSeed[i];
-            if(page.url !== '/' && page.url !== '/contacts/emails'){
-                page.parent = index._id.toString();
-                page.unitType = unit._id.toString();    
-                pagesToSave.push(page);
+            for(var i = 0; i < pagesSeed.length; i++) {
+                page = pagesSeed[i];
+                if(page.url !== '/' && page.url !== '/contacts/emails'){
+                    page.parent = index._id.toString();
+                    page.unitType = unit._id.toString();    
+                    pagesToSave.push(page);
+                }
             }
-        }
 
-        return Page.collection.insert(pagesToSave);
+            return Page.collection.insert(pagesToSave);
+        }
     })
     .then(function(){
         console.log("Saved Contacts and About pages!");
@@ -106,23 +108,33 @@ router.get('/', function(req, res) {
         return Page.findOne({name: 'Contacts'});
     })
     .then(function(contacts){
-        var emails;
-        contactsPage = contacts;
-
-        for(var i = 0; i < pagesSeed.length; i++){
-            if(pagesSeed[i].name === 'Emails') {
-                emails = pagesSeed[i];
-
-               break;
-            }
+        if(contacts) {
+            Page.findOne({name: 'Emails'}, function(err, doc) {
+                if(!doc) {
+                    return contacts
+                }
+            })
         }
+    })
+    .then(function(contacts){
+        if(contacts) {
+            var emails;
+            contactsPage = contacts;
 
-        emails.parent = contactsPage._id.toString();
-        emails.unitType = unit._id.toString();
-        var page = new Page(emails);
+            for(var i = 0; i < pagesSeed.length; i++){
+                if(pagesSeed[i].name === 'Emails') {
+                    emails = pagesSeed[i];
 
-        return page.save();
-        
+                break;
+                }
+            }
+
+            emails.parent = contactsPage._id.toString();
+            emails.unitType = unit._id.toString();
+            var page = new Page(emails);
+
+            return page.save();
+        }
     })
     .then(function(emails) {
         console.log("Saved Emails page!");

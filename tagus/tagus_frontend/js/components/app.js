@@ -10,8 +10,6 @@ import Editor from './admin/editor';
 import Settings from './admin/settings';
 import store from '../adminStore';
 
-console.log(Content);
-
 var Routes =  (
     <Route path="/" component={Index} >
         <IndexRoute component={Content} />
