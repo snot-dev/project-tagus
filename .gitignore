@@ -3,5 +3,6 @@
 /.idea
 /.sass-cache
 config.js
-/tagus/tagus_build/css
-/tagus/tagus_build/js
+/tagus/tagus_build/css/
+/tagus/tagus_build/js/
+/.vscode

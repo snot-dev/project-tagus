@@ -1,60 +1,65 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans);
-html, body {
+html,
+body {
   padding: 0;
   margin: 0;
   background-color: #ecf0f5; }
-  html *, body * {
+  html *,
+  body * {
     font-family: 'Open Sans', sans-serif; }
-  html ul, body ul {
+  html ul,
+  body ul {
     padding: 0;
     margin: 0;
     list-style: none; }
-    html ul li, body ul li {
+    html ul li,
+    body ul li {
       margin-bottom: 15px; }
-  html a, body a {
+  html a,
+  body a {
     color: #333333; }
-    html a:hover, body a:hover {
+    html a:hover,
+    body a:hover {
       text-decoration: none;
       color: #333333; }
-    html a.block, body a.block {
+    html a:focus,
+    body a:focus {
+      outline: 0;
+      text-decoration: none; }
+    html a.block,
+    body a.block {
       display: block;
       transition: all 0.25s; }
-      html a.block:hover, body a.block:hover {
+      html a.block:hover,
+      body a.block:hover {
         background-color: #263238;
         color: #26a69a;
         cursor: pointer; }
-      html a.block.active, body a.block.active {
+      html a.block.active,
+      body a.block.active {
         background-color: #26a69a;
-        color: #a61d30;
+        color: #892532;
         text-decoration: none; }
-  html .spacing, body .spacing {
+  html .spacing,
+  body .spacing {
     margin-right: 15px; }
-  html .tab-navigation ul, body .tab-navigation ul {
-    border-bottom: 2px solid #89949B; }
-    html .tab-navigation ul li, body .tab-navigation ul li {
-      display: inline-block;
-      margin-bottom: 0;
-      border-right: 2px solid #89949B; }
-      html .tab-navigation ul li:last-child, body .tab-navigation ul li:last-child {
-        border-right: none; }
-    html .tab-navigation ul .tab, body .tab-navigation ul .tab {
-      padding: 15px 60px;
-      display: block;
-      font-size: 16px;
-      line-height: 18px; }
-  html .list .item a, body .list .item a {
+  html .list .item a,
+  body .list .item a {
     display: block;
     width: 100%;
     padding: 5px; }
-    html .list .item a:hover, body .list .item a:hover {
+    html .list .item a:hover,
+    body .list .item a:hover {
       color: #26a69a;
       cursor: pointer; }
-    html .list .item a.active, body .list .item a.active {
-      color: #a61d30;
+    html .list .item a.active,
+    body .list .item a.active {
+      color: #892532;
       font-weight: bold; }
 
 @media (min-width: 480px) {
-  html, body {
+  html,
+  body {
     background-color: #ecf0f5; } }
 .form-field {
   font-size: 14px;
@@ -187,9 +192,9 @@ html, body {
   .button.delete {
     color: #ffffff;
     background-color: #EC6052;
-    border-bottom: 5px solid #a61d30; }
+    border-bottom: 5px solid #892532; }
     .button.delete:hover {
-      background-color: #a61d30;
+      background-color: #892532;
       text-decoration: none; }
     .button.delete::after {
       content: "";
@@ -200,7 +205,7 @@ html, body {
       height: 100%;
       transform: scaleY(0);
       transform-origin: bottom center;
-      background: #a61d30;
+      background: #892532;
       z-index: -1;
       transition: transform 0.3s; }
     .button.delete:hover::after {
@@ -212,11 +217,49 @@ html, body {
   .button {
     width: 150px;
     min-width: 150px; } }
+.loader {
+  text-align: center;
+  background-image: url("/assets/images/loader.gif");
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0; }
+
+.ReactTabs {
+  height: 100%;
+  margin-bottom: -60px;
+  padding-top: 60px;
+  position: relative; }
+
+.tab-navigation {
+  border-bottom: 2px solid #89949B;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0; }
+  .tab-navigation li {
+    display: inline-block;
+    margin-bottom: 0;
+    border-right: 2px solid #89949B; }
+    .tab-navigation li:last-child {
+      border-right: none; }
+    .tab-navigation li.ReactTabs__Tab--selected .tab {
+      background: #892532;
+      color: #ffffff; }
+    .tab-navigation li .tab {
+      padding: 15px 60px;
+      display: block;
+      font-size: 16px;
+      line-height: 22px; }
+
 #admin-top-bar {
   width: 100%;
   position: fixed;
   top: 0;
-  background-color: #a61d30;
+  background-color: #892532;
   z-index: 100; }
   #admin-top-bar .logo-container {
     width: 250px;
@@ -256,7 +299,7 @@ html, body {
             #admin-side-bar #side-bar-navigation li a.block.active {
               border-left: 5px solid #ffffff;
               color: #ffffff;
-              background-color: #26a69a; }
+              background-color: #892532; }
           #admin-side-bar #side-bar-navigation li a .fa {
             margin-right: 15px; } }
 @media (min-width: 480px) {
@@ -267,25 +310,57 @@ html, body {
     right: 0;
     bottom: 0;
     color: #000000;
-    padding: 15px;
+    padding: 15px 0;
     overflow: auto; }
     #admin-main-container #admin-content-container {
       height: 100%; }
-      #admin-main-container #admin-content-container #main-title {
-        font-size: 20px;
-        line-height: 22px;
-        margin: 15px 0; }
       #admin-main-container #admin-content-container .section {
-        padding: 15px;
+        padding: 0 15px 15px;
         height: 100%;
         background-color: #ffffff;
-        border: 5px solid transparent;
-        background-clip: padding-box;
-        overflow-y: auto; } }
-.content-container {
-  color: #333333;
-  background-color: transparent;
-  padding: 30px 15px; }
+        overflow-y: auto;
+        border-radius: 5px; }
+        #admin-main-container #admin-content-container .section .title {
+          padding: 15px;
+          color: #ffffff;
+          background-color: #892532;
+          margin: 0;
+          font-size: 20px;
+          line-height: 22px;
+          border-top-left-radius: 5px;
+          border-top-right-radius: 5px;
+          margin-bottom: 30px;
+          margin-left: -15px;
+          margin-right: -15px;
+          border-bottom: 2px solid #89949B; } }
+#page-list .page {
+  margin-bottom: 0; }
+  #page-list .page .child-list {
+    margin-left: 15px; }
+  #page-list .page .fa {
+    margin-right: 15px; }
+  #page-list .page .link .options {
+    padding: 0 5px;
+    display: none; }
+  #page-list .page .link:hover .options {
+    display: block; }
+
+#content-page-detail {
+  position: relative; }
+  #content-page-detail .content-container {
+    color: #333333;
+    background-color: #ffffff;
+    padding: 30px 15px 75px;
+    max-height: 100%;
+    overflow-y: auto;
+    margin-bottom: -60px; }
+  #content-page-detail .buttons-container {
+    position: absolute;
+    bottom: 0;
+    background-color: #ffffff;
+    padding: 15px; }
+    #content-page-detail .buttons-container .button {
+      margin-bottom: 0; }
 
 /*! Quill Editor v0.20.1
  *  https://quilljs.com/
@@ -1201,17 +1276,5 @@ html, body {
 
 .ql-snow a {
   color: #06c; }
-
-#page-list .page {
-  margin-bottom: 0; }
-  #page-list .page .child-list {
-    margin-left: 15px; }
-  #page-list .page .fa {
-    margin-right: 15px; }
-  #page-list .page .link .options {
-    padding: 0 5px;
-    display: none; }
-  #page-list .page .link:hover .options {
-    display: block; }
 
 /*# sourceMappingURL=styles.css.map */

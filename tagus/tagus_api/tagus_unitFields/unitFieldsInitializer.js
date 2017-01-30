@@ -56,6 +56,13 @@ module.exports = [
                 edited: new Date()
             },
             {
+                name: "Password",
+                type: "password",
+                createdBy: "user",
+                created: new Date(),
+                edited: new Date()
+            },
+            {
                 name: "Checkbox List",
                 type: "checkbox",
                 createdBy: "user",

@@ -1,22 +1,28 @@
 var lib = require('../../tagus_lib/lib');
 var pageModel = require('./pageModel');
 var router = require('express').Router();
+var open = require('open');
 
-pageModel.find({}, function(err, docs) {
-    if(err) {
-        console.log(err);
-    }
 
-    docs.forEach(function(doc) {
-        var viewBag = {};
-        doc.unitType.unitFields.forEach(function(unitField) {
-            viewBag[unitField.alias] = unitField.value;
-        });
+module.exports = function(initializerUrl) {
+    pageModel.find({}, function(err, docs) {
+        if (err) {
+            console.log(err);
+        }
 
-        router.get(doc.url, function(req, res, next) {
-            res.render(doc.template, viewBag);
-        });
+        if( docs && docs.length > 0 ) {
+            docs.forEach(function(doc) {
+                var viewBag = doc.content;
+
+                router.get(doc.url, function(req, res, next) {
+                    res.render(doc.template, viewBag);
+                });
+            });
+        }
+        else {
+            open(process.env.DOMAIN + initializerUrl);
+        }
     });
-});
 
-module.exports = router;
+    return router;
+}

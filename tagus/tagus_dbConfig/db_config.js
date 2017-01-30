@@ -11,7 +11,17 @@ module.exports = {
     checkIfConnected: function(){
         mongoose.connection.on('connected', function () {
             console.log("mongoose " + mongoose.connection.readyState);
-          console.log('Mongoose default connection open');
+            console.log('Connected to ' +  mongoose.connection.db.s.databaseName);
+        });
+    },
+    checkIfCollections: function() {
+        mongoose.connection.db.listCollections().toArray( function( err, names ) {
+            if( err ){
+                //TODO: Throw err
+            }
+            else {
+                return names.length;
+            }
         });
     }
 };

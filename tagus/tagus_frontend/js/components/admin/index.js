@@ -1,9 +1,9 @@
-var React = require('react');
-var Link = require('react-router').Link;
-var translates = require('../../translates');
+import React from'react';
+import {Link} from 'react-router';
+import { translates } from '../../translates';
 
-var Index = React.createClass( {
-    render: function() {
+export default class Index extends React.Component {
+    render() {
         return (
             <div id="admin">
                 <nav id="admin-top-bar">
@@ -33,6 +33,4 @@ var Index = React.createClass( {
             </div>
         );
     }
-});
-
-module.exports = Index;
+};
