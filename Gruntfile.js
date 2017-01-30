@@ -9,7 +9,9 @@ module.exports = function(grunt) {
         sass: {
             dist: {
                 files: {
-                    'tagus/tagus_build/css/styles.css': 'tagus/tagus_frontend/scss/styles.scss'
+                    'tagus/tagus_build/css/styles.css': 'tagus/tagus_frontend/scss/styles.scss',
+                    'tagus/tagus_build/css/initializer.css': 'tagus/tagus_frontend/scss/initializer.scss'
+                    
                 }
             }
         },
@@ -20,13 +22,14 @@ module.exports = function(grunt) {
                     transform: [['babelify', { presets: ["react", "es2015"] }]]
                 },
                 files: {
-                    'tagus/tagus_build/js/main.js': 'tagus/tagus_frontend/js/components/app.js'
+                    'tagus/tagus_build/js/main.js': 'tagus/tagus_frontend/js/components/app.js',
+                    'tagus/tagus_build/js/initializer.js': 'tagus/tagus_frontend/js/components/initializer.js'
                 }
             }
         },
         watch: {
             browserify: {
-                files: ['tagustagus_frontend/js/components/**/*.js', 'Gruntfile.js'],
+                files: ['tagus/tagus_frontend/js/**/*.js', 'Gruntfile.js'],
                 tasks: ['browserify:dev', 'express:dev'],
                 options: {
                     spawn: false
