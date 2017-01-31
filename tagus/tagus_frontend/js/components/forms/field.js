@@ -7,52 +7,54 @@ export default class Field extends React.Component {
         return {
             "text": function() {
                 return (
-                    <input type="text" id={options.id} name={options.name} className={options.class}/>
+                    <input type="text" id={options.name} name={options.name} className={options.classOverride || "form-field"}/>
                 );
             }.bind(this),
             "textarea": function() {
                 return (
-                    <textarea className="form-field textarea" onBlur={that.handleBlur(options)} defaultValue={that.props.content.detail.content[options.alias]}  name={options.alias} ></textarea>
+                    <textarea className={options.classOverride || "form-field textarea"} name={options.name} ></textarea>
                 );
             },
             "richText": function() {
                 return (
                     <div className="richtext-container">
-                        <RichTextEditor  theme="snow" onChange={that.handleBlur(options)} defaultValue={that.props.content.detail.content[options.alias]}  name={options.alias}/>
+                        <RichTextEditor  theme="snow" id={options.name} name={options.name} className={options.classOverride || "form-field"}/>
                     </div>
                 );
             },
             "number": function() {
                 return (
-                    <input type="number" className="form-field" onBlur={that.handleBlur(options)} defaultValue={that.props.content.detail.content[options.alias]} name={options.alias} />
+                    <input type="number" id={options.name} name={options.name} className={options.classOverride || "form-field"} />
                 );
             },
             "boolean": function(){
+                //checked={JSON.parse(that.props.content.detail.content[options.alias] || 'false')}
                 return (
                     <div className="checkbox-container">
-                        <input type="checkbox" onChange={that.handleBlur(options)} name={options.alias} checked={JSON.parse(that.props.content.detail.content[options.alias] || 'false')} />
+                        <input type="checkbox" name={options.name} className={options.classOverride || "form-field"}  />
                     </div>
-                );
+                );  
 
             },
             "email": function() {
                 return (
-                    <input type="email" className="form-field" onBlur={that.handleBlur(options)} defaultValue={that.props.content.detail.content[options.alias]} name={options.alias} />
+                    <input type="email" id={options.name} name={options.name} className={options.classOverride || "form-field"} />
                 );
             },
             "password": function() {
                 return (
-                    <input type="password" className="form-field" onBlur={that.handleBlur(options)} defaultValue={that.props.content.detail.content[options.alias]} name={options.alias} />
+                    <input type="password" id={options.name} name={options.name} className={options.classOverride || "form-field"} />
                 );
             },
             "radio": function() {
+                //checked={JSON.parse(that.props.content.detail.content[options.alias] === option.value || "false")}
                 return (
                     <div className="checkbox-container">
                         {options.options.length > 0 
                         ?   options.options.map(function(option, index) {
                                 return(
                                 <div key={index}>
-                                    <label><input type="radio" onChange={that.handleBlur(options)} name={options.alias} value={option.value} checked={JSON.parse(that.props.content.detail.content[options.alias] === option.value || "false")} /> {option.name} </label><br/>
+                                    <label><input type="radio" name={options.name} className={options.classOverride || "form-field"}  /> {option.name} </label><br/>
                                 </div>       
                                 )
                             })   
@@ -63,7 +65,7 @@ export default class Field extends React.Component {
             },
             "dropdown": function() {
                 return (
-                    <select className="form-field" onChange={that.handleBlur(options)} defaultValue={that.props.content.detail.content[options.alias]} name={options.alias}>
+                    <select id={options.name} name={options.name} className={options.classOverride || "form-field"} >
                         {options.options.length > 0 
                         ?   options.options.map(function(option, index) {
                                 return(
@@ -87,7 +89,7 @@ export default class Field extends React.Component {
     render() {
         return (
             <div>
-                {this.renderField( {name: this.props.name, id: this.props.id, class: this.props.class })[this.props.type]()}
+                {this.renderField( this.props.options )[this.props.options.type]()}
             </div>
         )
     };

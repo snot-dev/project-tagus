@@ -1,12 +1,44 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Field from './forms/forms';
+import Form from './forms/form';
+import Field from './forms/field';
+
 
 class Initializer extends React.Component {
+   constructor() {
+       super();
+       this._schema = [
+            {
+                type: 'text',
+                name: 'username',
+                displayName: 'Username',
+                classOverride: 'form-control',
+                parentClass:'col-xs-12',
+                defaultValue: 'thisIsAValue',
+                label: true,
+                required: true
+            },
+            {
+                type: 'email',
+                name: 'email',
+                displayName: 'Email',
+                classOverride: 'form-control',
+                parentClass:'col-xs-12',
+                defaultValue: 'thisIsAValue',
+                label: true,
+                required: true
+            }
+        ];
+   }
+    
     render() {
+        var state = {test: "this is a test"};
+
         return (
             <div>
-                <h2>Welcome to Tagus CMS</h2>
+                <Form  class="form-horizontal" fields={this._schema} />
+
+                
                     <form className="form-horizontal">
                         <fieldset>
                             <legend>
@@ -14,9 +46,7 @@ class Initializer extends React.Component {
                             </legend>
                             <div className="form-group">
                                 <label className="col-xs-12" htmlFor="username">Username</label>
-                                <div className="col-xs-12">
-                                    <Field type="text" name="usernamezz" id="username" class="form-control" />
-                                </div>
+
                             </div>
                              <div className="form-group">
                                 <label className="col-xs-12" htmlFor="inputEmail">Email</label>
