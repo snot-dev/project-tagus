@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Field from './forms/forms';
 
 class Initializer extends React.Component {
     render() {
@@ -14,7 +15,7 @@ class Initializer extends React.Component {
                             <div className="form-group">
                                 <label className="col-xs-12" htmlFor="username">Username</label>
                                 <div className="col-xs-12">
-                                    <input type="text" name="username" className="form-control" id="inputUsername" />
+                                    <Field type="text" name="usernamezz" id="username" class="form-control" />
                                 </div>
                             </div>
                              <div className="form-group">
@@ -33,6 +34,7 @@ class Initializer extends React.Component {
                                 <label className="col-xs-12">Password</label>
                                 <div className="col-xs-12">
                                     <input type="password" name="password lol" className="form-control" id="inputPassword" />
+                                    
                                 </div>
                             </div>
                         </fieldset>
