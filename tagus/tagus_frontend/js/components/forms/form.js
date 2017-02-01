@@ -5,8 +5,29 @@ export default class Form extends React.Component {
     constructor(props) {
         super(props);
         this._fields = this.props.fields;
+        this._defaultSettings = {
+            validation: {
+                validate: true,
+                onError: "error"    
+            },
+            buttons: {
+                cancel: {
+                    class: "button",
+                    id: "backButton",
+                    value: "Reset"
+                },
+                submit: {
+                    class: "button submit",
+                    id: "submitButton",
+                    value: "Submit"
+                }
+            }
+        };
+
         this._fieldstoRender = [];
-        console.log(this._fields.length);
+
+        this._settings = Object.assign(this._defaultSettings, this.props.settings);
+
     }
 
     renderLabel(options){
@@ -42,6 +63,10 @@ export default class Form extends React.Component {
         return (
             <form className={this.props.class}>
                 {this.renderFields()}
+                <div className="buttonsContainer">
+                    {this._settings.backButton ? <button id={this._settings.buttons.back.id} className={this._settings.buttons.back.class }> {this._settings.buttons.back.value}</button> : null }
+                    <button id={this._settings.buttons.submit.id} className={this._settings.buttons.submit.class} >{this._settings.buttons.submit.value}</button>
+                </div>
             </form>
         );
     }
