@@ -37,7 +37,6 @@ class Initializer extends React.Component {
                 name: 'email',
                 displayName: 'Email',
                 classOverride: 'form-control',
-                defaultValue: 'thisIsAValue',
                 label: true,
                 required: true
             }

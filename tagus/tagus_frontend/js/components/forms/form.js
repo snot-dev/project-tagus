@@ -4,7 +4,6 @@ import Field from './field';
 export default class Form extends React.Component {
     constructor(props) {
         super(props);
-        this._fields = this.props.fields;
         this._defaultSettings = {
             validation: {
                 validate: true,
@@ -25,10 +24,33 @@ export default class Form extends React.Component {
         };
 
         this._fieldstoRender = [];
+        this._fields = this.props.fields;
+        this._state = {};
 
         this._settings = Object.assign(this._defaultSettings, this.props.settings);
 
+        this._setInitialState();
     }
+
+    _setInitialState() {
+        var field;
+        var key;
+
+        for(var i  = 0; i < this._fields.length; i++) {
+            field = this._fields[i];
+            key = this._fields[i].name;
+            this._state[key] = field.defaultValue;
+
+            this._fieldstoRender.push (
+                <fieldset className={field.parentClass || "form-fieldset"} key={i}>
+                    {field.label ? this.renderLabel( field ) : null}
+                    <Field options={field}/>
+                </fieldset>
+            );
+            
+        }
+
+    };
 
     renderLabel(options){
         return (
@@ -37,27 +59,16 @@ export default class Form extends React.Component {
     }
 
     renderFields() {
-        var field;
-        var fields = [];
-
-        for( var i = 0; i < this._fields.length; i++) {
-            field = this._fields[ i ];
-
-            fields.push (
-                <fieldset className={field.parentClass || "form-fieldset"} key={i}>
-                    {field.label ? this.renderLabel( field ) : null}
-                    <Field options={field}/>
-                </fieldset>
-            );
-        }
-
         return (
             <div className="field-group">
-            {fields}
+            {this._fieldstoRender}
             </div>
         )
     }
     
+    validate() {
+
+    };
 
     render() {
         return (
