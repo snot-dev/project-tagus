@@ -32,6 +32,10 @@ export default class Form extends React.Component {
         this._setInitialState();
     }
 
+    _onUpdate(data) {
+        this._state[data.name] = data.value;
+    };
+
     _setInitialState() {
         var field;
         var key;
@@ -44,7 +48,7 @@ export default class Form extends React.Component {
             this._fieldstoRender.push (
                 <fieldset className={field.parentClass || "form-fieldset"} key={i}>
                     {field.label ? this.renderLabel( field ) : null}
-                    <Field options={field}/>
+                    <Field onUpdate={this._onUpdate.bind(this)} options={field}/>
                 </fieldset>
             );
             
@@ -61,13 +65,13 @@ export default class Form extends React.Component {
     renderFields() {
         return (
             <div className="field-group">
-            {this._fieldstoRender}
+                {this._fieldstoRender}
             </div>
         )
     }
     
     validate() {
-
+        //TODO: Validation here
     };
 
     render() {

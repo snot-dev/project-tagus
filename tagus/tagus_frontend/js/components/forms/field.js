@@ -2,12 +2,27 @@ import React from 'react';
 var RichTextEditor = require('react-quill');
 
 export default class Field extends React.Component {
-        renderField(options) {
-        
+    constructor(props) {
+        super(props);
+        this.state = { };
+    };
+
+    _onChange(){
+        return function(e) {
+            this.state = {
+                name: e.target.name,
+                value: e.target.value 
+            };
+            
+            this.props.onUpdate(this.state);
+        }.bind(this);
+    };
+
+    renderField(options) {
         return {
             "text": function() {
                 return (
-                    <input type="text" id={options.name} name={options.name} className={options.classOverride || "form-field"}/>
+                    <input onChange={this._onChange()} type="text" id={options.name} name={options.name} className={options.classOverride || "form-field"}/>
                 );
             }.bind(this),
             "textarea": function() {
@@ -38,9 +53,9 @@ export default class Field extends React.Component {
             },
             "email": function() {
                 return (
-                    <input type="email" id={options.name} name={options.name} className={options.classOverride || "form-field"} />
+                    <input type="email" onChange={this._onChange()} id={options.name} name={options.name} className={options.classOverride || "form-field"} />
                 );
-            },
+            }.bind(this),
             "password": function() {
                 return (
                     <input type="password" id={options.name} name={options.name} className={options.classOverride || "form-field"} />
