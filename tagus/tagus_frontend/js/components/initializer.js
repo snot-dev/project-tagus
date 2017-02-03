@@ -27,26 +27,35 @@ class Initializer extends React.Component {
                 type: 'text',
                 name: 'username',
                 displayName: 'Username',
-                classOverride: 'form-control',
+                class: 'form-control',
                 defaultValue: 'thisIsAValue',
-                label: true,
+                label: {
+                    value: 'Username',
+                    class: 'form-class'
+                },
                 required: true
             },
             {
                 type: 'text',
                 name: '',
                 displayName: 'Username',
-                classOverride: 'form-control',
+                class: 'form-control',
                 defaultValue: 'thisIsAValue',
-                label: true,
+                label: {
+                    value: 'Username',
+                    class: 'form-label'
+                },
                 required: true
             },
             {
                 type: 'email',
                 name: 'email',
                 displayName: 'Email',
-                classOverride: 'form-control',
-                label: true,
+                class: 'form-control',
+                label: {
+                    value: 'Email',
+                    class: 'form-label'
+                },
                 required: true
             }
         ];

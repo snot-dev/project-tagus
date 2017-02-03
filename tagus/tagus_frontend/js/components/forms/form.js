@@ -34,6 +34,7 @@ export default class Form extends React.Component {
 
     _onUpdate(data) {
         this._state[data.name] = data.value;
+        console.log(this._state);
     };
 
     _setInitialState() {
@@ -47,7 +48,6 @@ export default class Form extends React.Component {
 
             this._fieldstoRender.push (
                 <fieldset className={field.parentClass || "form-fieldset"} key={i}>
-                    {field.label ? this.renderLabel( field ) : null}
                     <Field onUpdate={this._onUpdate.bind(this)} settings={field}/>
                 </fieldset>
             );
@@ -55,12 +55,6 @@ export default class Form extends React.Component {
         }
 
     };
-
-    renderLabel(options){
-        return (
-            <label htmlFor={options.name} className="form-label">{options.displayName}</label>
-        )
-    }
 
     renderFields() {
         return (
