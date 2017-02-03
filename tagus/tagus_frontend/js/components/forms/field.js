@@ -4,17 +4,50 @@ var RichTextEditor = require('react-quill');
 export default class Field extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { };
+        this._state = { };
+        this._defaultSettings = {
+            class: 'form-field'
+        };
+        
+        try {
+            this._errorMessage = '';
+            if( !this.props.settings) {
+                this._errorMessage = this._getErrorMessage('settings');
+            }
+            else if( !this.props.settings.type || this.props.settings.type.length === 0) {
+                this._errorMessage = this._getErrorMessage('type');
+            }
+            else if( !this.props.settings.name || this.props.settings.name.length === 0) {
+                this._errorMessage = this._getErrorMessage('name');
+            }
+
+            if(this._errorMessage.length > 0) {
+                throw new Error(this._errorMessage);
+            }
+        }
+        catch(e) {
+            console.error(e.message);
+        }
+    };
+
+    _getErrorMessage(arg) {
+        var errorMessages = {
+            'settings': "You must pass a 'settings' proprety to this component.",
+            'name': "You must pass a valid 'name' field as setting.",
+            'type': "You must a valid 'type' field as setting"
+        };
+
+        return errorMessages[arg];
     };
 
     _onChange(){
         return function(e) {
-            this.state = {
+            this._state = {
                 name: e.target.name,
-                value: e.target.value 
+                value: e.target ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value ): e
             };
             
-            this.props.onUpdate(this.state);
+            this.props.onUpdate(this._state);
         }.bind(this);
     };
 
@@ -104,7 +137,7 @@ export default class Field extends React.Component {
     render() {
         return (
             <div>
-                {this.renderField( this.props.options )[this.props.options.type]()}
+                {this.renderField( this.props.settings )[this.props.settings.type]()}
             </div>
         )
     };

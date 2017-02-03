@@ -48,7 +48,7 @@ export default class Form extends React.Component {
             this._fieldstoRender.push (
                 <fieldset className={field.parentClass || "form-fieldset"} key={i}>
                     {field.label ? this.renderLabel( field ) : null}
-                    <Field onUpdate={this._onUpdate.bind(this)} options={field}/>
+                    <Field onUpdate={this._onUpdate.bind(this)} settings={field}/>
                 </fieldset>
             );
             
