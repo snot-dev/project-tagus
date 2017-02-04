@@ -7,7 +7,8 @@ export default class Field extends React.Component {
         this._state = { };
         this._validField = true;
         this._defaultSettings = {
-            class: 'form-field'
+            class: 'form-field',
+            parentClass: 'form-fieldset'
         };
         
         try {
@@ -142,10 +143,10 @@ export default class Field extends React.Component {
 
     render() {
         return (
-            <div>
+            <fieldset className={this._settings.parentClass} >
                 {this._validField && this._settings.label ? this.renderLabel(this._settings) : null } 
                 {this._validField ? this.renderField(this._settings)[this._settings.type]() : null }
-            </div>
+            </fieldset>
         )
     };
 

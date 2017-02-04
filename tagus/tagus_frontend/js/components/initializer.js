@@ -29,6 +29,7 @@ class Initializer extends React.Component {
                 displayName: 'Username',
                 class: 'form-control',
                 defaultValue: 'thisIsAValue',
+                parentClass:"test-class",
                 label: {
                     value: 'Username',
                     class: 'form-class'
@@ -59,15 +60,19 @@ class Initializer extends React.Component {
                 required: true
             }
         ];
-   }
+    }
     
+    _onSubmit(){
+        console.log("Valid!");
+    }
+
     render() {
         var state = {test: "this is a test"};
 
         return (
             <div className="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
                 <h2>Welcome to Tagus!</h2>
-                <Form  class="form-horizontal" settings={this._settings} fields={this._fields} />
+                <Form  class="form-horizontal" onSubmit={this._onSubmit} settings={this._settings} fields={this._fields} />
             </div>
         )
     }
