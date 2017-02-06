@@ -4,8 +4,9 @@ var RichTextEditor = require('react-quill');
 export default class Field extends React.Component {
     constructor(props) {
         super(props);
-        this._state = { };
+        this.state = { };
         this._validField = true;
+        this._hasError = false;
         this._defaultSettings = {
             class: 'form-field',
             parentClass: 'form-fieldset'
@@ -47,14 +48,26 @@ export default class Field extends React.Component {
         return errorMessages[arg];
     };
 
+    _isValid(){
+        this._hasError = false;
+
+        console.log("field isValid");
+        if(!this.props.settings.valid) {
+            this._hasError = true;
+        }
+
+        return this._hasError ? " " + this.props.onError : "";
+        
+    };
+
     _onChange(){
         return function(e) {
-            this._state = {
+            this.setState ({
                 name: e.target.name,
                 value: e.target ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value ): e
-            };
+            });
             
-            this.props.onUpdate(this._state);
+            this.props.onUpdate(this.state);
         }.bind(this);
     };
 
@@ -142,6 +155,8 @@ export default class Field extends React.Component {
     }
 
     render() {
+        console.log("field render");
+
         return (
             <fieldset className={this._settings.parentClass} >
                 {this._validField && this._settings.label ? this.renderLabel(this._settings) : null } 

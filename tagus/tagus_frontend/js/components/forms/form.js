@@ -25,7 +25,12 @@ export default class Form extends React.Component {
 
         this._fieldstoRender = [];
         this._fields = this.props.fields;
-        this._state = {};
+        
+        this.state = {
+            validForm: false,
+            fields: {}
+        };
+
         this._validForm = true;
 
         this._settings = Object.assign(this._defaultSettings, this.props.settings);
@@ -46,10 +51,13 @@ export default class Form extends React.Component {
             key = this._fields[i].name;
             
             if(key && key.length > 0) {
-                this._state[key] = field.defaultValue;
+                this.state.fields[key] = {
+                    value: field.defaultValue,
+                    valid: true
+                }
                 
                 this._fieldstoRender.push (
-                    <Field onUpdate={this._onUpdate.bind(this)} settings={field} key={i} />
+                    <Field onError={this._settings.validation.onError} onUpdate={this._onUpdate.bind(this)} settings={field} key={i} />
                 );
             }
         }
@@ -65,21 +73,23 @@ export default class Form extends React.Component {
     
     _validate() {
         var field; 
+        var validForm = true;
 
-        this._validForm = true;
+        for(var i = 0; i < this._fieldstoRender.length; i++) {
+            field = this._fieldstoRender[i];
 
-        for(var i = 0; i < this.props.fields.length; i++) {
-            field = this.props.fields[i];
+            if(field.props.settings.required === true && (!this.state.fields[field.name] || this.state.fields[field.name].value.length === 0) ) {
+                
 
-            if(field.name in this._state) {
-                if(field.required === true && (!this._state[field.name] || this._state[field.name].length === 0) ) {
-                    this._validForm = false;
-                }
+                validForm = false;
             }
         }
 
-        return this._validForm;
+        this.setState({
+            validForm: validForm
+        })
 
+        return validForm;
     };
 
     _onSubmit(e) {
