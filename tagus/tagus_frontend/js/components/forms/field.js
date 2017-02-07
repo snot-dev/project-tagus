@@ -5,27 +5,46 @@ export default class Field extends React.Component {
     constructor(props) {
         super(props);
         this.state = { };
-        this._validField = true;
-        this._hasError = false;
+        
         this._defaultSettings = {
             class: 'form-field',
             parentClass: 'form-fieldset'
         };
+
+        this._mandatoryProps = [
+            {
+                name: 'settings',
+                childs: [
+                    {name: 'type'},
+                    {name: 'name'}
+                ]
+            },
+            { name: 'isValid'},
+            { name: 'errorClass'}
+        ];
         
+        this._validateProps(this.props);
+
+    };
+
+    _validateProps(props){
         try {
             this._errorMessage = '';
-            if( !this.props.settings) {
-                this._errorMessage = this._getErrorMessage('settings');
-            }
-            else if( !this.props.settings.type || this.props.settings.type.length === 0) {
-                this._errorMessage = this._getErrorMessage('type');
-            }
-            else if( !this.props.settings.name || this.props.settings.name.length === 0) {
-                this._errorMessage = this._getErrorMessage('name');
+            this._validToRender = true;
+
+            for(var i = 0; i < this._mandatoryProps.length; i++) {
+                var prop = this._mandatoryProps[i];
+                this._checkIfPropertyExists(prop.name);
+                
+                if( prop.childs ) {
+                    for( var j = 0; j < prop.childs.length; j++) {
+                        this._checkIfPropertyExists(prop.childs[j].name, prop.name);
+                    }
+                }
             }
 
             if(this._errorMessage.length > 0) {
-                this._validField = false;                
+                this._validToRender = false;                
                 throw new Error(this._errorMessage);
             }
         }
@@ -35,29 +54,42 @@ export default class Field extends React.Component {
         finally {
             this._settings = Object.assign(this._defaultSettings, this.props.settings || {});
         }
-
     };
 
     _getErrorMessage(arg) {
         var errorMessages = {
             'settings': "You must pass a 'settings' proprety to this component.",
             'name': "You must pass a valid 'name' field as setting.",
-            'type': "You must a valid 'type' field as setting"
+            'type': "You must pass a valid 'type' field as setting",
+            'isValid': "You must pass an 'isValid' property to this component, to check if the field is valid after validation",
+            'errorClass': "You must pass an 'errorClass' property to this component, to add if this field is not valid"
         };
 
         return errorMessages[arg];
     };
 
-    _isValid(){
-        this._hasError = false;
-
-        console.log("field isValid");
-        if(!this.props.settings.valid) {
-            this._hasError = true;
+    _checkIfPropertyExists(prop, parentProp){
+        if(parentProp) {
+            if(!this.props[parentProp][prop] || this.props[parentProp][prop].length === 0) {
+                this._errorMessage = this._getErrorMessage(prop);
+            }
         }
+        else {
+           if(!this.props[prop] || this.props[prop].length === 0) {
+                this._errorMessage = this._getErrorMessage(prop);
+            } 
+        }
+    };
 
-        return this._hasError ? " " + this.props.onError : "";
+    _addErrorClass(){
+        var errorClass = " ";
+
+        if( !this.props.isValid) {
+            errorClass = " " + this.props.errorClass;
+        }
         
+        return errorClass;
+
     };
 
     _onChange(){
@@ -75,7 +107,7 @@ export default class Field extends React.Component {
         return {
             "text": function() {
                 return (
-                    <input onChange={this._onChange()} type="text" id={options.name} name={options.name} className={options.class}/>
+                    <input onChange={this._onChange()} type="text" id={options.name} name={options.name} className={options.class + this._addErrorClass()}/>
                 );
             }.bind(this),
             "textarea": function() {
@@ -155,12 +187,10 @@ export default class Field extends React.Component {
     }
 
     render() {
-        console.log("field render");
-
         return (
             <fieldset className={this._settings.parentClass} >
-                {this._validField && this._settings.label ? this.renderLabel(this._settings) : null } 
-                {this._validField ? this.renderField(this._settings)[this._settings.type]() : null }
+                {this._validToRender && this._settings.label ? this.renderLabel(this._settings) : null } 
+                {this._validToRender ? this.renderField(this._settings)[this._settings.type]() : null }
             </fieldset>
         )
     };

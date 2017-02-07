@@ -24,7 +24,7 @@ export default class Form extends React.Component {
         };
 
         this._fieldstoRender = [];
-        this._fields = this.props.fields;
+        this.props.fields;
         
         this.state = {
             validForm: false,
@@ -39,26 +39,40 @@ export default class Form extends React.Component {
     }
 
     _onUpdate(data) {
-        this._state[data.name] = data.value;
+        var fields = this.state.fields;
+        var field = fields[data.name];
+
+        
+        field = {
+            value: data.value,
+            valid: true
+        };
+
+        this.setState(fields);
+
+        console.warn(this.state);
     };
 
     _setInitialState() {
         var field;
         var key;
 
-        for(var i  = 0; i < this._fields.length; i++) {
-            field = this._fields[i];
-            key = this._fields[i].name;
+        for(var i  = 0; i < this.props.fields.length; i++) {
+            field = this.props.fields[i];
+            key = this.props.fields[i].name;
             
-            if(key && key.length > 0) {
+            if(key) {
                 this.state.fields[key] = {
                     value: field.defaultValue,
                     valid: true
                 }
                 
                 this._fieldstoRender.push (
-                    <Field onError={this._settings.validation.onError} onUpdate={this._onUpdate.bind(this)} settings={field} key={i} />
+                    <Field isValid={this.state.fields[key].valid} errorClass={this._settings.validation.onError}  onUpdate={this._onUpdate.bind(this)} settings={field} key={i} />
                 );
+            }
+            else {
+                console.error("Field does not have a valid name");
             }
         }
     };
@@ -69,7 +83,7 @@ export default class Form extends React.Component {
                 {this._fieldstoRender}
             </div>
         )
-    }
+    };
     
     _validate() {
         var field; 
@@ -79,8 +93,6 @@ export default class Form extends React.Component {
             field = this._fieldstoRender[i];
 
             if(field.props.settings.required === true && (!this.state.fields[field.name] || this.state.fields[field.name].value.length === 0) ) {
-                
-
                 validForm = false;
             }
         }
@@ -110,5 +122,5 @@ export default class Form extends React.Component {
                 </div>
             </form>
         );
-    }
+    };
 };  
