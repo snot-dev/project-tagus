@@ -23,8 +23,7 @@ export default class Form extends React.Component {
             },
         };
 
-        this._fieldstoRender = [];
-        this.props.fields;
+        this._fieldsToRender = [];
         
         this.state = {
             validForm: false,
@@ -40,17 +39,10 @@ export default class Form extends React.Component {
 
     _onUpdate(data) {
         var fields = this.state.fields;
-        var field = fields[data.name];
-
         
-        field = {
-            value: data.value,
-            valid: true
-        };
+        fields[data.name].value = data.value;
 
-        this.setState(fields);
-
-        console.warn(this.state);
+        this.setState({fields: fields});
     };
 
     _setInitialState() {
@@ -67,8 +59,8 @@ export default class Form extends React.Component {
                     valid: true
                 }
                 
-                this._fieldstoRender.push (
-                    <Field isValid={this.state.fields[key].valid} errorClass={this._settings.validation.onError}  onUpdate={this._onUpdate.bind(this)} settings={field} key={i} />
+                this._fieldsToRender.push (
+                    <Field state={this.state.fields[key]} errorClass={this._settings.validation.onError}  onUpdate={this._onUpdate.bind(this)} settings={field} key={i} />
                 );
             }
             else {
@@ -80,34 +72,46 @@ export default class Form extends React.Component {
     _renderFields() {
         return (
             <div className="field-group">
-                {this._fieldstoRender}
+                {this._fieldsToRender}
             </div>
         )
     };
     
-    _validate() {
+    _validateFields() {
         var field; 
+        var stateField;
+        var fields = this.state.fields;
         var validForm = true;
 
-        for(var i = 0; i < this._fieldstoRender.length; i++) {
-            field = this._fieldstoRender[i];
+        for(var i = 0; i < this._fieldsToRender.length; i++) {
+            field = this._fieldsToRender[i];
 
-            if(field.props.settings.required === true && (!this.state.fields[field.name] || this.state.fields[field.name].value.length === 0) ) {
-                validForm = false;
+            if(fields.hasOwnProperty(field.props.settings.name)) {
+                stateField = fields[field.props.settings.name];
+                stateField.valid = true;
+                // field.props.isValid = false;
+
+                if(field.props.settings.required === true && (!stateField.value || stateField.value.length === 0)) {
+                    validForm = false;
+                    stateField.valid = false; 
+                    // field.props.isValid = false;
+                    console.log(field);
+                }
             }
         }
 
         this.setState({
-            validForm: validForm
-        })
+            validForm: validForm,
+            fields: fields
+        });
 
-        return validForm;
     };
 
     _onSubmit(e) {
         e.preventDefault();
-        
-        if(this._validate()) {
+        this._validateFields();
+
+        if(this.state.validForm) {
             this.props.onSubmit();
         }
     };

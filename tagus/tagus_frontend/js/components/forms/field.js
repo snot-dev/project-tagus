@@ -19,7 +19,7 @@ export default class Field extends React.Component {
                     {name: 'name'}
                 ]
             },
-            { name: 'isValid'},
+            // { name: 'isValid'},
             { name: 'errorClass'}
         ];
         
@@ -84,10 +84,11 @@ export default class Field extends React.Component {
     _addErrorClass(){
         var errorClass = " ";
 
-        if( !this.props.isValid) {
+        if( !this.props.state.valid) {
             errorClass = " " + this.props.errorClass;
         }
         
+        // console.log(errorClass);
         return errorClass;
 
     };
@@ -104,10 +105,11 @@ export default class Field extends React.Component {
     };
 
     renderField(options) {
+        console.log(this.props);
         return {
             "text": function() {
                 return (
-                    <input onChange={this._onChange()} type="text" id={options.name} name={options.name} className={options.class + this._addErrorClass()}/>
+                    <input onBlur={this._onChange()} type="text" id={options.name} name={options.name} defaultValue={options.defaultValue} className={options.class + this._addErrorClass()}/>
                 );
             }.bind(this),
             "textarea": function() {
@@ -138,7 +140,7 @@ export default class Field extends React.Component {
             },
             "email": function() {
                 return (
-                    <input type="email" onChange={this._onChange()} id={options.name} name={options.name} className={options.class} />
+                    <input type="email" onBlur={this._onChange()} id={options.name} name={options.name} className={options.class + this._addErrorClass()} />
                 );
             }.bind(this),
             "password": function() {
@@ -187,6 +189,7 @@ export default class Field extends React.Component {
     }
 
     render() {
+        console.log("Field Rendered");
         return (
             <fieldset className={this._settings.parentClass} >
                 {this._validToRender && this._settings.label ? this.renderLabel(this._settings) : null } 
