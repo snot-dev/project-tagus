@@ -38,12 +38,7 @@ export default class Form extends React.Component {
     }
 
     _onUpdate(data) {
-        var fields = this.state.fields;
-        
-        fields[data.name].value = data.value;
-
-        this.setState({fields: fields});
-
+        this.state.fields[data.name].value = data.value;
     };
 
     _setInitialState() {
@@ -108,10 +103,10 @@ export default class Form extends React.Component {
             }
         }
 
-        this.setState({
-            validForm: validForm,
-            fields: fields
-        });
+        this.state = {
+            validForm,
+            fields
+        };
 
     };
 
@@ -119,8 +114,11 @@ export default class Form extends React.Component {
         e.preventDefault();
         this._validateFields();
 
-        if(this.state.validForm) {
+        if(this.state.validForm && this.props.onSubmit) {
             this.props.onSubmit();
+        }
+        else if(!this.state.validForm && this.props.onError){
+            this.props.onError();
         }
     };
 

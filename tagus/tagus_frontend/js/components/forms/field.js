@@ -109,21 +109,21 @@ export default class Field extends React.Component {
             }.bind(this),
             "textarea": function() {
                 return (
-                    <textarea onChange={this._onChange()} className={this.options.class  + " textarea"} name={options.name} ></textarea>
+                    <textarea onBlur={this._onChange()} className={options.class + this._addErrorClass()  + " textarea"} defaultValue={options.defaultValue} name={options.name} ></textarea>
                 );
-            },
+            }.bind(this),
             "richText": function() {
                 return (
                     <div className="richtext-container">
-                        <RichTextEditor onChange={this._onChange()} theme="snow" id={options.name} name={options.name} className={options.class}/>
+                        <RichTextEditor onBlur={this._onChange()} theme="snow" id={options.name} name={options.name} className={options.class + this._addErrorClass()}/>
                     </div>
                 );
             },
             "number": function() {
                 return (
-                    <input type="number" onChange={this._onChange()} id={options.name} name={options.name} className={options.class} />
+                    <input type="number" onBlur={this._onChange()} id={options.name} name={options.name} defaultValue={options.defaultValue} className={options.class + this._addErrorClass()} />
                 );
-            },
+            }.bind(this),
             "boolean": function(){
                 //checked={JSON.parse(that.props.content.detail.content[options.alias] || 'false')}
                 return (
@@ -140,18 +140,18 @@ export default class Field extends React.Component {
             }.bind(this),
             "password": function() {
                 return (
-                    <input type="password" onChange={this._onChange()} id={options.name} name={options.name} className={options.class} />
+                    <input type="password" onBlur={this._onChange()} id={options.name} name={options.name} className={options.class + this._addErrorClass()} />
                 );
-            },
+            }.bind(this),
             "radio": function() {
                 //checked={JSON.parse(that.props.content.detail.content[options.alias] === option.value || "false")}
                 return (
-                    <div className="checkbox-container">
+                    <div className={this.options.class}>
                         {options.options.length > 0 
                         ?   options.options.map(function(option, index) {
                                 return(
                                 <div key={index}>
-                                    <label><input type="radio" name={options.name} className={this.options.class}  /> {option.name} </label><br/>
+                                    <label><input type="radio" name={options.name} className={options.class}  /> {option.name} </label><br/>
                                 </div>       
                                 )
                             })   
