@@ -26,7 +26,6 @@ class Initializer extends React.Component {
             {
                 type: 'text',
                 name: 'username',
-                displayName: 'Username',
                 class: 'form-control',
                 defaultValue: 'thisIsAValue',
                 parentClass:"test-class",
@@ -39,7 +38,6 @@ class Initializer extends React.Component {
                         {
                 type: 'password',
                 name: 'password',
-                displayName: 'Password',
                 class: 'form-control',
                 parentClass:"test-class",
                 label: {
@@ -48,54 +46,15 @@ class Initializer extends React.Component {
                 },
                 required: true
             },
-            {
-                type: 'textarea',
-                name: 'textarea',
-                displayName: 'Textarea',
+             {
+                type: 'boolean',
+                name: 'boolean',
+                defaultValue: true,
                 class: 'form-control',
-                defaultValue: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sed volutpat massa. Fusce lobortis turpis dui, eget tempus felis pretium feugiat.',
-                parentClass:"test-class",
                 label: {
-                    value: 'Textarea',
-                    class: 'form-class'
-                },
-                required: true
-            },
-            {
-                type: 'number',
-                name: 'number',
-                displayName: 'Number',
-                class: 'form-control',
-                defaultValue: 1,
-                parentClass:"test-class",
-                label: {
-                    value: 'Number',
-                    class: 'form-class'
-                },
-                required: true
-            },
-            {
-                type: 'text',
-                name: '',
-                displayName: 'Username',
-                class: 'form-control',
-                defaultValue: 'thisIsAValue',
-                label: {
-                    value: 'Username',
+                    value: 'Boolean',
                     class: 'form-label'
-                },
-                required: true
-            },
-            {
-                type: 'email',
-                name: 'email',
-                displayName: 'Email',
-                class: 'form-control',
-                label: {
-                    value: 'Email',
-                    class: 'form-label'
-                },
-                required: true
+                }
             }
         ];
     }

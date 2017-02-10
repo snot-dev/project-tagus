@@ -24,7 +24,6 @@ export default class Field extends React.Component {
         ];
         
         this._validateProps(this.props);
-
     };
 
     _validateProps(props){
@@ -125,14 +124,13 @@ export default class Field extends React.Component {
                 );
             }.bind(this),
             "boolean": function(){
-                //checked={JSON.parse(that.props.content.detail.content[options.alias] || 'false')}
                 return (
                     <div className="checkbox-container">
-                        <input type="checkbox" id={options.name} name={options.name} className={options.class}  />
+                        <input type="checkbox" id={options.name} onChange={this._onChange()} name={options.name} className={options.class} defaultChecked={JSON.parse(options.defaultValue || 'false') }  />
                     </div>
                 );  
 
-            },
+            }.bind(this),
             "email": function() {
                 return (
                     <input type="email" onBlur={this._onChange()} id={options.name} name={options.name} className={options.class + this._addErrorClass()} />
@@ -159,7 +157,7 @@ export default class Field extends React.Component {
                         }
                     </div>
                 );
-            },
+            }.bind(this),
             "dropdown": function() {
                 return (
                     <select id={options.name} name={options.name} className={options.class} >
