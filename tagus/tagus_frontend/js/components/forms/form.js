@@ -39,6 +39,8 @@ export default class Form extends React.Component {
 
     _onUpdate(data) {
         this.state.fields[data.name].value = data.value;
+
+        console.log(this.state);
     };
 
     _setInitialState() {

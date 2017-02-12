@@ -1,4 +1,4 @@
-import React from 'react';
+    import React from 'react';
 var RichTextEditor = require('react-quill');
 
 export default class Field extends React.Component {
@@ -142,19 +142,22 @@ export default class Field extends React.Component {
                 );
             }.bind(this),
             "radio": function() {
-                //checked={JSON.parse(that.props.content.detail.content[options.alias] === option.value || "false")}
+                var inputs = [];
+                var field;
+
+                for(var i = 0; i < options.options.length; i++) {
+                    field = options.options[i];
+
+                    inputs.push(
+                        <div key={i}>
+                            <label><input type="radio" onChange={this._onChange()} value={field.value} name={options.name} className={options.class} defaultChecked={JSON.parse(options.defaultValue === field.value || 'false') }   /> {field.name} </label><br/>
+                        </div>   
+                    )
+                }
+
                 return (
-                    <div className={this.options.class}>
-                        {options.options.length > 0 
-                        ?   options.options.map(function(option, index) {
-                                return(
-                                <div key={index}>
-                                    <label><input type="radio" name={options.name} className={options.class}  /> {option.name} </label><br/>
-                                </div>       
-                                )
-                            })   
-                        :   null
-                        }
+                    <div className={options.class}>
+                        {inputs}
                     </div>
                 );
             }.bind(this),

@@ -35,7 +35,7 @@ class Initializer extends React.Component {
                 },
                 required: true
             },
-                        {
+            {
                 type: 'password',
                 name: 'password',
                 class: 'form-control',
@@ -46,11 +46,35 @@ class Initializer extends React.Component {
                 },
                 required: true
             },
-             {
+            {
                 type: 'boolean',
                 name: 'boolean',
                 defaultValue: true,
                 class: 'form-control',
+                label: {
+                    value: 'Boolean',
+                    class: 'form-label'
+                }
+            },
+            {
+                type: 'radio',
+                name: 'radio',
+                defaultValue: "3",
+                class: 'form-control',
+                options: [
+                    {
+                        name: "option1",
+                        value: "1"
+                    },
+                    {
+                        name: "option2",
+                        value: "2"
+                    },
+                    {
+                        name: "option3",
+                        value: "3"
+                    }
+                ],
                 label: {
                     value: 'Boolean',
                     class: 'form-label'
