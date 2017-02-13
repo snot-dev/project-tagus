@@ -162,19 +162,23 @@ export default class Field extends React.Component {
                 );
             }.bind(this),
             "dropdown": function() {
+                var fields = [];
+                var opt;
+
+                for( var i = 0; i < options.options.length; i++) {
+                    var opt = options.options[i];
+
+                    fields.push(
+                        <option value={opt.value} key={i} >{opt.name}</option>
+                    )
+                }
+
                 return (
-                    <select id={options.name} name={options.name} className={options.class} >
-                        {options.options.length > 0 
-                        ?   options.options.map(function(option, index) {
-                                return(
-                                    <option value={option.value} key={index}>{option.name}</option>      
-                                )
-                            })   
-                        :   null
-                        }
+                    <select onChange={this._onChange()} defaultValue={options.defaultValue} id={options.name} name={options.name} className={options.class} >
+                        {fields}
                     </select>  
                 );
-            }
+            }.bind(this)
         }
     };
 

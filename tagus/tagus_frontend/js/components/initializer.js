@@ -60,6 +60,30 @@ class Initializer extends React.Component {
                 type: 'radio',
                 name: 'radio',
                 defaultValue: "3",
+                class: 'form-radio',
+                options: [
+                    {
+                        name: "option1",
+                        value: "1"
+                    },
+                    {
+                        name: "option2",
+                        value: "2"
+                    },
+                    {
+                        name: "option3",
+                        value: "3"
+                    }
+                ],
+                label: {
+                    value: 'Radio',
+                    class: 'form-label'
+                }
+            },
+            {
+                type: 'dropdown',
+                name: 'dropdown',
+                defaultValue: "3",
                 class: 'form-control',
                 options: [
                     {
@@ -76,7 +100,7 @@ class Initializer extends React.Component {
                     }
                 ],
                 label: {
-                    value: 'Boolean',
+                    value: 'Dropdown',
                     class: 'form-label'
                 }
             }
