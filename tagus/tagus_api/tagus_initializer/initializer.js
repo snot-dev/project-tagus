@@ -16,19 +16,10 @@ var mongoose = require('mongoose');
 
 mongoose.Promise = require('bluebird');
 
-router.get('/', function(req, res) {
-    var unit;
-    var contactsPage;
+var initScript = function() {
+    console.log("DB Initializer Started!");
 
-    res.render('initializer');
-
-    Settings.find({})
-    .then(function(settings){
-        if(settings.length === 0) {
-            console.log("DB Initializer Started!");
-            Settings.collection.insert(settingsSeed);
-        }
-    })
+    Settings.collection.insert(settingsSeed)
     .then(function(){
         console.log('Inserted Settings!');
         return Translate.find({});
@@ -143,7 +134,27 @@ router.get('/', function(req, res) {
     .catch(function(err) {
         console.log(err);
     });
+}
 
+router.get('/', function(req, res) {
+    var unit;
+    var contactsPage;
+
+
+    Settings.find({}, function(err, docs) {
+        if(err) {
+            throw err;
+        }
+
+        res.render('initializer');
+        //TODO: uncomment this after all work is done!
+        // if(!docs || docs.length === 0) {
+        //     initScript();
+        // }
+        // else {
+        //     res.redirect(process.env.DOMAIN);
+        // }
+    })
 });
 
 module.exports =  router;

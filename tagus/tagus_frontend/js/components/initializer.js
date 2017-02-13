@@ -45,64 +45,6 @@ class Initializer extends React.Component {
                     class: 'form-class'
                 },
                 required: true
-            },
-            {
-                type: 'boolean',
-                name: 'boolean',
-                defaultValue: true,
-                class: 'form-control',
-                label: {
-                    value: 'Boolean',
-                    class: 'form-label'
-                }
-            },
-            {
-                type: 'radio',
-                name: 'radio',
-                defaultValue: "3",
-                class: 'form-radio',
-                options: [
-                    {
-                        name: "option1",
-                        value: "1"
-                    },
-                    {
-                        name: "option2",
-                        value: "2"
-                    },
-                    {
-                        name: "option3",
-                        value: "3"
-                    }
-                ],
-                label: {
-                    value: 'Radio',
-                    class: 'form-label'
-                }
-            },
-            {
-                type: 'dropdown',
-                name: 'dropdown',
-                defaultValue: "3",
-                class: 'form-control',
-                options: [
-                    {
-                        name: "option1",
-                        value: "1"
-                    },
-                    {
-                        name: "option2",
-                        value: "2"
-                    },
-                    {
-                        name: "option3",
-                        value: "3"
-                    }
-                ],
-                label: {
-                    value: 'Dropdown',
-                    class: 'form-label'
-                }
             }
         ];
     }
