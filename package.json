@@ -27,6 +27,7 @@
     "key-mirror": "^1.0.1",
     "mongoose": "^4.4.19",
     "morgan": "^1.7.0",
+    "open": "0.0.5",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "passport-token": "^0.1.3",
