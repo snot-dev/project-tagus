@@ -61,7 +61,10 @@ class Register extends React.Component {
     }
     
     _onSubmit(formState){
-        store.dispatch(saveUser(formState));
+        if(formState) {
+            formState.isAdmin = true;
+            store.dispatch(saveUser(formState));
+        }
     }
 
     _onError() {  
