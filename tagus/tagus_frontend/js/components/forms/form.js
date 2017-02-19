@@ -128,7 +128,7 @@ export default class Form extends React.Component {
         return (
             <form onSubmit={this._onSubmit.bind(this)} className={this.props.class}>
                 {this._renderFields()}
-                <div className="buttonsContainer">
+                <div className="buttons-container">
                     {this._settings.backButton ? <button id={this._settings.buttons.back.id} className={this._settings.buttons.back.class }> {this._settings.buttons.back.value}</button> : null }
                     <button id={this._settings.buttons.submit.id} className={this._settings.buttons.submit.class} >{this._settings.buttons.submit.value}</button>
                 </div>

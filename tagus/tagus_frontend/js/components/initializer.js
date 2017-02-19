@@ -28,7 +28,6 @@ class Initializer extends React.Component {
                 name: 'username',
                 class: 'form-control',
                 defaultValue: 'thisIsAValue',
-                parentClass:"test-class",
                 label: {
                     value: 'Username',
                     class: 'form-class'
@@ -39,7 +38,6 @@ class Initializer extends React.Component {
                 type: 'password',
                 name: 'password',
                 class: 'form-control',
-                parentClass:"test-class",
                 label: {
                     value: 'Password',
                     class: 'form-class'

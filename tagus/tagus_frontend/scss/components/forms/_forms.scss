@@ -1,4 +1,8 @@
 @mixin forms($color, $aColor, $bColor, $borderColor) {
+  .form-fieldset {
+    margin-bottom: $spacing;
+  }
+  
   .form-field {
     @include font-size(14px);
     display: block;

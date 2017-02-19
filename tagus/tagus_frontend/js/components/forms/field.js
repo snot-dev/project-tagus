@@ -31,12 +31,12 @@ export default class Field extends React.Component {
             this._errorMessage = '';
             this._validToRender = true;
 
-            for(var i = 0; i < this._mandatoryProps.length; i++) {
-                var prop = this._mandatoryProps[i];
+            for(let i = 0; i < this._mandatoryProps.length; i++) {
+                let prop = this._mandatoryProps[i];
                 this._checkIfPropertyExists(prop.name);
                 
                 if( prop.childs ) {
-                    for( var j = 0; j < prop.childs.length; j++) {
+                    for( let j = 0; j < prop.childs.length; j++) {
                         this._checkIfPropertyExists(prop.childs[j].name, prop.name);
                     }
                 }
@@ -56,7 +56,7 @@ export default class Field extends React.Component {
     };
 
     _getErrorMessage(arg) {
-        var errorMessages = {
+        const ERROR_MESSAGES = {
             'settings': "You must pass a 'settings' proprety to this component.",
             'name': "You must pass a valid 'name' field as setting.",
             'type': "You must pass a valid 'type' field as setting",
@@ -64,7 +64,7 @@ export default class Field extends React.Component {
             'errorClass': "You must pass an 'errorClass' property to this component, to add if this field is not valid"
         };
 
-        return errorMessages[arg];
+        return ERROR_MESSAGES[arg];
     };
 
     _checkIfPropertyExists(prop, parentProp){
@@ -81,7 +81,7 @@ export default class Field extends React.Component {
     };
 
     _addErrorClass(){
-        var errorClass = " ";
+        let errorClass = " ";
 
         if( !this.props.isValid) {
             errorClass = " " + this.props.errorClass;
@@ -91,61 +91,61 @@ export default class Field extends React.Component {
     };
 
     _onChange(){
-        return function(e) {
+        return (e) => {
             this.props.onUpdate({
                 name: e.target.name,
                 value: e.target ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value ): e
             });
-        }.bind(this);
+        };
     };
 
     renderField(options) {
         return {
-            "text": function() {
+            "text": () => {
                 return (
                     <input onBlur={this._onChange()} type="text" id={options.name} name={options.name} defaultValue={options.defaultValue} className={options.class + this._addErrorClass()}/>
                 );
-            }.bind(this),
-            "textarea": function() {
+            },
+            "textarea": () => {
                 return (
                     <textarea onBlur={this._onChange()} className={options.class + this._addErrorClass()  + " textarea"} defaultValue={options.defaultValue} name={options.name} ></textarea>
                 );
-            }.bind(this),
-            "richText": function() {
+            },
+            "richText": () => {
                 return (
                     <div className="richtext-container">
                         <RichTextEditor onBlur={this._onChange()} theme="snow" id={options.name} name={options.name} className={options.class + this._addErrorClass()}/>
                     </div>
                 );
             },
-            "number": function() {
+            "number": () => {
                 return (
                     <input type="number" onBlur={this._onChange()} id={options.name} name={options.name} defaultValue={options.defaultValue} className={options.class + this._addErrorClass()} />
                 );
-            }.bind(this),
-            "boolean": function(){
+            },
+            "boolean": () => {
                 return (
                     <div className="checkbox-container">
                         <input type="checkbox" id={options.name} onChange={this._onChange()} name={options.name} className={options.class} defaultChecked={JSON.parse(options.defaultValue || 'false') }  />
                     </div>
                 );  
 
-            }.bind(this),
-            "email": function() {
+            },
+            "email": () => {
                 return (
                     <input type="email" onBlur={this._onChange()} id={options.name} name={options.name} className={options.class + this._addErrorClass()} />
                 );
-            }.bind(this),
-            "password": function() {
+            },
+            "password": () => {
                 return (
                     <input type="password" onBlur={this._onChange()} id={options.name} name={options.name} className={options.class + this._addErrorClass()} />
                 );
-            }.bind(this),
-            "radio": function() {
-                var inputs = [];
-                var field;
+            },
+            "radio": () => {
+                let inputs = [];
+                let field;
 
-                for(var i = 0; i < options.options.length; i++) {
+                for(let i = 0; i < options.options.length; i++) {
                     field = options.options[i];
 
                     inputs.push(
@@ -160,13 +160,13 @@ export default class Field extends React.Component {
                         {inputs}
                     </div>
                 );
-            }.bind(this),
-            "dropdown": function() {
-                var fields = [];
-                var opt;
+            },
+            "dropdown": () => {
+                let fields = [];
+                let opt;
 
-                for( var i = 0; i < options.options.length; i++) {
-                    var opt = options.options[i];
+                for( let i = 0; i < options.options.length; i++) {
+                    let opt = options.options[i];
 
                     fields.push(
                         <option value={opt.value} key={i} >{opt.name}</option>
@@ -178,7 +178,7 @@ export default class Field extends React.Component {
                         {fields}
                     </select>  
                 );
-            }.bind(this)
+            }
         }
     };
 

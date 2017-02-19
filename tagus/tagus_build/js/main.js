@@ -27755,6 +27755,28 @@ var getDictionaryKey = function (inst) {
   return '.' + inst._rootNodeID;
 };
 
+function isInteractive(tag) {
+  return tag === 'button' || tag === 'input' || tag === 'select' || tag === 'textarea';
+}
+
+function shouldPreventMouseEvent(name, type, props) {
+  switch (name) {
+    case 'onClick':
+    case 'onClickCapture':
+    case 'onDoubleClick':
+    case 'onDoubleClickCapture':
+    case 'onMouseDown':
+    case 'onMouseDownCapture':
+    case 'onMouseMove':
+    case 'onMouseMoveCapture':
+    case 'onMouseUp':
+    case 'onMouseUpCapture':
+      return !!(props.disabled && isInteractive(type));
+    default:
+      return false;
+  }
+}
+
 /**
  * This is a unified interface for event plugins to be installed and configured.
  *
@@ -27823,7 +27845,12 @@ var EventPluginHub = {
    * @return {?function} The stored callback.
    */
   getListener: function (inst, registrationName) {
+    // TODO: shouldPreventMouseEvent is DOM-specific and definitely should not
+    // live here; needs to be moved to a better place soon
     var bankForRegistrationName = listenerBank[registrationName];
+    if (shouldPreventMouseEvent(registrationName, inst._currentElement.type, inst._currentElement.props)) {
+      return null;
+    }
     var key = getDictionaryKey(inst);
     return bankForRegistrationName && bankForRegistrationName[key];
   },
@@ -29138,17 +29165,6 @@ var fourArgumentPooler = function (a1, a2, a3, a4) {
   }
 };
 
-var fiveArgumentPooler = function (a1, a2, a3, a4, a5) {
-  var Klass = this;
-  if (Klass.instancePool.length) {
-    var instance = Klass.instancePool.pop();
-    Klass.call(instance, a1, a2, a3, a4, a5);
-    return instance;
-  } else {
-    return new Klass(a1, a2, a3, a4, a5);
-  }
-};
-
 var standardReleaser = function (instance) {
   var Klass = this;
   !(instance instanceof Klass) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Trying to release an instance into a pool of a different type.') : _prodInvariant('25') : void 0;
@@ -29188,8 +29204,7 @@ var PooledClass = {
   oneArgumentPooler: oneArgumentPooler,
   twoArgumentPooler: twoArgumentPooler,
   threeArgumentPooler: threeArgumentPooler,
-  fourArgumentPooler: fourArgumentPooler,
-  fiveArgumentPooler: fiveArgumentPooler
+  fourArgumentPooler: fourArgumentPooler
 };
 
 module.exports = PooledClass;
@@ -29992,7 +30007,7 @@ var ReactCompositeComponent = {
       // Since plain JS classes are defined without any special initialization
       // logic, we can not catch common errors early. Therefore, we have to
       // catch them here, at initialization time, instead.
-      process.env.NODE_ENV !== 'production' ? warning(!inst.getInitialState || inst.getInitialState.isReactClassApproved, 'getInitialState was defined on %s, a plain JavaScript class. ' + 'This is only supported for classes created using React.createClass. ' + 'Did you mean to define a state property instead?', this.getName() || 'a component') : void 0;
+      process.env.NODE_ENV !== 'production' ? warning(!inst.getInitialState || inst.getInitialState.isReactClassApproved || inst.state, 'getInitialState was defined on %s, a plain JavaScript class. ' + 'This is only supported for classes created using React.createClass. ' + 'Did you mean to define a state property instead?', this.getName() || 'a component') : void 0;
       process.env.NODE_ENV !== 'production' ? warning(!inst.getDefaultProps || inst.getDefaultProps.isReactClassApproved, 'getDefaultProps was defined on %s, a plain JavaScript class. ' + 'This is only supported for classes created using React.createClass. ' + 'Use a static property to define defaultProps instead.', this.getName() || 'a component') : void 0;
       process.env.NODE_ENV !== 'production' ? warning(!inst.propTypes, 'propTypes was defined as an instance property on %s. Use a static ' + 'property to define propTypes instead.', this.getName() || 'a component') : void 0;
       process.env.NODE_ENV !== 'production' ? warning(!inst.contextTypes, 'contextTypes was defined as an instance property on %s. Use a ' + 'static property to define contextTypes instead.', this.getName() || 'a component') : void 0;
@@ -31458,12 +31473,18 @@ ReactDOMComponent.Mixin = {
     } else {
       var contentToUse = CONTENT_TYPES[typeof props.children] ? props.children : null;
       var childrenToUse = contentToUse != null ? null : props.children;
+      // TODO: Validate that text is allowed as a child of this node
       if (contentToUse != null) {
-        // TODO: Validate that text is allowed as a child of this node
-        if (process.env.NODE_ENV !== 'production') {
-          setAndValidateContentChildDev.call(this, contentToUse);
+        // Avoid setting textContent when the text is empty. In IE11 setting
+        // textContent on a text area will cause the placeholder to not
+        // show within the textarea until it has been focused and blurred again.
+        // https://github.com/facebook/react/issues/6731#issuecomment-254874553
+        if (contentToUse !== '') {
+          if (process.env.NODE_ENV !== 'production') {
+            setAndValidateContentChildDev.call(this, contentToUse);
+          }
+          DOMLazyTree.queueText(lazyTree, contentToUse);
         }
-        DOMLazyTree.queueText(lazyTree, contentToUse);
       } else if (childrenToUse != null) {
         var mountImages = this.mountChildren(childrenToUse, transaction, context);
         for (var i = 0; i < mountImages.length; i++) {
@@ -31815,6 +31836,13 @@ var Flags = ReactDOMComponentFlags;
 var internalInstanceKey = '__reactInternalInstance$' + Math.random().toString(36).slice(2);
 
 /**
+ * Check if a given node should be cached.
+ */
+function shouldPrecacheNode(node, nodeID) {
+  return node.nodeType === 1 && node.getAttribute(ATTR_NAME) === String(nodeID) || node.nodeType === 8 && node.nodeValue === ' react-text: ' + nodeID + ' ' || node.nodeType === 8 && node.nodeValue === ' react-empty: ' + nodeID + ' ';
+}
+
+/**
  * Drill down (through composites and empty components) until we get a host or
  * host text component.
  *
@@ -31879,7 +31907,7 @@ function precacheChildNodes(inst, node) {
     }
     // We assume the child nodes are in the same order as the child instances.
     for (; childNode !== null; childNode = childNode.nextSibling) {
-      if (childNode.nodeType === 1 && childNode.getAttribute(ATTR_NAME) === String(childID) || childNode.nodeType === 8 && childNode.nodeValue === ' react-text: ' + childID + ' ' || childNode.nodeType === 8 && childNode.nodeValue === ' react-empty: ' + childID + ' ') {
+      if (shouldPrecacheNode(childNode, childID)) {
         precacheNode(childInst, childNode);
         continue outer;
       }
@@ -32287,7 +32315,17 @@ var ReactDOMInput = {
       }
     } else {
       if (props.value == null && props.defaultValue != null) {
-        node.defaultValue = '' + props.defaultValue;
+        // In Chrome, assigning defaultValue to certain input types triggers input validation.
+        // For number inputs, the display value loses trailing decimal points. For email inputs,
+        // Chrome raises "The specified value <x> is not a valid email address".
+        //
+        // Here we check to see if the defaultValue has actually changed, avoiding these problems
+        // when the user is inputting text
+        //
+        // https://github.com/facebook/react/issues/7253
+        if (node.defaultValue !== '' + props.defaultValue) {
+          node.defaultValue = '' + props.defaultValue;
+        }
       }
       if (props.checked == null && props.defaultChecked != null) {
         node.defaultChecked = !!props.defaultChecked;
@@ -33408,9 +33446,15 @@ var ReactDOMTextarea = {
     // This is in postMount because we need access to the DOM node, which is not
     // available until after the component has mounted.
     var node = ReactDOMComponentTree.getNodeFromInstance(inst);
+    var textContent = node.textContent;
 
-    // Warning: node.value may be the empty string at this point (IE11) if placeholder is set.
-    node.value = node.textContent; // Detach value from defaultValue
+    // Only set node.value if textContent is equal to the expected
+    // initial value. In IE10/IE11 there is a bug where the placeholder attribute
+    // will populate textContent as well.
+    // https://developer.microsoft.com/microsoft-edge/platform/issues/101525/
+    if (textContent === inst._wrapperState.initialValue) {
+      node.value = textContent;
+    }
   }
 };
 
@@ -34545,14 +34589,11 @@ module.exports = ReactFeatureFlags;
 
 'use strict';
 
-var _prodInvariant = require('./reactProdInvariant'),
-    _assign = require('object-assign');
+var _prodInvariant = require('./reactProdInvariant');
 
 var invariant = require('fbjs/lib/invariant');
 
 var genericComponentClass = null;
-// This registry keeps track of wrapper classes around host tags.
-var tagToComponentClass = {};
 var textComponentClass = null;
 
 var ReactHostComponentInjection = {
@@ -34565,11 +34606,6 @@ var ReactHostComponentInjection = {
   // rendered as props.
   injectTextComponentClass: function (componentClass) {
     textComponentClass = componentClass;
-  },
-  // This accepts a keyed object with classes as values. Each key represents a
-  // tag. That particular tag will use this class instead of the generic one.
-  injectComponentClasses: function (componentClasses) {
-    _assign(tagToComponentClass, componentClasses);
   }
 };
 
@@ -34609,7 +34645,7 @@ var ReactHostComponent = {
 
 module.exports = ReactHostComponent;
 }).call(this,require('_process'))
-},{"./reactProdInvariant":181,"_process":54,"fbjs/lib/invariant":203,"object-assign":53}],117:[function(require,module,exports){
+},{"./reactProdInvariant":181,"_process":54,"fbjs/lib/invariant":203}],117:[function(require,module,exports){
 /**
  * Copyright 2016-present, Facebook, Inc.
  * All rights reserved.
@@ -37418,7 +37454,7 @@ module.exports = ReactUpdates;
 
 'use strict';
 
-module.exports = '15.4.0';
+module.exports = '15.4.2';
 },{}],140:[function(require,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -37996,18 +38032,6 @@ function isInteractive(tag) {
   return tag === 'button' || tag === 'input' || tag === 'select' || tag === 'textarea';
 }
 
-function shouldPreventMouseEvent(inst) {
-  if (inst) {
-    var disabled = inst._currentElement && inst._currentElement.props.disabled;
-
-    if (disabled) {
-      return isInteractive(inst._tag);
-    }
-  }
-
-  return false;
-}
-
 var SimpleEventPlugin = {
 
   eventTypes: eventTypes,
@@ -38078,10 +38102,7 @@ var SimpleEventPlugin = {
       case 'topMouseDown':
       case 'topMouseMove':
       case 'topMouseUp':
-        // Disabled elements should not respond to mouse events
-        if (shouldPreventMouseEvent(targetInst)) {
-          return null;
-        }
+      // TODO: Disabled elements should not respond to mouse events
       /* falls through */
       case 'topMouseOut':
       case 'topMouseOver':
@@ -40455,7 +40476,17 @@ function instantiateReactComponent(node, shouldHaveDebugID) {
     instance = ReactEmptyComponent.create(instantiateReactComponent);
   } else if (typeof node === 'object') {
     var element = node;
-    !(element && (typeof element.type === 'function' || typeof element.type === 'string')) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: %s.%s', element.type == null ? element.type : typeof element.type, getDeclarationErrorAddendum(element._owner)) : _prodInvariant('130', element.type == null ? element.type : typeof element.type, getDeclarationErrorAddendum(element._owner)) : void 0;
+    var type = element.type;
+    if (typeof type !== 'function' && typeof type !== 'string') {
+      var info = '';
+      if (process.env.NODE_ENV !== 'production') {
+        if (type === undefined || typeof type === 'object' && type !== null && Object.keys(type).length === 0) {
+          info += ' You likely forgot to export your component from the file ' + 'it\'s defined in.';
+        }
+      }
+      info += getDeclarationErrorAddendum(element._owner);
+      !false ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: %s.%s', type == null ? type : typeof type, info) : _prodInvariant('130', type == null ? type : typeof type, info) : void 0;
+    }
 
     // Special case string values
     if (typeof element.type === 'string') {
@@ -42257,12 +42288,18 @@ module.exports = hyphenateStyleName;
  * will remain to ensure logic does not differ in production.
  */
 
-function invariant(condition, format, a, b, c, d, e, f) {
-  if (process.env.NODE_ENV !== 'production') {
+var validateFormat = function validateFormat(format) {};
+
+if (process.env.NODE_ENV !== 'production') {
+  validateFormat = function validateFormat(format) {
     if (format === undefined) {
       throw new Error('invariant requires an error message argument');
     }
-  }
+  };
+}
+
+function invariant(condition, format, a, b, c, d, e, f) {
+  validateFormat(format);
 
   if (!condition) {
     var error;
@@ -49236,30 +49273,38 @@ typeof Set === 'function' && isNative(Set) &&
 // Set.prototype.keys
 Set.prototype != null && typeof Set.prototype.keys === 'function' && isNative(Set.prototype.keys);
 
+var setItem;
+var getItem;
+var removeItem;
+var getItemIDs;
+var addRoot;
+var removeRoot;
+var getRootIDs;
+
 if (canUseCollections) {
   var itemMap = new Map();
   var rootIDSet = new Set();
 
-  var setItem = function (id, item) {
+  setItem = function (id, item) {
     itemMap.set(id, item);
   };
-  var getItem = function (id) {
+  getItem = function (id) {
     return itemMap.get(id);
   };
-  var removeItem = function (id) {
+  removeItem = function (id) {
     itemMap['delete'](id);
   };
-  var getItemIDs = function () {
+  getItemIDs = function () {
     return Array.from(itemMap.keys());
   };
 
-  var addRoot = function (id) {
+  addRoot = function (id) {
     rootIDSet.add(id);
   };
-  var removeRoot = function (id) {
+  removeRoot = function (id) {
     rootIDSet['delete'](id);
   };
-  var getRootIDs = function () {
+  getRootIDs = function () {
     return Array.from(rootIDSet.keys());
   };
 } else {
@@ -49275,31 +49320,31 @@ if (canUseCollections) {
     return parseInt(key.substr(1), 10);
   };
 
-  var setItem = function (id, item) {
+  setItem = function (id, item) {
     var key = getKeyFromID(id);
     itemByKey[key] = item;
   };
-  var getItem = function (id) {
+  getItem = function (id) {
     var key = getKeyFromID(id);
     return itemByKey[key];
   };
-  var removeItem = function (id) {
+  removeItem = function (id) {
     var key = getKeyFromID(id);
     delete itemByKey[key];
   };
-  var getItemIDs = function () {
+  getItemIDs = function () {
     return Object.keys(itemByKey).map(getIDFromKey);
   };
 
-  var addRoot = function (id) {
+  addRoot = function (id) {
     var key = getKeyFromID(id);
     rootByKey[key] = true;
   };
-  var removeRoot = function (id) {
+  removeRoot = function (id) {
     var key = getKeyFromID(id);
     delete rootByKey[key];
   };
-  var getRootIDs = function () {
+  getRootIDs = function () {
     return Object.keys(rootByKey).map(getIDFromKey);
   };
 }
@@ -50225,7 +50270,14 @@ var ReactElementValidator = {
     // We warn in this case but don't throw. We expect the element creation to
     // succeed and there will likely be errors in render.
     if (!validType) {
-      process.env.NODE_ENV !== 'production' ? warning(false, 'React.createElement: type should not be null, undefined, boolean, or ' + 'number. It should be a string (for DOM elements) or a ReactClass ' + '(for composite components).%s', getDeclarationErrorAddendum()) : void 0;
+      if (typeof type !== 'function' && typeof type !== 'string') {
+        var info = '';
+        if (type === undefined || typeof type === 'object' && type !== null && Object.keys(type).length === 0) {
+          info += ' You likely forgot to export your component from the file ' + 'it\'s defined in.';
+        }
+        info += getDeclarationErrorAddendum();
+        process.env.NODE_ENV !== 'production' ? warning(false, 'React.createElement: type is invalid -- expected a string (for ' + 'built-in components) or a class/function (for composite ' + 'components) but got: %s.%s', type == null ? type : typeof type, info) : void 0;
+      }
     }
 
     var element = ReactElement.createElement.apply(this, arguments);
@@ -51228,6 +51280,9 @@ module.exports = require('./lib/React');
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 exports.printBuffer = printBuffer;
 
 var _helpers = require('./helpers');
@@ -51239,8 +51294,6 @@ var _diff2 = _interopRequireDefault(_diff);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
 
 /**
  * Get log level string based on supplied params
@@ -51264,40 +51317,40 @@ function getLogLevel(level, action, payload, type) {
 }
 
 function defaultTitleFormatter(options) {
-  var timestamp = options.timestamp;
-  var duration = options.duration;
+  var timestamp = options.timestamp,
+      duration = options.duration;
+
 
   return function (action, time, took) {
     var parts = ['action'];
-    if (timestamp) {
-      parts.push('@ ' + time);
-    }
-    parts.push(action.type);
-    if (duration) {
-      parts.push('(in ' + took.toFixed(2) + ' ms)');
-    }
+
+    if (timestamp) parts.push('@ ' + time);
+    parts.push(String(action.type));
+    if (duration) parts.push('(in ' + took.toFixed(2) + ' ms)');
+
     return parts.join(' ');
   };
 }
 
 function printBuffer(buffer, options) {
-  var logger = options.logger;
-  var actionTransformer = options.actionTransformer;
-  var _options$titleFormatt = options.titleFormatter;
-  var titleFormatter = _options$titleFormatt === undefined ? defaultTitleFormatter(options) : _options$titleFormatt;
-  var collapsed = options.collapsed;
-  var colors = options.colors;
-  var level = options.level;
-  var diff = options.diff;
+  var logger = options.logger,
+      actionTransformer = options.actionTransformer,
+      _options$titleFormatt = options.titleFormatter,
+      titleFormatter = _options$titleFormatt === undefined ? defaultTitleFormatter(options) : _options$titleFormatt,
+      collapsed = options.collapsed,
+      colors = options.colors,
+      level = options.level,
+      diff = options.diff;
+
 
   buffer.forEach(function (logEntry, key) {
-    var started = logEntry.started;
-    var startedTime = logEntry.startedTime;
-    var action = logEntry.action;
-    var prevState = logEntry.prevState;
-    var error = logEntry.error;
-    var took = logEntry.took;
-    var nextState = logEntry.nextState;
+    var started = logEntry.started,
+        startedTime = logEntry.startedTime,
+        action = logEntry.action,
+        prevState = logEntry.prevState,
+        error = logEntry.error;
+    var took = logEntry.took,
+        nextState = logEntry.nextState;
 
     var nextEntry = buffer[key + 1];
 
@@ -51310,7 +51363,7 @@ function printBuffer(buffer, options) {
     var formattedAction = actionTransformer(action);
     var isCollapsed = typeof collapsed === 'function' ? collapsed(function () {
       return nextState;
-    }, action) : collapsed;
+    }, action, logEntry) : collapsed;
 
     var formattedTime = (0, _helpers.formatTime)(startedTime);
     var titleCSS = colors.title ? 'color: ' + colors.title(formattedAction) + ';' : null;
@@ -51355,7 +51408,7 @@ function printBuffer(buffer, options) {
     try {
       logger.groupEnd();
     } catch (e) {
-      logger.log('—— log end ——');
+      logger.log('\u2014\u2014 log end \u2014\u2014');
     }
   });
 }
@@ -51405,7 +51458,7 @@ exports.default = {
   // Deprecated options
   transformer: undefined
 };
-module.exports = exports['default'];
+module.exports = exports["default"];
 },{}],310:[function(require,module,exports){
 'use strict';
 
@@ -51419,6 +51472,8 @@ var _deepDiff = require('deep-diff');
 var _deepDiff2 = _interopRequireDefault(_deepDiff);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 // https://github.com/flitbit/diff#differences
 var dictionary = {
@@ -51445,24 +51500,25 @@ function style(kind) {
 }
 
 function render(diff) {
-  var kind = diff.kind;
-  var path = diff.path;
-  var lhs = diff.lhs;
-  var rhs = diff.rhs;
-  var index = diff.index;
-  var item = diff.item;
+  var kind = diff.kind,
+      path = diff.path,
+      lhs = diff.lhs,
+      rhs = diff.rhs,
+      index = diff.index,
+      item = diff.item;
+
 
   switch (kind) {
     case 'E':
-      return path.join('.') + ' ' + lhs + ' → ' + rhs;
+      return [path.join('.'), lhs, '\u2192', rhs];
     case 'N':
-      return path.join('.') + ' ' + rhs;
+      return [path.join('.'), rhs];
     case 'D':
-      return '' + path.join('.');
+      return [path.join('.')];
     case 'A':
       return [path.join('.') + '[' + index + ']', item];
     default:
-      return null;
+      return [];
   }
 }
 
@@ -51485,16 +51541,16 @@ function diffLogger(prevState, newState, logger, isCollapsed) {
 
       var output = render(elem);
 
-      logger.log('%c ' + dictionary[kind].text, style(kind), output);
+      logger.log.apply(logger, ['%c ' + dictionary[kind].text, style(kind)].concat(_toConsumableArray(output)));
     });
   } else {
-    logger.log('—— no diff ——');
+    logger.log('\u2014\u2014 no diff \u2014\u2014');
   }
 
   try {
     logger.groupEnd();
   } catch (e) {
-    logger.log('—— diff end —— ');
+    logger.log('\u2014\u2014 diff end \u2014\u2014 ');
   }
 }
 module.exports = exports['default'];
@@ -51521,11 +51577,11 @@ var timer = exports.timer = typeof performance !== "undefined" && performance !=
 },{}],312:[function(require,module,exports){
 'use strict';
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _core = require('./core');
 
@@ -51557,17 +51613,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @returns {function} logger middleware
  */
 function createLogger() {
-  var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+  var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
   var loggerOptions = _extends({}, _defaults2.default, options);
 
-  var logger = loggerOptions.logger;
-  var transformer = loggerOptions.transformer;
-  var stateTransformer = loggerOptions.stateTransformer;
-  var errorTransformer = loggerOptions.errorTransformer;
-  var predicate = loggerOptions.predicate;
-  var logErrors = loggerOptions.logErrors;
-  var diffPredicate = loggerOptions.diffPredicate;
+  var logger = loggerOptions.logger,
+      transformer = loggerOptions.transformer,
+      stateTransformer = loggerOptions.stateTransformer,
+      errorTransformer = loggerOptions.errorTransformer,
+      predicate = loggerOptions.predicate,
+      logErrors = loggerOptions.logErrors,
+      diffPredicate = loggerOptions.diffPredicate;
 
   // Return if 'console' object is not defined
 
@@ -51604,7 +51660,7 @@ function createLogger() {
         logEntry.prevState = stateTransformer(getState());
         logEntry.action = action;
 
-        var returnedValue = undefined;
+        var returnedValue = void 0;
         if (logErrors) {
           try {
             returnedValue = next(action);
@@ -51825,8 +51881,8 @@ function isPromise(value) {
 exports.__esModule = true;
 function createThunkMiddleware(extraArgument) {
   return function (_ref) {
-    var dispatch = _ref.dispatch;
-    var getState = _ref.getState;
+    var dispatch = _ref.dispatch,
+        getState = _ref.getState;
     return function (next) {
       return function (action) {
         if (typeof action === 'function') {
