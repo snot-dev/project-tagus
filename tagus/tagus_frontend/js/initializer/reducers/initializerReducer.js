@@ -10,6 +10,7 @@ export let initializerReducer = (state, action) => {
          }
          case constants.user.SAVING_USER_FULFILLED: {
              newState.savingUser = false;
+             newState.userCreated = true;
              newState.user = action.payload.data
              return newState;
          }

@@ -24,6 +24,7 @@ let initialState = {
     },
     initializer: {
         savingUser: false,
+        userCreated: false
         user: {
             username: "",
             email: "",
