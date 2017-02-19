@@ -1,8 +1,6 @@
 var lib = require('../../tagus_lib/lib');
 var pageModel = require('./pageModel');
 var router = require('express').Router();
-var open = require('open');
-
 
 module.exports = function(initializerUrl) {
     pageModel.find({}, function(err, docs) {
@@ -18,9 +16,6 @@ module.exports = function(initializerUrl) {
                     res.render(doc.template, viewBag);
                 });
             });
-        }
-        else {
-            open(process.env.DOMAIN + initializerUrl);
         }
     });
 

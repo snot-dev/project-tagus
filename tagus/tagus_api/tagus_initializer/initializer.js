@@ -13,10 +13,11 @@ var settingsSeed = require('../tagus_settings/settingsInitializer');
 var Settings = require('../tagus_settings/settingsModel');
 var initializer = require('../../tagus_lib/lib').initializer;
 var mongoose = require('mongoose');
+var open = require('open');
 
 mongoose.Promise = require('bluebird');
 
-var initScript = function() {
+var _initScript = function() {
     console.log("DB Initializer Started!");
 
     Settings.collection.insert(settingsSeed)
@@ -136,25 +137,37 @@ var initScript = function() {
     });
 }
 
+var initialize = function(initializerUrl) {
+    User.find({}, function(err, docs) {
+        if(err) {
+            throw err;
+        }
+
+        if(!docs || docs.length === 0) {
+            open(process.env.DOMAIN + initializerUrl);
+        }
+    });
+};
+
 router.get('/', function(req, res) {
     var unit;
     var contactsPage;
 
 
-    Settings.find({}, function(err, docs) {
+    User.find({}, function(err, docs) {
         if(err) {
             throw err;
         }
 
         res.render('initializer');
-        //TODO: uncomment this after all work is done!
-        // if(!docs || docs.length === 0) {
-        //     initScript();
-        // }
-        // else {
-        //     res.redirect(process.env.DOMAIN);
-        // }
+        // TODO: uncomment this after all work is done!
+        if(!docs || docs.length === 0) {
+            _initScript();
+        }
+        else {
+            res.redirect(process.env.DOMAIN);
+        }
     })
 });
 
-module.exports =  router;
+module.exports =  {router, initialize}

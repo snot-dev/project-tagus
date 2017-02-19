@@ -49,9 +49,10 @@ app.use('/api/unitFields', unitFields);
 app.use('/api/users', users);
 app.use('/api/translates', translates);
 app.use('/api/settings', settings);
-app.use(initializerUrl, apiInitializer);
+app.use(initializerUrl, apiInitializer.router);
 app.use('/', require('./tagus/tagus_api/tagus_pages/routeManager')(initializerUrl));
 
+apiInitializer.initialize(initializerUrl);
 
 app.listen(portNumber, function () {
   console.log("listening to " + portNumber);
