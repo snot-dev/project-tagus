@@ -27,7 +27,8 @@ export default class Form extends React.Component {
         
         this.state = {
             validForm: false,
-            fields: {}
+            fields: {},
+            body: {}
         };
 
         this._validForm = true;
@@ -39,15 +40,13 @@ export default class Form extends React.Component {
 
     _onUpdate(data) {
         this.state.fields[data.name].value = data.value;
-
-        console.log(this.state);
     };
 
     _setInitialState() {
-        var field;
-        var key;
+        let field;
+        let key;
 
-        for(var i  = 0; i < this.props.fields.length; i++) {
+        for(let i  = 0; i < this.props.fields.length; i++) {
             field = this.props.fields[i];
             key = this.props.fields[i].name;
             
@@ -67,10 +66,10 @@ export default class Form extends React.Component {
     };
 
     _renderFields() {
-        var fields = [];
-        var field;
+        let fields = [];
+        let field;
 
-        for(var i = 0; i < this._validFields.length; i++) {
+        for(let i = 0; i < this._validFields.length; i++) {
             field = this._validFields[i];
 
             fields.push(
@@ -86,12 +85,14 @@ export default class Form extends React.Component {
     };
     
     _validateFields() {
-        var field; 
-        var stateField;
-        var fields = this.state.fields;
-        var validForm = true;
+        let field; 
+        let stateField;
+        let fields = this.state.fields;
+        let validForm = true;
+        let body = {};
 
-        for(var i = 0; i < this._validFields.length; i++) {
+
+        for(let i = 0; i < this._validFields.length; i++) {
             field = this._validFields[i];
 
             if(fields.hasOwnProperty(field.name)) {
@@ -102,12 +103,16 @@ export default class Form extends React.Component {
                     validForm = false;
                     stateField.valid = false; 
                 }
+                else {
+                    body[field.name] = stateField.value
+                }
             }
         }
 
         this.state = {
             validForm,
-            fields
+            fields,
+            body,
         };
 
     };
@@ -117,7 +122,7 @@ export default class Form extends React.Component {
         this._validateFields();
 
         if(this.state.validForm && this.props.onSubmit) {
-            this.props.onSubmit();
+            this.props.onSubmit(this.state.body);
         }
         else if(!this.state.validForm && this.props.onError){
             this.props.onError();

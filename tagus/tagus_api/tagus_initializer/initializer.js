@@ -162,7 +162,7 @@ router.get('/', function(req, res) {
         res.render('initializer');
         // TODO: uncomment this after all work is done!
         if(!docs || docs.length === 0) {
-            _initScript();
+            // _initScript();
         }
         else {
             res.redirect(process.env.DOMAIN);

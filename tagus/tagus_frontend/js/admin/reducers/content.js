@@ -1,5 +1,5 @@
-import { constants } from '../constants';
-import {lib} from '../tagus_lib';
+import { constants } from '../../constants';
+import {lib} from '../../tagus_lib';
 
 export let contentReducer = function(state, action) {
     let newState = Object.assign({}, state);

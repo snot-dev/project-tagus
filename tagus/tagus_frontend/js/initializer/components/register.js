@@ -1,10 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Form from './forms/form';
-import Field from './forms/field';
+import {connect} from 'react-redux';
+import Form from '../../forms/components/form';
+import Field from '../../forms/components/field';
+import store from '../../store';
+import {saveUser} from '../actions/initializerActions';
 
-
-class Initializer extends React.Component {
+class Register extends React.Component {
    constructor() {
        super();
         this._settings = {
@@ -15,9 +17,9 @@ class Initializer extends React.Component {
             buttons: {
                 cancel: null,
                 submit: {
-                    class: "button submit pull-right",
+                    class: "button submit full-width",
                     id: "submitButton",
-                    value: "Submit my Form"
+                    value: "Submit"
                 }
             }
         };
@@ -27,9 +29,20 @@ class Initializer extends React.Component {
                 type: 'text',
                 name: 'username',
                 class: 'form-control',
-                defaultValue: 'thisIsAValue',
+                defaultValue: '',
                 label: {
                     value: 'Username',
+                    class: 'form-class'
+                },
+                required: true
+            },
+            {
+                type: 'email',
+                name: 'email',
+                class: 'form-control',
+                defaultValue: '',
+                label: {
+                    value: 'Email',
                     class: 'form-class'
                 },
                 required: true
@@ -47,11 +60,11 @@ class Initializer extends React.Component {
         ];
     }
     
-    _onSubmit(){
-        console.log("Submited!");
+    _onSubmit(formState){
+        store.dispatch(saveUser(formState));
     }
 
-    _onError() {
+    _onError() {  
         console.log("Error!");
     }
 
@@ -65,5 +78,10 @@ class Initializer extends React.Component {
     }
 };
 
+let mapStateToProps = function(state) {
+  return {
+    initializer:  state.initializer
+  };
+};
 
-ReactDOM.render(<Initializer />, document.getElementById('initializer'));
+export default connect(mapStateToProps)(Register);

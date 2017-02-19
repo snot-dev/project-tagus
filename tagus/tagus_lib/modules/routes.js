@@ -18,8 +18,7 @@ var registerRoutes = function(Model, options) {
         }
         else {
             var newModel = new Model(req.body);
-
-
+            
             newModel.save(function(err, result) {
                 res.json(err || result);
             });

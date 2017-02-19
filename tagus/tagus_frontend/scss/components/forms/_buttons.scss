@@ -56,6 +56,9 @@
       width: 150px;
       min-width: 150px;
 
+      &.full-width {
+        width: 100%;
+      }
     }
   }
 }

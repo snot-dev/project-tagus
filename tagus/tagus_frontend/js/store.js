@@ -1,12 +1,14 @@
 import { combineReducers, createStore, applyMiddleware } from "redux";
-import { contentReducer } from './reducers/content';
+import { contentReducer } from './admin/reducers/content';
+import { initializerReducer } from './initializer/reducers/initializerReducer';
 import thunk from 'redux-thunk';
 import promise from 'redux-promise-middleware';
 import logger from 'redux-logger';
 
 
 let rootReducer = combineReducers({
-    content: contentReducer
+    content: contentReducer,
+    initializer: initializerReducer
 });
 
 
@@ -19,6 +21,15 @@ let initialState = {
         unit: {},
         tabs: [],
         savingPageDetail: false
+    },
+    initializer: {
+        savingUser: false,
+        user: {
+            username: "",
+            email: "",
+            password: "",
+            isAdmin: false,
+        }
     }
 };
 

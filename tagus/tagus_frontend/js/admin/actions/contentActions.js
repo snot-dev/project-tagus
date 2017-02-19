@@ -1,5 +1,4 @@
 import {constants} from '../constants';
-
 import axios from '../axios';
 
 let _shouldGetPageList = function(state) {
@@ -28,7 +27,7 @@ let _getContentUnitTypeIfNeeded = function(dispatch, state, id) {
 };
 
 export function getContentListIfNeeded(){
-    return function(dispatch, getState) {
+    return (dispatch, getState) => {
         if( _shouldGetPageList(getState())) {
             dispatch( {
                 type: constants.GET_CONTENT_LIST,
@@ -39,7 +38,7 @@ export function getContentListIfNeeded(){
 };
 
 export function getContentDetailIfNeeded(id) {
-    return function(dispatch, getState) {
+    return (dispatch, getState) => {
         if(_shouldGetPageDetail(getState(), id)) {
             dispatch({
                 type: constants.GET_CONTENT_DETAIL,

@@ -23,7 +23,7 @@ module.exports = function(grunt) {
                 },
                 files: {
                     'tagus/tagus_build/js/main.js': 'tagus/tagus_frontend/js/components/app.js',
-                    'tagus/tagus_build/js/initializer.js': 'tagus/tagus_frontend/js/components/initializer.js'
+                    'tagus/tagus_build/js/initializer.js': 'tagus/tagus_frontend/js/initializer/initializer.js'
                 }
             }
         },
