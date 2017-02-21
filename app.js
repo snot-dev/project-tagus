@@ -9,7 +9,6 @@ var express = require('express'),
   UserModel = require('./tagus/tagus_api/tagus_users/userModel'),
   translates = require('./tagus/tagus_api/tagus_translates/translatesRouter'),
   settings = require('./tagus/tagus_api/tagus_settings/settingsRouter'),
-  apiInitializer = require('./tagus/tagus_api/tagus_initializer/initializer'),
   admin = require('./tagus/tagus_routes/admin'),
   db = require('./tagus/tagus_dbConfig/db_config'),
   morgan = require('morgan'),
@@ -41,6 +40,7 @@ app.use(passport.session());
 
 //routes
 var initializerUrl = '/api/initializer';
+var apiInitializer = require('./tagus/tagus_api/tagus_initializer/initializer')(passport, initializerUrl);
 
 app.use('/admin', admin);
 app.use('/api/pages', pages);

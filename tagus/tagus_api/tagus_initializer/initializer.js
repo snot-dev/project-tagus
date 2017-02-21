@@ -1,4 +1,6 @@
 var router = require('express').Router();
+var open = require('open');
+var mongoose = require('mongoose');
 var usersSeed = require('../tagus_users/usersInitializer');
 var User = require('../tagus_users/userModel');
 var unitFieldsSeed = require('../tagus_unitFields/unitFieldsInitializer');
@@ -12,8 +14,7 @@ var Translate = require('../tagus_translates/translateModel');
 var settingsSeed = require('../tagus_settings/settingsInitializer');
 var Settings = require('../tagus_settings/settingsModel');
 var initializer = require('../../tagus_lib/lib').initializer;
-var mongoose = require('mongoose');
-var open = require('open');
+var lib = require('../../tagus_lib/lib');
 
 mongoose.Promise = require('bluebird');
 
@@ -137,37 +138,48 @@ var _initScript = function() {
     });
 }
 
-var initialize = function(initializerUrl) {
-    User.find({}, function(err, docs) {
-        if(err) {
-            throw err;
-        }
+module.exports = function(passport, initializerUrl) {
+    var initialize = function(passport, initializerUrl) {
+        User.find({}, function(err, docs) {
+            if(err) {
+                throw err;
+            }
 
-        if(!docs || docs.length === 0) {
-            open(process.env.DOMAIN + initializerUrl);
-        }
+            if(!docs || docs.length === 0) {
+                open(process.env.DOMAIN + initializerUrl);
+            }
+        });
+    };
+
+    router.get('/', function(req, res) {
+        var unit;
+        var contactsPage;   
+
+
+        User.find({}, function(err, docs) {
+            if(err) {
+                throw err;
+            }
+
+            res.render('initializer');
+            // TODO: uncomment this after all work is done!
+            if(!docs || docs.length === 0) {
+                // _initScript();
+            }
+            else {
+                res.redirect(process.env.DOMAIN);
+            }
+        })
     });
-};
 
-router.get('/', function(req, res) {
-    var unit;
-    var contactsPage;
+    router.post('/', passport.authenticate('signin', {
+        successRedirect: '/',
+        failureRedirect: '/api/initializer'
+    }));
+    
+    return {router, initialize};
+}
 
 
-    User.find({}, function(err, docs) {
-        if(err) {
-            throw err;
-        }
 
-        res.render('initializer');
-        // TODO: uncomment this after all work is done!
-        if(!docs || docs.length === 0) {
-            // _initScript();
-        }
-        else {
-            res.redirect(process.env.DOMAIN);
-        }
-    })
-});
 
-module.exports =  {router, initialize}

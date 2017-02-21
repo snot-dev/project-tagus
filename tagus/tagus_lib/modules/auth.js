@@ -13,6 +13,41 @@ module.exports = {
             });
         });
 
+        passport.use('signin', new LocalStrategy({
+                usernameField: 'email',
+                passwordField: 'password',
+                passReqToCallback: true
+            },
+            function(req, email, password, done) {
+                process.nextTick(function() {
+                    UserModel.findOne({ 'email': email }, function(err, user) {
+                        if (err) {
+                            return done(err);
+                        }
+
+                        if (user) {
+                            return done(null, user);
+                        } else {
+
+                            var newUser = new UserModel({
+                                username: req.body.username,
+                                email: email,
+                                password: bcrypt.hashSync(password, bcrypt.genSaltSync(8), null)
+                            });
+
+                            newUser.save(function(err) {
+                                if (err) {
+                                    throw err;
+                                }
+
+                                return done(null, newUser);
+                            });
+
+                        }
+                    });
+                });
+            }));
+
         passport.use('login', new LocalStrategy({
         usernameField : 'email',
         passwordField : 'password',
