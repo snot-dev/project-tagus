@@ -9,9 +9,10 @@ export let initializerReducer = (state, action) => {
              return newState;
          }
          case constants.user.SAVING_USER_FULFILLED: {
+             console.log(action);
              newState.savingUser = false;
              newState.userCreated = true;
-             newState.user = action.payload.data
+             newState.user = action.payload
              return newState;
          }
          default: 
