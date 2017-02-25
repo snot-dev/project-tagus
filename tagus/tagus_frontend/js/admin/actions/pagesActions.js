@@ -1,7 +1,7 @@
-import {constants} from '../constants';
-import {lib} from '../tagus_lib';
+import {constants} from '../../constants';
+import {lib} from '../../tagus_lib';
 import $ from 'jquery';
-import axios from '../axios';
+import axios from '../../axios';
 
 //actions
 let _fetchingPageList = function() {

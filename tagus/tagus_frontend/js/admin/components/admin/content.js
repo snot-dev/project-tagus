@@ -1,5 +1,5 @@
 import React from 'react';
-import store from '../../store';
+import store from '../../../store';
 import {Link} from 'react-router';
 import {pageActions} from '../../actions/pagesActions';
 import {getContentListIfNeeded, getContentDetailIfNeeded} from '../../actions/contentActions';

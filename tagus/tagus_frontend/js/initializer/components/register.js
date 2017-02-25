@@ -83,7 +83,7 @@ class Register extends React.Component {
 
 let mapStateToProps = function(state) {
   return {
-    initializer:  state.initializer
+    initializer: state.initializer
   };
 };
 

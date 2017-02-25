@@ -8,7 +8,7 @@ import Content from './admin/content';
 import ContentDetail from './admin/content/contentDetail';
 import Editor from './admin/editor';
 import Settings from './admin/settings';
-import store from '../store';
+import store from '../../store';
 
 var Routes =  (
     <Route path="/" component={Index} >

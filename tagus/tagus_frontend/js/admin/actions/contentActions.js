@@ -1,5 +1,5 @@
-import {constants} from '../constants';
-import axios from '../axios';
+import {constants} from '../../constants';
+import axios from '../../axios';
 
 let _shouldGetPageList = function(state) {
     //TODO: add more debug code

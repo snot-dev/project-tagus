@@ -22,7 +22,7 @@ module.exports = function(grunt) {
                     transform: [['babelify', { presets: ["react", "es2015"] }]]
                 },
                 files: {
-                    'tagus/tagus_build/js/main.js': 'tagus/tagus_frontend/js/components/app.js',
+                    'tagus/tagus_build/js/main.js': 'tagus/tagus_frontend/js/admin/components/app.js',
                     'tagus/tagus_build/js/initializer.js': 'tagus/tagus_frontend/js/initializer/initializer.js'
                 }
             }

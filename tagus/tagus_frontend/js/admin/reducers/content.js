@@ -36,50 +36,50 @@ export let contentReducer = function(state, action) {
         } 
 
         case constants.GETTING_PAGEDETAIL:
-            {
-                newState.fetchingPageDetail = true;
-                return newState;
-            }
+        {
+            newState.fetchingPageDetail = true;
+            return newState;
+        }
         case constants.RECEIVED_PAGEDETAIL:
-            {
-                newState.fetchingPageDetail = false;
-                newState.detail = action.page;
-                if (action.tabs) {
-                    newState.tabs = action.tabs;
-                }
-                if (action.unit) {
-                    newState.unit = action.unit;
-                }
-                return newState;
+        {
+            newState.fetchingPageDetail = false;
+            newState.detail = action.page;
+            if (action.tabs) {
+                newState.tabs = action.tabs;
             }
+            if (action.unit) {
+                newState.unit = action.unit;
+            }
+            return newState;
+        }
         case constants.CHANGE_TAB:
-            {
-                newState.tab = action.tab;
-                return newState;
-            }
+        {
+            newState.tab = action.tab;
+            return newState;
+        }
         case constants.TAB_FIELD_CHANGED_VALUE:
-            {
-                newState.detail.content[action.field.alias] = action.value;
-                return newState;
-            }
+        {
+            newState.detail.content[action.field.alias] = action.value;
+            return newState;
+        }
         case constants.SETTINGS_FIELD_CHANGED_VALUE:
-            {
-                newState.detail[action.field.alias] = action.field.value;
-                return newState;
-            }
+        {
+            newState.detail[action.field.alias] = action.field.value;
+            return newState;
+        }
         case constants.SAVING_PAGEDETAIL:
-            {
-                newState.savingPageDetail = true;
-                return newState;
-            }
+        {
+            newState.savingPageDetail = true;
+            return newState;
+        }
         case constants.SAVED_PAGEDETAIL:
-            {
-                newState.savingPageDetail = false;
-                newState.detail = action.pageDetail;
-                newState.list = action.pageList;
+        {
+            newState.savingPageDetail = false;
+            newState.detail = action.pageDetail;
+            newState.list = action.pageList;
 
-                return newState;
-            }
+            return newState;
+        }
         default:
             return state || {};
     }

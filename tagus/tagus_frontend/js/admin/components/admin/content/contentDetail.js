@@ -1,5 +1,5 @@
 import React from 'react';
-import store from '../../../store';
+import store from '../../../../store';
 import {getContentDetailIfNeeded} from '../../../actions/contentActions';
 import {connect} from 'react-redux';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
