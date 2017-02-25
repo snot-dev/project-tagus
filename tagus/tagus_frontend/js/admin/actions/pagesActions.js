@@ -6,7 +6,7 @@ import axios from '../../axios';
 //actions
 let _fetchingPageList = function() {
     return {
-        type: constants.GETTING_PAGELIST
+        type: constants.content.GETTING_PAGELIST
     }
 };
 
@@ -14,20 +14,20 @@ let _receivedPageList = function(pageList) {
     let list = pageList;
 
     return {
-        type: constants.RECEIVED_PAGELIST,
+        type: constants.content.RECEIVED_PAGELIST,
         pageList: list
     };
 };
 
 let _fetchingPageDetail = function() {
     return {
-        type: constants.GETTING_PAGEDETAIL
+        type: constants.content.GETTING_PAGEDETAIL
     }
 }
 
 let _receivedPageDetail = function(pageDetail, unit) {
     let obj = {
-        type: constants.RECEIVED_PAGEDETAIL,
+        type: constants.content.RECEIVED_PAGEDETAIL,
         page: pageDetail
     }
 
@@ -41,7 +41,7 @@ let _receivedPageDetail = function(pageDetail, unit) {
 
 let _tabFieldChanged = function(field, value) {
     return {
-        type: constants.TAB_FIELD_CHANGED_VALUE,
+        type: constants.content.TAB_FIELD_CHANGED_VALUE,
         field: field,
         value: value
     }
@@ -49,14 +49,14 @@ let _tabFieldChanged = function(field, value) {
 
 let _settingsFieldChanged = function(field) {
     return {
-        type: constants.SETTINGS_FIELD_CHANGED_VALUE,
+        type: constants.content.SETTINGS_FIELD_CHANGED_VALUE,
         field: field
     };
 }
 
 let _savingPageDetail = function() {
     return {
-        type: constants.SAVING_PAGEDETAIL
+        type: constants.content.SAVING_PAGEDETAIL
     }
 };
 
@@ -64,7 +64,7 @@ let _savedPage = function(pageDetail, pageList) {
     let list = pageList;
 
     return {
-        type: constants.SAVED_PAGEDETAIL,
+        type: constants.content.SAVED_PAGEDETAIL,
         pageDetail: pageDetail,
         pageList: list
     }

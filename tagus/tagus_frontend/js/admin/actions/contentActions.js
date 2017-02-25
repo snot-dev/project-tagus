@@ -30,7 +30,7 @@ export function getContentListIfNeeded(){
     return (dispatch, getState) => {
         if( _shouldGetPageList(getState())) {
             dispatch( {
-                type: constants.GET_CONTENT_LIST,
+                type: constants.content.GET_CONTENT_LIST,
                 payload: axios ('pages?contenttree=true').then(results =>{ return results;})
             })
         }
@@ -41,7 +41,7 @@ export function getContentDetailIfNeeded(id) {
     return (dispatch, getState) => {
         if(_shouldGetPageDetail(getState(), id)) {
             dispatch({
-                type: constants.GET_CONTENT_DETAIL,
+                type: constants.content.GET_CONTENT_DETAIL,
                 payload: axios('pages/' + id).then(results => {
                     _getContentUnitTypeIfNeeded(dispatch, getState(), results.data.unitType.id);
                     return results;
