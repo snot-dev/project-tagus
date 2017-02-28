@@ -1,4 +1,5 @@
 import React from 'react';
+import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import Field from './field';
 
 export default class Form extends React.Component {
@@ -9,6 +10,8 @@ export default class Form extends React.Component {
                 validate: true,
                 onError: "error"    
             },
+            enableTabs: false,
+            tabs: [],
             buttons: {
                 cancel: {
                     class: "button",
@@ -84,6 +87,38 @@ export default class Form extends React.Component {
         )
     };
     
+    _renderTabs() {
+        let tabs = [];
+        let tab;
+
+        for( let i = 0; i < this.props.tabs.length; i++) {
+            tab = this,props.tabs[i];
+            if(tab.name !== "") {
+                tabs.push(
+                    <Tab key={i} > <a className="tab block">{tab.name}</a></Tab>
+                );
+            }
+
+        }
+
+        return (
+            <Tabs>
+                <TabList className="tab-navigation">
+                    {tabs}
+                </TabList>
+            </Tabs>
+        )
+        
+    };
+
+    _hasTabs() {
+        return this._settings.enableTabs && this.props.tabs && this.props.tabs.length > 0;
+    };  
+
+    _renderTabs() {
+
+    };
+
     _validateFields() {
         let field; 
         let stateField;

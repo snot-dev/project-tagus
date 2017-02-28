@@ -1,4 +1,4 @@
-    import React from 'react';
+import React from 'react';
 var RichTextEditor = require('react-quill');
 
 export default class Field extends React.Component {

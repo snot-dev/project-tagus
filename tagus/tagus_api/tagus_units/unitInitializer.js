@@ -2,7 +2,7 @@ module.exports = [{
     name: "Home",
     tabs: [{
             name: "Content",
-            unitFields: [{
+            fields: [{
                     name: "Site Name",
                     alias: "siteName",
                     type: "text",
