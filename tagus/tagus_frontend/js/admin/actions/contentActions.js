@@ -18,7 +18,7 @@ let _shouldGetContentUnit = function(state, id) {
 let _getContentUnitTypeIfNeeded = function(dispatch, state, id) {
     if(_shouldGetContentUnit(state, id)) {
         dispatch( {
-            type: constants.GET_CONTENT_DETAIL_UNITTYPE,
+            type: constants.content.GET_CONTENT_DETAIL_UNITTYPE,
             payload: axios('units/' + id).then( results => {
                 return results
             })
@@ -43,7 +43,7 @@ export function getContentDetailIfNeeded(id) {
             dispatch({
                 type: constants.content.GET_CONTENT_DETAIL,
                 payload: axios('pages/' + id).then(results => {
-                    _getContentUnitTypeIfNeeded(dispatch, getState(), results.data.unitType.id);
+                    _getContentUnitTypeIfNeeded(dispatch, getState(), results.data.unitType);
                     return results;
                 })
             });

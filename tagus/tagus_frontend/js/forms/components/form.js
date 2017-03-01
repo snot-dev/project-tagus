@@ -11,7 +11,7 @@ export default class Form extends React.Component {
                 onError: "error"    
             },
             enableTabs: false,
-            tabs: [],
+            tabs: {},
             buttons: {
                 cancel: {
                     class: "button",
@@ -38,8 +38,12 @@ export default class Form extends React.Component {
 
         this._settings = Object.assign(this._defaultSettings, this.props.settings);
 
-        this._setInitialState();
-    }
+        // this._setInitialState();
+    };
+
+    componentWillMount() {
+        Tabs.setUseDefaultStyles(false);
+    };
 
     _onUpdate(data) {
         this.state.fields[data.name].value = data.value;
@@ -89,16 +93,16 @@ export default class Form extends React.Component {
     
     _renderTabs() {
         let tabs = [];
+        let TabPanels = [];
         let tab;
 
         for( let i = 0; i < this.props.tabs.length; i++) {
-            tab = this,props.tabs[i];
+            tab = this.props.tabs[i];
             if(tab.name !== "") {
                 tabs.push(
                     <Tab key={i} > <a className="tab block">{tab.name}</a></Tab>
                 );
             }
-
         }
 
         return (
@@ -107,17 +111,12 @@ export default class Form extends React.Component {
                     {tabs}
                 </TabList>
             </Tabs>
-        )
-        
+        );
     };
 
     _hasTabs() {
         return this._settings.enableTabs && this.props.tabs && this.props.tabs.length > 0;
     };  
-
-    _renderTabs() {
-
-    };
 
     _validateFields() {
         let field; 
@@ -167,7 +166,7 @@ export default class Form extends React.Component {
     render() {
         return (
             <form onSubmit={this._onSubmit.bind(this)} className={this.props.class}>
-                {this._renderFields()}
+                {this._hasTabs() ? this._renderTabs() : this._renderFields()}
                 <div className="buttons-container">
                     {this._settings.backButton ? <button id={this._settings.buttons.back.id} className={this._settings.buttons.back.class }> {this._settings.buttons.back.value}</button> : null }
                     <button id={this._settings.buttons.submit.id} className={this._settings.buttons.submit.class} >{this._settings.buttons.submit.value}</button>

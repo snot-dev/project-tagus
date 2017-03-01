@@ -16,13 +16,28 @@ class PageDetail extends React.Component {
         }
 
     }
-    render() {
 
+    componentWillMount() {
+        store.dispatch(getContentDetailIfNeeded(this.props.params.id));
+    };
+
+    _onSubmit(formState) {
+
+    };
+
+    _onError() {
+        console.log("ERRRORRRR");
+    }
+
+    render() {
+        console.warn(this.props);
         return (
             <div className="col-xs-9">
                 <section id="content-page-detail" className="section">
                     <div className="row">
-                        <div className="col-xs-12">Hello world!</div>
+                        <div className="col-xs-12">
+                            <Form tabs={this.props.content.unit.tabs}  onError={this._onError.bind(this)} onSubmit={this._onSubmit.bind(this)} settings={this._settings} />
+                        </div>
                     </div>
                 </section>
             </div>
