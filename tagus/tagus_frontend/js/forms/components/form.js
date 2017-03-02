@@ -1,5 +1,4 @@
 import React from 'react';
-import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import Field from './field';
 
 export default class Form extends React.Component {
@@ -10,8 +9,6 @@ export default class Form extends React.Component {
                 validate: true,
                 onError: "error"    
             },
-            enableTabs: false,
-            tabs: {},
             buttons: {
                 cancel: {
                     class: "button",
@@ -31,19 +28,14 @@ export default class Form extends React.Component {
         this.state = {
             validForm: false,
             fields: {},
-            body: {},
-            tabs: {}
+            body: {}
         };
 
         this._validForm = true;
 
         this._settings = Object.assign(this._defaultSettings, this.props.settings);
 
-        // this._setInitialState();
-    };
-
-    componentWillMount() {
-        Tabs.setUseDefaultStyles(false);
+        this._setInitialState();
     };
 
     _onUpdate(data) {
@@ -73,29 +65,6 @@ export default class Form extends React.Component {
         }
     };
 
-    _setInitialStateWithTabs() {
-        let tab;
-        let stateTab;
-        let field;
-        let key;
-
-        for(let i = 0; i < this.props.tabs.lenght; i++) {
-            tab = this.props.tabs[i];
-            
-            this.state.tabs[tab.name] = [];
-            stateTab = this.state.tabs[tab.name];
-
-            for (let j = 0; j < tab.fields.length; j++ ) {
-                field = tab.fields[j];
-                key = field.name;
-
-                if(this._isConsiderableField(field)){
-
-                }
-            }
-        } 
-    };
-
     _isConsiderableField(field) {
         return field.name && field.name.length > 0;
     };
@@ -119,33 +88,6 @@ export default class Form extends React.Component {
         )
     };
     
-    _renderTabs() {
-        let tabs = [];
-        let TabPanels = [];
-        let tab;
-
-        for( let i = 0; i < this.props.tabs.length; i++) {
-            tab = this.props.tabs[i];
-            if(tab.name !== "") {
-                tabs.push(
-                    <Tab key={i} > <a className="tab block">{tab.name}</a></Tab>
-                );
-            }
-        }
-
-        return (
-            <Tabs>
-                <TabList className="tab-navigation">
-                    {tabs}
-                </TabList>
-            </Tabs>
-        );
-    };
-
-    _hasTabs() {
-        return this._settings.enableTabs && this.props.tabs && this.props.tabs.length > 0;
-    };  
-
     _validateFields() {
         let field; 
         let stateField;
@@ -174,9 +116,8 @@ export default class Form extends React.Component {
         this.state = {
             validForm,
             fields,
-            body,
+            body
         };
-
     };
 
     _onSubmit(e) {
@@ -194,7 +135,7 @@ export default class Form extends React.Component {
     render() {
         return (
             <form onSubmit={this._onSubmit.bind(this)} className={this.props.class}>
-                {this._hasTabs() ? this._renderTabs() : this._renderFields()}
+                {this._renderFields()}
                 <div className="buttons-container">
                     {this._settings.backButton ? <button id={this._settings.buttons.back.id} className={this._settings.buttons.back.class }> {this._settings.buttons.back.value}</button> : null }
                     <button id={this._settings.buttons.submit.id} className={this._settings.buttons.submit.class} >{this._settings.buttons.submit.value}</button>
