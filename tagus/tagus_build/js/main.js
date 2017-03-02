@@ -42676,7 +42676,6 @@ var _tagus_lib = require('../../tagus_lib');
 
 var contentReducer = exports.contentReducer = function contentReducer(state, action) {
     var newState = Object.assign({}, state);
-    console.log(_constants.constants);
 
     switch (action.type) {
         case _constants.constants.content.GET_CONTENT_LIST_PENDING:
@@ -43116,7 +43115,8 @@ var Form = function (_React$Component) {
         _this.state = {
             validForm: false,
             fields: {},
-            body: {}
+            body: {},
+            tabs: {}
         };
 
         _this._validForm = true;
@@ -43147,7 +43147,7 @@ var Form = function (_React$Component) {
                 field = this.props.fields[i];
                 key = this.props.fields[i].name;
 
-                if (key) {
+                if (this._isConsiderableField(field)) {
                     this.state.fields[key] = {
                         value: field.defaultValue,
                         valid: true
@@ -43158,6 +43158,33 @@ var Form = function (_React$Component) {
                     console.error("Field does not have a valid name");
                 }
             }
+        }
+    }, {
+        key: '_setInitialStateWithTabs',
+        value: function _setInitialStateWithTabs() {
+            var tab = void 0;
+            var stateTab = void 0;
+            var field = void 0;
+            var key = void 0;
+
+            for (var i = 0; i < this.props.tabs.lenght; i++) {
+                tab = this.props.tabs[i];
+
+                this.state.tabs[tab.name] = [];
+                stateTab = this.state.tabs[tab.name];
+
+                for (var j = 0; j < tab.fields.length; j++) {
+                    field = tab.fields[j];
+                    key = field.name;
+
+                    if (this._isConsiderableField(field)) {}
+                }
+            }
+        }
+    }, {
+        key: '_isConsiderableField',
+        value: function _isConsiderableField(field) {
+            return field.name && field.name.length > 0;
         }
     }, {
         key: '_renderFields',

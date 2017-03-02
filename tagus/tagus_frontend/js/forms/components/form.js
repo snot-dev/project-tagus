@@ -31,7 +31,8 @@ export default class Form extends React.Component {
         this.state = {
             validForm: false,
             fields: {},
-            body: {}
+            body: {},
+            tabs: {}
         };
 
         this._validForm = true;
@@ -57,7 +58,7 @@ export default class Form extends React.Component {
             field = this.props.fields[i];
             key = this.props.fields[i].name;
             
-            if(key) {
+            if(this._isConsiderableField(field)) {
                 this.state.fields[key] = {
                     value: field.defaultValue,
                     valid: true
@@ -70,6 +71,33 @@ export default class Form extends React.Component {
                 console.error("Field does not have a valid name");
             }
         }
+    };
+
+    _setInitialStateWithTabs() {
+        let tab;
+        let stateTab;
+        let field;
+        let key;
+
+        for(let i = 0; i < this.props.tabs.lenght; i++) {
+            tab = this.props.tabs[i];
+            
+            this.state.tabs[tab.name] = [];
+            stateTab = this.state.tabs[tab.name];
+
+            for (let j = 0; j < tab.fields.length; j++ ) {
+                field = tab.fields[j];
+                key = field.name;
+
+                if(this._isConsiderableField(field)){
+
+                }
+            }
+        } 
+    };
+
+    _isConsiderableField(field) {
+        return field.name && field.name.length > 0;
     };
 
     _renderFields() {
