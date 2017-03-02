@@ -5,7 +5,7 @@ import {Router, Route, IndexRoute, hashHistory} from 'react-router';
 import Index from './admin/index';
 import Dashboard from './admin/dashboard';
 import Content from './admin/content';
-import ContentDetail from './admin/content/contentDetail';
+import ContentDetail from './admin/content/detail';
 import Editor from './admin/editor';
 import Settings from './admin/settings';
 import store from '../../store';
