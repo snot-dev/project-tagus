@@ -7,7 +7,7 @@ var dateFormat = require('dateformat');
 var RichTextEditor = require('react-quill');
 
 class PageDetail extends React.Component { 
-    componentWillMount() {
+    componentDidMount() {
        Tabs.setUseDefaultStyles(false);
 
        store.dispatch(getContentDetailIfNeeded(this.props.params.id));

@@ -4,7 +4,6 @@ var RichTextEditor = require('react-quill');
 export default class Field extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { };
         
         this._defaultSettings = {
             class: 'form-field',
@@ -61,7 +60,8 @@ export default class Field extends React.Component {
             'name': "You must pass a valid 'name' field as setting.",
             'type': "You must pass a valid 'type' field as setting",
             'isValid': "You must pass an 'isValid' property to this component, to check if the field is valid after validation",    
-            'errorClass': "You must pass an 'errorClass' property to this component, to add if this field is not valid"
+            'errorClass': "You must pass an 'errorClass' property to this component, to add if this field is not valid",
+            "onUpdate": "You must pass an onUpdate function to this component, to track its state"
         };
 
         return ERROR_MESSAGES[arg];

@@ -25,7 +25,7 @@ class Content extends React.Component {
             <div id="admin-content-container" className="container-fluid">
                 <div className="row">
                     <ContentList contentList={this.props.content.list} getDetail={this._getContentDetail} />
-                    {this.props.children ?  React.cloneElement(this.props.children, {detail: this.props.content.detail}) : null}
+                    {this.props.children ?  React.cloneElement(this.props.children, {detail: this.props.content.detail, unit: this.props.content.unit}) : null}
                 </div>
             </div>
         );

@@ -19,7 +19,6 @@ let initialState = {
         fetchingContentList: false,
         fetchingContentDetail: false,
         unit: {},
-        tabs: [],
         savingPageDetail: false
     },
     initializer: {

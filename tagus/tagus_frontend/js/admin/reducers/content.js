@@ -31,7 +31,7 @@ export let contentReducer = function(state, action) {
         case constants.content.GET_CONTENT_DETAIL_UNITTYPE_FULFILLED: {
             newState.fetchingContentDetail = false;
             newState.unit = action.payload.data;
-            newState.tabs = lib.buildTabs(action.payload.data.tabs);
+            // newState.tabs = lib.buildTabs(action.payload.data.tabs);
             return newState;
         } 
 
