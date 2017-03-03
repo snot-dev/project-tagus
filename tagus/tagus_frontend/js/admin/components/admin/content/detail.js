@@ -12,10 +12,17 @@ export default class ContentDetail extends React.Component {
     }
 
     componentWillMount() {
-        console.warn(this.props);
         Tabs.setUseDefaultStyles(false);
-        this._getTabList();
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return Object.keys(nextProps.detail).length > 0 && Object.keys(nextProps.unit).length > 0;
     };
+
+    componentWillUpdate(nextProps) {
+        console.warn(this.props);
+        this._getTabList(nextProps.unit.tabs, nextProps.detail.content);
+    }
 
     _onSubmit(formState) {
 
@@ -29,33 +36,35 @@ export default class ContentDetail extends React.Component {
         console.log("ERRRORRRR");
     }
 
-    _getTabList() {
+    _getTabList(tabs, content) {
         let tab;
 
-        for(let i = 0; i < this.props.unit.tabs.length; i++) {
-            tab = this.props.unit[i];
+        for(let i = 0; i < tabs.length; i++) {
+            tab = tabs[i];
 
             this.tabs.push(
-                <Tab key={index}><a className="tab block">{tab.name}</a></Tab>
+                <Tab key={i}><a className="tab block">{tab.name}</a></Tab>
             )
 
             this.tabPanels.push(
-                <section className="col-xs-12 content-container" >
-                    {this._getTabFields(tab)}
-                </section>
+                <TabPanel key={i}>
+                    <section className="col-xs-12 content-container" >
+                        {this._getTabFields(tab, content)}
+                    </section>
+                </TabPanel>
             );
         }
     }
 
-    _getTabFields(tab) {
+    _getTabFields(tab, content) {
         let field; 
-        let fields;
+        let fields = [];
 
         for(let i = 0; i < tab.fields.length; i++) {
-            field = tabt.fields[i];
+            field = Object.assign( tab.fields[i], {defaultValue: content[tab.fields[i].alias]});
 
             fields.push(
-                <Field isValid={true} settings={field} onError='error' onUpdate={this._onFieldUpdate.bind(this)}  />
+                <Field key={i} isValid={true} settings={field} errorClass='error' onUpdate={this._onFieldUpdate.bind(this)}  />
             )
         }
 
@@ -63,6 +72,7 @@ export default class ContentDetail extends React.Component {
     }
 
     render() {
+        console.warn("render")
         return (
             <div className="col-xs-9">
                 <section id="content-page-detail" className="section">
@@ -70,7 +80,7 @@ export default class ContentDetail extends React.Component {
                         <div className="col-xs-12">
                             <Tabs>
                                 <TabList className="tab-navigation">
-                                    {this.tab}
+                                    {this.tabs}
                                 </TabList>
                                 {this.tabPanels}
                             </Tabs>

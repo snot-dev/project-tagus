@@ -27,34 +27,25 @@ class Register extends React.Component {
        this._fields = [
             {
                 type: 'text',
-                name: 'username',
+                alias: 'username',
+                name: 'Username',
                 class: 'form-control',
                 defaultValue: '',
-                label: {
-                    value: 'Username',
-                    class: 'form-class'
-                },
                 required: true
             },
             {
                 type: 'email',
-                name: 'email',
+                alias: 'email',
+                name: 'Email',
                 class: 'form-control',
                 defaultValue: '',
-                label: {
-                    value: 'Email',
-                    class: 'form-class'
-                },
                 required: true
             },
             {
                 type: 'password',
-                name: 'password',
+                name:'Password',
+                alias: 'password',
                 class: 'form-control',
-                label: {
-                    value: 'Password',
-                    class: 'form-class'
-                },
                 required: true
             }
         ];

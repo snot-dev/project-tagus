@@ -7,7 +7,11 @@ export default class Field extends React.Component {
         
         this._defaultSettings = {
             class: 'form-field',
-            parentClass: 'form-fieldset'
+            parentClass: 'form-fieldset',
+            label: {
+                render: true,
+                class: 'form-class'
+            },
         };
 
         this._mandatoryProps = [
@@ -15,7 +19,8 @@ export default class Field extends React.Component {
                 name: 'settings',
                 childs: [
                     {name: 'type'},
-                    {name: 'name'}
+                    {name: 'name'},
+                    {name: 'alias'},
                 ]
             },
             { name: 'isValid'},
@@ -23,6 +28,7 @@ export default class Field extends React.Component {
         ];
         
         this._validateProps(this.props);
+        console.warn(this.props);
     };
 
     _validateProps(props){
@@ -32,11 +38,11 @@ export default class Field extends React.Component {
 
             for(let i = 0; i < this._mandatoryProps.length; i++) {
                 let prop = this._mandatoryProps[i];
-                this._checkIfPropertyExists(prop.name);
+                this._checkIfPropertyExists(prop.alias);
                 
                 if( prop.childs ) {
                     for( let j = 0; j < prop.childs.length; j++) {
-                        this._checkIfPropertyExists(prop.childs[j].name, prop.name);
+                        this._checkIfPropertyExists(prop.childs[j].alias, prop.alias);
                     }
                 }
             }
@@ -58,6 +64,7 @@ export default class Field extends React.Component {
         const ERROR_MESSAGES = {
             'settings': "You must pass a 'settings' proprety to this component.",
             'name': "You must pass a valid 'name' field as setting.",
+            'alias': "You must pass a valid 'alias' field as setting.",
             'type': "You must pass a valid 'type' field as setting",
             'isValid': "You must pass an 'isValid' property to this component, to check if the field is valid after validation",    
             'errorClass': "You must pass an 'errorClass' property to this component, to add if this field is not valid",
@@ -93,7 +100,7 @@ export default class Field extends React.Component {
     _onChange(){
         return (e) => {
             this.props.onUpdate({
-                name: e.target.name,
+                name: e.target.alias,
                 value: e.target ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value ): e
             });
         };
@@ -103,42 +110,42 @@ export default class Field extends React.Component {
         return {
             "text": () => {
                 return (
-                    <input onBlur={this._onChange()} type="text" id={options.name} name={options.name} defaultValue={options.defaultValue} className={options.class + this._addErrorClass()}/>
+                    <input onBlur={this._onChange()} type="text" id={options.alias} name={options.alias} defaultValue={options.defaultValue} className={options.class + this._addErrorClass()}/>
                 );
             },
             "textarea": () => {
                 return (
-                    <textarea onBlur={this._onChange()} className={options.class + this._addErrorClass()  + " textarea"} defaultValue={options.defaultValue} name={options.name} ></textarea>
+                    <textarea onBlur={this._onChange()} className={options.class + this._addErrorClass()  + " textarea"} defaultValue={options.defaultValue} name={options.alias} ></textarea>
                 );
             },
             "richText": () => {
                 return (
                     <div className="richtext-container">
-                        <RichTextEditor onBlur={this._onChange()} theme="snow" id={options.name} name={options.name} className={options.class + this._addErrorClass()}/>
+                        <RichTextEditor onBlur={this._onChange()} theme="snow" id={options.alias} name={options.alias} className={options.class + this._addErrorClass()}/>
                     </div>
                 );
             },
             "number": () => {
                 return (
-                    <input type="number" onBlur={this._onChange()} id={options.name} name={options.name} defaultValue={options.defaultValue} className={options.class + this._addErrorClass()} />
+                    <input type="number" onBlur={this._onChange()} id={options.alias} name={options.alias} defaultValue={options.defaultValue} className={options.class + this._addErrorClass()} />
                 );
             },
             "boolean": () => {
                 return (
                     <div className="checkbox-container">
-                        <input type="checkbox" id={options.name} onChange={this._onChange()} name={options.name} className={options.class} defaultChecked={JSON.parse(options.defaultValue || 'false') }  />
+                        <input type="checkbox" id={options.alias} onChange={this._onChange()} name={options.alias} className={options.class} defaultChecked={JSON.parse(options.defaultValue || 'false') }  />
                     </div>
                 );  
 
             },
             "email": () => {
                 return (
-                    <input type="email" onBlur={this._onChange()} id={options.name} name={options.name} className={options.class + this._addErrorClass()} />
+                    <input type="email" onBlur={this._onChange()} id={options.alias} name={options.alias} className={options.class + this._addErrorClass()} />
                 );
             },
             "password": () => {
                 return (
-                    <input type="password" onBlur={this._onChange()} id={options.name} name={options.name} className={options.class + this._addErrorClass()} />
+                    <input type="password" onBlur={this._onChange()} id={options.alias} name={options.alias} className={options.class + this._addErrorClass()} />
                 );
             },
             "radio": () => {
@@ -150,7 +157,7 @@ export default class Field extends React.Component {
 
                     inputs.push(
                         <div key={i}>
-                            <label><input type="radio" onChange={this._onChange()} value={field.value} name={options.name} className={options.class} defaultChecked={JSON.parse(options.defaultValue === field.value || 'false') }   /> {field.name} </label><br/>
+                            <label><input type="radio" onChange={this._onChange()} value={field.value} name={options.alias} className={options.class} defaultChecked={JSON.parse(options.defaultValue === field.value || 'false') }   /> {field.alias} </label><br/>
                         </div>   
                     )
                 }
@@ -169,12 +176,12 @@ export default class Field extends React.Component {
                     let opt = options.options[i];
 
                     fields.push(
-                        <option value={opt.value} key={i} >{opt.name}</option>
+                        <option value={opt.value} key={i} >{opt.alias}</option>
                     )
                 }
 
                 return (
-                    <select onChange={this._onChange()} defaultValue={options.defaultValue} id={options.name} name={options.name} className={options.class} >
+                    <select onChange={this._onChange()} defaultValue={options.defaultValue} id={options.alias} name={options.alias} className={options.class} >
                         {fields}
                     </select>  
                 );
@@ -184,14 +191,14 @@ export default class Field extends React.Component {
 
     renderLabel(options){
         return (
-            <label htmlFor={options.id} className={options.label.class}>{options.label.value}</label>
+            <label htmlFor={options.name} className={options.label.class}>{options.name}</label>
         )
     }
 
     render() {
         return (
             <fieldset className={this._settings.parentClass} >
-                {this._validToRender && this._settings.label ? this.renderLabel(this._settings) : null } 
+                {this._validToRender && this._settings.label.render ? this.renderLabel(this._settings) : null } 
                 {this._validToRender ? this.renderField(this._settings)[this._settings.type]() : null }
             </fieldset>
         )
