@@ -42952,6 +42952,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var RichTextEditor = require('react-quill');
 
+var PROPTYPES = {
+    settings: _react2.default.PropTypes.shape({
+        type: _react2.default.PropTypes.string.isRequired,
+        name: _react2.default.PropTypes.string.isRequired,
+        alias: _react2.default.PropTypes.string.isRequired
+    }).isRequired,
+    isValid: _react2.default.PropTypes.bool.isRequired,
+    errorClass: _react2.default.PropTypes.string.isRequired,
+    onUpdate: _react2.default.PropTypes.func.isRequired
+};
+
 var Field = function (_React$Component) {
     _inherits(Field, _React$Component);
 
@@ -42975,67 +42986,12 @@ var Field = function (_React$Component) {
         }, { name: 'isValid' }, { name: 'errorClass' }];
 
         _this._errorMessage = null;
-        _this._validateProps(_this.props);
-        console.warn(_this.props);
+
+        _this._settings = Object.assign(_this._defaultSettings, _this.props.settings || {});
         return _this;
     }
 
     _createClass(Field, [{
-        key: '_validateProps',
-        value: function _validateProps(props) {
-            try {
-                this._validToRender = true;
-
-                for (var i = 0; i < this._mandatoryProps.length; i++) {
-                    var prop = this._mandatoryProps[i];
-                    this._checkIfPropertyExists(prop.alias);
-
-                    if (prop.childs) {
-                        for (var j = 0; j < prop.childs.length; j++) {
-                            this._checkIfPropertyExists(prop.childs[j].alias, prop.alias);
-                        }
-                    }
-                }
-
-                if (this._errorMessage && this._errorMessage.length > 0) {
-                    this._validToRender = false;
-                    throw new Error(this._errorMessage);
-                }
-            } catch (e) {
-                console.error(e.message);
-            } finally {
-                this._settings = Object.assign(this._defaultSettings, this.props.settings || {});
-            }
-        }
-    }, {
-        key: '_getErrorMessage',
-        value: function _getErrorMessage(arg) {
-            var ERROR_MESSAGES = {
-                'settings': "You must pass a 'settings' proprety to this component.",
-                'name': "You must pass a valid 'name' field as setting.",
-                'alias': "You must pass a valid 'alias' field as setting.",
-                'type': "You must pass a valid 'type' field as setting",
-                'isValid': "You must pass an 'isValid' property to this component, to check if the field is valid after validation",
-                'errorClass': "You must pass an 'errorClass' property to this component, to add if this field is not valid",
-                "onUpdate": "You must pass an onUpdate function to this component, to track its state"
-            };
-
-            return ERROR_MESSAGES[arg];
-        }
-    }, {
-        key: '_checkIfPropertyExists',
-        value: function _checkIfPropertyExists(prop, parentProp) {
-            if (parentProp) {
-                if (!this.props[parentProp][prop] || this.props[parentProp][prop].length === 0) {
-                    this._errorMessage = this._getErrorMessage(prop);
-                }
-            } else {
-                if (!this.props[prop] || this.props[prop].length === 0) {
-                    this._errorMessage = this._getErrorMessage(prop);
-                }
-            }
-        }
-    }, {
         key: '_addErrorClass',
         value: function _addErrorClass() {
             var errorClass = " ";
@@ -43158,8 +43114,8 @@ var Field = function (_React$Component) {
             return _react2.default.createElement(
                 'fieldset',
                 { className: this._settings.parentClass },
-                this._validToRender && this._settings.label.render ? this.renderLabel(this._settings) : null,
-                this._validToRender ? this.renderField(this._settings)[this._settings.type]() : null
+                this._settings.label.render ? this.renderLabel(this._settings) : null,
+                this.renderField(this._settings)[this._settings.type]()
             );
         }
     }]);
@@ -43169,6 +43125,8 @@ var Field = function (_React$Component) {
 
 exports.default = Field;
 ;
+
+Field.propTypes = PROPTYPES;
 
 },{"react":299,"react-quill":211}],337:[function(require,module,exports){
 'use strict';
