@@ -42974,6 +42974,7 @@ var Field = function (_React$Component) {
             childs: [{ name: 'type' }, { name: 'name' }, { name: 'alias' }]
         }, { name: 'isValid' }, { name: 'errorClass' }];
 
+        _this._errorMessage = null;
         _this._validateProps(_this.props);
         console.warn(_this.props);
         return _this;
@@ -42983,7 +42984,6 @@ var Field = function (_React$Component) {
         key: '_validateProps',
         value: function _validateProps(props) {
             try {
-                this._errorMessage = '';
                 this._validToRender = true;
 
                 for (var i = 0; i < this._mandatoryProps.length; i++) {
@@ -42997,7 +42997,7 @@ var Field = function (_React$Component) {
                     }
                 }
 
-                if (this._errorMessage.length > 0) {
+                if (this._errorMessage && this._errorMessage.length > 0) {
                     this._validToRender = false;
                     throw new Error(this._errorMessage);
                 }
@@ -43073,8 +43073,8 @@ var Field = function (_React$Component) {
                 "richText": function richText() {
                     return _react2.default.createElement(
                         'div',
-                        { className: 'richtext-container' },
-                        _react2.default.createElement(RichTextEditor, { onBlur: _this3._onChange(), theme: 'snow', id: options.alias, name: options.alias, className: options.class + _this3._addErrorClass() })
+                        { className: "richtext-container " + _this3._addErrorClass() },
+                        _react2.default.createElement(RichTextEditor, { onBlur: _this3._onChange(), theme: 'snow', id: options.alias, defaultValue: options.defaultValue, name: options.alias })
                     );
                 },
                 "number": function number() {
@@ -43084,7 +43084,7 @@ var Field = function (_React$Component) {
                     return _react2.default.createElement(
                         'div',
                         { className: 'checkbox-container' },
-                        _react2.default.createElement('input', { type: 'checkbox', id: options.alias, onChange: _this3._onChange(), name: options.alias, className: options.class, defaultChecked: JSON.parse(options.defaultValue || 'false') })
+                        _react2.default.createElement('input', { type: 'checkbox', id: options.alias, onChange: _this3._onChange(), name: options.alias, defaultChecked: JSON.parse(options.defaultValue || 'false') })
                     );
                 },
                 "email": function email() {
@@ -43106,9 +43106,9 @@ var Field = function (_React$Component) {
                             _react2.default.createElement(
                                 'label',
                                 null,
-                                _react2.default.createElement('input', { type: 'radio', onChange: _this3._onChange(), value: field.value, name: options.alias, className: options.class, defaultChecked: JSON.parse(options.defaultValue === field.value || 'false') }),
+                                _react2.default.createElement('input', { type: 'radio', onChange: _this3._onChange(), value: field.value, name: options.alias, defaultChecked: JSON.parse(options.defaultValue === field.value || 'false') }),
                                 ' ',
-                                field.alias,
+                                field.name,
                                 ' '
                             ),
                             _react2.default.createElement('br', null)
@@ -43117,7 +43117,7 @@ var Field = function (_React$Component) {
 
                     return _react2.default.createElement(
                         'div',
-                        { className: options.class },
+                        { className: 'checkbox-container' },
                         inputs
                     );
                 },
@@ -43131,7 +43131,7 @@ var Field = function (_React$Component) {
                         fields.push(_react2.default.createElement(
                             'option',
                             { value: _opt.value, key: i },
-                            _opt.alias
+                            _opt.name
                         ));
                     }
 
@@ -43148,7 +43148,7 @@ var Field = function (_React$Component) {
         value: function renderLabel(options) {
             return _react2.default.createElement(
                 'label',
-                { htmlFor: options.name, className: options.label.class },
+                { htmlFor: options.alias, className: options.label.class },
                 options.name
             );
         }

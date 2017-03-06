@@ -27,13 +27,13 @@ export default class Field extends React.Component {
             { name: 'errorClass'}
         ];
         
+        this._errorMessage = null;
         this._validateProps(this.props);
         console.warn(this.props);
     };
 
     _validateProps(props){
         try {
-            this._errorMessage = '';
             this._validToRender = true;
 
             for(let i = 0; i < this._mandatoryProps.length; i++) {
@@ -47,7 +47,7 @@ export default class Field extends React.Component {
                 }
             }
 
-            if(this._errorMessage.length > 0) {
+            if(this._errorMessage && this._errorMessage.length > 0) {
                 this._validToRender = false;                
                 throw new Error(this._errorMessage);
             }
@@ -120,8 +120,8 @@ export default class Field extends React.Component {
             },
             "richText": () => {
                 return (
-                    <div className="richtext-container">
-                        <RichTextEditor onBlur={this._onChange()} theme="snow" id={options.alias} name={options.alias} className={options.class + this._addErrorClass()}/>
+                    <div className={"richtext-container " + this._addErrorClass()}>
+                        <RichTextEditor onBlur={this._onChange()} theme="snow" id={options.alias} defaultValue={options.defaultValue} name={options.alias} />
                     </div>
                 );
             },
@@ -133,7 +133,7 @@ export default class Field extends React.Component {
             "boolean": () => {
                 return (
                     <div className="checkbox-container">
-                        <input type="checkbox" id={options.alias} onChange={this._onChange()} name={options.alias} className={options.class} defaultChecked={JSON.parse(options.defaultValue || 'false') }  />
+                        <input type="checkbox" id={options.alias} onChange={this._onChange()} name={options.alias} defaultChecked={JSON.parse(options.defaultValue || 'false') }  />
                     </div>
                 );  
 
@@ -157,13 +157,13 @@ export default class Field extends React.Component {
 
                     inputs.push(
                         <div key={i}>
-                            <label><input type="radio" onChange={this._onChange()} value={field.value} name={options.alias} className={options.class} defaultChecked={JSON.parse(options.defaultValue === field.value || 'false') }   /> {field.alias} </label><br/>
+                            <label><input type="radio" onChange={this._onChange()} value={field.value} name={options.alias} defaultChecked={JSON.parse(options.defaultValue === field.value || 'false') }   /> {field.name} </label><br/>
                         </div>   
                     )
                 }
 
                 return (
-                    <div className={options.class}>
+                    <div className="checkbox-container">
                         {inputs}
                     </div>
                 );
@@ -176,7 +176,7 @@ export default class Field extends React.Component {
                     let opt = options.options[i];
 
                     fields.push(
-                        <option value={opt.value} key={i} >{opt.alias}</option>
+                        <option value={opt.value} key={i} >{opt.name}</option>
                     )
                 }
 
@@ -191,7 +191,7 @@ export default class Field extends React.Component {
 
     renderLabel(options){
         return (
-            <label htmlFor={options.name} className={options.label.class}>{options.name}</label>
+            <label htmlFor={options.alias} className={options.label.class}>{options.name}</label>
         )
     }
 
