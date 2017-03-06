@@ -42980,14 +42980,10 @@ var Field = function (_React$Component) {
             }
         };
 
-        _this._mandatoryProps = [{
-            name: 'settings',
-            childs: [{ name: 'type' }, { name: 'name' }, { name: 'alias' }]
-        }, { name: 'isValid' }, { name: 'errorClass' }];
-
-        _this._errorMessage = null;
-
         _this._settings = Object.assign(_this._defaultSettings, _this.props.settings || {});
+
+        _this._field = _this._getField(_this._settings)[_this._settings.type]();
+        _this._label = _this._settings.label.render ? _this.renderLabel(_this._settings) : null;
         return _this;
     }
 
@@ -43015,8 +43011,8 @@ var Field = function (_React$Component) {
             };
         }
     }, {
-        key: 'renderField',
-        value: function renderField(options) {
+        key: '_getField',
+        value: function _getField(options) {
             var _this3 = this;
 
             return {
@@ -43114,8 +43110,8 @@ var Field = function (_React$Component) {
             return _react2.default.createElement(
                 'fieldset',
                 { className: this._settings.parentClass },
-                this._settings.label.render ? this.renderLabel(this._settings) : null,
-                this.renderField(this._settings)[this._settings.type]()
+                this._label,
+                this._field
             );
         }
     }]);

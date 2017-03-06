@@ -25,22 +25,10 @@ export default class Field extends React.Component {
             },
         };
 
-        this._mandatoryProps = [
-            {
-                name: 'settings',
-                childs: [
-                    {name: 'type'},
-                    {name: 'name'},
-                    {name: 'alias'},
-                ]
-            },
-            { name: 'isValid'},
-            { name: 'errorClass'}
-        ];
-        
-        this._errorMessage = null;
-
         this._settings = Object.assign(this._defaultSettings, this.props.settings || {});
+
+        this._field = this._getField(this._settings)[this._settings.type]() ;
+        this._label = this._settings.label.render ? this.renderLabel(this._settings) : null;
     };
 
     _addErrorClass(){
@@ -62,7 +50,7 @@ export default class Field extends React.Component {
         };
     };
 
-    renderField(options) {
+    _getField(options) {
         return {
             "text": () => {
                 return (
@@ -154,8 +142,8 @@ export default class Field extends React.Component {
     render() {
         return (
             <fieldset className={this._settings.parentClass} >
-                {this._settings.label.render ? this.renderLabel(this._settings) : null } 
-                {this.renderField(this._settings)[this._settings.type]()}
+                {this._label} 
+                {this._field}
             </fieldset>
         )
     };
