@@ -42230,12 +42230,14 @@ var ContentDetail = function (_React$Component) {
     }, {
         key: 'shouldComponentUpdate',
         value: function shouldComponentUpdate(nextProps, nextState) {
+            console.warn(nextProps);
             return Object.keys(nextProps.detail).length > 0 && Object.keys(nextProps.unit).length > 0 && nextProps.detail._id === this.props.params.id;
         }
     }, {
         key: 'componentWillUpdate',
         value: function componentWillUpdate(nextProps) {
             console.warn("update");
+            console.warn(nextProps);
             this._resetTabs();
             this._getTabList(nextProps.unit.tabs, nextProps.detail.content);
         }

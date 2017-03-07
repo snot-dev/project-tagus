@@ -16,11 +16,13 @@ export default class ContentDetail extends React.Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
+        console.warn(nextProps);
         return Object.keys(nextProps.detail).length > 0 && Object.keys(nextProps.unit).length > 0 && nextProps.detail._id === this.props.params.id;
     };
 
     componentWillUpdate(nextProps) {
         console.warn("update");
+        console.warn(nextProps);
         this._resetTabs();
         this._getTabList(nextProps.unit.tabs, nextProps.detail.content);
     }
