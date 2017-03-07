@@ -16,13 +16,24 @@ export default class ContentDetail extends React.Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        return Object.keys(nextProps.detail).length > 0 && Object.keys(nextProps.unit).length > 0;
+        return Object.keys(nextProps.detail).length > 0 && Object.keys(nextProps.unit).length > 0 && nextProps.detail._id === this.props.params.id;
     };
 
     componentWillUpdate(nextProps) {
-        console.warn(this.props);
+        console.warn("update");
+        this._resetTabs();
         this._getTabList(nextProps.unit.tabs, nextProps.detail.content);
     }
+
+    componentWillUnmount() {
+        console.warn("unmount");
+        this._resetTabs();
+    };
+
+    _resetTabs() {
+        this.tabs.length = 0;
+        this.tabPanels.length = 0;
+    };
 
     _onSubmit(formState) {
 
@@ -44,7 +55,7 @@ export default class ContentDetail extends React.Component {
 
             this.tabs.push(
                 <Tab key={i}><a className="tab block">{tab.name}</a></Tab>
-            )
+            );
 
             this.tabPanels.push(
                 <TabPanel key={i}>
@@ -65,7 +76,7 @@ export default class ContentDetail extends React.Component {
 
             fields.push(
                 <Field key={i} isValid={true} settings={field} errorClass='error' onUpdate={this._onFieldUpdate.bind(this)}  />
-            )
+            );
         }
 
         return fields;

@@ -31,30 +31,12 @@ export let contentReducer = function(state, action) {
         case constants.content.GET_CONTENT_DETAIL_UNITTYPE_FULFILLED: {
             newState.fetchingContentDetail = false;
             newState.unit = action.payload.data;
-            // newState.tabs = lib.buildTabs(action.payload.data.tabs);
             return newState;
         } 
 
         case constants.content.GETTING_PAGEDETAIL:
         {
             newState.fetchingPageDetail = true;
-            return newState;
-        }
-        case constants.content.RECEIVED_PAGEDETAIL:
-        {
-            newState.fetchingPageDetail = false;
-            newState.detail = action.page;
-            if (action.tabs) {
-                newState.tabs = action.tabs;
-            }
-            if (action.unit) {
-                newState.unit = action.unit;
-            }
-            return newState;
-        }
-        case constants.content.CHANGE_TAB:
-        {
-            newState.tab = action.tab;
             return newState;
         }
         case constants.content.TAB_FIELD_CHANGED_VALUE:

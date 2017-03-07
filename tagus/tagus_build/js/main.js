@@ -42146,6 +42146,7 @@ var Content = function (_React$Component) {
         key: '_getContentDetail',
         value: function _getContentDetail(id) {
             return function () {
+                console.warn(id);
                 _store2.default.dispatch((0, _contentActions.getContentDetailIfNeeded)(id));
             };
         }
@@ -42229,13 +42230,26 @@ var ContentDetail = function (_React$Component) {
     }, {
         key: 'shouldComponentUpdate',
         value: function shouldComponentUpdate(nextProps, nextState) {
-            return Object.keys(nextProps.detail).length > 0 && Object.keys(nextProps.unit).length > 0;
+            return Object.keys(nextProps.detail).length > 0 && Object.keys(nextProps.unit).length > 0 && nextProps.detail._id === this.props.params.id;
         }
     }, {
         key: 'componentWillUpdate',
         value: function componentWillUpdate(nextProps) {
-            console.warn(this.props);
+            console.warn("update");
+            this._resetTabs();
             this._getTabList(nextProps.unit.tabs, nextProps.detail.content);
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            console.warn("unmount");
+            this._resetTabs();
+        }
+    }, {
+        key: '_resetTabs',
+        value: function _resetTabs() {
+            this.tabs.length = 0;
+            this.tabPanels.length = 0;
         }
     }, {
         key: '_onSubmit',
@@ -42821,30 +42835,12 @@ var contentReducer = exports.contentReducer = function contentReducer(state, act
             {
                 newState.fetchingContentDetail = false;
                 newState.unit = action.payload.data;
-                // newState.tabs = lib.buildTabs(action.payload.data.tabs);
                 return newState;
             }
 
         case _constants.constants.content.GETTING_PAGEDETAIL:
             {
                 newState.fetchingPageDetail = true;
-                return newState;
-            }
-        case _constants.constants.content.RECEIVED_PAGEDETAIL:
-            {
-                newState.fetchingPageDetail = false;
-                newState.detail = action.page;
-                if (action.tabs) {
-                    newState.tabs = action.tabs;
-                }
-                if (action.unit) {
-                    newState.unit = action.unit;
-                }
-                return newState;
-            }
-        case _constants.constants.content.CHANGE_TAB:
-            {
-                newState.tab = action.tab;
                 return newState;
             }
         case _constants.constants.content.TAB_FIELD_CHANGED_VALUE:
@@ -43078,12 +43074,12 @@ var Field = function (_React$Component) {
                     var opt = void 0;
 
                     for (var i = 0; i < options.options.length; i++) {
-                        var _opt = options.options[i];
+                        opt = options.options[i];
 
                         fields.push(_react2.default.createElement(
                             'option',
-                            { value: _opt.value, key: i },
-                            _opt.name
+                            { value: opt.value, key: i },
+                            opt.name
                         ));
                     }
 

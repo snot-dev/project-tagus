@@ -16,6 +16,7 @@ class Content extends React.Component {
 
     _getContentDetail(id) {
         return () =>{
+            console.warn(id);
             store.dispatch(getContentDetailIfNeeded(id));
         }
     };

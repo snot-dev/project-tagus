@@ -117,7 +117,7 @@ export default class Field extends React.Component {
                 let opt;
 
                 for( let i = 0; i < options.options.length; i++) {
-                    let opt = options.options[i];
+                    opt = options.options[i];
 
                     fields.push(
                         <option value={opt.value} key={i} >{opt.name}</option>
