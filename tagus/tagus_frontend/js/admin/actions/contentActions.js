@@ -3,11 +3,12 @@ import axios from '../../axios';
 
 let _shouldGetPageList = function(state) {
     //TODO: add more debug code
-    return state.content.list.length === 0;
+    return state.content.treeList.length === 0;
 };
 
 let _shouldGetPageDetail = function(state, id) {
     //TODO: add more debug code
+
     return !state.content.detail._id || state.content.detail._id !== id;
 };
 
@@ -25,6 +26,7 @@ let _getContentUnitTypeIfNeeded = function(dispatch, state, id) {
         });
     }
 };
+
 
 export function getContentListIfNeeded(){
     return (dispatch, getState) => {
@@ -48,5 +50,26 @@ export function getContentDetailIfNeeded(id) {
                 })
             });
         }
+    };
+};
+
+export function updateContentField(data) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: constants.content.GET_UPDATED_CONTENT_FIELD,
+            payload: data
+        });
+    }
+};
+
+export function saveContent(content) {
+    return (dispatch, getState) => {
+        dispatch({
+            type:constants.content.POST_CONTENT_DETAIL,
+            payload: axios.post('pages/' + content._id, content)
+            .then(results  => {
+              return results;
+            })
+        });
     };
 };

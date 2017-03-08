@@ -32,7 +32,7 @@ export default class Field extends React.Component {
 
         this._field = this._getField(this._settings, this.props.defaultValue)[this._settings.type]() ;
         this._label = this._settings.label.render ? this.renderLabel(this._settings) : null;
-    };
+    };  
 
     shouldComponentUpdate(nextProps) {
         return nextProps.defaultValue !== this.props.defaultValue || nextProps.settings.name !== this.props.settings.name;
@@ -57,7 +57,7 @@ export default class Field extends React.Component {
     _onChange(){
         return (e) => {
             this.props.onUpdate({
-                name: e.target.alias,
+                name: e.target.name,
                 value: e.target ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value ): e
             });
         };

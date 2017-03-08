@@ -1,7 +1,8 @@
 import React from 'react';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
-import {getContentDetailIfNeeded} from '../../../actions/contentActions';
+import {updateContentField, saveContent} from '../../../actions/contentActions';
 import Field from '../../../../forms/components/field';
+import store from '../../../../store';
 
 export default class ContentDetail extends React.Component {
     constructor(props) {
@@ -33,17 +34,18 @@ export default class ContentDetail extends React.Component {
         this.tabPanels.length = 0;
     };
 
-    _onSubmit(formState) {
-
+    _saveContent() {
+        console.warn(this.props.detail);
+        store.dispatch(saveContent(this.props.detail));
     };
 
     _onFieldUpdate(data) {
-        console.warn(data);
-    }
+        store.dispatch(updateContentField(data));
+    };
 
     _onError() {
         console.log("ERRRORRRR");
-    }
+    };
 
     _getTabList(tabs, content) {
         let tab;
@@ -63,7 +65,7 @@ export default class ContentDetail extends React.Component {
                 </TabPanel>
             );
         }
-    }
+    };
 
     _getTabFields(tab, content) {
         let field; 
@@ -78,7 +80,7 @@ export default class ContentDetail extends React.Component {
         }
 
         return fields;
-    }
+    };
 
     render() {
         return (
@@ -92,6 +94,12 @@ export default class ContentDetail extends React.Component {
                                 </TabList>
                                 {this.tabPanels}
                             </Tabs>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-xs-12 buttons-container">
+                            <button className="button"> Cancel</button>
+                            <button className="button submit pull-right" onClick={this._saveContent.bind(this)}>Save</button>
                         </div>
                     </div>
                 </section>
