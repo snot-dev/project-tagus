@@ -77,7 +77,7 @@ export default class Form extends React.Component {
             field = this._validFields[i];
 
             fields.push(
-                <Field isValid={this.state.fields[field.name].valid} errorClass={this._settings.validation.onError}  onUpdate={this._onUpdate.bind(this)} settings={field} key={i} />
+                <Field isValid={this.state.fields[field.name].valid} errorClass={this._settings.validation.onError} defaultValue={field.value}  onUpdate={this._onUpdate.bind(this)} settings={field} key={i} />
             );
         }
 

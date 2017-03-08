@@ -42146,7 +42146,6 @@ var Content = function (_React$Component) {
         key: '_getContentDetail',
         value: function _getContentDetail(id) {
             return function () {
-                console.warn(id);
                 _store2.default.dispatch((0, _contentActions.getContentDetailIfNeeded)(id));
             };
         }
@@ -42230,21 +42229,17 @@ var ContentDetail = function (_React$Component) {
     }, {
         key: 'shouldComponentUpdate',
         value: function shouldComponentUpdate(nextProps, nextState) {
-            console.warn(nextProps);
             return Object.keys(nextProps.detail).length > 0 && Object.keys(nextProps.unit).length > 0 && nextProps.detail._id === this.props.params.id;
         }
     }, {
         key: 'componentWillUpdate',
         value: function componentWillUpdate(nextProps) {
-            console.warn("update");
-            console.warn(nextProps);
             this._resetTabs();
             this._getTabList(nextProps.unit.tabs, nextProps.detail.content);
         }
     }, {
         key: 'componentWillUnmount',
         value: function componentWillUnmount() {
-            console.warn("unmount");
             this._resetTabs();
         }
     }, {
@@ -42302,9 +42297,9 @@ var ContentDetail = function (_React$Component) {
             var fields = [];
 
             for (var i = 0; i < tab.fields.length; i++) {
-                field = Object.assign(tab.fields[i], { defaultValue: content[tab.fields[i].alias] });
+                field = tab.fields[i];
 
-                fields.push(_react2.default.createElement(_field2.default, { key: i, isValid: true, settings: field, errorClass: 'error', onUpdate: this._onFieldUpdate.bind(this) }));
+                fields.push(_react2.default.createElement(_field2.default, { key: i.toString() + field.alias + content[field.alias], isValid: true, defaultValue: content[field.alias], settings: field, errorClass: 'error', onUpdate: this._onFieldUpdate.bind(this) }));
             }
 
             return fields;
@@ -42312,7 +42307,6 @@ var ContentDetail = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            console.warn("render");
             return _react2.default.createElement(
                 'div',
                 { className: 'col-xs-9' },
@@ -42978,14 +42972,30 @@ var Field = function (_React$Component) {
             }
         };
 
-        _this._settings = Object.assign(_this._defaultSettings, _this.props.settings || {});
-
-        _this._field = _this._getField(_this._settings)[_this._settings.type]();
-        _this._label = _this._settings.label.render ? _this.renderLabel(_this._settings) : null;
         return _this;
     }
 
     _createClass(Field, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            this._settings = Object.assign(this._defaultSettings, this.props.settings || {});
+
+            this._field = this._getField(this._settings, this.props.defaultValue)[this._settings.type]();
+            this._label = this._settings.label.render ? this.renderLabel(this._settings) : null;
+        }
+    }, {
+        key: 'shouldComponentUpdate',
+        value: function shouldComponentUpdate(nextProps) {
+            return nextProps.defaultValue !== this.props.defaultValue || nextProps.settings.name !== this.props.settings.name;
+        }
+    }, {
+        key: 'componentWillUpdate',
+        value: function componentWillUpdate(nextProps) {
+            this._settings = Object.assign(this._defaultSettings, nextProps.settings || {});
+            this._field = this._getField(this._settings, nextProps.defaultValue)[this._settings.type]();
+            this._label = this._settings.label.render ? this.renderLabel(this._settings) : null;
+        }
+    }, {
         key: '_addErrorClass',
         value: function _addErrorClass() {
             var errorClass = " ";
@@ -43010,35 +43020,35 @@ var Field = function (_React$Component) {
         }
     }, {
         key: '_getField',
-        value: function _getField(options) {
+        value: function _getField(options, defaultValue) {
             var _this3 = this;
 
             return {
                 "text": function text() {
-                    return _react2.default.createElement('input', { onBlur: _this3._onChange(), type: 'text', id: options.alias, name: options.alias, defaultValue: options.defaultValue, className: options.class + _this3._addErrorClass() });
+                    return _react2.default.createElement('input', { onBlur: _this3._onChange(), type: 'text', id: options.alias, name: options.alias, defaultValue: defaultValue, className: options.class + _this3._addErrorClass() });
                 },
                 "textarea": function textarea() {
-                    return _react2.default.createElement('textarea', { onBlur: _this3._onChange(), className: options.class + _this3._addErrorClass() + " textarea", defaultValue: options.defaultValue, name: options.alias });
+                    return _react2.default.createElement('textarea', { onBlur: _this3._onChange(), className: options.class + _this3._addErrorClass() + " textarea", defaultValue: defaultValue, name: options.alias });
                 },
                 "richText": function richText() {
                     return _react2.default.createElement(
                         'div',
                         { className: "richtext-container " + _this3._addErrorClass() },
-                        _react2.default.createElement(RichTextEditor, { onBlur: _this3._onChange(), theme: 'snow', id: options.alias, defaultValue: options.defaultValue, name: options.alias })
+                        _react2.default.createElement(RichTextEditor, { onBlur: _this3._onChange(), theme: 'snow', id: options.alias, defaultValue: defaultValue, name: options.alias })
                     );
                 },
                 "number": function number() {
-                    return _react2.default.createElement('input', { type: 'number', onBlur: _this3._onChange(), id: options.alias, name: options.alias, defaultValue: options.defaultValue, className: options.class + _this3._addErrorClass() });
+                    return _react2.default.createElement('input', { type: 'number', onBlur: _this3._onChange(), id: options.alias, name: options.alias, defaultValue: defaultValue, className: options.class + _this3._addErrorClass() });
                 },
                 "boolean": function boolean() {
                     return _react2.default.createElement(
                         'div',
                         { className: 'checkbox-container' },
-                        _react2.default.createElement('input', { type: 'checkbox', id: options.alias, onChange: _this3._onChange(), name: options.alias, defaultChecked: JSON.parse(options.defaultValue || 'false') })
+                        _react2.default.createElement('input', { type: 'checkbox', id: options.alias, onChange: _this3._onChange(), name: options.alias, defaultChecked: JSON.parse(defaultValue || 'false') })
                     );
                 },
                 "email": function email() {
-                    return _react2.default.createElement('input', { type: 'email', onBlur: _this3._onChange(), id: options.alias, name: options.alias, className: options.class + _this3._addErrorClass() });
+                    return _react2.default.createElement('input', { type: 'email', onBlur: _this3._onChange(), defaultValue: defaultValue, id: options.alias, name: options.alias, className: options.class + _this3._addErrorClass() });
                 },
                 "password": function password() {
                     return _react2.default.createElement('input', { type: 'password', onBlur: _this3._onChange(), id: options.alias, name: options.alias, className: options.class + _this3._addErrorClass() });
@@ -43056,7 +43066,7 @@ var Field = function (_React$Component) {
                             _react2.default.createElement(
                                 'label',
                                 null,
-                                _react2.default.createElement('input', { type: 'radio', onChange: _this3._onChange(), value: field.value, name: options.alias, defaultChecked: JSON.parse(options.defaultValue === field.value || 'false') }),
+                                _react2.default.createElement('input', { type: 'radio', onChange: _this3._onChange(), value: field.value, name: options.alias, defaultChecked: JSON.parse(defaultValue === field.value || 'false') }),
                                 ' ',
                                 field.name,
                                 ' '
@@ -43087,7 +43097,7 @@ var Field = function (_React$Component) {
 
                     return _react2.default.createElement(
                         'select',
-                        { onChange: _this3._onChange(), defaultValue: options.defaultValue, id: options.alias, name: options.alias, className: options.class },
+                        { onChange: _this3._onChange(), defaultValue: defaultValue, id: options.alias, name: options.alias, className: options.class },
                         fields
                     );
                 }

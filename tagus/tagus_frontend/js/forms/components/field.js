@@ -9,7 +9,7 @@ const PROPTYPES = {
     }).isRequired,
     isValid: React.PropTypes.bool.isRequired,
     errorClass: React.PropTypes.string.isRequired,
-    onUpdate: React.PropTypes.func.isRequired 
+    onUpdate: React.PropTypes.func.isRequired
 };
 
 export default class Field extends React.Component {
@@ -25,9 +25,22 @@ export default class Field extends React.Component {
             },
         };
 
+    };
+
+    componentWillMount() {
         this._settings = Object.assign(this._defaultSettings, this.props.settings || {});
 
-        this._field = this._getField(this._settings)[this._settings.type]() ;
+        this._field = this._getField(this._settings, this.props.defaultValue)[this._settings.type]() ;
+        this._label = this._settings.label.render ? this.renderLabel(this._settings) : null;
+    };
+
+    shouldComponentUpdate(nextProps) {
+        return nextProps.defaultValue !== this.props.defaultValue || nextProps.settings.name !== this.props.settings.name;
+    };
+
+    componentWillUpdate(nextProps) {
+        this._settings = Object.assign(this._defaultSettings, nextProps.settings || {});
+        this._field = this._getField(this._settings, nextProps.defaultValue)[this._settings.type]() ;
         this._label = this._settings.label.render ? this.renderLabel(this._settings) : null;
     };
 
@@ -50,41 +63,41 @@ export default class Field extends React.Component {
         };
     };
 
-    _getField(options) {
+    _getField(options, defaultValue) {
         return {
             "text": () => {
                 return (
-                    <input onBlur={this._onChange()} type="text" id={options.alias} name={options.alias} defaultValue={options.defaultValue} className={options.class + this._addErrorClass()}/>
+                    <input onBlur={this._onChange()} type="text" id={options.alias} name={options.alias} defaultValue={defaultValue} className={options.class + this._addErrorClass()}/>
                 );
             },
             "textarea": () => {
                 return (
-                    <textarea onBlur={this._onChange()} className={options.class + this._addErrorClass()  + " textarea"} defaultValue={options.defaultValue} name={options.alias} ></textarea>
+                    <textarea onBlur={this._onChange()} className={options.class + this._addErrorClass()  + " textarea"} defaultValue={defaultValue} name={options.alias} ></textarea>
                 );
             },
             "richText": () => {
                 return (
                     <div className={"richtext-container " + this._addErrorClass()}>
-                        <RichTextEditor onBlur={this._onChange()} theme="snow" id={options.alias} defaultValue={options.defaultValue} name={options.alias} />
+                        <RichTextEditor onBlur={this._onChange()} theme="snow" id={options.alias} defaultValue={defaultValue} name={options.alias} />
                     </div>
                 );
             },
             "number": () => {
                 return (
-                    <input type="number" onBlur={this._onChange()} id={options.alias} name={options.alias} defaultValue={options.defaultValue} className={options.class + this._addErrorClass()} />
+                    <input type="number" onBlur={this._onChange()} id={options.alias} name={options.alias} defaultValue={defaultValue} className={options.class + this._addErrorClass()} />
                 );
             },
             "boolean": () => {
                 return (
                     <div className="checkbox-container">
-                        <input type="checkbox" id={options.alias} onChange={this._onChange()} name={options.alias} defaultChecked={JSON.parse(options.defaultValue || 'false') }  />
+                        <input type="checkbox" id={options.alias} onChange={this._onChange()} name={options.alias} defaultChecked={JSON.parse(defaultValue || 'false') }  />
                     </div>
                 );  
 
             },
             "email": () => {
                 return (
-                    <input type="email" onBlur={this._onChange()} id={options.alias} name={options.alias} className={options.class + this._addErrorClass()} />
+                    <input type="email" onBlur={this._onChange()} defaultValue={defaultValue} id={options.alias} name={options.alias} className={options.class + this._addErrorClass()} />
                 );
             },
             "password": () => {
@@ -101,7 +114,7 @@ export default class Field extends React.Component {
 
                     inputs.push(
                         <div key={i}>
-                            <label><input type="radio" onChange={this._onChange()} value={field.value} name={options.alias} defaultChecked={JSON.parse(options.defaultValue === field.value || 'false') }   /> {field.name} </label><br/>
+                            <label><input type="radio" onChange={this._onChange()} value={field.value} name={options.alias} defaultChecked={JSON.parse(defaultValue === field.value || 'false') }   /> {field.name} </label><br/>
                         </div>   
                     )
                 }
@@ -125,7 +138,7 @@ export default class Field extends React.Component {
                 }
 
                 return (
-                    <select onChange={this._onChange()} defaultValue={options.defaultValue} id={options.alias} name={options.alias} className={options.class} >
+                    <select onChange={this._onChange()} defaultValue={defaultValue} id={options.alias} name={options.alias} className={options.class} >
                         {fields}
                     </select>  
                 );
@@ -147,7 +160,6 @@ export default class Field extends React.Component {
             </fieldset>
         )
     };
-
 };
 
 

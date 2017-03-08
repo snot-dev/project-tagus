@@ -16,19 +16,15 @@ export default class ContentDetail extends React.Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        console.warn(nextProps);
         return Object.keys(nextProps.detail).length > 0 && Object.keys(nextProps.unit).length > 0 && nextProps.detail._id === this.props.params.id;
     };
 
     componentWillUpdate(nextProps) {
-        console.warn("update");
-        console.warn(nextProps);
         this._resetTabs();
         this._getTabList(nextProps.unit.tabs, nextProps.detail.content);
-    }
+    };
 
     componentWillUnmount() {
-        console.warn("unmount");
         this._resetTabs();
     };
 
@@ -74,10 +70,10 @@ export default class ContentDetail extends React.Component {
         let fields = [];
 
         for(let i = 0; i < tab.fields.length; i++) {
-            field = Object.assign( tab.fields[i], {defaultValue: content[tab.fields[i].alias]});
+            field = tab.fields[i];
 
             fields.push(
-                <Field key={i} isValid={true} settings={field} errorClass='error' onUpdate={this._onFieldUpdate.bind(this)}  />
+                <Field key={i.toString() + field.alias + content[field.alias] } isValid={true} defaultValue={content[field.alias]} settings={field} errorClass='error' onUpdate={this._onFieldUpdate.bind(this)}  />
             );
         }
 
@@ -85,7 +81,6 @@ export default class ContentDetail extends React.Component {
     }
 
     render() {
-        console.warn("render");
         return (
             <div className="col-xs-9">
                 <section id="content-page-detail" className="section">
