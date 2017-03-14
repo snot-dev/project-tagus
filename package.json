@@ -1,7 +1,7 @@
 {
   "name": "ProjectTagus",
   "version": "0.0.1",
-  "description": "a simple server project that will serve as base to future projects. Using grunt as task runner, bower to manage independicies and Scss as css pre compiler. The default view engine in this project is handlebars.",
+  "description": "A Simple CMS using only Javascript.",
   "main": "app.js",
   "scripts": {
     "test": "mocha ./tagus/**/tests.js"
@@ -9,7 +9,6 @@
   "author": "Snot",
   "license": "ISC",
   "dependencies": {
-    "@blueprintjs/core": "^1.9.0",
     "axios": "^0.15.3",
     "bcrypt-nodejs": "0.0.3",
     "bluebird": "^3.4.7",
@@ -25,7 +24,6 @@
     "grunt": "^0.4.5",
     "hbs": "^4.0.0",
     "jquery": "^3.1.0",
-    "key-mirror": "^1.0.1",
     "mongoose": "^4.4.19",
     "morgan": "^1.7.0",
     "open": "0.0.5",
@@ -36,7 +34,6 @@
     "react": "^15.4.2",
     "react-addons-css-transition-group": "^15.4.2",
     "react-dom": "^15.4.2",
-    "react-forms": "^1.0.0-rc6",
     "react-quill": "^0.4.1",
     "react-redux": "^4.4.5",
     "react-router": "^2.7.0",
