@@ -59,5 +59,4 @@ export default class ContentList extends React.Component {
             </div>
         );
     };
-;
 };

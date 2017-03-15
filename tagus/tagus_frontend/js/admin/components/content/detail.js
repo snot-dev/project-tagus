@@ -1,8 +1,8 @@
 import React from 'react';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
-import {updateContentField, saveContent} from '../../../actions/contentActions';
-import Field from '../../../../forms/components/field';
-import store from '../../../../store';
+import {updateContentField, saveContent} from '../../actions/contentActions';
+import Field from '../../../forms/components/field';
+import store from '../../../store';
 
 export default class ContentDetail extends React.Component {
     constructor(props) {

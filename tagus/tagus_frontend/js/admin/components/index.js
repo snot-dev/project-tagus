@@ -1,6 +1,6 @@
 import React from'react';
 import {Link} from 'react-router';
-import { translates } from '../../../translates';
+import { translates } from '../../translates';
 
 export default class Index extends React.Component {
     render() {
@@ -17,7 +17,7 @@ export default class Index extends React.Component {
                       <Link to="/content" className="block" activeClassName="active"><i className="fa fa-file" aria-hidden="true"></i>{translates.content.en}</Link>
                     </li>
                     <li>
-                      <Link to="/dashboard" className="block" activeClassName="active"><i className="fa fa-pie-chart" aria-hidden="true"></i>{translates.dashboard.en}</Link>
+                      <Link to="/units" className="block" activeClassName="active"><i className="fa fa-ship" aria-hidden="true"></i>{translates.units.en}</Link>
                     </li>
                     <li>
                       <Link to="/editor" className="block" activeClassName="active"><i className="fa fa-laptop" aria-hidden="true"></i>{translates.editor.en}</Link>
@@ -27,8 +27,10 @@ export default class Index extends React.Component {
                     </li>
                   </ul>
                 </nav>
-                <div id="admin-main-container" >
+                <div id="admin-main-container">
+                  <div id="admin-content-container" className="container-fluid">
                     {this.props.children}
+                  </div>
                 </div>
             </div>
         );

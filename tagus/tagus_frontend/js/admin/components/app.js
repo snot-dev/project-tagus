@@ -2,18 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import {Router, Route, IndexRoute, hashHistory} from 'react-router';
-import Index from './admin/index';
-import Dashboard from './admin/dashboard';
-import Content from './admin/content';
-import ContentDetail from './admin/content/detail';
-import Editor from './admin/editor';
-import Settings from './admin/settings';
+import Index from './index';
+import Content from './content';
+import Units from './units';
+import ContentDetail from './content/detail';
+import Editor from './editor';
+import Settings from './settings';
 import store from '../../store';
 
 var Routes =  (
     <Route path="/" component={Index} >
         <IndexRoute component={Content} />
-        <Route component={Dashboard} path="/dashboard" />
+        <Route component={Units} path="/units" />
         <Route component={Content} path="/content" >
             <Route component={ContentDetail} path="/content/:id" />
         </Route>

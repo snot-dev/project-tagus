@@ -3,9 +3,9 @@ export let translates = {
         'en': 'Content',
         'pt': 'Conteúdo'
     },
-    'dashboard': {
-        'en': 'Dashboard',
-        'pt': 'Painel'
+    'units': {
+        'en': 'Units',
+        'pt': 'Units'
     },
     'editor': {
         'en': 'Editor',
