@@ -10,10 +10,11 @@ class Units extends React.Component {
         store.dispatch(getUnitsListIfNecessary());
     };
 
+
     render() {
         return (
             <div className="row">
-                <UnitsList list={this.props.units.list} />
+                <UnitsList units={this.props.units.list} fetchingUnitsList ={this.props.units.fetchingUnitsList} />
             </div>
         );
     };
