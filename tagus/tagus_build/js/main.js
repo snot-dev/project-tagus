@@ -42262,12 +42262,13 @@ function saveContent(content) {
     };
 };
 
-},{"../../axios":350,"../../constants":351}],337:[function(require,module,exports){
+},{"../../axios":351,"../../constants":352}],337:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.getUnitDetailIfNeeded = getUnitDetailIfNeeded;
 exports.getUnitsListIfNecessary = getUnitsListIfNecessary;
 
 var _constants = require('../../constants');
@@ -42280,6 +42281,25 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var _shouldGetUnitsList = function _shouldGetUnitsList(state) {
     return state.units.list.length === 0;
+};
+
+var _shouldGetUnitDetail = function _shouldGetUnitDetail(state, id) {
+    //TODO: add more debug code
+
+    return !state.units.detail._id || state.units.detail._id !== id;
+};
+
+function getUnitDetailIfNeeded(id) {
+    return function (dispatch, getState) {
+        if (_shouldGetUnitDetail(getState(), id)) {
+            dispatch({
+                type: _constants.constants.units.GET_UNITS_DETAIL,
+                payload: (0, _axios2.default)('units/' + id).then(function (results) {
+                    return results;
+                })
+            });
+        }
+    };
 };
 
 function getUnitsListIfNecessary() {
@@ -42295,7 +42315,7 @@ function getUnitsListIfNecessary() {
     };
 };
 
-},{"../../axios":350,"../../constants":351}],338:[function(require,module,exports){
+},{"../../axios":351,"../../constants":352}],338:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -42322,9 +42342,13 @@ var _units = require('./units');
 
 var _units2 = _interopRequireDefault(_units);
 
-var _detail = require('./content/detail');
+var _detail = require('./units/detail');
 
 var _detail2 = _interopRequireDefault(_detail);
+
+var _detail3 = require('./content/detail');
+
+var _detail4 = _interopRequireDefault(_detail3);
 
 var _editor = require('./editor');
 
@@ -42344,11 +42368,15 @@ var Routes = _react2.default.createElement(
     _reactRouter.Route,
     { path: '/', component: _index2.default },
     _react2.default.createElement(_reactRouter.IndexRoute, { component: _content2.default }),
-    _react2.default.createElement(_reactRouter.Route, { component: _units2.default, path: '/units' }),
+    _react2.default.createElement(
+        _reactRouter.Route,
+        { component: _units2.default, path: '/units' },
+        _react2.default.createElement(_reactRouter.Route, { component: _detail2.default, path: '/units/:id' })
+    ),
     _react2.default.createElement(
         _reactRouter.Route,
         { component: _content2.default, path: '/content' },
-        _react2.default.createElement(_reactRouter.Route, { component: _detail2.default, path: '/content/:id' })
+        _react2.default.createElement(_reactRouter.Route, { component: _detail4.default, path: '/content/:id' })
     ),
     _react2.default.createElement(_reactRouter.Route, { component: _editor2.default, path: '/editor' }),
     _react2.default.createElement(_reactRouter.Route, { component: _settings2.default, path: '/settings' })
@@ -42360,7 +42388,7 @@ _reactDom2.default.render(_react2.default.createElement(
     _react2.default.createElement(_reactRouter.Router, { history: _reactRouter.hashHistory, routes: Routes })
 ), document.getElementById('admin'));
 
-},{"../../store":354,"./content":339,"./content/detail":340,"./editor":342,"./index":343,"./settings":344,"./units":345,"react":305,"react-dom":56,"react-redux":216,"react-router":260}],339:[function(require,module,exports){
+},{"../../store":355,"./content":339,"./content/detail":340,"./editor":342,"./index":343,"./settings":344,"./units":345,"./units/detail":346,"react":305,"react-dom":56,"react-redux":216,"react-router":260}],339:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -42446,7 +42474,7 @@ var mapStateToProps = function mapStateToProps(state) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps)(Content);
 
-},{"../../store":354,"../actions/contentActions":336,"./content/list":341,"react":305,"react-redux":216,"react-router":260}],340:[function(require,module,exports){
+},{"../../store":355,"../actions/contentActions":336,"./content/list":341,"react":305,"react-redux":216,"react-router":260}],340:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -42583,7 +42611,7 @@ var ContentDetail = function (_React$Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                { className: 'col-xs-9' },
+                { className: 'col-xs-8' },
                 _react2.default.createElement(
                     'section',
                     { id: 'content-page-detail', className: 'section' },
@@ -42634,7 +42662,7 @@ var ContentDetail = function (_React$Component) {
 exports.default = ContentDetail;
 ;
 
-},{"../../../forms/components/field":352,"../../../store":354,"../../actions/contentActions":336,"react":305,"react-tabs":276}],341:[function(require,module,exports){
+},{"../../../forms/components/field":353,"../../../store":355,"../../actions/contentActions":336,"react":305,"react-tabs":276}],341:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -42720,7 +42748,7 @@ var ContentList = function (_React$Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                { className: 'col-xs-3' },
+                { className: 'col-xs-4' },
                 _react2.default.createElement(
                     'section',
                     { className: 'section content-page-list' },
@@ -42908,7 +42936,7 @@ var Index = function (_React$Component) {
 exports.default = Index;
 ;
 
-},{"../../translates":355,"react":305,"react-router":260}],344:[function(require,module,exports){
+},{"../../translates":356,"react":305,"react-router":260}],344:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43003,6 +43031,11 @@ var Units = function (_React$Component) {
         key: 'componentWillMount',
         value: function componentWillMount() {
             _store2.default.dispatch((0, _unitsActions.getUnitsListIfNecessary)());
+
+            if (this.props.params.id) {
+                console.warn("here");
+                _store2.default.dispatch((0, _unitsActions.getUnitDetailIfNeeded)(this.props.params.id));
+            }
         }
     }, {
         key: 'render',
@@ -43010,7 +43043,8 @@ var Units = function (_React$Component) {
             return _react2.default.createElement(
                 'div',
                 { className: 'row' },
-                _react2.default.createElement(_list2.default, { units: this.props.units.list, fetchingUnitsList: this.props.units.fetchingUnitsList })
+                _react2.default.createElement(_list2.default, { units: this.props.units.list, fetchingUnitsList: this.props.units.fetchingUnitsList }),
+                this.props.children ? _react2.default.cloneElement(this.props.children, { unit: this.props.units.detail }) : null
             );
         }
     }]);
@@ -43028,7 +43062,82 @@ var mapStateToProps = function mapStateToProps(state) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps)(Units);
 
-},{"../../store":354,"../actions/unitsActions":337,"./units/list":346,"react":305,"react-redux":216,"react-router":260}],346:[function(require,module,exports){
+},{"../../store":355,"../actions/unitsActions":337,"./units/list":347,"react":305,"react-redux":216,"react-router":260}],346:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _store = require('../../../store');
+
+var _store2 = _interopRequireDefault(_store);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var PROPTYPES = {
+    name: _react2.default.PropTypes.string.isRequired,
+    tabs: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.shape({
+        name: _react2.default.PropTypes.string.isRequired,
+        fields: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.shape({
+            name: _react2.default.PropTypes.string.isRequired,
+            alias: _react2.default.PropTypes.string.isRequired,
+            type: _react2.default.PropTypes.string.isRequired
+        })).isRequired
+    })).isRequired,
+    templates: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.string).isRequired
+};
+
+var UnitDetail = function (_React$Component) {
+    _inherits(UnitDetail, _React$Component);
+
+    function UnitDetail() {
+        _classCallCheck(this, UnitDetail);
+
+        return _possibleConstructorReturn(this, (UnitDetail.__proto__ || Object.getPrototypeOf(UnitDetail)).apply(this, arguments));
+    }
+
+    _createClass(UnitDetail, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                { className: 'col-xs-8' },
+                _react2.default.createElement(
+                    'section',
+                    { className: 'section content-page-list' },
+                    _react2.default.createElement(
+                        'h2',
+                        { className: 'title' },
+                        this.props.unit.name
+                    ),
+                    _react2.default.createElement('div', null)
+                )
+            );
+        }
+    }]);
+
+    return UnitDetail;
+}(_react2.default.Component);
+
+exports.default = UnitDetail;
+;
+
+UnitDetail.propTypes = PROPTYPES;
+
+},{"../../../store":355,"react":305}],347:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43084,8 +43193,8 @@ var UnitsList = function (_React$Component) {
 
             for (var i = 0; i < units.length; i++) {
                 this.units.push(_react2.default.createElement(
-                    'div',
-                    { className: 'col-xs-6 col-md-2' },
+                    _reactRouter.Link,
+                    { key: i, to: '/units/' + units[i]._id, className: 'col-xs-6 col-sm-4' },
                     _react2.default.createElement(_listItem2.default, { unit: units[i] })
                 ));
             }
@@ -43093,10 +43202,9 @@ var UnitsList = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            console.warn(this.props.units);
             return _react2.default.createElement(
                 'div',
-                { className: 'col-xs-12' },
+                { className: 'col-xs-12 col-sm-4' },
                 _react2.default.createElement(
                     'section',
                     { className: 'section unit-list' },
@@ -43129,7 +43237,7 @@ var UnitsList = function (_React$Component) {
 exports.default = UnitsList;
 ;
 
-},{"./listItem":347,"react":305,"react-router":260}],347:[function(require,module,exports){
+},{"./listItem":348,"react":305,"react-router":260}],348:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -43164,10 +43272,15 @@ var UnitListItem = function (_React$Component) {
         value: function render() {
             return _react2.default.createElement(
                 "div",
-                null,
+                { className: "text-center" },
+                _react2.default.createElement(
+                    "h2",
+                    null,
+                    _react2.default.createElement("i", { className: "fa fa-tint", "aria-hidden": "true" })
+                ),
                 _react2.default.createElement(
                     "h4",
-                    { className: "text-center" },
+                    null,
                     this.props.unit.name
                 )
             );
@@ -43180,7 +43293,7 @@ var UnitListItem = function (_React$Component) {
 exports.default = UnitListItem;
 ;
 
-},{"react":305}],348:[function(require,module,exports){
+},{"react":305}],349:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43250,7 +43363,7 @@ var contentReducer = exports.contentReducer = function contentReducer(state, act
     }
 };
 
-},{"../../constants":351}],349:[function(require,module,exports){
+},{"../../constants":352}],350:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43264,6 +43377,18 @@ var unitsReducer = exports.unitsReducer = function unitsReducer(state, action) {
     var newState = Object.assign({}, state);
 
     switch (action.type) {
+        case _constants.constants.units.GET_UNITS_DETAIL_PENDING:
+            {
+                newState.fetchingUnitsDetail = true;
+                return newState;
+            }
+        case _constants.constants.units.GET_UNITS_DETAIL_FULFILLED:
+            {
+                newState.fetchingUnitsList = false;
+                newState.detail = action.payload.data;
+                return newState;
+            }
+
         case _constants.constants.units.GET_UNITS_LIST_PENDING:
             {
                 newState.fetchingUnitsList = true;
@@ -43280,7 +43405,7 @@ var unitsReducer = exports.unitsReducer = function unitsReducer(state, action) {
     }
 };
 
-},{"../../constants":351}],350:[function(require,module,exports){
+},{"../../constants":352}],351:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -43302,7 +43427,7 @@ exports.default = _axios2.default.create({
 	}
 });
 
-},{"axios":1}],351:[function(require,module,exports){
+},{"axios":1}],352:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43327,7 +43452,10 @@ var constants = exports.constants = {
     units: {
         GET_UNITS_LIST: 'GET_UNITS_LIST',
         GET_UNITS_LIST_PENDING: 'GET_UNITS_LIST_PENDING',
-        GET_UNITS_LIST_FULFILLED: 'GET_UNITS_LIST_FULFILLED'
+        GET_UNITS_LIST_FULFILLED: 'GET_UNITS_LIST_FULFILLED',
+        GET_UNITS_DETAIL: 'GET_UNITS_DETAIL',
+        GET_UNITS_DETAIL_PENDING: 'GET_UNITS_DETAIL_PENDING',
+        GET_UNITS_DETAIL_FULFILLED: 'GET_UNITS_DETAIL_FULFILLED'
     },
     user: {
         SAVING_USER: 'SAVING_USER',
@@ -43336,7 +43464,7 @@ var constants = exports.constants = {
     }
 };
 
-},{}],352:[function(require,module,exports){
+},{}],353:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43547,7 +43675,7 @@ exports.default = Field;
 
 Field.propTypes = PROPTYPES;
 
-},{"react":305,"react-quill":211}],353:[function(require,module,exports){
+},{"react":305,"react-quill":211}],354:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43579,7 +43707,7 @@ var initializerReducer = exports.initializerReducer = function initializerReduce
     }
 };
 
-},{"../../constants":351}],354:[function(require,module,exports){
+},{"../../constants":352}],355:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43645,7 +43773,7 @@ var initialState = {
 
 exports.default = (0, _redux.applyMiddleware)((0, _reduxPromiseMiddleware2.default)(), _reduxThunk2.default, (0, _reduxLogger2.default)())(_redux.createStore)(rootReducer, initialState);
 
-},{"./admin/reducers/content":348,"./admin/reducers/units":349,"./initializer/reducers/initializerReducer":353,"redux":319,"redux-logger":310,"redux-promise-middleware":311,"redux-thunk":313}],355:[function(require,module,exports){
+},{"./admin/reducers/content":349,"./admin/reducers/units":350,"./initializer/reducers/initializerReducer":354,"redux":319,"redux-logger":310,"redux-promise-middleware":311,"redux-thunk":313}],356:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

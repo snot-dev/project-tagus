@@ -49,7 +49,7 @@ export default class ContentList extends React.Component {
 
     render() {
         return (
-            <div className="col-xs-3">
+            <div className="col-xs-4">
                 <section className="section content-page-list">
                     <h2 className="title">Content</h2>
                     <div>

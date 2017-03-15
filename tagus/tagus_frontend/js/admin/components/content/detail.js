@@ -84,7 +84,7 @@ export default class ContentDetail extends React.Component {
 
     render() {
         return (
-            <div className="col-xs-9">
+            <div className="col-xs-8">
                 <section id="content-page-detail" className="section">
                     <div className="row">
                         <div className="col-xs-12">

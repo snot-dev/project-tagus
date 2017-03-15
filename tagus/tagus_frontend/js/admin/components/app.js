@@ -5,6 +5,7 @@ import {Router, Route, IndexRoute, hashHistory} from 'react-router';
 import Index from './index';
 import Content from './content';
 import Units from './units';
+import UnitDetail from './units/detail';
 import ContentDetail from './content/detail';
 import Editor from './editor';
 import Settings from './settings';
@@ -13,7 +14,9 @@ import store from '../../store';
 var Routes =  (
     <Route path="/" component={Index} >
         <IndexRoute component={Content} />
-        <Route component={Units} path="/units" />
+        <Route component={Units} path="/units" >
+            <Route component={UnitDetail} path="/units/:id" />
+        </Route>
         <Route component={Content} path="/content" >
             <Route component={ContentDetail} path="/content/:id" />
         </Route>

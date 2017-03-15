@@ -1,6 +1,15 @@
 import React from 'react';
 import Field from './field';
 
+const PROPTYPES = {
+    fields: React.PropTypes.arrayOf(React.PropTypes.shape({
+        alias: React.PropTypes.string.isRequired,
+        name: React.PropTypes.string.isRequired,
+        type: React.PropTypes.string.isRequired,
+        required: React.PropTypes.bool
+    }))
+};
+
 export default class Form extends React.Component {
     constructor(props) {
         super(props);
@@ -48,36 +57,24 @@ export default class Form extends React.Component {
 
         for(let i  = 0; i < this.props.fields.length; i++) {
             field = this.props.fields[i];
-            key = this.props.fields[i].name;
+            key = this.props.fields[i].alias;
             
-            if(this._isConsiderableField(field)) {
-                this.state.fields[key] = {
-                    value: field.defaultValue,
-                    valid: true
-                }
-                
-                this._validFields.push(field);
-
-            }
-            else {
-                console.error("Field does not have a valid name");
+            this.state.fields[key] = {
+                value: field.defaultValue,
+                valid: true
             }
         }
-    };
-
-    _isConsiderableField(field) {
-        return field.name && field.name.length > 0;
     };
 
     _renderFields() {
         let fields = [];
         let field;
 
-        for(let i = 0; i < this._validFields.length; i++) {
-            field = this._validFields[i];
+        for(let i = 0; i < this.props.fields.length; i++) {
+            field = this.props.fields[i];
 
             fields.push(
-                <Field isValid={this.state.fields[field.name].valid} errorClass={this._settings.validation.onError} defaultValue={field.value}  onUpdate={this._onUpdate.bind(this)} settings={field} key={i} />
+                <Field isValid={this.state.fields[field.alias].valid} errorClass={this._settings.validation.onError} defaultValue={field.value}  onUpdate={this._onUpdate.bind(this)} settings={field} key={i} />
             );
         }
 
@@ -96,11 +93,11 @@ export default class Form extends React.Component {
         let body = {};
 
 
-        for(let i = 0; i < this._validFields.length; i++) {
-            field = this._validFields[i];
+        for(let i = 0; i < this.props.fields.length; i++) {
+            field = this.props.fields[i];
 
-            if(fields.hasOwnProperty(field.name)) {
-                stateField = fields[field.name];
+            if(fields.hasOwnProperty(field.alias)) {
+                stateField = fields[field.alias];
                 stateField.valid = true;
 
                 if(field.required === true && (!stateField.value || stateField.value.length === 0)) {
@@ -108,7 +105,7 @@ export default class Form extends React.Component {
                     stateField.valid = false; 
                 }
                 else {
-                    body[field.name] = stateField.value
+                    body[field.alias] = stateField.value
                 }
             }
         }
@@ -123,7 +120,7 @@ export default class Form extends React.Component {
     _onSubmit(e) {
         e.preventDefault();
         this._validateFields();
-
+        
         if(this.state.validForm && this.props.onSubmit) {
             this.props.onSubmit(this.state.body);
         }
@@ -144,3 +141,5 @@ export default class Form extends React.Component {
         );
     };
 };  
+
+Form.propTypes = PROPTYPES;

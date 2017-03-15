@@ -22,17 +22,16 @@ export default class UnitsList extends React.Component {
 
         for(let i = 0; i < units.length; i++) {
             this.units.push(
-                <div className="col-xs-6 col-md-2">
+                <Link key={i} to={'/units/' + units[i]._id} className="col-xs-6 col-sm-4">
                     <UnitListItem unit={units[i]} />
-                </div>
+                </Link>
             );
         }
     };
 
     render() {
-        console.warn(this.props.units)
         return (
-            <div className="col-xs-12">
+            <div className="col-xs-12 col-sm-4">
                 <section className="section unit-list">
                     <h2 className="title">Units</h2>
                     <div className="container-fluid">
