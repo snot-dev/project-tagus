@@ -2,19 +2,31 @@ import React from 'react';
 import store from '../../../store';
 
 const PROPTYPES =  {
-    name: React.PropTypes.string.isRequired,
-    tabs: React.PropTypes.arrayOf(React.PropTypes.shape({
+    unit: React.PropTypes.shape({
         name: React.PropTypes.string.isRequired,
-        fields: React.PropTypes.arrayOf(React.PropTypes.shape({
+        tabs: React.PropTypes.arrayOf(React.PropTypes.shape({
             name: React.PropTypes.string.isRequired,
-            alias: React.PropTypes.string.isRequired,
-            type: React.PropTypes.string.isRequired,
-        })).isRequired
-    })).isRequired,
-    templates: React.PropTypes.arrayOf(React.PropTypes.string).isRequired
+            fields: React.PropTypes.arrayOf(React.PropTypes.shape({
+                name: React.PropTypes.string.isRequired,
+                alias: React.PropTypes.string.isRequired,
+                type: React.PropTypes.string.isRequired,
+            })).isRequired
+        })).isRequired,
+        templates: React.PropTypes.arrayOf(React.PropTypes.string).isRequired
+    }).isRequired
 };
 
+const DEFAULT_PROPS = {
+    unit: {
+        name: "",
+        tabs: [{name:"", fields: [{name: "", alias: "", type: "text"}]}],
+        templates: [""]
+    }
+};
+
+
 export default class UnitDetail extends React.Component {
+
     render() {
         return (
             <div className="col-xs-8">
@@ -29,3 +41,4 @@ export default class UnitDetail extends React.Component {
 };
 
 UnitDetail.propTypes = PROPTYPES;
+UnitDetail.defaultProps = DEFAULT_PROPS;    

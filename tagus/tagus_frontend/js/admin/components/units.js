@@ -10,16 +10,24 @@ class Units extends React.Component {
         store.dispatch(getUnitsListIfNecessary());
 
         if(this.props.params.id) {
-            console.warn("here");
             store.dispatch(getUnitDetailIfNeeded(this.props.params.id));
         }
+    };
+
+    componentWillUpdate(nextProps) {
+    };
+
+    getUnitDetail(id) {
+        return () => {
+            store.dispatch(getUnitDetailIfNeeded(id));
+        };
     };
 
     render() {
         return (
             <div className="row">
-                <UnitsList units={this.props.units.list} fetchingUnitsList ={this.props.units.fetchingUnitsList} />
-                {this.props.children ?  React.cloneElement(this.props.children, {unit: this.props.units.detail}) : null}
+                <UnitsList units={this.props.units.list} fetchingUnitsList ={this.props.units.fetchingUnitsList} getDetail={this.getUnitDetail} />
+                {this.props.children && Object.keys(this.props.units.detail).length > 0  ?  React.cloneElement(this.props.children, {unit: this.props.units.detail}) : null}
             </div>
         );
     };

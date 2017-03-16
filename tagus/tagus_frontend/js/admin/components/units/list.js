@@ -9,6 +9,10 @@ export default class UnitsList extends React.Component {
         this.units = [];
     }
 
+    componentWillMount() {
+        this._setUnits(this.props.units);
+    };
+
     shouldComponentUpdate(nextProps) {
         return nextProps.fetchingUnitsList || nextProps.units.length > 0;
     };
@@ -18,12 +22,15 @@ export default class UnitsList extends React.Component {
     };
 
     _setUnits(units) {
+        let unit;
         this.units.length = 0;
 
         for(let i = 0; i < units.length; i++) {
+            unit = units[i];
+
             this.units.push(
-                <Link key={i} to={'/units/' + units[i]._id} className="col-xs-6 col-sm-4">
-                    <UnitListItem unit={units[i]} />
+                <Link key={i} to={'/units/' + unit._id} onClick={this.props.getDetail(unit._id)} className="col-xs-6 col-sm-4">
+                    <UnitListItem unit={unit} />
                 </Link>
             );
         }
