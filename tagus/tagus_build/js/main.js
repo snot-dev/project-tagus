@@ -42288,7 +42288,7 @@ function saveContent(content) {
     };
 };
 
-},{"../../axios":354,"../../constants":355}],340:[function(require,module,exports){
+},{"../../axios":356,"../../constants":357}],340:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -42329,10 +42329,8 @@ function getUnitDetailIfNeeded(id) {
 };
 
 function getUnitsListIfNecessary() {
-    console.warn("action");
     return function (dispatch, getState) {
         if (_shouldGetUnitsList(getState())) {
-            console.warn("should");
             dispatch({
                 type: _constants.constants.units.GET_UNITS_LIST,
                 payload: (0, _axios2.default)('units').then(function (results) {
@@ -42343,7 +42341,7 @@ function getUnitsListIfNecessary() {
     };
 };
 
-},{"../../axios":354,"../../constants":355}],341:[function(require,module,exports){
+},{"../../axios":356,"../../constants":357}],341:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -42416,7 +42414,7 @@ _reactDom2.default.render(_react2.default.createElement(
     _react2.default.createElement(_reactRouter.Router, { history: _reactRouter.hashHistory, routes: Routes })
 ), document.getElementById('admin'));
 
-},{"../../store":358,"./content":342,"./content/detail":343,"./editor":345,"./index":346,"./settings":347,"./units":348,"./units/detail":349,"react":309,"react-dom":27,"react-redux":190,"react-router":236}],342:[function(require,module,exports){
+},{"../../store":360,"./content":342,"./content/detail":343,"./editor":345,"./index":346,"./settings":347,"./units":348,"./units/detail":349,"react":309,"react-dom":27,"react-redux":190,"react-router":236}],342:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -42502,7 +42500,7 @@ var mapStateToProps = function mapStateToProps(state) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps)(Content);
 
-},{"../../store":358,"../actions/contentActions":339,"./content/list":344,"react":309,"react-redux":190,"react-router":236}],343:[function(require,module,exports){
+},{"../../store":360,"../actions/contentActions":339,"./content/list":344,"react":309,"react-redux":190,"react-router":236}],343:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -42690,7 +42688,7 @@ var ContentDetail = function (_React$Component) {
 exports.default = ContentDetail;
 ;
 
-},{"../../../forms/components/field":356,"../../../store":358,"../../actions/contentActions":339,"react":309,"react-tabs":277}],344:[function(require,module,exports){
+},{"../../../forms/components/field":358,"../../../store":360,"../../actions/contentActions":339,"react":309,"react-tabs":277}],344:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -42964,7 +42962,7 @@ var Index = function (_React$Component) {
 exports.default = Index;
 ;
 
-},{"../../translates":359,"react":309,"react-router":236}],347:[function(require,module,exports){
+},{"../../translates":361,"react":309,"react-router":236}],347:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43099,7 +43097,7 @@ var mapStateToProps = function mapStateToProps(state) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps)(Units);
 
-},{"../../store":358,"../actions/unitsActions":340,"./units/list":350,"react":309,"react-redux":190,"react-router":236}],349:[function(require,module,exports){
+},{"../../store":360,"../actions/unitsActions":340,"./units/list":350,"react":309,"react-redux":190,"react-router":236}],349:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43115,6 +43113,10 @@ var _react2 = _interopRequireDefault(_react);
 var _store = require('../../../store');
 
 var _store2 = _interopRequireDefault(_store);
+
+var _tabs = require('./tabs');
+
+var _tabs2 = _interopRequireDefault(_tabs);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -43150,13 +43152,30 @@ var DEFAULT_PROPS = {
 var UnitDetail = function (_React$Component) {
     _inherits(UnitDetail, _React$Component);
 
-    function UnitDetail() {
+    function UnitDetail(props) {
         _classCallCheck(this, UnitDetail);
 
-        return _possibleConstructorReturn(this, (UnitDetail.__proto__ || Object.getPrototypeOf(UnitDetail)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (UnitDetail.__proto__ || Object.getPrototypeOf(UnitDetail)).call(this, props));
+
+        _this.tabs = [];
+        return _this;
     }
 
     _createClass(UnitDetail, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            this._setTabs(this.props.unit.tabs);
+        }
+    }, {
+        key: '_setTabs',
+        value: function _setTabs(tabs) {
+            this.tabs.length = 0;
+
+            for (var i = 0; i < tabs.length; i++) {
+                this.tabs.push(_react2.default.createElement(_tabs2.default, { key: i, tab: tabs[i] }));
+            }
+        }
+    }, {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
@@ -43170,7 +43189,11 @@ var UnitDetail = function (_React$Component) {
                         { className: 'title' },
                         this.props.unit.name
                     ),
-                    _react2.default.createElement('div', null)
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'col-xs-12' },
+                        this.tabs
+                    )
                 )
             );
         }
@@ -43185,7 +43208,7 @@ exports.default = UnitDetail;
 UnitDetail.propTypes = PROPTYPES;
 UnitDetail.defaultProps = DEFAULT_PROPS;
 
-},{"../../../store":358,"react":309}],350:[function(require,module,exports){
+},{"../../../store":360,"./tabs":353,"react":309}],350:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43350,6 +43373,175 @@ exports.default = UnitListItem;
 ;
 
 },{"react":309}],352:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var PROPTYPES = {
+    field: _react2.default.PropTypes.shape({
+        name: _react2.default.PropTypes.string.isRequired,
+        alias: _react2.default.PropTypes.string.isRequired,
+        type: _react2.default.PropTypes.string.isRequired
+    }).isRequired
+};
+
+var TabFields = function (_React$Component) {
+    _inherits(TabFields, _React$Component);
+
+    function TabFields() {
+        _classCallCheck(this, TabFields);
+
+        return _possibleConstructorReturn(this, (TabFields.__proto__ || Object.getPrototypeOf(TabFields)).apply(this, arguments));
+    }
+
+    _createClass(TabFields, [{
+        key: "render",
+        value: function render() {
+            return _react2.default.createElement(
+                "section",
+                { className: "row tab-field" },
+                _react2.default.createElement(
+                    "div",
+                    { className: "col-xs-12 col-sm-4" },
+                    _react2.default.createElement(
+                        "p",
+                        { className: "tab-field-name" },
+                        this.props.field.name
+                    ),
+                    _react2.default.createElement(
+                        "p",
+                        { className: "tab-field-alias" },
+                        this.props.field.alias
+                    )
+                ),
+                _react2.default.createElement(
+                    "div",
+                    { className: "col-xs-12 col-sm-8" },
+                    _react2.default.createElement(
+                        "p",
+                        { className: "tab-field-type" },
+                        this.props.field.type
+                    )
+                )
+            );
+        }
+    }]);
+
+    return TabFields;
+}(_react2.default.Component);
+
+exports.default = TabFields;
+;
+
+TabFields.propTypes = PROPTYPES;
+
+},{"react":309}],353:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _tabFields = require('./tabFields');
+
+var _tabFields2 = _interopRequireDefault(_tabFields);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var PROPTYPES = {
+    tab: _react2.default.PropTypes.shape({
+        name: _react2.default.PropTypes.string.isRequired,
+        fields: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.shape({
+            name: _react2.default.PropTypes.string.isRequired,
+            alias: _react2.default.PropTypes.string.isRequired,
+            type: _react2.default.PropTypes.string.isRequired
+        })).isRequired
+    }).isRequired
+};
+
+var UnitTab = function (_React$Component) {
+    _inherits(UnitTab, _React$Component);
+
+    function UnitTab(props) {
+        _classCallCheck(this, UnitTab);
+
+        var _this = _possibleConstructorReturn(this, (UnitTab.__proto__ || Object.getPrototypeOf(UnitTab)).call(this, props));
+
+        _this.fields = [];
+        return _this;
+    }
+
+    _createClass(UnitTab, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            this._setFields(this.props.tab.fields);
+        }
+    }, {
+        key: '_setFields',
+        value: function _setFields(fields) {
+            this.fields.length = 0;
+
+            for (var i = 0; i < fields.length; i++) {
+                this.fields.push(_react2.default.createElement(_tabFields2.default, { key: i, field: fields[i] }));
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'section',
+                { className: 'row unit-tab' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'col-xs-12 unit-tab-name' },
+                    this.props.tab.name
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'col-xs-12 unit-tab-fields' },
+                    this.fields
+                )
+            );
+        }
+    }]);
+
+    return UnitTab;
+}(_react2.default.Component);
+
+exports.default = UnitTab;
+;
+
+UnitTab.propTypes = PROPTYPES;
+
+},{"./tabFields":352,"react":309}],354:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43419,7 +43611,7 @@ var contentReducer = exports.contentReducer = function contentReducer(state, act
     }
 };
 
-},{"../../constants":355}],353:[function(require,module,exports){
+},{"../../constants":357}],355:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43461,7 +43653,7 @@ var unitsReducer = exports.unitsReducer = function unitsReducer(state, action) {
     }
 };
 
-},{"../../constants":355}],354:[function(require,module,exports){
+},{"../../constants":357}],356:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -43483,7 +43675,7 @@ exports.default = _axios2.default.create({
 	}
 });
 
-},{"axios":1}],355:[function(require,module,exports){
+},{"axios":1}],357:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43520,7 +43712,7 @@ var constants = exports.constants = {
     }
 };
 
-},{}],356:[function(require,module,exports){
+},{}],358:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43731,7 +43923,7 @@ exports.default = Field;
 
 Field.propTypes = PROPTYPES;
 
-},{"react":309,"react-quill":185}],357:[function(require,module,exports){
+},{"react":309,"react-quill":185}],359:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43763,7 +43955,7 @@ var initializerReducer = exports.initializerReducer = function initializerReduce
     }
 };
 
-},{"../../constants":355}],358:[function(require,module,exports){
+},{"../../constants":357}],360:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43829,7 +44021,7 @@ var initialState = {
 
 exports.default = (0, _redux.applyMiddleware)((0, _reduxPromiseMiddleware2.default)(), _reduxThunk2.default, (0, _reduxLogger2.default)())(_redux.createStore)(rootReducer, initialState);
 
-},{"./admin/reducers/content":352,"./admin/reducers/units":353,"./initializer/reducers/initializerReducer":357,"redux":324,"redux-logger":314,"redux-promise-middleware":316,"redux-thunk":318}],359:[function(require,module,exports){
+},{"./admin/reducers/content":354,"./admin/reducers/units":355,"./initializer/reducers/initializerReducer":359,"redux":324,"redux-logger":314,"redux-promise-middleware":316,"redux-thunk":318}],361:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
