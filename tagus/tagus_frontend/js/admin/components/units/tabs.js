@@ -36,9 +36,7 @@ export default class UnitTab extends React.Component{
     render() {
         return (
             <section className="row unit-tab">
-                <div className="col-xs-12 unit-tab-name"> 
-                    {this.props.tab.name}
-                </div>
+                <h4 className="col-xs-12 unit-tab-name">{this.props.tab.name}</h4>
                 <div className="col-xs-12 unit-tab-fields">
                     {this.fields}
                 </div>

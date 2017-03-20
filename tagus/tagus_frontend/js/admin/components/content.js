@@ -33,7 +33,7 @@ class Content extends React.Component {
 let mapStateToProps = function(state) {
   return {
     content:  state.content,
-    showLoader: state.content.fetchingPageDetail || state.content.savingPageDetail
+    showLoader: state.content.fetchingDetail || state.content.savingDetail
   };
 };
 

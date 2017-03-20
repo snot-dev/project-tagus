@@ -1,0 +1,49 @@
+@mixin units($color, $bColor: transparent) {
+  #page-list {
+      .page {
+          margin-bottom: 0;
+          .child-list {
+              margin-left: $spacing;
+          }
+          .fa {
+              margin-right: $spacing;
+          }
+          .link {
+              .options {
+                  padding: 0 $subtle;
+                  display: none;
+              }
+              &:hover {
+                  .options {
+                      display: block;
+                  }
+              }
+          }
+      }
+  }
+
+
+  #content-page-detail {
+      position: relative;
+
+      .content-container {
+        color: $color;
+        background-color: $bColor;
+        padding: $gutter $spacing $column+$spacing;
+        max-height: 100%;
+        overflow-y: auto;
+        margin-bottom: -$column;
+      }
+
+      .buttons-container {
+          position: absolute;
+          bottom: 0;
+          background-color: $bColor;
+          padding: $spacing;
+
+          .button {
+            margin-bottom: 0;
+          }
+      }
+  }
+}

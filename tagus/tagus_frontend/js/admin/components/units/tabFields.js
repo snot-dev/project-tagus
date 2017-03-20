@@ -13,11 +13,11 @@ export default class TabFields extends React.Component{
         return (
             <section className="row tab-field">
                 <div className="col-xs-12 col-sm-4">
-                    <p className="tab-field-name">{this.props.field.name}</p>
-                    <p className="tab-field-alias">{this.props.field.alias}</p>
+                    <p className="tab-field-name"><label className="tab-field-name">Name:</label> {this.props.field.name}</p>
+                    <p className="tab-field-alias"><label className="tab-field-alias">Alias:</label>{this.props.field.alias}</p>
                 </div>
                 <div className="col-xs-12 col-sm-8">
-                    <p className="tab-field-type">{this.props.field.type}</p>
+                    <p className="tab-field-type"><label className="tab-field-alias">Type:</label>{this.props.field.type}</p>
                 </div>
             </section>
         )

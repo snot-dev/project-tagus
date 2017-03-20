@@ -26,7 +26,7 @@ class Units extends React.Component {
     render() {
         return (
             <div className="row">
-                <UnitsList units={this.props.units.list} fetchingUnitsList ={this.props.units.fetchingUnitsList} getDetail={this.getUnitDetail} />
+                <UnitsList units={this.props.units.list} fetchingUnitsList ={this.props.units.fetchingList} getDetail={this.getUnitDetail} />
                 {this.props.children && Object.keys(this.props.units.detail).length > 0  ?  React.cloneElement(this.props.children, {unit: this.props.units.detail}) : null}
             </div>
         );

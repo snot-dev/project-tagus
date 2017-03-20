@@ -5,30 +5,30 @@ export let contentReducer = function(state, action) {
 
     switch (action.type) {
         case constants.content.GET_CONTENT_LIST_PENDING: {
-            newState.fetchingContentList = true;
+            newState.fetchingList = true;
             return newState;
         }
         case constants.content.GET_CONTENT_LIST_FULFILLED: {
-            newState.fetchingContentList = false;
+            newState.fetchingList = false;
             newState.treeList = action.payload.data;
             return newState;
         }
         case constants.content.GET_CONTENT_DETAIL_PENDING: {
-            newState.fetchingContentDetail = true;
+            newState.fetchingDetail = true;
             return newState;
         }    
         case constants.content.GET_CONTENT_DETAIL_FULFILLED: {
             newState.list[action.payload.data._id] = action.payload.data;
-            newState.fetchingContentDetail = false;
+            newState.fetchingDetail = false;
             newState.detail = action.payload.data;
             return newState;
         }    
         case constants.content.GET_CONTENT_DETAIL_UNITTYPE_PENDING: {
-            newState.fetchingContentDetail = true;
+            newState.fetchingDetail = true;
             return newState;
         }    
         case constants.content.GET_CONTENT_DETAIL_UNITTYPE_FULFILLED: {
-            newState.fetchingContentDetail = false;
+            newState.fetchingDetail = false;
             newState.unit = action.payload.data;
             return newState;
         } 

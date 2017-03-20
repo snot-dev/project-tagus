@@ -7,6 +7,10 @@ export let translates = {
         'en': 'Units',
         'pt': 'Units'
     },
+    'unitFields': {
+        'en': 'Unit Fields',
+        'pt': 'Unit Fields'
+    },
     'editor': {
         'en': 'Editor',
         'pt': 'Editor'

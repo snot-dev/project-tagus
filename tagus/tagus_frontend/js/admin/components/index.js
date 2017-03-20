@@ -19,6 +19,9 @@ export default class Index extends React.Component {
                     <li>
                       <Link to="/units" className="block" activeClassName="active"><i className="fa fa-ship" aria-hidden="true"></i>{translates.units.en}</Link>
                     </li>
+                                        <li>
+                      <Link to="/unitfields" className="block" activeClassName="active"><i className="fa fa-anchor" aria-hidden="true"></i>{translates.unitFields.en}</Link>
+                    </li>
                     <li>
                       <Link to="/editor" className="block" activeClassName="active"><i className="fa fa-laptop" aria-hidden="true"></i>{translates.editor.en}</Link>
                     </li>
