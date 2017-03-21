@@ -22,7 +22,7 @@ var Routes =  (
             <Route component={UnitDetail} path="/units/:id" />
         </Route>
         <Route component={UnitFields} path="/unitFields" >
-            <Route component={UnitDetail} path="/units/:id" />
+            <Route component={UnitDetail} path="/unitFields/:id" />
         </Route>
         <Route component={Editor} path="/editor" />
         <Route component={Settings} path="/settings" />

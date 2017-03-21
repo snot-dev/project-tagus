@@ -2,10 +2,12 @@ import React from 'react';
 import store from '../../store';
 import {Link} from 'react-router';
 import {connect} from 'react-redux';
+import {getUnitsListIfNecessary} from '../actions/unitFieldsActions';
+import UnitFieldsList from './unitFields/list';
 
 class UnitFields extends React.Component {
     componentWillMount() {
-        // store.dispatch(getUnitsListIfNecessary());
+        store.dispatch(getUnitsListIfNecessary());
 
         // if(this.props.params.id) {
         //     store.dispatch(getUnitDetailIfNeeded(this.props.params.id));
@@ -24,8 +26,8 @@ class UnitFields extends React.Component {
     render() {
         return (
             <div className="row">
-                {/*<UnitsList units={this.props.units.list} fetchingUnitsList ={this.props.units.fetchingUnitsList} getDetail={this.getUnitDetail} />
-                {this.props.children && Object.keys(this.props.units.detail).length > 0  ?  React.cloneElement(this.props.children, {unit: this.props.units.detail}) : null}*/}
+                <UnitFieldsList unitFields={this.props.unitFields.list} fetchingUnitFieldsList ={this.props.unitFields.fetchingList} getDetail={this.getUnitDetail} /> 
+                {/*{this.props.children && Object.keys(this.props.units.detail).length > 0  ?  React.cloneElement(this.props.children, {unit: this.props.units.detail}) : null}*/}
             </div>
         );
     };

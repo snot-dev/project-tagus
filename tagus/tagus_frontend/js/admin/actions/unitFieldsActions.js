@@ -16,7 +16,7 @@ export function getUnitDetailIfNeeded(id) {
     return (dispatch, getState) => {
         if(_shouldGetUnitDetail(getState(), id)) {
             dispatch({
-                type: constants.units.GET_UNITFIELDS_DETAIL,
+                type: constants.unitFields.GET_UNITFIELDS_DETAIL,
                 payload: axios('unitfieldss/' + id).then(results => {
                     return results;
                 })
@@ -27,10 +27,10 @@ export function getUnitDetailIfNeeded(id) {
 
 export function getUnitsListIfNecessary(){
     return (dispatch, getState) => {
-        if( _shouldGetUnitsList(getState())) {
+        if( _shouldGetUnitFieldsList(getState())) {
             dispatch( {
-                type: constants.units.GET_UNITFIELDS_LIST,
-                payload: axios ('unitfieldss').then(results =>{ return results;})
+                type: constants.unitFields.GET_UNITFIELDS_LIST,
+                payload: axios ('unitfields').then(results =>{ return results;})
             })
         }
     }
