@@ -78,7 +78,7 @@ module.exports = [{
         },
         {
             name: "Properties",
-            unitFields: [{
+            fields: [{
                     type: "text",
                     alias: "prop1",
                     name: "Prop 1"

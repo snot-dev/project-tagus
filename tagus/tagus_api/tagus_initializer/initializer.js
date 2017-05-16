@@ -2,7 +2,7 @@ var router = require('express').Router();
 var open = require('open');
 var mongoose = require('mongoose');
 var User = require('../tagus_users/userModel');
-var initScript = require('./initScript');
+var _initScript = require('./initScript');
 
 mongoose.Promise = require('bluebird');
 
@@ -25,18 +25,18 @@ module.exports = function(passport, initializerUrl) {
 
         res.render('initializer');
         // TODO: uncomment this after all work is done!
-        // User.find({}, function(err, docs) {
-        //     if(err) {
-        //         throw err;
-        //     }
+        User.find({}, function(err, docs) {
+            if(err) {
+                throw err;
+            }
 
-        //     if(!docs || docs.length === 0) {
-        //         // _initScript();
-        //     }
-        //     else {
-        //         res.redirect(process.env.DOMAIN);
-        //     }
-        // })
+            if(!docs || docs.length === 0) {
+                _initScript();
+            }
+            else {
+                res.redirect(process.env.DOMAIN);
+            }
+        })
     });
 
     router.post('/', passport.authenticate('signin', {
