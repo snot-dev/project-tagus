@@ -2,15 +2,15 @@ module.exports = function(grunt) {
     grunt.initConfig({
         concat: {
             dist: {
-                src: ['tagus/**/*.js', '!tagus/tagus_build/*', '!tagus/tagus_build/**/*.js'],
-                dest: 'tagus/tagus_build/main.js'
+                src: ['tagus/**/*.js', '!tagus/ build/*', '!tagus/ build/**/*.js'],
+                dest: 'tagus/ build/main.js'
             }
         },
         sass: {
             dist: {
                 files: {
-                    'tagus/tagus_build/css/styles.css': 'tagus/tagus_frontend/scss/styles.scss',
-                    'tagus/tagus_build/css/initializer.css': 'tagus/tagus_frontend/scss/initializer.scss'
+                    'tagus/build/css/styles.css': 'tagus/frontend/scss/styles.scss',
+                    'tagus/build/css/initializer.css': 'tagus/frontend/scss/initializer.scss'
                     
                 }
             }
@@ -22,14 +22,14 @@ module.exports = function(grunt) {
                     transform: [['babelify', { presets: ["react", "es2015"] }]]
                 },
                 files: {
-                    'tagus/tagus_build/js/main.js': 'tagus/tagus_frontend/js/admin/components/app.js',
-                    'tagus/tagus_build/js/initializer.js': 'tagus/tagus_frontend/js/initializer/initializer.js'
+                    'tagus/build/js/main.js': 'tagus/frontend/js/admin/components/app.js',
+                    'tagus/build/js/initializer.js': 'tagus/frontend/js/initializer/initializer.js'
                 }
             }
         },
         watch: {
             browserify: {
-                files: ['tagus/tagus_frontend/js/**/*.js', 'Gruntfile.js'],
+                files: ['tagus/ frontend/js/**/*.js', 'Gruntfile.js'],
                 tasks: ['browserify:dev', 'express:dev'],
                 options: {
                     spawn: false
@@ -43,7 +43,7 @@ module.exports = function(grunt) {
                 }
             },
             sass: {
-                files: 'tagus/tagus_frontend/scss/**/*.scss',
+                files: 'tagus/frontend/scss/**/*.scss',
                 tasks: ['sass', 'express:dev'],
                 options: {
                     spawn: false
@@ -57,7 +57,7 @@ module.exports = function(grunt) {
                 }
             },
             express: {
-                files: ['app.js', 'Gruntfile.js', 'tagus/tagus_routes/*.js'],
+                files: ['app.js', 'Gruntfile.js', 'tagus/ routes/*.js'],
                 tasks: ['express:dev'],
                 options: {
                     spawn: false
@@ -77,13 +77,13 @@ module.exports = function(grunt) {
         copy: {
             main: {
                 files: [
-                    { expand: false, src: ['bower_components/bootstrap/dist/css/bootstrap.min.css'], dest: 'tagus/tagus_build/css/libraries/bootstrap.min.css' },
-                    { expand: false, src: ['bower_components/font-awesome/css/font-awesome.min.css'], dest: 'tagus/tagus_build/css/libraries/font-awesome.min.css' },
-                    { expand: true, cwd: 'bower_components/font-awesome/fonts/', src: '*', dest: 'tagus/tagus_build/css/fonts' },
-                    { expand: false, src: ['bower_components/font-awesome/scss/_variables.scss'], dest: 'tagus/tagus_frontend/scss/_fa-variables.scss' },
-                    { expand: false, src: ['bower_components/jquery/dist/jquery.min.js'], dest: 'tagus/tagus_build/js/libraries/jquery.min.js' },
-                    { expand: false, src: ['bower_components/bootstrap/dist/js/bootstrap.min.js'], dest: 'tagus/tagus_build/js/libraries/bootstrap.min.js' },
-                    { expand: true, cwd: 'bower_components/font-awesome/fonts/', src: '*', dest: 'tagus/tagus_build/css/fonts' }
+                    { expand: false, src: ['bower_components/bootstrap/dist/css/bootstrap.min.css'], dest: 'tagus/ build/css/libraries/bootstrap.min.css' },
+                    { expand: false, src: ['bower_components/font-awesome/css/font-awesome.min.css'], dest: 'tagus/ build/css/libraries/font-awesome.min.css' },
+                    { expand: true, cwd: 'bower_components/font-awesome/fonts/', src: '*', dest: 'tagus/ build/css/fonts' },
+                    { expand: false, src: ['bower_components/font-awesome/scss/_variables.scss'], dest: 'tagus/ frontend/scss/_fa-variables.scss' },
+                    { expand: false, src: ['bower_components/jquery/dist/jquery.min.js'], dest: 'tagus/ build/js/libraries/jquery.min.js' },
+                    { expand: false, src: ['bower_components/bootstrap/dist/js/bootstrap.min.js'], dest: 'tagus/ build/js/libraries/bootstrap.min.js' },
+                    { expand: true, cwd: 'bower_components/font-awesome/fonts/', src: '*', dest: 'tagus/ build/css/fonts' }
                 ]
             }
         }
