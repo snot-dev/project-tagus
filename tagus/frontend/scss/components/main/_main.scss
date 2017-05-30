@@ -1,0 +1,70 @@
+@mixin main ($color, $hColor, $aColor, $bColor, $bhColor, $baColor, $borderColor) {
+    html,
+    body {
+        padding: 0;
+        margin: 0;
+        background-color: $bColor;
+        * {
+            font-family: 'Open Sans', sans-serif;
+        }
+        ul {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            li {
+                margin-bottom: $spacing;
+            }
+        }
+        a {
+            color: $color;
+            &:hover {
+                text-decoration: none;
+                color: $color;
+            }
+            &:focus {
+                outline: 0;
+                text-decoration: none;
+            }
+            &.block {
+                display: block;
+                transition: all 0.25s;
+                &:hover {
+                    background-color: $bhColor;
+                    color: $hColor;
+                    cursor: pointer;
+                }
+                &.active {
+                    background-color: $baColor;
+                    color: $aColor;
+                    text-decoration: none;
+                }
+            }
+        }
+        .spacing {
+            margin-right: $spacing;
+        }
+        .list {
+            .item {
+                a {
+                    display: block;
+                    width: 100%;
+                    padding: $subtle;
+                    &:hover {
+                        color: $hColor;
+                        cursor: pointer;
+                    }
+                    &.active {
+                        color: $aColor;
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+    }
+    @media (min-width: $screen-xs) {
+        html,
+        body {
+            background-color: $bColor;
+        }
+    }
+}

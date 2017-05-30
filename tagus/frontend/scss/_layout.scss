@@ -1,0 +1,19 @@
+@include main($darkGray, $lightBlue2, $bridgeRed, $smokeWhite,$darkBlue3, $lightBlue2, $lightGray ); //$color, $hColor, $aColor,  $bColor, $bhColor, $baColor, $borderColor
+
+@include forms($darkGray, $lightBlue2, $white, $lightGray); //$color, $aColor, $bColor, $borderColor
+
+@include buttons();
+
+@include loader();
+
+@include reactTabs($white, $bridgeRed, $lightGray); //$aColor, $bColor, $borderColor
+
+@include admin-top-bar($bridgeRed,$lightBlue2); //$bcolor, $aColor
+
+@include admin-side-bar ($lightGray, $white ,$lightBlue2, $darkBlue3,$bridgeRed, $darkGray); //$color, $aColor, $hColor, $bColor, $baColor, $bhColor
+
+@include admin-main-container($black, $white, $lightGray); //$color, $bcolor, $borderColor
+
+@include content($darkGray, $white);
+
+@include quill();
