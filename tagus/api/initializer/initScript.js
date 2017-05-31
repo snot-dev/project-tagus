@@ -1,20 +1,22 @@
 var mongoose = require('mongoose');
-var usersSeed = require('../tagus_users/usersInitializer');
-var User = require('../tagus_users/userModel');
-var unitFieldsSeed = require('../tagus_unitFields/unitFieldsInitializer');
-var UnitField = require('../tagus_unitFields/unitFieldModel');
-var unitsSeed = require('../tagus_units/unitInitializer');
-var Unit = require('../tagus_units/unitModel');
-var pagesSeed = require('../tagus_pages/pageInitializer');
-var Page = require('../tagus_pages/pageModel');
-var translatesSeed = require('../tagus_translates/translatesInitializer');
-var Translate = require('../tagus_translates/translateModel');
-var settingsSeed = require('../tagus_settings/settingsInitializer');
-var Settings = require('../tagus_settings/settingsModel');
+var usersSeed = require('../users/usersInitializer');
+var User = require('../users/userModel');
+var unitFieldsSeed = require('../unitFields/unitFieldsInitializer');
+var UnitField = require('../unitFields/unitFieldModel');
+var unitsSeed = require('../units/data');
+var Unit = require('../units/model');
+var pagesSeed = require('../pages/pageInitializer');
+var Page = require('../pages/pageModel');
+var translatesSeed = require('../translates/translatesInitializer');
+var Translate = require('../translates/translateModel');
+var settingsSeed = require('../settings/settingsInitializer');
+var Settings = require('../settings/settingsModel');
+var Content = require('../content/model');
+var contentSeed = require('../content/data');
 
 mongoose.Promise = require('bluebird');
 
-module.exports = function() {
+//module.exports = function() {
     console.log("DB Initializer Started!");
 
     Settings.collection.insert(settingsSeed)
@@ -52,53 +54,53 @@ module.exports = function() {
     .then(function(dbUnits){
         unit = dbUnits[0];
 
-        return Page.find({});
+        return Content.find({});
     })
-    .then(function(pages) {
-        if(pages.length === 0){
+    .then(function(content) {
+        if(content.length === 0){
             var index;
 
-            for(var i = 0; i < pagesSeed.length; i++) {
-                if(pagesSeed[i].url === '/'){
-                    index = pagesSeed[i];
+            for(var i = 0; i < contentSeed.length; i++) {
+                if(contentSeed[i].url === '/'){
+                    index = contentSeed[i];
                     break;
                 }
             }
 
             index.unitType = unit._id.toString();
 
-            var page = new Page(index);
+            var content = new Content(index);
 
-            return page.save();
+            return content.save();
         }
     })
     .then(function(index){
         if(index) {
-            var pagesToSave = [];
-            var page;
+            var contentToSave = [];
+            var content;
             
             console.log("Saved Index!");
 
-            for(var i = 0; i < pagesSeed.length; i++) {
-                page = pagesSeed[i];
-                if(page.url !== '/' && page.url !== '/contacts/emails'){
-                    page.parent = index._id.toString();
-                    page.unitType = unit._id.toString();    
-                    pagesToSave.push(page);
+            for(var i = 0; i < contentSeed.length; i++) {
+                content = contentSeed[i];
+                if(content.url !== '/' && content.url !== '/contacts/emails'){
+                    content.parent = index._id.toString();
+                    content.unitType = unit._id.toString();    
+                    contentToSave.push(content);
                 }
             }
 
-            return Page.collection.insert(pagesToSave);
+            return Content.collection.insert(contentToSave);
         }
     })
     .then(function(){
-        console.log("Saved Contacts and About pages!");
+        console.log("Saved Contacts and About content!");
 
-        return Page.findOne({name: 'Contacts'});
+        return Content.findOne({name: 'Contacts'});
     })
     .then(function(contacts){
         if(contacts) {
-            Page.findOne({name: 'Emails'}, function(err, doc) {
+            Content.findOne({name: 'Emails'}, function(err, doc) {
                 if(!doc) {
                     return contacts
                 }
@@ -108,21 +110,21 @@ module.exports = function() {
     .then(function(contacts){
         if(contacts) {
             var emails;
-            contactsPage = contacts;
+            contactsContent = contacts;
 
-            for(var i = 0; i < pagesSeed.length; i++){
-                if(pagesSeed[i].name === 'Emails') {
-                    emails = pagesSeed[i];
+            for(var i = 0; i < contentSeed.length; i++){
+                if(contentSeed[i].name === 'Emails') {
+                    emails = contentSeed[i];
 
                 break;
                 }
             }
 
-            emails.parent = contactsPage._id.toString();
+            emails.parent = contactsContent._id.toString();
             emails.unitType = unit._id.toString();
-            var page = new Page(emails);
+            var content = new Content(emails);
 
-            return page.save();
+            return content.save();
         }
     })
     .then(function(emails) {
@@ -132,4 +134,4 @@ module.exports = function() {
     .catch(function(err) {
         console.log(err);
     });
-}
+//}

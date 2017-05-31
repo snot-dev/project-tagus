@@ -23,11 +23,10 @@ class Router {
                     this._printError(res);
                 }
                 else {
-                    // model.find({}).then((err, items) => {
-                    //     res.json(err || items);
-                    // }); 
-
-                    res.json('HEllo from the api!');
+                    /*model.find({}).then((err, items) => {
+                        res.json(err || items);
+                     });*/
+                     res.json(model); 
                 }
             }
         };
