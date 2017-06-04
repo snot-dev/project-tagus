@@ -1,8 +1,6 @@
 const Content = require('./model');
-const Router = require('../router/router.js');
+const Router = require('../router/router2');
+const routes = Router.defineCrudRoutes(Content);
 
-const content = new Router('content', Content);
-
-content.defineRoutes();
-
-module.exports = content;
+console.log(routes);
+module.exports = routes;

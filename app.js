@@ -40,7 +40,7 @@ app.use(passport.session());
 app.use('/api', routes);
 
 //routes
-// var initializerUrl = '/api/initializer';
+// var initializerUrl = '/api/imyynitializer';
 // var apiInitializer = require('./tagus/tagus_api/tagus_initializer/initializer')(passport, initializerUrl);
 
 // app.use('/admin', admin);
