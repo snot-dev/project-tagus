@@ -1,9 +1,4 @@
 var Unit = require('./model');
+const router = require('../router/router');
 
-const Router = require('../router/router.js');
-
-const unit = new Router('unit', Unit);
-
-unit.defineRoutes();
-
-module.exports = unit;
+module.exports = router.defineCRUDRoutes(Unit, {});
