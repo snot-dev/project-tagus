@@ -15,4 +15,8 @@ var contentSchema = new mongoose.Schema({
     isHome: { type: Boolean, default: false }
 });
 
-module.exports = mongoose.model('Content', contentSchema);
+const model = mongoose.model('Content', contentSchema);
+
+model.collection.name = 'content';
+
+module.exports = model;
