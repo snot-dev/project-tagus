@@ -1,7 +1,7 @@
 var express = require('express'),
   bodyParser = require('body-parser'),
   path = require('path'),
-  routes = require('./tagus/api/router'),
+  routes = require('./tagus/api/routes'),
   db = require('./tagus/config/db_config'),
   morgan = require('morgan'),
   passport = require('passport'),
