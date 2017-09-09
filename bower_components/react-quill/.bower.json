@@ -1,0 +1,14 @@
+{
+  "name": "react-quill",
+  "homepage": "https://github.com/eiwi1101/react-quill",
+  "version": "0.4.1",
+  "_release": "0.4.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.4.1",
+    "commit": "6282801ca1e4d4564d92d6eef29b7bc4be8a8337"
+  },
+  "_source": "https://github.com/eiwi1101/react-quill.git",
+  "_target": "^0.4.1",
+  "_originalSource": "react-quill"
+}
