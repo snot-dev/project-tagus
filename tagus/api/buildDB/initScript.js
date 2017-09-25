@@ -1,18 +1,16 @@
 var mongoose = require('mongoose');
-var usersSeed = require('../users/usersInitializer');
-var User = require('../users/userModel');
-var unitFieldsSeed = require('../unitFields/unitFieldsInitializer');
-var UnitField = require('../unitFields/unitFieldModel');
+var usersSeed = require('../users/data');
+var User = require('../users/model');
+var unitFieldsSeed = require('../unitFields/data');
+var UnitField = require('../unitFields/model');
 var unitsSeed = require('../units/data');
 var Unit = require('../units/model');
-var pagesSeed = require('../pages/pageInitializer');
-var Page = require('../pages/pageModel');
-var translatesSeed = require('../translates/translatesInitializer');
-var Translate = require('../translates/translateModel');
-var settingsSeed = require('../settings/settingsInitializer');
-var Settings = require('../settings/settingsModel');
-var Content = require('../content/model');
+var translatesSeed = require('../translates/data');
+var Translate = require('../translates/model');
+var settingsSeed = require('../settings/data');
+var Settings = require('../settings/model');
 var contentSeed = require('../content/data');
+var Content = require('../content/model');
 require('../../../config');
 
 mongoose.Promise = require('bluebird');
