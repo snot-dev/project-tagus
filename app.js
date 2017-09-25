@@ -1,3 +1,5 @@
+require('./config');
+
 var express = require('express'),
   bodyParser = require('body-parser'),
   path = require('path'),
@@ -5,10 +7,7 @@ var express = require('express'),
   db = require('./tagus/config/db_config'),
   morgan = require('morgan'),
   passport = require('passport'),
-
   app = express();
-
-require('./config');
 
 var portNumber = process.env.PORT_NUMBER;
 
