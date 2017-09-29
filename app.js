@@ -20,7 +20,6 @@ db.checkIfConnected();
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(express.static('tagus/tagus_build'));
 app.use(express.static('SiteName'));
 
 app.use(passport.initialize());
