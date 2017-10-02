@@ -5,46 +5,13 @@ var should = chai.should();
 var server = require('../../../app');
 var mongoose = require('mongoose'); 
 var url = "/api/content/";
+var tests = require("../sharedTests/sharedTests");
 chai.use(chaiHttp);
 
 describe('Content', function(){
-    it(`Should list all content at ${url} GET`, function(done) {
-        chai.request(server)
-        .get(url)
-        .end(function(err, res) {
-            res.should.have.status(200);
-            res.should.be.json;
-            res.body.should.be.a('array');
-            
-            res.body.forEach(function(content) {
-                var cont = new Content(content);
+    it(`Should list all content at ${url} GET`, tests.testAll(url, Content));
 
-                should.not.exist(cont.validateSync())
-            });
-
-            done();
-        });
-    });
-
-    it(`Should list a single content on ${url}<id> GET`, function(done) {
-        chai.request(server)
-        .get(url)
-        .end(function(err, res) {
-            chai.request(server)
-            .get(`${url}${res.body[0]._id}`)
-            .end(function(err, res) {
-                res.should.have.status(200);
-                res.should.be.json;
-                res.body.should.be.a('object');
-
-                var content = new Content(res.body);
-                
-                should.not.exist(content.validateSync())
-
-                done();
-            });
-        });
-    });
+    it(`Should list a single content on ${url}<id> GET`, tests.testSingle(url, Content));
 
 /*    it("should insert a new page on /api/pages POST", function(done) {
         var totalPages = 0;
