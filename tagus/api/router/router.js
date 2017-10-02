@@ -18,8 +18,24 @@ module.exports = {
                 }
                 else {
                     model.find({})
-                    .then( (err, items) => {
-                        res.json(err || items);
+                    .then(items => {
+                        res.json(items);
+                    })
+                    .catch(err => {
+                        res.json(err);
+                    });
+                }
+            });
+
+            router.post('/', (req, res)=> {
+                if(routes.postOne) {
+                    routes.postOne(req, res);
+                } 
+                else {
+                    var newModel = new model(req.body);
+                    
+                    newModel.save((err, result)=> {
+                        res.json(err || { message: "Document successfully created!", result });
                     });
                 }
             });
@@ -30,8 +46,40 @@ module.exports = {
                 }
                 else {
                     model.findOne({'_id': req.params.id})
-                    .then((err, item) => {
-                        res.json(err || item);
+                    .then(item => {
+                        res.json(item);
+                    })
+                    .catch(err => {
+                        res.json(err);
+                    });
+                }
+            });
+
+            router.put('/:id', (req, res)=> {
+                if(routes.updateById) {
+                    routes.updateById(req, res);
+                }
+                else {
+                    model.findOne({'_id': req.params.id})
+                    .then(doc => {
+                        return Object.assign(doc, req.body).save();
+                    })
+                    .then(result =>{
+                        res.json({message: "Document updated", result});
+                    })
+                    .catch( err => {
+                        res.json(err);
+                    })
+                }
+            });
+
+            router.delete('/:id', (req, res)=>{
+                if(routes.deleteById) {
+                    routes.deleteById(req, res);
+                }
+                else {
+                    model.remove({_id : req.params.id}, (err, result) => {
+                        res.json(err || { message: "Document successfully deleted!", result });
                     });
                 }
             });
