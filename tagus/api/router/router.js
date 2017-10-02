@@ -30,8 +30,8 @@ module.exports = {
                 }
                 else {
                     model.findOne({'_id': req.params.id})
-                    .then((err, items) => {
-                        res.json(err || items);
+                    .then((err, item) => {
+                        res.json(err || item);
                     });
                 }
             });
