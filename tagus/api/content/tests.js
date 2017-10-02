@@ -6,12 +6,29 @@ var server = require('../../../app');
 var mongoose = require('mongoose'); 
 var url = "/api/content/";
 var tests = require("../sharedTests/sharedTests");
+var mock = {
+    name: 'testPage',
+    url: '/testPage',
+    createdBy: 'user',
+    created: new Date(),
+    edited: new Date(),
+    published: new Date(),
+    unitType:  '123213232313131',
+    template: 'index',
+    parent: '',
+    isHome: false,
+    content: {
+        'siteName': 'Example Site'
+    }
+}
 chai.use(chaiHttp);
 
 describe('Content', function(){
-    it(`Should list all content at ${url} GET`, tests.testAll(url, Content));
+    it(`Should list all content at ${url} GET`, tests.getAll(url, Content));
 
-    it(`Should list a single content on ${url}<id> GET`, tests.testSingle(url, Content));
+    it(`Should list a single content on ${url}<id> GET`, tests.getOneById(url, Content));
+
+    it(`Should create a new content on ${url} POST`, tests.createNew(url, Content, mock));
 
 /*    it("should insert a new page on /api/pages POST", function(done) {
         var totalPages = 0;

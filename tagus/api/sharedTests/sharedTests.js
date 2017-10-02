@@ -6,7 +6,7 @@ var mongoose = require('mongoose');
 
 chai.use(chaiHttp);
 
-const testAll = (url, model, validation) => {
+const getAll = (url, model, validation) => {
     return (done) => {
         chai.request(server)
         .get(url)
@@ -30,7 +30,7 @@ const testAll = (url, model, validation) => {
     };
 };
 
-const testSingle = (url, model, validation) => {
+const getOneById = (url, model, validation) => {
     return (done) => {
         chai.request(server)
         .get(url)
@@ -54,10 +54,51 @@ const testSingle = (url, model, validation) => {
                 done();
             });
         });
-    }
+    };
+};
+
+const createNew = (url, model,payload, validation) => {
+    return (done) => {
+        let totalDocs = 0;
+        chai.request(server)
+        .get(url)
+        .end((err, res) => {
+            res.should.have.status(200);
+            res.should.be.json;
+            res.body.should.be.a('array');
+
+            totalDocs = res.body.length;
+
+            chai.request(server)
+            .post(url)
+            .send(payload)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.be.a('object');
+
+                const instance = new model(res.body);
+
+                console.log(instance);
+
+                //should.not.exist(instance.validateSync())
+
+                chai.request(server)
+                .get(url)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.be.a('array');
+                    res.body.length.should.to.equal(totalDocs + 1);
+                    done();
+                });
+            });
+        });
+    };
 };
 
 module.exports = {
-    testAll,
-    testSingle
+    getAll,
+    getOneById,
+    createNew
 };
