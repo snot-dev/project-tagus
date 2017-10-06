@@ -33,7 +33,7 @@ describe('Content', function(){
     it(`Should create a new content on ${url} POST`, tests.createNew(url, Content, mock, (res) => {
         const instance = new model(res.body);
         
-        putObj = res.body;
+        putObj = res.body.result;
 
         should.not.exist(instance.validateSync())
     }));

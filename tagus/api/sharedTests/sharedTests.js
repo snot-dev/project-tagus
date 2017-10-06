@@ -77,11 +77,9 @@ const createNew = (url, model,payload, validation) => {
                 res.should.be.json;
                 res.body.should.be.a('object');
 
-                const instance = new model(res.body);
+                const instance = new model(res.body.result);
 
-                console.log(instance);
-
-                //should.not.exist(instance.validateSync())
+                should.not.exist(instance.validateSync())
 
                 chai.request(server)
                 .get(url)
