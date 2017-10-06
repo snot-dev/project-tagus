@@ -16,7 +16,7 @@ const getAll = (url, model, validation) => {
             res.body.should.be.a('array');
             
             if(validation) {
-                validation();
+                validation(res);
             } 
             else {
                 res.body.forEach(doc => {
@@ -43,7 +43,7 @@ const getOneById = (url, model, validation) => {
                 res.body.should.be.a('object');
 
                 if(validation) {
-                    validation();
+                    validation(res);
                 } 
                 else {
                     const instance = new model(res.body);

@@ -20,7 +20,9 @@ var mock = {
     content: {
         'siteName': 'Example Site'
     }
-}
+};
+var putObj = null;
+
 chai.use(chaiHttp);
 
 describe('Content', function(){
@@ -28,7 +30,13 @@ describe('Content', function(){
 
     it(`Should list a single content on ${url}<id> GET`, tests.getOneById(url, Content));
 
-    it(`Should create a new content on ${url} POST`, tests.createNew(url, Content, mock));
+    it(`Should create a new content on ${url} POST`, tests.createNew(url, Content, mock, (res) => {
+        const instance = new model(res.body);
+        
+        putObj = res.body;
+
+        should.not.exist(instance.validateSync())
+    }));
 
 /*    it("should insert a new page on /api/pages POST", function(done) {
         var totalPages = 0;
