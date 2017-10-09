@@ -36,11 +36,11 @@ mongoose.Promise = require('bluebird');
 describe('Content', function(){
     it(`Should list all content at ${url} GET`, tests.getAll(url, Content));
     
-    it(`Should create a new content on ${url} POST`, tests.createNew(url, Content, mock));
+    it(`Should create a new content in ${url} POST`, tests.createNew(url, Content, mock));
 
-    it(`Should list a single content on ${url}<id> GET`, tests.getOneById(url, Content, mock._id));
+    it(`Should list a single content in ${url}<id> GET`, tests.getOneById(url, Content, mock._id));
 
-    it(`Should update existing content on ${url}<id> PUT`, tests.updateExisting(url, Content, updatedMock, res => {
+    it(`Should update existing content in ${url}<id> PUT`, tests.updateExisting(url, Content, updatedMock, res => {
         const instance = new Content(res.body.result);
         
         instance.name.should.be.equal(updatedValue);
@@ -48,6 +48,8 @@ describe('Content', function(){
 
         should.not.exist(instance.validateSync());
     }));
+
+    it(`Should delete existing content in ${url}<id> DELETE`, tests.deleteById(url, Content, updatedMock._id));
 
 /*    it("should insert a new page on /api/pages POST", function(done) {
         var totalPages = 0;

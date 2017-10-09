@@ -1,15 +1,15 @@
-var chai = require('chai');
-var chaiHttp = require('chai-http');
-var should = chai.should();
-var server = require('../../../app');
-var mongoose = require('mongoose'); 
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const should = chai.should();
+const server = require('../../../app');
+const mongoose = require('mongoose'); 
 
 chai.use(chaiHttp);
 
 
 class sharedTests {
     getAll (url, model, validation) {
-        return (done) => {
+        return done => {
             chai.request(server)
             .get(url)
             .end((err, res) => {
@@ -33,7 +33,7 @@ class sharedTests {
     };
     
     getFirstFromCollection (url, model, validation) {
-        return (done) => {
+        return done => {
             chai.request(server)
             .get(url)
             .end((err, res) => {
@@ -60,7 +60,7 @@ class sharedTests {
     };
     
     getOneById (url, model, id, validation) {
-        return (done) => {
+        return done => {
             if(!id) {
                 console.log("You must pass a valid id");
                 return false;
@@ -88,7 +88,7 @@ class sharedTests {
     };
     
     updateExisting(url, model, payload, validation) {
-        return (done) => {
+        return done => {
             chai.request(server)
             .put(`${url}${payload._id}`)
             .send(payload)
@@ -114,7 +114,7 @@ class sharedTests {
     };
 
     createNew (url, model, payload, validation) {
-        return (done) => {
+        return done => {
             let totalDocs = 0;
             chai.request(server)
             .get(url)
@@ -150,6 +150,36 @@ class sharedTests {
                         res.body.length.should.to.equal(totalDocs + 1);
                         done();
                     });
+                });
+            });
+        };
+    }
+
+    deleteById(url, model, id, validation) {
+        return done => {
+            let totalPages = 0;
+            let deletedId;
+    
+            chai.request(server)
+            .get(url)
+            .end((err, res) => {
+                totalPages = res.body.length;
+    
+                chai.request(server)
+                .delete(`${url}${id}`)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.be.a('object');
+                    
+                    if(validation) {
+                        validation(res);
+                    }
+                    else {
+                        res.body.message.should.equal('Document successfully deleted!');
+                    }
+
+                    done();
                 });
             });
         };
