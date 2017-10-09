@@ -67,12 +67,15 @@ module.exports = {
                     routes.updateById(req, res);
                 }
                 else {
+                    
                     model.findOne({'_id': req.params.id})
                     .then(doc => {
-                        return Object.assign(doc, req.body).save();
+                        const updatedDoc = Object.assign(doc, req.body);
+                        
+                        return updatedDoc.save();
                     })
                     .then(result =>{
-                        res.json({message: "Document updated", result});
+                        res.json({message: "Document updated!", result});
                     })
                     .catch( err => {
                         res.json(err);

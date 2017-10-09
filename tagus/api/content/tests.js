@@ -5,8 +5,11 @@ const should = chai.should();
 const server = require('../../../app');
 const mongoose = require('mongoose'); 
 const url = "/api/content/";
-const tests = require("../sharedTests/sharedTests");
+const SharedTests = require("../shared/sharedTests");
+const tests = new SharedTests();
+
 const mock = {
+    _id: new mongoose.mongo.ObjectId('56cb91bdc3464f14678934ca'),
     name: 'testPage',
     url: '/testPage',
     createdBy: 'user',
@@ -21,7 +24,10 @@ const mock = {
         'siteName': 'Example Site'
     }
 };
-let putObj = null;
+
+const updatedValue = "testUpdate"
+
+const updatedMock = Object.assign(mock, {name: updatedValue});
 
 chai.use(chaiHttp);
 mongoose.Promise = require('bluebird');
@@ -29,15 +35,18 @@ mongoose.Promise = require('bluebird');
 
 describe('Content', function(){
     it(`Should list all content at ${url} GET`, tests.getAll(url, Content));
+    
+    it(`Should create a new content on ${url} POST`, tests.createNew(url, Content, mock));
 
-    it(`Should list a single content on ${url}<id> GET`, tests.getOneById(url, Content));
+    it(`Should list a single content on ${url}<id> GET`, tests.getOneById(url, Content, mock._id));
 
-    it(`Should create a new content on ${url} POST`, tests.createNew(url, Content, mock, (res) => {
+    it(`Should update existing content on ${url}<id> PUT`, tests.updateExisting(url, Content, updatedMock, res => {
         const instance = new Content(res.body.result);
         
-        putObj = res.body.result;
+        instance.name.should.be.equal(updatedValue);
+        res.body.message.should.be.equal("Document updated!");
 
-        should.not.exist(instance.validateSync())
+        should.not.exist(instance.validateSync());
     }));
 
 /*    it("should insert a new page on /api/pages POST", function(done) {
