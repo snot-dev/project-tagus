@@ -177,6 +177,8 @@ class sharedTests {
                     }
                     else {
                         res.body.message.should.equal('Document successfully deleted!');
+                        res.body.result.should.have.property('ok').eql(1);
+                        res.body.result.should.have.property('n').eql(1);
                     }
 
                     done();
