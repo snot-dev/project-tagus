@@ -1,136 +1,37 @@
-var UnitField = require('./unitFieldModel');
-var lib = require('../../tagus_lib/lib');
-var requiredFields = lib.models(UnitField).getRequiredFields();
-var chai = require('chai');
-var chaiHttp = require('chai-http');
-var should = chai.should();
-var server = require('../../../app');
+const UnitField = require('./model');
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const should = chai.should();
+const server = require('../../../app');
+const mongoose = require('mongoose'); 
+const url = "/api/unitfields/";
+const SharedTests = require("../shared/sharedTests");
+const tests = new SharedTests();
 
 chai.use(chaiHttp);
+mongoose.Promise = require('bluebird');
 
-describe('UnitFields', function(){
-    it("Should list all unitFields on /api/unitfields GET", function(done) {
-        chai.request(server)
-        .get('/api/unitfields/')
-        .end(function(err, res) {
-            res.should.have.status(200);
-            res.should.be.json;
-            res.body.should.be.a('array');
-            res.body.forEach(function(unitfield) {
-                lib.tests.testRequiredFields(unitfield, requiredFields);
-            });
-            done();
-        });
-    });
+const mock = {
+    _id: new mongoose.mongo.ObjectId('56cb91bdc3464f14678934ca'),
+    name: "Text",
+    type: "text",
+    createdBy: "user",
+    created: new Date(),
+    edited: new Date()
+};
 
-    it("should insert a new unitField on /api/unitfields POST", function(done) {
-        var totalUnitFields = 0;
-        chai.request(server)
-        .get('/api/unitfields')
-        .end(function(err, res) {
-            res.should.have.status(200);
-            res.should.be.json;
-            res.body.should.be.a('array');
+const updatedValue = "testUpdate"
 
-            totalUnitFields = res.body.length;
+const updatedMock = Object.assign(mock, {name: updatedValue});
 
-            chai.request(server)
-            .post('/api/unitfields')
-            .send({
-                name: "testUnitField",
-                type: "test"
-            })
-            .end(function(err, res) {
-                res.should.have.status(200);
-                res.should.be.json;
-                res.body.should.be.a('object');
+describe('Unit Fields', () => {
+    it(`Should list all Unit Fields at ${url} GET`, tests.getAll(url, UnitField));
+    
+    it(`Should create a new Unit Field in ${url} POST`, tests.createNew(url, UnitField, mock));
 
-                lib.tests.testRequiredFields(res.body,requiredFields);
+    it(`Should list a single Unit Field in ${url}<id> GET`, tests.getOneById(url, UnitField, mock._id));
 
-                chai.request(server)
-                .get('/api/unitfields')
-                .end(function(err, res) {
-                    res.should.have.status(200);
-                    res.should.be.json;
-                    res.body.should.be.a('array');
+    it(`Should update existing Unit Field in ${url}<id> PUT`, tests.updateExisting(url, UnitField, updatedMock));
 
-                    res.body.length.should.to.equal(totalUnitFields + 1);
-                    done();
-                });
-            });
-        });
-    });
-
-
-    it("Should list a single unitField on /api/unitfields/<id> GET", function(done) {
-        chai.request(server)
-        .get('/api/unitfields/')
-        .end(function(err, res) {
-            chai.request(server)
-            .get("/api/unitfields/" + res.body[0]._id)
-            .end(function(err, res) {
-                res.should.have.status(200);
-                res.should.be.json;
-                res.body.should.be.a('object');
-                lib.tests.testRequiredFields(res.body,requiredFields);
-                done();
-            });
-        });
-
-    });
-
-    it("Should update a single unitField on /api/unitFields/<id> POST", function(done) {
-        chai.request(server)
-        .get('/api/unitfields')
-        .end(function(err, res) {
-            res.should.have.status(200);
-            res.should.be.json;
-            res.body.should.be.a('array');
-
-            var unitField = res.body[res.body.length - 1];
-            unitField.name = "This will be deleted afterwards";
-
-            chai.request(server)
-            .post('/api/unitfields/' + unitField._id)
-            .send(unitField)
-            .end(function(err, res) {
-                res.should.have.status(200);
-                res.should.be.json;
-                res.body.should.be.a('object');
-                res.body.name.should.to.equal("This will be deleted afterwards");
-
-                done();
-            });
-
-        });
-    });
-
-    it("Should delete a unitField on api/unitfields/<id> DELETE", function(done) {
-        var totalUnitFields = 0;
-        var deletedId;
-
-        chai.request(server)
-        .get('/api/unitfields')
-        .end(function(err, res) {
-            totalUnitFields = res.body.length;
-            deletedId = res.body[totalUnitFields - 1]._id;
-
-            chai.request(server)
-            .delete('/api/unitfields/' + deletedId)
-            .end(function(err, res) {
-                res.should.have.status(200);
-                res.should.be.json;
-                res.body.should.be.a('object');
-                res.body._id.should.to.equal(deletedId);
-
-                chai.request(server)
-                .get('/api/unitfields')
-                .end(function(err, res) {
-                    res.body.length.should.to.equal(totalUnitFields - 1);
-
-                    done();
-                });
-            });
-        });
-    });
+    it(`Should delete existing Unit Fields in ${url}<id> DELETE`, tests.deleteById(url, UnitField, updatedMock._id));
 });
