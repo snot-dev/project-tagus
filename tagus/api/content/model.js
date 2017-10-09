@@ -1,6 +1,7 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
 
-var contentSchema = new mongoose.Schema({
+const contentSchema = new mongoose.Schema({
     name: { type: String, required: true },
     url: { type: String, required: true },
     createdBy: { type: String, required: true },
@@ -15,7 +16,7 @@ var contentSchema = new mongoose.Schema({
     isHome: { type: Boolean, default: false }
 });
 
-const model = mongoose.model('Content', contentSchema);
+let model = mongoose.model('Content', contentSchema);
 
 model.collection.name = 'content';
 

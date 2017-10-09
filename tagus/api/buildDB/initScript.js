@@ -1,30 +1,30 @@
-var mongoose = require('mongoose');
-var usersSeed = require('../users/data');
-var User = require('../users/model');
-var unitFieldsSeed = require('../unitFields/data');
-var UnitField = require('../unitFields/model');
-var unitsSeed = require('../units/data');
-var Unit = require('../units/model');
-var translatesSeed = require('../translates/data');
-var Translate = require('../translates/model');
-var settingsSeed = require('../settings/data');
-var Settings = require('../settings/model');
-var contentSeed = require('../content/data');
-var Content = require('../content/model');
+const mongoose = require('mongoose');
+const usersSeed = require('../users/data');
+const User = require('../users/model');
+const unitFieldsSeed = require('../unitFields/data');
+const UnitField = require('../unitFields/model');
+const unitsSeed = require('../units/data');
+const Unit = require('../units/model');
+const translatesSeed = require('../translates/data');
+const Translate = require('../translates/model');
+const settingsSeed = require('../settings/data');
+const Settings = require('../settings/model');
+const contentSeed = require('../content/data');
+const Content = require('../content/model');
 require('../../../config');
 
 mongoose.Promise = require('bluebird');
 
-var collectionCreated = false;
+let collectionCreated = false;
 
 console.log("Connecting to " + process.env.MONGO_CONNECTION_STRING)
 
 mongoose.connect(process.env.MONGO_CONNECTION_STRING)
-.then(function(){
+.then(() => {
 
     console.log("Connected! Building DB....");
 
-    Settings.find({}).then(function(settings){
+    Settings.find({}).then(settings => {
         if( settings.length === 0) {
             Settings.collection.insert(settingsSeed)
         }
@@ -32,12 +32,12 @@ mongoose.connect(process.env.MONGO_CONNECTION_STRING)
             collectionCreated = true;
         }
     })
-    .then(function(){
+    .then(() => {
         console.log(collectionCreated ? 'Settings already created!': 'Inserted Settings!' );
         collectionCreated = false;
         return Translate.find({});
     })
-    .then(function(translates) {
+    .then(translates => {
         if(translates.length === 0) {
             Translate.collection.insert(translatesSeed);
         } 
@@ -45,24 +45,24 @@ mongoose.connect(process.env.MONGO_CONNECTION_STRING)
             collectionCreated = true;
         }
     })
-    .then(function(){
+    .then(() => {
         console.log(collectionCreated ? 'Translates already created!' : 'Inserted Translates!');
         collectionCreated = false;
         return UnitField.find({});
     })
-    .then(function(unitFields){
+    .then(unitFields => {
         if(unitFields.length === 0) {
             UnitField.collection.insert(unitFieldsSeed);
         } else {
             collectionCreated = true;
         }
     })
-    .then(function(){
+    .then(() => {
         console.log(collectionCreated ? 'UnitFields already created!' : 'Inserted UnitFields!!');
         collectionCreated = false;
         return Unit.find({});
     })
-    .then(function(units) {
+    .then(units => {
         if(units.length ===0) {
             Unit.collection.insert(unitsSeed);
         } 
@@ -70,21 +70,21 @@ mongoose.connect(process.env.MONGO_CONNECTION_STRING)
             collectionCreated = true;
         }
     })
-    .then(function() {
+    .then(() => {
         console.log(collectionCreated ? 'Units already created!' : 'Inserted Units!');
         collectionCreated = false;
         return Unit.find({});
     })
-    .then(function(dbUnits){
+    .then(dbUnits => {
         unit = dbUnits[0];
 
         return Content.find({});
     })
-    .then(function(content) {
+    .then(content => {
         if(content.length === 0){
-            var index;
+            let index;
 
-            for(var i = 0; i < contentSeed.length; i++) {
+            for(let i = 0; i < contentSeed.length; i++) {
                 if(contentSeed[i].url === '/'){
                     index = contentSeed[i];
                     break;
@@ -93,7 +93,7 @@ mongoose.connect(process.env.MONGO_CONNECTION_STRING)
 
             index.unitType = unit._id.toString();
 
-            var content = new Content(index);
+            const content = new Content(index);
 
             return content.save();
         }
@@ -101,15 +101,15 @@ mongoose.connect(process.env.MONGO_CONNECTION_STRING)
             collectionCreated = true;
         }
     })
-    .then(function(index){
+    .then(index => {
         console.log(collectionCreated ? 'Home Page already created' : 'Created Home page!');
         collectionCreated = false;
         if(index) {
-            var contentToSave = [];
-            var content;
+            let contentToSave = [];
+            let content;
             
 
-            for(var i = 0; i < contentSeed.length; i++) {
+            for(let i = 0; i < contentSeed.length; i++) {
                 content = contentSeed[i];
                 if(content.url !== '/' && content.url !== '/contacts/emails'){
                     content.parent = index._id.toString();
@@ -124,26 +124,26 @@ mongoose.connect(process.env.MONGO_CONNECTION_STRING)
             collectionCreated = true;
         }
     })
-    .then(function(){
+    .then(() => {
         console.log(collectionCreated ? 'Contacts and About content already created!' : 'Created Contacts and About content!');
         collectionCreated = false;
         return Content.findOne({name: 'Contacts'});
     })
-    .then(function(contacts){
+    .then(contacts => {
         if(contacts) {
-            Content.findOne({name: 'Emails'}, function(err, doc) {
+            Content.findOne({name: 'Emails'}, (err, doc) => {
                 if(!doc) {
                     return contacts
                 }
             })
         }
     })
-    .then(function(contacts){
+    .then(contacts => {
         if(contacts) {
-            var emails;
+            let emails;
             contactsContent = contacts;
 
-            for(var i = 0; i < contentSeed.length; i++){
+            for(let i = 0; i < contentSeed.length; i++){
                 if(contentSeed[i].name === 'Emails') {
                     emails = contentSeed[i];
 
@@ -153,7 +153,7 @@ mongoose.connect(process.env.MONGO_CONNECTION_STRING)
 
             emails.parent = contactsContent._id.toString();
             emails.unitType = unit._id.toString();
-            var content = new Content(emails);
+            const content = new Content(emails);
 
             return content.save();
         }
@@ -161,13 +161,13 @@ mongoose.connect(process.env.MONGO_CONNECTION_STRING)
             collectionCreated = true;
         }
     })
-    .then(function(emails) {
+    .then(emails => {
         console.log(collectionCreated ? 'Emails page already created!' : 'Created Emails page!');
         collectionCreated = false;
         console.log("DB was built!");
         process.exit(0);
     })
-    .catch(function(err) {
+    .catch(err => {
         console.log(err);
         process.exit(1);
     });

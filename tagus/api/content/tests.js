@@ -1,12 +1,12 @@
-var Content = require('./model');
-var chai = require('chai');
-var chaiHttp = require('chai-http');
-var should = chai.should();
-var server = require('../../../app');
-var mongoose = require('mongoose'); 
-var url = "/api/content/";
-var tests = require("../sharedTests/sharedTests");
-var mock = {
+const Content = require('./model');
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const should = chai.should();
+const server = require('../../../app');
+const mongoose = require('mongoose'); 
+const url = "/api/content/";
+const tests = require("../sharedTests/sharedTests");
+const mock = {
     name: 'testPage',
     url: '/testPage',
     createdBy: 'user',
@@ -21,9 +21,11 @@ var mock = {
         'siteName': 'Example Site'
     }
 };
-var putObj = null;
+let putObj = null;
 
 chai.use(chaiHttp);
+mongoose.Promise = require('bluebird');
+
 
 describe('Content', function(){
     it(`Should list all content at ${url} GET`, tests.getAll(url, Content));
@@ -31,7 +33,7 @@ describe('Content', function(){
     it(`Should list a single content on ${url}<id> GET`, tests.getOneById(url, Content));
 
     it(`Should create a new content on ${url} POST`, tests.createNew(url, Content, mock, (res) => {
-        const instance = new model(res.body);
+        const instance = new Content(res.body.result);
         
         putObj = res.body.result;
 

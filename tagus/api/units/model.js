@@ -1,6 +1,7 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
 
-var unitSchema = new mongoose.Schema({
+const unitSchema = new mongoose.Schema({
     name: {type: String, required: true},
     tabs: { type : Array , default : [] },
     createdBy: String,

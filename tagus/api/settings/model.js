@@ -1,6 +1,7 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
 
-var settingsSchema = new mongoose.Schema({
+const settingsSchema = new mongoose.Schema({
     lang: {type: String, default: "en", required: true}
 });
 

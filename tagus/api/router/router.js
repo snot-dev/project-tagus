@@ -1,3 +1,6 @@
+const mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
+
 module.exports = {
         defineCRUDRoutes: (model, routes = {}) => {
             let router = require('express').Router();
@@ -32,10 +35,14 @@ module.exports = {
                     routes.postOne(req, res);
                 } 
                 else {
-                    var newModel = new model(req.body);
+                    const newModel = new model(req.body);
                     
-                    newModel.save((err, result)=> {
-                        res.json(err || { message: "Document successfully created!", result });
+                    newModel.save()
+                    .then(result => {
+                        res.json({ message: "Document successfully created!", result });
+                    })
+                    .catch(err =>{
+                        res.json(err);
                     });
                 }
             });

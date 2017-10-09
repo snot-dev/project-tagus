@@ -1,6 +1,7 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
 
-var translateSchema = new mongoose.Schema({
+const translateSchema = new mongoose.Schema({
     key: {type: String, required: true},
     langs: {type: Array, default: [], required: true}
 });

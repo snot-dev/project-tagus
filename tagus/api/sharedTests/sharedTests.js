@@ -57,7 +57,7 @@ const getOneById = (url, model, validation) => {
     };
 };
 
-const createNew = (url, model,payload, validation) => {
+const createNew = (url, model, payload, validation) => {
     return (done) => {
         let totalDocs = 0;
         chai.request(server)
@@ -77,10 +77,14 @@ const createNew = (url, model,payload, validation) => {
                 res.should.be.json;
                 res.body.should.be.a('object');
 
-                const instance = new model(res.body.result);
-
-                should.not.exist(instance.validateSync())
-
+                if(validation) {
+                    validation(res);
+                }
+                else {
+                    const instance = new model(res.body.result);
+    
+                    should.not.exist(instance.validateSync())
+                }
                 chai.request(server)
                 .get(url)
                 .end((err, res) => {
