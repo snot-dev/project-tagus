@@ -1,10 +1,4 @@
-var settingsModel = require('./settingsModel');
+const Settings = require('./model');
 const router = require('../router/router');
 
-// module.exports = lib.routes.registerRoutes(settingsModel, {
-//     get: function(req, res) {
-//         settingsModel.findOne({}, function(err, result) {
-//             res.json(err || result);
-//         });
-//     }
-// });
+module.exports = router.defineCRUDRoutes(Settings);

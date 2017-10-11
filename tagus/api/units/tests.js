@@ -1,3 +1,4 @@
+const testName = "Units";
 const Unit = require('./model');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -42,14 +43,14 @@ const updatedValue = "testUpdate"
 
 const updatedMock = Object.assign(mock, {name: updatedValue});
 
-describe('Units', () => {
-    it(`Should list all Units at ${url} GET`, tests.getAll(url, Unit));
+describe(testName, () => {
+    it(`Should list all ${testName} at ${url} GET`, tests.getAll(url, Unit));
     
-    it(`Should create a new Unit in ${url} POST`, tests.createNew(url, Unit, mock));
+    it(`Should create a new ${testName} in ${url} POST`, tests.createNew(url, Unit, mock));
 
-    it(`Should list a single Unit in ${url}<id> GET`, tests.getOneById(url, Unit, mock._id));
+    it(`Should list a single ${testName} in ${url}<id> GET`, tests.getOneById(url, Unit, mock._id));
 
-    it(`Should update existing Unit in ${url}<id> PUT`, tests.updateExisting(url, Unit, updatedMock));
+    it(`Should update existing ${testName} in ${url}<id> PUT`, tests.updateExisting(url, Unit, updatedMock));
 
-    it(`Should delete existing Unit in ${url}<id> DELETE`, tests.deleteById(url, Unit, updatedMock._id));
+    it(`Should delete existing ${testName} in ${url}<id> DELETE`, tests.deleteById(url, Unit, updatedMock._id));
 });

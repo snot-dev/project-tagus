@@ -1,139 +1,37 @@
-var Translate = require('./translateModel');
-var lib = require('../../tagus_lib/lib');
-var requiredFields = lib.models(Translate).getRequiredFields();
-var chai = require('chai');
-var chaiHttp = require('chai-http');
-var should = chai.should();
-var server = require('../../../app');
+const testName = "Translates";
+const Translate = require('./model');
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const should = chai.should();
+const server = require('../../../app');
+const mongoose = require('mongoose'); 
+const url = "/api/translates/";
+const SharedTests = require("../shared/sharedTests");
+const tests = new SharedTests();
 
 chai.use(chaiHttp);
+mongoose.Promise = require('bluebird');
 
-describe('Translates', function(){
-    it("Should list all translates on /api/translates GET", function(done) {
-        chai.request(server)
-        .get('/api/translates/')
-        .end(function(err, res) {
-            res.should.have.status(200);
-            res.should.be.json;
-            res.body.should.be.a('array');
-            res.body.forEach(function(translate) {
-                lib.tests.testRequiredFields(translate, requiredFields);
-            });
-            done();
-        });
-    });
+const mock = {
+    _id: new mongoose.mongo.ObjectId('56cb91bdc3464f14678934ca'),
+    key: "test",
+    langs: [{
+        "en": "test",
+        "pt": "teste"
+    }]
+};
 
-    it("should insert a new translate on /api/translates POST", function(done) {
-        var totalTranslates = 0;
-        chai.request(server)
-        .get('/api/translates')
-        .end(function(err, res) {
-            res.should.have.status(200);
-            res.should.be.json;
-            res.body.should.be.a('array');
+const updatedValue = "testUpdate"
+const updatedMock = Object.assign(mock, {key: updatedValue});
 
-            totalTranslates = res.body.length;
+describe(testName, () => {
+    it(`Should list all ${testName} at ${url} GET`, tests.getAll(url, Translate));
+    
+    it(`Should create a new ${testName} in ${url} POST`, tests.createNew(url, Translate, mock));
 
-            chai.request(server)
-            .post('/api/translates')
-            .send({
-                key: "test",
-                langs: [
-                    {
-                        "en": "This is a test",
-                        "pt": "Isto é um teste"
-                    }
-                ]
-            })
-            .end(function(err, res) {
-                res.should.have.status(200);
-                res.should.be.json;
-                res.body.should.be.a('object');
+    it(`Should list a single ${testName} in ${url}<id> GET`, tests.getOneById(url, Translate, mock._id));
 
-                lib.tests.testRequiredFields(res.body,requiredFields);
+    it(`Should update existing ${testName} in ${url}<id> PUT`, tests.updateExisting(url, Translate, updatedMock));
 
-                chai.request(server)
-                .get('/api/translates')
-                .end(function(err, res) {
-                    res.should.have.status(200);
-                    res.should.be.json;
-                    res.body.should.be.a('array');
-                    res.body.length.should.to.equal(totalTranslates + 1);
-                    done();
-                });
-            });
-        });
-    });
-
-    it("Should list a single translate on /api/translates/<id> GET", function(done) {
-        chai.request(server)
-        .get('/api/translates/')
-        .end(function(err, res) {
-            chai.request(server)
-            .get("/api/translates/" + res.body[0]._id)
-            .end(function(err, res) {
-                res.should.have.status(200);
-                res.should.be.json;
-                res.body.should.be.a('object');
-                lib.tests.testRequiredFields(res.body,requiredFields);
-                done();
-            });
-        });
-
-    });
-
-    it("Should update a single translate on /api/translates/<id> POST", function(done) {
-        chai.request(server)
-        .get('/api/translates')
-        .end(function(err, res) {
-            res.should.have.status(200);
-            res.should.be.json;
-            res.body.should.be.a('array');
-
-            var translate = res.body[res.body.length - 1];
-            translate.langs[0].en = "This will be deleted afterwards";
-
-            chai.request(server)
-            .post('/api/translates/' + translate._id)
-            .send(translate)
-            .end(function(err, res) {
-                res.should.have.status(200);
-                res.should.be.json;
-                res.body.should.be.a('object');
-                res.body.langs[0].en.should.to.equal("This will be deleted afterwards");
-
-                done();
-            });
-
-        });
-    });
-
-    it("Should delete a translate on api/translates/<id> DELETE", function(done) {
-        var totalTranslates = 0;
-        var deletedId;
-
-        chai.request(server)
-        .get('/api/translates')
-        .end(function(err, res) {
-            totalTranslates = res.body.length;
-            deletedId = res.body[totalTranslates - 1]._id;
-
-            chai.request(server)
-            .delete('/api/translates/' + deletedId)
-            .end(function(err, res) {
-                res.should.have.status(200);
-                res.should.be.json;
-                res.body.should.be.a('object');
-                res.body._id.should.to.equal(deletedId);
-
-                chai.request(server)
-                .get('/api/translates')
-                .end(function(err, res) {
-                    res.body.length.should.to.equal(totalTranslates - 1);
-
-                    done();
-                });
-            });
-        });
-    });
+    it(`Should delete existing ${testName} in ${url}<id> DELETE`, tests.deleteById(url, Translate, updatedMock._id));
 });

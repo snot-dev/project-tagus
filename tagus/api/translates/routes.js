@@ -1,4 +1,4 @@
-var Translate = require('./model');
+const Translate = require('./model');
 const router = require('../router/router');
 
-module.exports = router.defineCRUDRoutes(Translate, {});
+module.exports = router.defineCRUDRoutes(Translate);

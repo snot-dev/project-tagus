@@ -1,3 +1,4 @@
+const testName = "Content";
 const Content = require('./model');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -32,14 +33,14 @@ const updatedValue = "testUpdate"
 
 const updatedMock = Object.assign(mock, {name: updatedValue});
 
-describe('Content', () => {
-    it(`Should list all content at ${url} GET`, tests.getAll(url, Content));
+describe(testName, () => {
+    it(`Should list all ${testName} at ${url} GET`, tests.getAll(url, Content));
     
-    it(`Should create a new content in ${url} POST`, tests.createNew(url, Content, mock));
+    it(`Should create a new ${testName} in ${url} POST`, tests.createNew(url, Content, mock));
 
-    it(`Should list a single content in ${url}<id> GET`, tests.getOneById(url, Content, mock._id));
+    it(`Should list a single ${testName} in ${url}<id> GET`, tests.getOneById(url, Content, mock._id));
 
-    it(`Should update existing content in ${url}<id> PUT`, tests.updateExisting(url, Content, updatedMock, res => {
+    it(`Should update existing ${testName} in ${url}<id> PUT`, tests.updateExisting(url, Content, updatedMock, res => {
         const instance = new Content(res.body.result);
         
         instance.name.should.be.equal(updatedValue);
@@ -48,5 +49,5 @@ describe('Content', () => {
         should.not.exist(instance.validateSync());
     }));
 
-    it(`Should delete existing content in ${url}<id> DELETE`, tests.deleteById(url, Content, updatedMock._id));
+    it(`Should delete existing ${testName} in ${url}<id> DELETE`, tests.deleteById(url, Content, updatedMock._id));
 });
