@@ -1,15 +1,9 @@
-var User = require('./model');
+const User = require('./model');
 const router = require('../router/router');
+const usersRouter = require('express').Router()
 
-module.exports = router.defineCRUDRoutes(User, {});
+usersRouter.get('/authenticate', (req, res) => {
+    res.json("Allo Allo!");
+});
 
-
-// module.exports = lib.routes.registerRoutes(User, {
-//     post: function(req, res) {
-//         var newUser = new User(req.body);
-        
-//         newUser.save(function(err, result) {
-//             res.json(err || result);
-//         });
-//     }
-// });
+ module.exports = router.defineCRUDRoutes(User, {}, usersRouter);

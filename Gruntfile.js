@@ -124,5 +124,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-express-server');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-browserify');
-    grunt.registerTask('default', [ /*'concat', 'sass', */ 'copy', 'browserify:dev', 'express:dev', 'watch']);
+    grunt.registerTask('default', [ /*'concat', 'sass', 'copy', 'browserify:dev', */ 'express:dev', 'watch']);
 };

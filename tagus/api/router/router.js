@@ -2,9 +2,7 @@ const mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 
 module.exports = {
-        defineCRUDRoutes: (model, routes = {}) => {
-            let router = require('express').Router();
-
+        defineCRUDRoutes: (model, routes = {}, router = require('express').Router()) => {
             try {
                 if(!model) {
                     throw 'You must pass a valid model!';
@@ -36,7 +34,6 @@ module.exports = {
                 } 
                 else {
                     const newModel = new model(req.body);
-                    
                     newModel.save()
                     .then(result => {
                         res.json({ message: "Document successfully created!", result });
