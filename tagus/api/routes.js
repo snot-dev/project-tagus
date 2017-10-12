@@ -10,7 +10,7 @@ module.exports = (passport = {}) => {
     router.use('/content', content);
     router.use('/units', units);
     router.use('/unitfields', unitFields);
-    router.use('/users', users());
+    router.use('/users', users(passport));
     router.use('/translates', translates);
     router.use('/settings', settings);
 
