@@ -6,4 +6,10 @@ usersRouter.get('/authenticate', (req, res) => {
     res.json("Allo Allo!");
 });
 
- module.exports = router.defineCRUDRoutes(User, {}, usersRouter);
+ module.exports = (passport = {}) => {
+    usersRouter.get('/authenticate', (req, res) => {
+        res.json("Allo Allo!");
+    });
+
+     return router.defineCRUDRoutes(User, {}, usersRouter) 
+};

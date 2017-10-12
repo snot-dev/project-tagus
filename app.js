@@ -23,8 +23,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('SiteName'));
 
 app.use(passport.initialize());
-app.use(passport.session());
-app.use('/api', routes);
+app.use('/api', routes());
 
 
 app.listen(portNumber, function () {
