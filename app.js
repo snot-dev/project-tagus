@@ -1,16 +1,15 @@
 require('./config');
 
-var express = require('express'),
-  bodyParser = require('body-parser'),
-  path = require('path'),
-  routes = require('./tagus/api/routes'),
-  db = require('./tagus/config/db_config'),
-  morgan = require('morgan'),
-  passport = require('passport'),
-  app = express(),
-  auth = require('./tagus/api/auth/auth.js');
+const express = require('express');
+const bodyParser = require('body-parser');
+const path = require('path');
+const db = require('./tagus/config/db_config');
+const morgan = require('morgan');
+const app = express();
+const auth = require('./tagus/api/auth/auth.js');
+const routes = require('./tagus/api/routes');
 
-var portNumber = process.env.PORT_NUMBER;
+const portNumber = process.env.PORT_NUMBER;
 
 app.set('views', [path.join(__dirname, 'SiteName/templates'), path.join(__dirname, 'tagus/tagus_build/views')]);
 // override this setting to choose the view engine to be used
@@ -22,12 +21,11 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('SiteName'));
-
 app.use(auth.initialize());
+
 app.use('/api', routes);
 
-
-app.listen(portNumber, function () {
+app.listen(portNumber, function () {  
   console.log("listening to " + portNumber);
 });
 

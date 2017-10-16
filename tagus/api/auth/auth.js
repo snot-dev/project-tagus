@@ -9,22 +9,22 @@ const jwtOptions = {
     secretOrKey: process.env.AUTHSECRETORKEY
 };
 
-const strategy = new JwtStrategy(jwtOptions, (jwt_payload, next) => {
-    console.log('payload received', jwt_payload);
-    
-    User.findOne({'_id': payload.id}).then(user => {
-        if(user) {
-            return next(null, {
-                id: user._id
-            });
-        }
-        else {
-            return next(new Error('User not found!'), null);
-        }
-    });
-}); 
-
-passport.use(strategy);
+const createStrategy = User => {
+    const strategy = new JwtStrategy(jwtOptions, (jwt_payload, next) => {
+        
+        User.findOne({'_id': jwt_payload.id}).then(user => {
+            if(user) {
+                return next(null, {
+                    id: user._id
+                });
+            }
+            else {
+                return next(new Error('User not found!'), null);
+            }
+        });
+    }); 
+    passport.use(strategy);
+}
 
 module.exports = {
     passport,
@@ -32,6 +32,7 @@ module.exports = {
         return passport.initialize();
     },
     route,
+    createStrategy,
     authenticate: () => {
         return passport.authenticate('jwt', {session: false});
     }

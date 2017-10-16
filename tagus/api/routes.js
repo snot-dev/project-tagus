@@ -8,6 +8,8 @@ const settings = require('./settings/routes');
 const User = require('./users/model');
 const auth = require('./auth/auth');
 
+auth.createStrategy(User);
+
 router.use('/content', content);
 router.use('/units', auth.authenticate(), units);
 router.use('/unitfields', unitFields);
