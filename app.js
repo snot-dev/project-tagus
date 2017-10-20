@@ -6,8 +6,7 @@ const path = require('path');
 const db = require('./tagus/config/db_config');
 const morgan = require('morgan');
 const app = express();
-const auth = require('./tagus/api/auth/auth.js');
-const routes = require('./tagus/api/routes');
+const tagusApi = require('./tagus/api/index');
 
 const portNumber = process.env.PORT_NUMBER;
 
@@ -21,9 +20,9 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('SiteName'));
-app.use(auth.initialize());
+app.use(tagusApi.auth.passport.initialize());
 
-app.use('/api', routes);
+app.use('/api', tagusApi.routes);
 
 app.listen(portNumber, function () {  
   console.log("listening to " + portNumber);

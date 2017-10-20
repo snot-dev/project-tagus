@@ -2,14 +2,13 @@ const passport = require('passport');
 const passportJWT = require('passport-jwt');
 const ExtractJwt = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
-const route = require('./routes');
 
 const jwtOptions = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: process.env.AUTHSECRETORKEY
 };
 
-const createStrategy = User => {
+const jwt = User => {
     const strategy = new JwtStrategy(jwtOptions, (jwt_payload, next) => {
         
         User.findOne({'_id': jwt_payload.id}).then(user => {
@@ -31,9 +30,10 @@ module.exports = {
     initialize: () => {
         return passport.initialize();
     },
-    route,
-    createStrategy,
-    authenticate: () => {
-        return passport.authenticate('jwt', {session: false});
+    strategies: {
+        jwt
+    },
+    authenticate: (strategy, session) => {
+        return passport.authenticate(strategy, session);
     }
 };
