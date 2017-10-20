@@ -4,7 +4,7 @@
   "description": "A Simple CMS using only Javascript.",
   "main": "app.js",
   "scripts": {
-    "_test": "mocha ./tagus/**/tests.js",
+    "_test": "mocha ./tagus/api/tests/*.js",
     "_builddb": "node ./tagus/api/buildDB/initScript",
     "start": "grunt"
   },

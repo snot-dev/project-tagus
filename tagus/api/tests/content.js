@@ -1,12 +1,12 @@
 const testName = "Content";
-const Content = require('./model');
+const Content = require('../content').model;
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const should = chai.should();
 const server = require('../../../app');
 const mongoose = require('mongoose'); 
 const url = "/api/content/";
-const SharedTests = require("../shared/sharedTests");
+const SharedTests = require("../shared").tests;
 const tests = new SharedTests();
 
 chai.use(chaiHttp);

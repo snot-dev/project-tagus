@@ -1,12 +1,12 @@
 const testName = "Unit Fields";
-const UnitField = require('./model');
+const UnitField = require('../unitFields').model;
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const should = chai.should();
 const server = require('../../../app');
 const mongoose = require('mongoose'); 
 const url = "/api/unitfields/";
-const SharedTests = require("../shared/sharedTests");
+const SharedTests = require("../shared").tests;
 const tests = new SharedTests();
 
 chai.use(chaiHttp);

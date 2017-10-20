@@ -1,12 +1,12 @@
 const testName = "Translates";
-const Translate = require('./model');
+const Translate = require('../translates').model;
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const should = chai.should();
 const server = require('../../../app');
 const mongoose = require('mongoose'); 
 const url = "/api/translates/";
-const SharedTests = require("../shared/sharedTests");
+const SharedTests = require("../shared").tests;
 const tests = new SharedTests();
 
 chai.use(chaiHttp);

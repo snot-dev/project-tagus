@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 chai.use(chaiHttp);
 
 
-class sharedTests {
+class Tests {
     getAll (url, model, validation) {
         return done => {
             chai.request(server)
@@ -188,4 +188,4 @@ class sharedTests {
     }
 }
 
-module.exports = sharedTests;
+module.exports = Tests;

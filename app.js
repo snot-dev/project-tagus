@@ -6,9 +6,9 @@ const path = require('path');
 const db = require('./tagus/config/db_config');
 const morgan = require('morgan');
 const app = express();
-const tagusApi = require('./tagus/api/index');
+const tagusApi = require('./tagus/api');
 
-const portNumber = process.env.PORT_NUMBER;
+const portNumber =   process.env.PORT_NUMBER;
 
 app.set('views', [path.join(__dirname, 'SiteName/templates'), path.join(__dirname, 'tagus/tagus_build/views')]);
 // override this setting to choose the view engine to be used
