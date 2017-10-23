@@ -8,16 +8,26 @@ const settings = require('./settings/routes');
 const User = require('./users/model');
 const auth = require('./auth/index');
 
-const strategy  = 'jwt';
-const session = {session: false};
-auth.passport.strategies.jwt(User);
+const routes = (strategy) => {
+    let protectMiddleware = null;
+    if(strategy && auth.passport.strategies[strategy]) {
+        const session = {session: false};
 
-router.use('/content', content);
-router.use('/units', auth.passport.authenticate(strategy, session), units);
-router.use('/unitfields', unitFields);
-router.use('/users', users);
-router.use('/translates', translates);
-router.use('/settings', settings);
-router.use('/authenticate', auth.routes(User));
+        auth.passport.strategies[strategy](User);
 
-module.exports = router;    
+        protectMiddleware =  auth.passport.authenticate(strategy, session)
+    }
+    
+    router.use('/content', protectMiddleware, content);
+    router.use('/units', protectMiddleware, units);
+    router.use('/unitfields', protectMiddleware, unitFields);
+    router.use('/users', protectMiddleware, users);
+    router.use('/translates', protectMiddleware, translates);
+    router.use('/settings', protectMiddleware, settings);
+    router.use('/authenticate', auth.routes(User));
+
+    return router;
+};
+
+
+module.exports = routes;    

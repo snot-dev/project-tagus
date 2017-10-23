@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('SiteName'));
 app.use(tagusApi.auth.passport.initialize());
 
-app.use('/api', tagusApi.routes);
+app.use('/api', tagusApi.routes('jwt'));
 
 app.listen(portNumber, function () {  
   console.log("listening to " + portNumber);
