@@ -9,7 +9,11 @@ const User = require('./users/model');
 const auth = require('./auth/index');
 
 const routes = (strategy) => {
-    let protectMiddleware = null;
+    let protectMiddleware = (req, res, next) => {
+        next();
+    };
+
+
     if(strategy && auth.passport.strategies[strategy]) {
         const session = {session: false};
 
