@@ -9,6 +9,8 @@ const translatesSeed = require('../translates/data');
 const Translate = require('../translates/model');
 const settingsSeed = require('../settings/data');
 const Settings = require('../settings/model');
+const bridgesSeed = require('../bridges').data;
+const Bridges = require('../bridges')
 const contentSeed = require('../content/data');
 const Content = require('../content/model');
 require('../../../config');
@@ -16,6 +18,7 @@ require('../../../config');
 mongoose.Promise = require('bluebird');
 
 let collectionCreated = false;
+let unit = '';
 
 console.log("Connecting to " + process.env.MONGO_CONNECTION_STRING)
 
