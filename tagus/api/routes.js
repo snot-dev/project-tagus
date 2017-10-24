@@ -7,6 +7,7 @@ const translates = require('./translates/routes');
 const settings = require('./settings/routes');
 const User = require('./users/model');
 const auth = require('./auth/index');
+const bridges = require('./bridges').routes;
 
 const routes = (strategy) => {
     let protectMiddleware = (req, res, next) => {
