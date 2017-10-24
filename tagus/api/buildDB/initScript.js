@@ -1,18 +1,18 @@
 const mongoose = require('mongoose');
 const usersSeed = require('../users/data');
-const User = require('../users/model');
+const User = require('../users').model;
 const unitFieldsSeed = require('../unitFields/data');
-const UnitField = require('../unitFields/model');
+const UnitField = require('../unitFields').model;
 const unitsSeed = require('../units/data');
-const Unit = require('../units/model');
+const Unit = require('../units').model;
 const translatesSeed = require('../translates/data');
-const Translate = require('../translates/model');
+const Translate = require('../translates').model;
 const settingsSeed = require('../settings/data');
-const Settings = require('../settings/model');
-const bridgesSeed = require('../bridges').data;
-const Bridges = require('../bridges')
+const Settings = require('../settings').model;
+const bridgesSeed = require('../bridges/data');
+const Bridges = require('../bridges').model;
 const contentSeed = require('../content/data');
-const Content = require('../content/model');
+const Content = require('../content').model;
 require('../../../config');
 
 mongoose.Promise = require('bluebird');
@@ -81,6 +81,23 @@ mongoose.connect(process.env.MONGO_CONNECTION_STRING)
     .then(dbUnits => {
         unit = dbUnits[0];
 
+        return Bridges.find({});
+    })
+    .then( bridges => {
+        if(bridges.length === 0) {
+            for(let i = 0; i < bridgesSeed.length; i++) {
+                bridgesSeed[i].unitType = unit._id.toString();
+            }
+
+            Bridges.collection.insert(bridgesSeed);
+        } 
+        else {
+            collectionCreated = true;
+        }
+    })
+    .then(() => {
+        console.log(collectionCreated ? 'Bridges already created!' : 'Inserted Bridges!');
+        collectionCreated = false;
         return Content.find({});
     })
     .then(content => {
