@@ -7,8 +7,7 @@ const unitSchema = new mongoose.Schema({
     createdBy: String,
     created: {type:Date, default: Date.now()},
     edited: {type:Date, default: Date.now()},
-    templates: {type: Array, default: [], required: true},
-    masterTemplate: String,
+    templates: {type: Array, default: [], required: true}
 });
 
 module.exports = mongoose.model('Unit', unitSchema);

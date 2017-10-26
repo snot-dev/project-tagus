@@ -7,6 +7,7 @@ module.exports = [{
         published: new Date(),
         unitType: '',
         template: 'index',
+        masterTemplate: 'master',
         parent: '',
         isHome: true,
         content: {
@@ -25,6 +26,7 @@ module.exports = [{
         unitType:  ''
         ,
         template: 'index',
+        masterTemplate: 'master',
         parent: '',
         isHome: false,
         content: {
@@ -40,6 +42,7 @@ module.exports = [{
         published: new Date(),
         unitType: '',
         template: 'index',
+        masterTemplate: 'master',
         parent: '',
         isHome: false,
         content: {
@@ -55,6 +58,7 @@ module.exports = [{
         published: new Date(),
         unitType: '',
         template: 'index',
+        masterTemplate: 'master',
         parent: '',
         isHome: false,
         content: {

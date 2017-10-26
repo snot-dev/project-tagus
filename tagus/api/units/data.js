@@ -104,6 +104,5 @@ module.exports = [{
     createdBy: 'user',
     created: new Date(),
     edited: new Date(),
-    templates: ['index'],
-    masterTemplate: 'master'
+    templates: ['index']
 }];
