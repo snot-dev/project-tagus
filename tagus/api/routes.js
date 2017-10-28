@@ -24,6 +24,7 @@ const routes = (strategy) => {
     }
     
     router.use('/content', protectMiddleware, content);
+    router.use('/bridges', protectMiddleware, bridges);
     router.use('/units', protectMiddleware, units);
     router.use('/unitfields', protectMiddleware, unitFields);
     router.use('/users', protectMiddleware, users);
