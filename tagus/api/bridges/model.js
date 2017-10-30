@@ -3,6 +3,7 @@ mongoose.Promise = require('bluebird');
 
 const bridgeSchema = new mongoose.Schema({
     name: {type: String, required: true},
+    alias: {type: String, required: true},
     content: {},
     unitType: {type: String, required: true},
     createdBy: String,

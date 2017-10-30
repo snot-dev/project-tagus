@@ -1,6 +1,7 @@
 module.exports = [
             {
                 name: "Text",
+                alias: 'text',
                 type: "text",
                 createdBy: "user",
                 created: new Date(),
@@ -8,6 +9,7 @@ module.exports = [
             },
             {
                 name: "Long Text",
+                alias: 'longText',
                 type: "textarea",
                 createdBy: "user",
                 created: new Date(),
@@ -15,6 +17,7 @@ module.exports = [
             },
             {
                 name: "Rich Text Editor",
+                alias: 'richTextEditor',
                 type: "richText",
                 createdBy: "user",
                 created: new Date(),
@@ -22,6 +25,7 @@ module.exports = [
             },
             {
                 name: "Number",
+                alias: 'number',
                 type: "number",
                 createdBy: "user",
                 created: new Date(),
@@ -29,6 +33,7 @@ module.exports = [
             },
             {
                 name: "True or False",
+                alias: 'trueOrFalse',
                 type: "boolean",
                 createdBy: "user",
                 created: new Date(),
@@ -36,6 +41,7 @@ module.exports = [
             },
             {
                 name: "Date",
+                alias: 'date',
                 type: "date",
                 createdBy: "user",
                 created: new Date(),
@@ -43,6 +49,7 @@ module.exports = [
             },
             {
                 name: "Date Time",
+                alias: 'dateTime',
                 type: "datetime",
                 createdBy: "user",
                 created: new Date(),
@@ -50,6 +57,7 @@ module.exports = [
             },
             {
                 name: "Email",
+                alias: 'email',
                 type: "email",
                 createdBy: "user",
                 created: new Date(),
@@ -57,6 +65,7 @@ module.exports = [
             },
             {
                 name: "Password",
+                alias: 'password',
                 type: "password",
                 createdBy: "user",
                 created: new Date(),
@@ -64,6 +73,7 @@ module.exports = [
             },
             {
                 name: "Checkbox List",
+                alias: 'checkboxList',
                 type: "checkbox",
                 createdBy: "user",
                 created: new Date(),
@@ -71,6 +81,7 @@ module.exports = [
             },
             {
                 name: "Dropdown List",
+                alias: 'dropdownList',
                 type: "dropdown",
                 createdBy: "user",
                 created: new Date(),
@@ -78,6 +89,7 @@ module.exports = [
             },
             {
                 name: "RadioButton List",
+                alias: 'radioButtonList',
                 type: "radio",
                 createdBy: "user",
                 created: new Date(),
@@ -85,6 +97,7 @@ module.exports = [
             },
             {
                 name: "Link",
+                alias: 'link',
                 type: "link",
                 createdBy: "user",
                 created: new Date(),
@@ -92,6 +105,7 @@ module.exports = [
             },
             {
                 name: "File",
+                alias: 'file',
                 type: "file",
                 createdBy: "user",
                 created: new Date(),
@@ -99,6 +113,7 @@ module.exports = [
             },
             {
                 name: "Image",
+                alias: 'image',
                 type: "img",
                 createdBy: "user",
                 created: new Date(),
@@ -106,6 +121,7 @@ module.exports = [
             },
             {
                 name: "Unit List",
+                alias: 'unitList',
                 type: "unitList",
                 createdBy: "user",
                 created: new Date(),

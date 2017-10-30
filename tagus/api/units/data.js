@@ -1,5 +1,6 @@
 module.exports = [{
     name: 'Home',
+    alias: 'home',
     tabs: [{
             name: 'Content',
             fields: [{

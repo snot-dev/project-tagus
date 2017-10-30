@@ -3,6 +3,7 @@ mongoose.Promise = require('bluebird');
 
 const contentSchema = new mongoose.Schema({
     name: { type: String, required: true },
+    alias: {type: String, required: true},
     url: { type: String, required: true },
     createdBy: { type: String, required: true },
     created: { type: Date, default: Date.now() },

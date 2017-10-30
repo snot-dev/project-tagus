@@ -1,5 +1,10 @@
 const mongoose = require('mongoose');
+const S = require('string');
 mongoose.Promise = require('bluebird');
+
+const convertToAlias = name => {
+    return S(name).slugify().camelize().s;
+};
 
 module.exports = {
         defineCRUDRoutes: (model, routes = {}, router = require('express').Router()) => {
@@ -34,6 +39,11 @@ module.exports = {
                 } 
                 else {
                     const newModel = new model(req.body);
+                    
+                    if(newModel.name) {
+                        newModel.alias = convertToAlias(newModel.name);
+                    }
+
                     newModel.save()
                     .then(result => {
                         res.json({ message: "Document successfully created!", result });
@@ -69,6 +79,10 @@ module.exports = {
                     .then(doc => {
                         const updatedDoc = Object.assign(doc, req.body);
                         
+                        if(updatedDoc.name) {
+                            updatedDoc.alias = convertToAlias(updatedDoc.name);
+                        }
+
                         return updatedDoc.save();
                     })
                     .then(result =>{

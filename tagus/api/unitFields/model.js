@@ -3,6 +3,7 @@ mongoose.Promise = require('bluebird');
 
 const unitFieldSchema = new mongoose.Schema({
     name: {type: String, required: true },
+    alias: {type: String, required: true},
     type: {type: String, required: true },
     createdBy: String,
     created: {type:Date, default: Date.now()},

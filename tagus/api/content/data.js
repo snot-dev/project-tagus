@@ -1,5 +1,6 @@
 module.exports = [{
         name: 'Home',
+        alias: 'home',
         url: '/',
         createdBy: 'user',
         created: new Date(),
@@ -17,13 +18,13 @@ module.exports = [{
     },
     {
         name: 'Contacts',
+        alias: 'contacts',
         url: '/contacts',
         createdBy: 'user',
         created: new Date(),
         edited: new Date(),
         published: new Date(),
-        unitType:  ''
-        ,
+        unitType:  '',
         template: 'index',
         parent: '',
         isHome: false,
@@ -33,6 +34,7 @@ module.exports = [{
     },
     {
         name: 'Emails',
+        alias: 'emails',
         url: '/contacts/emails',
         createdBy: 'user',
         created: new Date(),
@@ -48,6 +50,7 @@ module.exports = [{
     },
     {
         name: 'About',
+        alias: 'about',
         url: '/about',
         createdBy: 'user',
         created: new Date(),
