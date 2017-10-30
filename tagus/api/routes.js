@@ -7,6 +7,7 @@ const translates = require('./translates/routes');
 const settings = require('./settings/routes');
 const User = require('./users/model');
 const auth = require('./auth/index');
+const bridges = require('./bridges').routes;
 
 const routes = (strategy) => {
     let protectMiddleware = (req, res, next) => {
@@ -23,6 +24,7 @@ const routes = (strategy) => {
     }
     
     router.use('/content', protectMiddleware, content);
+    router.use('/bridges', protectMiddleware, bridges);
     router.use('/units', protectMiddleware, units);
     router.use('/unitfields', protectMiddleware, unitFields);
     router.use('/users', protectMiddleware, users);
