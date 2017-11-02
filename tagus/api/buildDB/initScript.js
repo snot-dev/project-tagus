@@ -29,58 +29,55 @@ mongoose.connect(process.env.MONGO_CONNECTION_STRING)
 
     Settings.find({}).then(settings => {
         if( settings.length === 0) {
-            Settings.collection.insert(settingsSeed)
+            return Settings.insertMany(settingsSeed)
         }
         else {
             collectionCreated = true;
         }
     })
-    .then(() => {
+    .then(settings => {
         console.log(collectionCreated ? 'Settings already created!': 'Inserted Settings!' );
         collectionCreated = false;
         return Translate.find({});
     })
     .then(translates => {
         if(translates.length === 0) {
-            Translate.collection.insert(translatesSeed);
+            return Translate.insertMany(translatesSeed);
         } 
         else {
             collectionCreated = true;
         }
     })
-    .then(() => {
+    .then(translates => {
         console.log(collectionCreated ? 'Translates already created!' : 'Inserted Translates!');
         collectionCreated = false;
         return UnitField.find({});
     })
     .then(unitFields => {
         if(unitFields.length === 0) {
-            UnitField.collection.insert(unitFieldsSeed);
+            return UnitField.insertMany(unitFieldsSeed);
         } else {
             collectionCreated = true;
         }
     })
-    .then(() => {
+    .then(unitFields => {
         console.log(collectionCreated ? 'UnitFields already created!' : 'Inserted UnitFields!!');
         collectionCreated = false;
         return Unit.find({});
     })
     .then(units => {
         if(units.length ===0) {
-            Unit.collection.insert(unitsSeed);
+            return Unit.insertMany(unitsSeed);
         } 
         else {
             collectionCreated = true;
+            return units;
         }
     })
-    .then(() => {
+    .then(units => {
         console.log(collectionCreated ? 'Units already created!' : 'Inserted Units!');
         collectionCreated = false;
-        return Unit.find({});
-    })
-    .then(dbUnits => {
-        unit = dbUnits[0];
-
+        unit = units[0];
         return Bridges.find({});
     })
     .then( bridges => {
@@ -89,13 +86,13 @@ mongoose.connect(process.env.MONGO_CONNECTION_STRING)
                 bridgesSeed[i].unitType = unit._id.toString();
             }
 
-            Bridges.collection.insert(bridgesSeed);
+            Bridges.insertMany(bridgesSeed);
         } 
         else {
             collectionCreated = true;
         }
     })
-    .then(() => {
+    .then(bridges => {
         console.log(collectionCreated ? 'Bridges already created!' : 'Inserted Bridges!');
         collectionCreated = false;
         return Content.find({});
@@ -138,7 +135,7 @@ mongoose.connect(process.env.MONGO_CONNECTION_STRING)
                 }
             }
 
-            return Content.collection.insert(contentToSave);
+            return Content.insertMany(contentToSave);
         }
         else {
             collectionCreated = true;

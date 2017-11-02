@@ -1,5 +1,6 @@
 module.exports = [{
-    name: 'Example Site',
+    name: 'Example',
+    alias: 'exampe',
     content: {
         siteName: "This is a bridge text",
         emailField: "bridge@tagus.com",
