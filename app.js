@@ -23,6 +23,7 @@ app.use(express.static('SiteName'));
 app.use(tagusApi.auth.passport.initialize());
 
 app.use('/api', tagusApi.routes.api('jwt'));
+app.use('/', tagusApi.routes.site());
 
 app.listen(portNumber, function () {  
   console.log("listening to " + portNumber);

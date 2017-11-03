@@ -52,20 +52,45 @@ const site = () => {
         return content.model.find({});
     })
     .then( docs => {
-        for(let i = 0; i < docs.length; i++ ) {
-            const doc = docs[i];
+        const contentTree = _buildContentTree(docs);
+
+        for(doc of docs) {
             const viewBag = {};
 
-            viewBag[doc.alias] = doc.content;
+            viewBag[doc.alias] = contentTree[doc._id];
             viewBag.bridges = bridgesContent;
 
             router.get(doc.url, (req, res) => {
+                console.log(viewBag);
                 res.render(doc.template, viewBag);
             });
         }
     });
 
     return router;
+};
+
+const _buildContentTree = content => {
+    const contentTree = {};
+
+    for(doc of content ) {
+        //TODO: Improve this object using es6
+        const cont = {
+            name: doc.name,
+            content: doc.content,
+            children: []
+        };
+
+        contentTree[doc._id] = cont;
+    }
+
+    for(doc of content) {
+        if(doc.parent) {
+            contentTree[doc.parent].children.push(contentTree[doc._id]);
+        }
+    }
+
+    return contentTree;
 };
 
 
