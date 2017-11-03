@@ -1,15 +1,15 @@
-const router = require('express').Router();
-const content = require('./content/routes');
-const units = require('./units/routes');
-const unitFields = require('./unitFields/routes');
-const users = require('./users/routes');
-const translates = require('./translates/routes');
-const settings = require('./settings/routes');
-const User = require('./users/model');
-const auth = require('./auth/index');
-const bridges = require('./bridges').routes;
+const content = require('./content');
+const units = require('./units').routes;
+const unitFields = require('./unitFields').routes;
+const users = require('./users').routes;
+const translates = require('./translates').routes;
+const bridges = require('./bridges');
+const settings = require('./settings').routes;
+const User = require('./users').model;
+const auth = require('./auth');
 
-const routes = (strategy) => {
+const api = (strategy) => {
+    const router = require('express').Router();
     let protectMiddleware = (req, res, next) => {
         next();
     };
@@ -23,8 +23,8 @@ const routes = (strategy) => {
         protectMiddleware =  auth.passport.authenticate(strategy, session)
     }
     
-    router.use('/content', protectMiddleware, content);
-    router.use('/bridges', protectMiddleware, bridges);
+    router.use('/content', protectMiddleware, content.routes);
+    router.use('/bridges', protectMiddleware, bridges.routes);
     router.use('/units', protectMiddleware, units);
     router.use('/unitfields', protectMiddleware, unitFields);
     router.use('/users', protectMiddleware, users);
@@ -35,5 +35,66 @@ const routes = (strategy) => {
     return router;
 };
 
+const site = () => {
+    const router = require('express').Router();
+    const bridgesContent = {};
 
-module.exports = routes;    
+    bridges.model.find({})
+    .then( docs => {
+        if(docs) {
+            for(let i = 0; i < docs.length; i++) {
+                const bridge = docs[i];
+
+                bridgesContent[bridge.alias] = bridge.content;
+            }
+        }
+
+        return content.model.find({});
+    })
+    .then( docs => {
+        const contentTree = _buildContentTree(docs);
+
+        for(doc of docs) {
+            const viewBag = {};
+
+            viewBag[doc.alias] = contentTree[doc._id];
+            viewBag.bridges = bridgesContent;
+
+            router.get(doc.url, (req, res) => {
+                console.log(viewBag);
+                res.render(doc.template, viewBag);
+            });
+        }
+    });
+
+    return router;
+};
+
+const _buildContentTree = content => {
+    const contentTree = {};
+
+    for(doc of content ) {
+        //TODO: Improve this object using es6
+        const cont = {
+            name: doc.name,
+            content: doc.content,
+            children: []
+        };
+
+        contentTree[doc._id] = cont;
+    }
+
+    for(doc of content) {
+        if(doc.parent) {
+            contentTree[doc.parent].children.push(contentTree[doc._id]);
+        }
+    }
+
+    return contentTree;
+};
+
+
+module.exports = {
+    api,
+    site
+};
