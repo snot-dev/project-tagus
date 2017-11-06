@@ -55,15 +55,17 @@ const site = () => {
         const contentTree = _buildContentTree(docs);
 
         for(doc of docs) {
-            const viewBag = {};
-
-            viewBag[doc.alias] = contentTree[doc._id];
-            viewBag.bridges = bridgesContent;
-
-            router.get(doc.url, (req, res) => {
-                console.log(viewBag);
-                res.render(doc.template, viewBag);
-            });
+            if(doc.published) {
+                const viewBag = {};
+    
+                viewBag[doc.alias] = contentTree[doc._id];
+                viewBag.bridges = bridgesContent;
+    
+                router.get(doc.url, (req, res) => {
+                    console.log(viewBag);
+                    res.render(doc.template, viewBag);
+                });
+            }
         }
     });
 
