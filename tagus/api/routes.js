@@ -14,7 +14,6 @@ const api = (strategy) => {
         next();
     };
 
-
     if(strategy && auth.passport.strategies[strategy]) {
         const session = {session: false};
 
@@ -58,7 +57,7 @@ const site = () => {
             if(doc.published) {
                 const viewBag = {};
     
-                viewBag[doc.alias] = contentTree[doc._id];
+                    viewBag[doc.alias] = contentTree[doc._id];
                 viewBag.bridges = bridgesContent;
     
                 router.get(doc.url, (req, res) => {
