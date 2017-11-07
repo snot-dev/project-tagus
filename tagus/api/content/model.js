@@ -14,7 +14,7 @@ const contentSchema = new mongoose.Schema({
     unitType: String,
     content: {},
     template: { type: String, required: true },
-    masterTemplate: String,
+    partial: String,
     parent: String,
     sortOrder: { type: Number },
     isHome: { type: Boolean, default: false }
