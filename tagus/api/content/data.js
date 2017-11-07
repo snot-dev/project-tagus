@@ -1,79 +1,20 @@
-module.exports = [{
-        name: 'Home',
-        alias: 'home',
-        url: '/',
-        createdBy: 'user',
-        created: new Date(),
-        edited: new Date(),
-        published: true,
-        publishedAt: new Date(),
-        nav: true,
-        unitType: '',
-        template: 'index',
-        masterTemplate: 'master',
-        parent: '',
+module.exports = [
+    {
+        name: "Home",
+        alias: "home",
+        url: "/",
+        createdBy: "Admin",
+        uniType: "5a017a9e83dd7214c8661648",
+        template: "banner",
+        masterTemplate: "master",
         isHome: true,
         content: {
-            'siteName': 'Example Site',
-            'anotherField': 'This is an example sentence',
-            'trueOrFalse': true
-        }
-    },
-    {
-        name: 'Contacts',
-        alias: 'contacts',
-        url: '/contacts',
-        createdBy: 'user',
-        created: new Date(),
-        edited: new Date(),
-        published: true,
-        publishedAt: new Date(),
-        nav: true,
-        unitType:  '',
-        template: 'index',
-        masterTemplate: 'master',
-        parent: '',
-        isHome: false,
-        content: {
-            'siteName': 'Example Site'
-        }
-    },
-    {
-        name: 'Emails',
-        alias: 'emails',
-        url: '/contacts/emails',
-        createdBy: 'user',
-        created: new Date(),
-        edited: new Date(),
-        published: true,
-        publishedAt: new Date(),
-        nav: true,
-        unitType: '',
-        template: 'index',
-        masterTemplate: 'master',
-        parent: '',
-        isHome: false,
-        content: {
-            'siteName': 'Example Site'
-        }
-    },
-    {
-        name: 'About',
-        alias: 'about',
-        url: '/about',
-        createdBy: 'user',
-        created: new Date(),
-        edited: new Date(),
-        published: true,
-        publishedAt: new Date(),
-        nav: true,
-        unitType: '',
-        template: 'index',
-        masterTemplate: 'master',
-        parent: '',
-        isHome: false,
-        content: {
-            'siteName': 'Example Site'
+            default: {
+                title: "Your Favorite Source of Free Bootstrap Themes",
+                subTitle: "Start Bootstrap can help you build better websites using the Bootstrap CSS framework! Just download your template and start going, no strings attached!",
+                link: "#about",
+                linkText: "Find Out More"
+            }
         }
     }
-];
+]
