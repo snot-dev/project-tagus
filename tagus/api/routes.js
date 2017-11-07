@@ -50,12 +50,11 @@ const site = () => {
     })
     .then( docs => {
         const contentTree = _buildContentTree(docs);
-
         for(doc of docs) {
             if(doc.published) {
-                const viewBag = {};
-                viewBag[doc.alias] = contentTree[doc._id];
+                const viewBag = contentTree[doc._id];
                 viewBag.bridges = bridgesContent;
+                console.log(viewBag);
     
                 router.get(doc.url, (req, res) => {
                     res.render(doc.template, viewBag);
@@ -73,7 +72,10 @@ const _buildContentTree = content => {
     for(doc of content ) {
         const cont = {
             name: doc.name,
+            alias: doc.alias,
+            url: doc.url,
             content: doc.content,
+            partial: doc.partial,
             children: []
         };
 
