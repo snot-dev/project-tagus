@@ -80,10 +80,6 @@ mongoose.connect(process.env.MONGO_CONNECTION_STRING)
     })
     .then( bridges => {
         if(bridges.length === 0) {
-            for(let i = 0; i < bridgesSeed.length; i++) {
-                bridgesSeed[i].unitType = unit._id.toString();
-            }
-
             Bridges.insertMany(bridgesSeed);
         } 
         else {

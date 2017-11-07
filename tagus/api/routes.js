@@ -16,9 +16,7 @@ const api = (strategy) => {
 
     if(strategy && auth.passport.strategies[strategy]) {
         const session = {session: false};
-
         auth.passport.strategies[strategy](User);
-
         protectMiddleware =  auth.passport.authenticate(strategy, session)
     }
     
@@ -56,12 +54,10 @@ const site = () => {
         for(doc of docs) {
             if(doc.published) {
                 const viewBag = {};
-    
-                    viewBag[doc.alias] = contentTree[doc._id];
+                viewBag[doc.alias] = contentTree[doc._id];
                 viewBag.bridges = bridgesContent;
     
                 router.get(doc.url, (req, res) => {
-                    console.log(viewBag);
                     res.render(doc.template, viewBag);
                 });
             }
@@ -75,7 +71,6 @@ const _buildContentTree = content => {
     const contentTree = {};
 
     for(doc of content ) {
-        //TODO: Improve this object using es6
         const cont = {
             name: doc.name,
             content: doc.content,

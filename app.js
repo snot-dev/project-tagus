@@ -10,9 +10,9 @@ const tagusApi = require('./tagus/api');
 
 const portNumber =   process.env.PORT_NUMBER;
 
-app.set('views', [path.join(__dirname, 'SiteName'), path.join(__dirname, 'SiteName/templates'), path.join(__dirname, 'tagus/tagus_build/views')]);
+app.set('views', [ path.join(__dirname, 'SiteName/templates'), path.join(__dirname, 'SiteName/templates/partials'), path.join(__dirname, 'tagus/tagus_build/views')]);
 // override this setting to choose the view engine to be used
-app.set('view engine', 'hbs');
+app.set('view engine', 'ejs');
 db.connect(db.connectionSettings.url);
 db.checkIfConnected();
 
