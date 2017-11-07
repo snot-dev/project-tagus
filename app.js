@@ -10,7 +10,7 @@ const tagusApi = require('./tagus/api');
 
 const portNumber =   process.env.PORT_NUMBER;
 
-app.set('views', [path.join(__dirname, 'SiteName/templates'), path.join(__dirname, 'tagus/tagus_build/views')]);
+app.set('views', [path.join(__dirname, 'SiteName'), path.join(__dirname, 'SiteName/templates'), path.join(__dirname, 'tagus/tagus_build/views')]);
 // override this setting to choose the view engine to be used
 app.set('view engine', 'hbs');
 db.connect(db.connectionSettings.url);
@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('SiteName'));
 app.use(tagusApi.auth.passport.initialize());
 
-app.use('/api', tagusApi.routes.api('jwt'));
+app.use('/api', tagusApi.routes.api());
 app.use('/', tagusApi.routes.site());
 
 app.listen(portNumber, function () {  

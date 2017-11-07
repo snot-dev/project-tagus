@@ -9,6 +9,7 @@ const contentSchema = new mongoose.Schema({
     created: { type: Date, default: Date.now() },
     edited: Date,
     published: {type: Boolean, default: true},
+    nav: {type: Boolean, default: true},
     publishedAt: { type: Date, default: Date.now() },
     unitType: String,
     content: {},
