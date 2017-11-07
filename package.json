@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "_test": "mocha ./tagus/api/tests/*.js",
-    "_builddb": "node ./tagus/api/buildDB/initScript",
+    "_buildDB": "node ./tagus/api/buildDB/initScript",
     "start": "grunt"
   },
   "author": "Snot",
