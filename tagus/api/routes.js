@@ -50,14 +50,13 @@ const site = () => {
     })
     .then( docs => {
         const contentTree = _buildContentTree(docs);
+        
         for(doc of docs) {
             if(doc.published) {
-                const viewBag = contentTree[doc._id];
-                viewBag.bridges = bridgesContent;
-                console.log(viewBag);
-    
+                const viewContent = contentTree[doc._id];
+
                 router.get(doc.url, (req, res) => {
-                    res.render(doc.template, viewBag);
+                    res.render(doc.template, {viewContent, bridges: bridgesContent});
                 });
             }
         }
@@ -69,7 +68,8 @@ const site = () => {
 const _buildContentTree = content => {
     const contentTree = {};
 
-    for(doc of content ) {
+    // Convert docs into an object
+    for(doc of content) {
         const cont = {
             name: doc.name,
             alias: doc.alias,
@@ -82,6 +82,7 @@ const _buildContentTree = content => {
         contentTree[doc._id] = cont;
     }
 
+    // stablish parent-children relations 
     for(doc of content) {
         if(doc.parent) {
             contentTree[doc.parent].children.push(contentTree[doc._id]);

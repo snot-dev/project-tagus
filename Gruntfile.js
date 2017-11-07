@@ -28,13 +28,6 @@ module.exports = function(grunt) {
             }
         },
         watch: {
-            browserify: {
-                files: ['tagus/frontend/js/**/*.js', 'Gruntfile.js'],
-                tasks: ['browserify:dev', 'express:dev'],
-                options: {
-                    spawn: false
-                }
-            },
             js: {
                 files: 'tagus/**/*.js',
                 tasks: ['express:dev'],
@@ -50,14 +43,14 @@ module.exports = function(grunt) {
                 }
             },
             views: {
-                files: 'tagus/**/*.hbs',
+                files: ['tagus/**/*.hbs', 'SiteName/**/*.hbs'],
                 tasks: ['express:dev'],
                 options: {
                     spawn: false
                 }
             },
             express: {
-                files: ['app.js', 'Gruntfile.js', 'tagus/ routes/*.js'],
+                files: ['app.js', 'Gruntfile.js', 'tagus/ routes/*.js' ],
                 tasks: ['express:dev'],
                 options: {
                     spawn: false
