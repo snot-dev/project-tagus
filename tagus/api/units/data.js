@@ -6,7 +6,8 @@ module.exports = [
         templates: [
             "master",
             "home",
-            "standard"
+            "standard",
+            "services"
         ],
         edited: new Date(),
         created: new Date(),
@@ -25,7 +26,7 @@ module.exports = [
                         name: "Sub Title",
                         alias: "subTitle",
                         type: "text",
-                        required: true
+                        required: false
                     },
                     {
                         name: "Link",
@@ -98,7 +99,8 @@ module.exports = [
         alias: "icon",
         templates: [
             "master",
-            "icon"
+            "icon",
+            "service"
         ],
         edited: new Date(),
         created: new Date(),
@@ -118,6 +120,12 @@ module.exports = [
                         alias: "text",
                         type: "text",
                         required: true
+                    },
+                    {
+                        name: "Sub Text",
+                        alias: "subText",
+                        type: "text",
+                        required: false
                     }
                 ]
             }
