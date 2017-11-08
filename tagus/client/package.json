@@ -15,5 +15,6 @@
   },
   "devDependencies": {
     "concurrency": "^0.1.4"
-  }
+  },
+  "proxy": "http://localhost:3001/"
 }
