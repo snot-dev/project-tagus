@@ -6,7 +6,7 @@
   "scripts": {
     "_test": "mocha ./tagus/api/tests/*.js",
     "_buildDB": "node ./tagus/api/buildDB/initScript",
-    "start": "nodemon app.js"
+    "start": "concurrently \"nodemon app.js\" \"cd tagus/client && npm start\""
   },
   "author": "Snot",
   "license": "ISC",
@@ -55,6 +55,7 @@
     "babelify": "^7.3.0",
     "chai": "^3.5.0",
     "chai-http": "^2.0.1",
+    "concurrently": "^3.5.0",
     "mocha": "^2.5.3",
     "nodemon": "^1.12.1",
     "request": "^2.72.0"

@@ -3,5 +3,7 @@
 config.js
 /tagus/build/css
 /tagus/build/js
+/tagus/client/node_modules
+/tagus/client/public
 /.vscode
 .eslintrc.js
