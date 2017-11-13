@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "_test": "mocha ./tagus/api/tests/*.js",
-    "_builddb": "node ./tagus/api/buildDB/initScript",
-    "start": "grunt"
+    "_buildDB": "node ./tagus/api/buildDB/initScript",
+    "start": "nodemon app.js"
   },
   "author": "Snot",
   "license": "ISC",
@@ -15,18 +15,15 @@
     "bcrypt-nodejs": "0.0.3",
     "bluebird": "^3.4.7",
     "body-parser": "^1.15.0",
-    "bower": "^1.7.7",
     "browserify": "^13.1.0",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.3",
     "dateformat": "^1.0.12",
     "ejs": "^2.5.7",
+    "exphbs": "^1.1.0",
     "express": "^4.13.4",
-    "express-session": "^1.14.1",
     "flux": "^2.1.1",
-    "grunt": "^0.4.5",
     "hbs": "^4.0.0",
-    "jquery": "^3.1.0",
     "jwt-simple": "^0.5.1",
     "mongoose": "^4.4.19",
     "morgan": "^1.7.0",
@@ -50,8 +47,7 @@
     "redux-promise-middleware": "^4.2.0",
     "redux-thunk": "^2.1.0",
     "sass": "^0.5.0",
-    "string": "^3.3.3",
-    "underscore": "^1.8.3"
+    "string": "^3.3.3"
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.18.0",
@@ -59,13 +55,8 @@
     "babelify": "^7.3.0",
     "chai": "^3.5.0",
     "chai-http": "^2.0.1",
-    "grunt-browserify": "^5.0.0",
-    "grunt-contrib-concat": "^1.0.0",
-    "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-sass": "^1.0.0",
-    "grunt-contrib-watch": "^1.0.0",
-    "grunt-express-server": "^0.5.2",
     "mocha": "^2.5.3",
+    "nodemon": "^1.12.1",
     "request": "^2.72.0"
   }
 }

@@ -14,12 +14,9 @@ const api = (strategy) => {
         next();
     };
 
-
     if(strategy && auth.passport.strategies[strategy]) {
         const session = {session: false};
-
         auth.passport.strategies[strategy](User);
-
         protectMiddleware =  auth.passport.authenticate(strategy, session)
     }
     
@@ -53,17 +50,13 @@ const site = () => {
     })
     .then( docs => {
         const contentTree = _buildContentTree(docs);
-
+        
         for(doc of docs) {
             if(doc.published) {
-                const viewBag = {};
-    
-                viewBag[doc.alias] = contentTree[doc._id];
-                viewBag.bridges = bridgesContent;
-    
+                const viewContent = contentTree[doc._id];
+
                 router.get(doc.url, (req, res) => {
-                    console.log(viewBag);
-                    res.render(doc.template, viewBag);
+                    res.render(doc.template, {viewContent, bridges: bridgesContent});
                 });
             }
         }
@@ -75,17 +68,21 @@ const site = () => {
 const _buildContentTree = content => {
     const contentTree = {};
 
-    for(doc of content ) {
-        //TODO: Improve this object using es6
+    // Convert docs into an object
+    for(doc of content) {
         const cont = {
             name: doc.name,
+            alias: doc.alias,
+            url: doc.url,
             content: doc.content,
+            partial: doc.partial,
             children: []
         };
 
         contentTree[doc._id] = cont;
     }
 
+    // stablish parent-children relations 
     for(doc of content) {
         if(doc.parent) {
             contentTree[doc.parent].children.push(contentTree[doc._id]);

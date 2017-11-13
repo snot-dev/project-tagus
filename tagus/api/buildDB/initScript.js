@@ -18,7 +18,6 @@ require('../../../config');
 mongoose.Promise = require('bluebird');
 
 let collectionCreated = false;
-let unit = '';
 
 console.log("Connecting to " + process.env.MONGO_CONNECTION_STRING)
 
@@ -77,15 +76,10 @@ mongoose.connect(process.env.MONGO_CONNECTION_STRING)
     .then(units => {
         console.log(collectionCreated ? 'Units already created!' : 'Inserted Units!');
         collectionCreated = false;
-        unit = units[0];
         return Bridges.find({});
     })
     .then( bridges => {
         if(bridges.length === 0) {
-            for(let i = 0; i < bridgesSeed.length; i++) {
-                bridgesSeed[i].unitType = unit._id.toString();
-            }
-
             Bridges.insertMany(bridgesSeed);
         } 
         else {
@@ -98,88 +92,16 @@ mongoose.connect(process.env.MONGO_CONNECTION_STRING)
         return Content.find({});
     })
     .then(content => {
-        if(content.length === 0){
-            let index;
-
-            for(let i = 0; i < contentSeed.length; i++) {
-                if(contentSeed[i].url === '/'){
-                    index = contentSeed[i];
-                    break;
-                }
-            }
-
-            index.unitType = unit._id.toString();
-
-            const content = new Content(index);
-
-            return content.save();
-        }
+        if(content.length === 0) {
+            return Content.insertMany(contentSeed);
+        } 
         else {
             collectionCreated = true;
+            return content;
         }
     })
-    .then(index => {
-        console.log(collectionCreated ? 'Home Page already created' : 'Created Home page!');
-        collectionCreated = false;
-        if(index) {
-            let contentToSave = [];
-            let content;
-            
-
-            for(let i = 0; i < contentSeed.length; i++) {
-                content = contentSeed[i];
-                if(content.url !== '/' && content.url !== '/contacts/emails'){
-                    content.parent = index._id.toString();
-                    content.unitType = unit._id.toString();    
-                    contentToSave.push(content);
-                }
-            }
-
-            return Content.insertMany(contentToSave);
-        }
-        else {
-            collectionCreated = true;
-        }
-    })
-    .then(() => {
-        console.log(collectionCreated ? 'Contacts and About content already created!' : 'Created Contacts and About content!');
-        collectionCreated = false;
-        return Content.findOne({name: 'Contacts'});
-    })
-    .then(contacts => {
-        if(contacts) {
-            Content.findOne({name: 'Emails'}, (err, doc) => {
-                if(!doc) {
-                    return contacts
-                }
-            })
-        }
-    })
-    .then(contacts => {
-        if(contacts) {
-            let emails;
-            contactsContent = contacts;
-
-            for(let i = 0; i < contentSeed.length; i++){
-                if(contentSeed[i].name === 'Emails') {
-                    emails = contentSeed[i];
-
-                break;
-                }
-            }
-
-            emails.parent = contactsContent._id.toString();
-            emails.unitType = unit._id.toString();
-            const content = new Content(emails);
-
-            return content.save();
-        }
-        else {
-            collectionCreated = true;
-        }
-    })
-    .then(emails => {
-        console.log(collectionCreated ? 'Emails page already created!' : 'Created Emails page!');
+    .then(content => {
+        console.log(collectionCreated ? 'Content already created!' : 'Inserted Content!');
         collectionCreated = false;
         console.log("DB was built!");
         process.exit(0);

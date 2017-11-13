@@ -38,6 +38,7 @@ module.exports = {
                     routes.postOne(req, res);
                 } 
                 else {
+                    console.log(req.body);
                     const newModel = new model(req.body);
                     
                     if(newModel.name) {

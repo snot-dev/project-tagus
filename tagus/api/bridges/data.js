@@ -1,12 +1,12 @@
 module.exports = [{
-    name: 'Example',
-    alias: 'exampe',
-    content: {
-        siteName: "This is a bridge text",
-        emailField: "bridge@tagus.com",
-        numberField: 123654789
-    },
-    createdBy: 'user',
-    created: new Date(),
-    edited: new Date()
+	name: "site",
+	alias: "Site",
+	createdBy: "Admin",
+	unitType: "5a017a9e83dd7214c8661648",
+	content: {
+		default: {
+			title: "Start Bootstrap",
+			subTitle: "/"
+		}
+	}
 }];
