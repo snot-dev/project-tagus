@@ -6,8 +6,8 @@ import style from './style.css';
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <AppBar/>
+      <div id ="tagus-app" className="App">
+        <AppBar />
       </div>
     );
   }

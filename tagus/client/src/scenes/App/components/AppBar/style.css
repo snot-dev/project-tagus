@@ -1,8 +1,12 @@
+:root {
+    --background-color: #273135;
+}
+
 #app-side-menu {
     width: 250px;
     height: 100%;
     position: fixed;
     left: 0;
     top: 0;
-    background-color: var(--main-color);
+    background-color: var(--background-color);
 }
