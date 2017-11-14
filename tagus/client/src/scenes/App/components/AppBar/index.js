@@ -6,8 +6,8 @@ import './appBar.css';
 class AppBar extends Component {
     render() {
         return (
-            <nav id="app-side-menu" className="navbar">
-                <div className="nav-container collapse navbar-collapse">
+            <nav id="app-side-menu">
+                <div className="nav-container">
                     <Avatar />
                     <Navigation />
                 </div>

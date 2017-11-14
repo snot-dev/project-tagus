@@ -1,25 +1,26 @@
 #avatar {
     color: white;
     background-color: #EC6052;
-    padding-top: 5px ;
 }
 
 #avatar p {
     margin: 0;
 }
 
-
 #username {
     font-size: 16px;
     margin: 0;
-    padding-bottom: 5px;
-    padding-top: 5px;
     background-color: #892532;
 }
 
 @media (min-width: 768px) {
     #icon {
-        margin-bottom: 5px;
+        padding: 5px;
         font-size: 40px;
+    }
+    
+    #username {
+        padding-bottom: 5px;
+        padding-top: 5px;
     }
 }
