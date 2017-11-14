@@ -3,10 +3,24 @@
 }
 
 #app-side-menu {
-    width: 250px;
+    width: 100%;
     height: 100%;
-    position: fixed;
-    left: 0;
-    top: 0;
     background-color: var(--background-color);
+    border: 0;
+}
+
+.nav-container {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+@media (min-width: 768px) {
+    #app-side-menu {
+        width: 250px;
+        height: 100%;
+        position: fixed;
+        left: 0;
+        top: 0;
+        background-color: var(--background-color);
+    }
 }

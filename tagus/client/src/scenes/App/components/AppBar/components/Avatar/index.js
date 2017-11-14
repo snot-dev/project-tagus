@@ -5,7 +5,7 @@ class Avatar extends Component {
     render() {
         return (
             <section id="avatar" className="container-fluid text-center">
-                <div className="row">
+                <div className="hidden-xs row">
                     <div id="icon" className="col-xs-12 fa fa-user-circle-o mt-1">
 
                     </div>
