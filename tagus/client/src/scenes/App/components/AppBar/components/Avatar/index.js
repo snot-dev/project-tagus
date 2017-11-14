@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './style.css';
+import './avatar.css';
 
 class Avatar extends Component {
     render() {

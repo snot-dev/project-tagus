@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Nav, NavItem} from 'react-bootstrap';
 import Avatar from './components/Avatar';
-import './style.css';
+import './appBar.css';
 
 class AppBar extends Component {
     render() {
