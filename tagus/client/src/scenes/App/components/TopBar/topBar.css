@@ -1,0 +1,13 @@
+#top-bar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #273135;
+    min-height: 25px;
+}
+
+@media (min-width: 768px) {
+    #top-bar {
+        min-height: 50px;
+    }
+}
