@@ -1,6 +1,13 @@
+/*
+    COMPONENT VARIABLES
+*/
+:root {
+    --avatar-text-color: #fff;
+}
+
 #avatar {
-    color: white;
-    background-color: #EC6052;
+    color: var(--avatar-text-color);
+    background-color: var(--main-red);
 }
 
 #avatar p {
@@ -10,7 +17,7 @@
 #username {
     font-size: 16px;
     margin: 0;
-    background-color: #892532;
+    background-color: var(--bridge-red);
 }
 
 @media (min-width: 768px) {

@@ -1,13 +1,19 @@
-:root {
-    --background-color: #273135;
-}
+/*
+    Component variables
+*/
+
 
 #app-side-menu {
-    width: 100%;
+    width: 250px;
     height: 100%;
-    background-color: var(--background-color);
-    border: 0;
-    margin-top: 25px;
+    position: fixed;
+    margin-top: 0;
+    top: 0;
+    background-color: var(--navigation-bg-color);
+}
+
+#app-side-menu.responsive {
+    left: -250px;
 }
 
 .nav-container {
@@ -15,14 +21,3 @@
     padding-right: 0;
 }
 
-@media (min-width: 768px) {
-    #app-side-menu {
-        width: 250px;
-        height: 100%;
-        position: fixed;
-        margin-top: 0;
-        left: 0;
-        top: 0;
-        background-color: var(--background-color);
-    }
-}

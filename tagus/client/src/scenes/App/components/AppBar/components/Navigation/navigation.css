@@ -1,94 +1,69 @@
+/*
+    COMPONENT VARIABLES
+*/
+:root {
+    --active-nav-item: #171d20;
+    --hover-nav-item: #1f272a;
+    --nav-header-text-color: #5a859b;
+    --nav-text-color: #89949B;
+}
+
 #navigation {
     width: 100%;
+    padding-top: 65px;
 }
 
 #side-navigation {
-    padding: 15px;
-    display: flex;
+    padding: 0;
+    display: block;
     list-style-type: none;
-    flex-wrap: wrap;
-    align-content: flex-start
 }
 
 .nav-item {
-    text-align: center;
+    float: none!important;
+    display: block;
+    margin: 0;
 }
 
 #navigation-header {
-    color: #5a859b;
+    color: var(--nav-header-text-color);
     line-height: 1;
     font-size: 12px;
-    padding-top: 15px;
     font-weight: bold;
     padding-bottom: 12px;
     text-transform: uppercase;
-    text-align: center;
     margin-bottom: 0;
+    padding-top: 25px;
+    padding-left: 20px;
 }
 
 .nav-link {
-    color: #89949B;
+    color: var(--nav-text-color);
     text-decoration: none;
     display: block;
-    padding: 15px 50px;
+    padding: 15px 25px 15px 20px;
 }
 
 .nav-link.active,
 .nav-link:visited {
-    background-color:#171d20;
-    color: #89949B;
+    background-color: var(--active-nav-item);
+    color: var(--nav-text-color);
     text-decoration: none;
     font-size: 16px;
     line-height: 16px;
-    border-bottom: 5px solid #EC6052;
+    border-left: 5px solid var(--main-red);
+    padding: 15px 25px 15px 15px;
 }
 
 .nav-link:hover {
-    color: #89949B;
+    color: var(--nav-text-color);
     text-decoration: none;
-    background-color: #1f272a;
+    background-color: var(--hover-nav-item);
 }
 
 @media (min-width: 768px) {
     #navigation {
         padding-top: 65px;
-    }
-    
-    #side-navigation {
-        padding: 0;
-        display: block;
-        list-style-type: none;
-        flex-wrap: wrap;
-    }
-    
-    #navigation-header {
-        text-align: left;
-        padding-top: 25px;
-        padding-left: 20px;
-        margin-bottom: 0;
-    }
-    
-    #side-navigation {
-        padding: 0;
-    }
-
-    .nav-item {
-        float: none!important;
-        display: block;
-        margin: 0;
-        text-align: left;
-    }
-
-    .nav-link {
-        padding: 15px 25px 15px 20px;
-        display: block;
-    }
-
-    .nav-link.active,
-    .nav-link:visited {
-        padding: 15px 25px 15px 15px;
-        border-left: 5px solid #EC6052;
-        border-bottom: none;
     }
     
     .icon {

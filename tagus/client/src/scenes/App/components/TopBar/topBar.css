@@ -2,7 +2,7 @@
     position: fixed;
     top: 0;
     width: 100%;
-    background-color: #273135;
+    background-color: var(--navigation-bg-color);
     min-height: 25px;
 }
 
