@@ -5,3 +5,16 @@ html, body, #root {
   font-family: sans-serif;
 }
 
+a:hover, 
+a:visited,
+a:active,
+a:focus {
+  text-decoration: none;
+  color: inherit;
+  border: none;
+  outline: none;
+}
+
+p {
+  margin : 0;
+}

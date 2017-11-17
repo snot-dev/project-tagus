@@ -25,6 +25,10 @@
     margin: 0;
 }
 
+.nav-item .fa {
+    margin-right: 15px;
+}
+
 #navigation-header {
     color: var(--nav-header-text-color);
     line-height: 1;
@@ -39,7 +43,6 @@
 
 .nav-link {
     color: var(--nav-text-color);
-    text-decoration: none;
     display: block;
     padding: 15px 25px 15px 20px;
 }

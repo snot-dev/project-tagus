@@ -8,16 +8,16 @@ class Navigation extends Component {
                 <p id="navigation-header">MENU</p>
                 <ul id="side-navigation">
                     <li className="nav-item">
-                        <a className="nav-link active" href="#">Home <span className="sr-only">(current)</span></a>
+                        <a className="nav-link active" href="#"><i className="fa fa-file" aria-hidden="true"></i>Content</a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" href="#">Features</a>
+                        <a className="nav-link" href="#"><i className="fa fa-ship" aria-hidden="true"></i>Units</a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" href="#">Pricing</a>
+                        <a className="nav-link" href="#"><i className="fa fa-anchor" aria-hidden="true"></i>Unit Fields</a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" href="#">About</a>
+                        <a className="nav-link" href="#"><i className="fa fa-cogs" aria-hidden="true"></i>Settings</a>
                     </li>
                 </ul>
             </div>
