@@ -4,6 +4,16 @@
     width: 100%;
     background-color: var(--navigation-bg-color);
     min-height: 25px;
+    color: white;
+    padding-left: 250px;
+}
+
+#navHeaderContainer {
+    padding: 15px 30px;
+}
+
+#navHeader {
+    margin: 0;
 }
 
 @media (min-width: 768px) {
