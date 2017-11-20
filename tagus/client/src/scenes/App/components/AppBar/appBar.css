@@ -5,6 +5,7 @@
     margin-top: 0;
     top: 0;
     background-color: var(--navigation-bg-color);
+    z-index: 1000;
 }
 
 #tagus-side-menu.responsive {

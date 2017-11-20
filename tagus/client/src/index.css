@@ -15,6 +15,6 @@ a:focus {
   outline: none;
 }
 
-p {
+h3, p {
   margin : 0;
 }
