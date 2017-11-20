@@ -2,10 +2,7 @@
     COMPONENT VARIABLES
 */
 :root {
-    --active-nav-item: #171d20;
-    --hover-nav-item: #1f272a;
     --nav-header-text-color: #5a859b;
-    --nav-text-color: #89949B;
 }
 
 #navigation {
@@ -19,16 +16,6 @@
     list-style-type: none;
 }
 
-.nav-item {
-    float: none!important;
-    display: block;
-    margin: 0;
-}
-
-.nav-item .fa {
-    margin-right: 15px;
-}
-
 #navigation-header {
     color: var(--nav-header-text-color);
     line-height: 1;
@@ -39,29 +26,6 @@
     margin-bottom: 0;
     padding-top: 25px;
     padding-left: 20px;
-}
-
-.nav-link {
-    color: var(--nav-text-color);
-    display: block;
-    padding: 15px 25px 15px 20px;
-}
-
-.nav-link.active,
-.nav-link:visited {
-    background-color: var(--active-nav-item);
-    color: var(--nav-text-color);
-    text-decoration: none;
-    font-size: 16px;
-    line-height: 16px;
-    border-left: 5px solid var(--main-red);
-    padding: 15px 25px 15px 15px;
-}
-
-.nav-link:hover {
-    color: var(--nav-text-color);
-    text-decoration: none;
-    background-color: var(--hover-nav-item);
 }
 
 @media (min-width: 768px) {
