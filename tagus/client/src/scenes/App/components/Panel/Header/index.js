@@ -6,7 +6,7 @@ class Header extends Component {
         return (
             <div className="tagus-panel-header">
                 <h3>
-                   Test 
+                   {this.props.children}
                 </h3>
             </div>
         );

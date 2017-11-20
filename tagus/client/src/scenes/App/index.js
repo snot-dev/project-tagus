@@ -12,8 +12,6 @@ class App extends Component {
         <TopBar />
         <AppBar />
         <AppContainer>
-          <Panel className="col-xs-4 full-height"/>
-          <Panel className="col-xs-8 full-height"/>
         </AppContainer>
       </div>
     );
