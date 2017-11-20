@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import {NavLink} from 'react-router-dom';
 import './navItem.css';
 
 class NavItem extends Component {
     render() {
         return (
             <li className="tagus-nav-item">
-                <a className="tagus-nav-link" href={this.props.href}><i className={"fa fa-"+ this.props.icon} aria-hidden="true"></i>{this.props.children}</a>
+                <NavLink className="tagus-nav-link" to={this.props.to}><i className={"fa fa-"+ this.props.icon} aria-hidden="true"></i>{this.props.children}</NavLink>
             </li>
         );
     }

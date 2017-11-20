@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import AppBar from './components/AppBar';
 import TopBar from './components/TopBar';
 import AppContainer from './components/AppContainer';
+import Content from './scenes/content';
+import Units from './scenes/units';
 import Panel from './components/Panel';
+import {Route} from 'react-router-dom';
 import  './style.css';
 
 class App extends Component {
@@ -12,6 +15,8 @@ class App extends Component {
         <TopBar />
         <AppBar />
         <AppContainer>
+          <Route path="/content" component={Content} />
+          <Route path="/units" component={Units} />
         </AppContainer>
       </div>
     );

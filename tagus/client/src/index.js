@@ -7,6 +7,7 @@ import './vendor/bootstrap/css/bootstrap-theme.min.css';
 import './vendor/font-awesome/css/font-awesome.min.css';
 import './index.css';
 import App from './scenes/App';
+import Content from './scenes/App/scenes/content';
 import registerServiceWorker from './registerServiceWorker';
 import store from './services/store';
 
@@ -14,9 +15,7 @@ import store from './services/store';
 ReactDOM.render(
     <Provider store={store}>
         <HashRouter >
-            <Route path="/" component={App} >
-        
-            </Route>
+            <Route path="/" component={App} />
         </HashRouter>
     </Provider>,
     document.getElementById('root')

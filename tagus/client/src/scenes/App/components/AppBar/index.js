@@ -11,10 +11,10 @@ class AppBar extends Component {
                 <div className="nav-container">
                     <Avatar />
                     <Navigation title="Menu">
-                        <NavItem href="#" icon="file">Content</NavItem>
-                        <NavItem href="#" icon="ship">Units</NavItem>
-                        <NavItem href="#" icon="anchor">Unit Fields</NavItem>
-                        <NavItem href="#" icon="cogs">Settings</NavItem>
+                        <NavItem to="/content" icon="file">Content</NavItem>
+                         <NavItem to="/units" icon="ship">Units</NavItem>
+                        {/*<NavItem to="/content" icon="anchor">Unit Fields</NavItem>
+                        <NavItem to="/content" icon="cogs">Settings</NavItem> */}
                     </Navigation>
                 </div>
             </nav>
