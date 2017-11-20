@@ -1,9 +1,4 @@
-/*
-    Component variables
-*/
-
-
-#app-side-menu {
+#tagus-side-menu {
     width: 250px;
     height: 100%;
     position: fixed;
@@ -12,7 +7,7 @@
     background-color: var(--navigation-bg-color);
 }
 
-#app-side-menu.responsive {
+#tagus-side-menu.responsive {
     left: -250px;
 }
 

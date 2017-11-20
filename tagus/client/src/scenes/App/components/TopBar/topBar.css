@@ -18,6 +18,7 @@
 
 @media (min-width: 768px) {
     #top-bar {
-        min-height: 70px;
+        max-height: 70px;
+        height: 70px;
     }
 }

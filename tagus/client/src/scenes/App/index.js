@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import AppBar from './components/AppBar';
 import TopBar from './components/TopBar';
+import AppContainer from './components/AppContainer';
+import Panel from './components/Panel';
 import  './style.css';
 
 class App extends Component {
@@ -9,6 +11,10 @@ class App extends Component {
       <div id ="tagus-app" className="App">
         <TopBar />
         <AppBar />
+        <AppContainer>
+          <Panel className="col-xs-4"/>
+          <Panel className="col-xs-8"/>
+        </AppContainer>
       </div>
     );
   }

@@ -7,24 +7,24 @@
     --nav-text-color: #89949B;
 }
 
-.nav-item {
+.tagus-nav-item {
     float: none!important;
     display: block;
     margin: 0;
 }
 
-.nav-item .fa {
+.tagus-nav-item .fa {
     margin-right: 15px;
 }
 
-.nav-link {
+.tagus-nav-link {
     color: var(--nav-text-color);
     display: block;
     padding: 15px 25px 15px 20px;
 }
 
-.nav-link.active,
-.nav-link:visited {
+.tagus-nav-link.active,
+.tagus-nav-link:visited {
     background-color: var(--active-nav-item);
     color: var(--nav-text-color);
     text-decoration: none;
@@ -34,7 +34,7 @@
     padding: 15px 25px 15px 15px;
 }
 
-.nav-link:hover {
+.tagus-nav-link:hover {
     color: var(--nav-text-color);
     text-decoration: none;
     background-color: var(--hover-nav-item);

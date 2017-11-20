@@ -5,18 +5,18 @@
     --nav-header-text-color: #5a859b;
 }
 
-#navigation {
+.tagus-navigation {
     width: 100%;
     padding-top: 65px;
 }
 
-#side-navigation {
+.tagus-side-navigation {
     padding: 0;
     display: block;
     list-style-type: none;
 }
 
-#navigation-header {
+.tagus-navigation-header {
     color: var(--nav-header-text-color);
     line-height: 1;
     font-size: 12px;
@@ -29,7 +29,7 @@
 }
 
 @media (min-width: 768px) {
-    #navigation {
+    .tagus-navigation {
         padding-top: 65px;
     }
     

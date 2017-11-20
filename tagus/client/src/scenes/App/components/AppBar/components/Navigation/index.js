@@ -4,9 +4,9 @@ import './navigation.css';
 class Navigation extends Component {
     render() {
         return (
-            <div id="navigation">
-                <p id="navigation-header">{this.props.title}</p>
-                <ul id="side-navigation">
+            <div className="tagus-navigation">
+                <p className="tagus-navigation-header">{this.props.title}</p>
+                <ul className="tagus-side-navigation">
                     {this.props.children}
                 </ul>
             </div>
