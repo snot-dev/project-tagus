@@ -33,7 +33,7 @@ export function getContentListIfNeeded(){
         if( _shouldGetPageList(getState())) {
             dispatch( {
                 type: constants.content.GET_CONTENT_LIST,
-                payload: axios ('pages?contenttree=true').then(results =>{ return results;})
+                payload: axios ('content').then(results =>{ return results;})
             })
         }
     }

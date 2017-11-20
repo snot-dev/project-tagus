@@ -7,9 +7,11 @@ class Panel extends Component {
         return (
             <div className={"tagus-panel " + (this.props.className || "")}>
                 <div className="child">
-                    <Header />
+                    <Header>
+                        {this.props.header}
+                    </Header>
                     <div className="tagus-panel-content">
-
+                        {this.props.children}
                     </div>
                 </div>
             </div>

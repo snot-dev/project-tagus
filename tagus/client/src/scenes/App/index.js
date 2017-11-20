@@ -4,7 +4,6 @@ import TopBar from './components/TopBar';
 import AppContainer from './components/AppContainer';
 import Content from './scenes/content';
 import Units from './scenes/units';
-import Panel from './components/Panel';
 import {Route} from 'react-router-dom';
 import  './style.css';
 
