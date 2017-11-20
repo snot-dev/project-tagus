@@ -1,0 +1,39 @@
+/*
+    COMPONENT VARIABLES
+*/
+:root {
+    --nav-header-text-color: #5a859b;
+}
+
+.tagus-navigation {
+    width: 100%;
+    padding-top: 65px;
+}
+
+.tagus-side-navigation {
+    padding: 0;
+    display: block;
+    list-style-type: none;
+}
+
+.tagus-navigation-header {
+    color: var(--nav-header-text-color);
+    line-height: 1;
+    font-size: 12px;
+    font-weight: bold;
+    padding-bottom: 12px;
+    text-transform: uppercase;
+    margin-bottom: 0;
+    padding-top: 25px;
+    padding-left: 20px;
+}
+
+@media (min-width: 768px) {
+    .tagus-navigation {
+        padding-top: 65px;
+    }
+    
+    .icon {
+        margin-right: 15px;
+    }
+}

@@ -1,0 +1,25 @@
+#top-bar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: var(--navigation-bg-color);
+    min-height: 25px;
+    color: white;
+    padding-left: 250px;
+    z-index: 750;
+}
+
+#navHeaderContainer {
+    padding: 15px 30px;
+}
+
+#navHeader {
+    margin: 0;
+}
+
+@media (min-width: 768px) {
+    #top-bar {
+        max-height: 70px;
+        height: 70px;
+    }
+}

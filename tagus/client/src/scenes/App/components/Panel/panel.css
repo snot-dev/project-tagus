@@ -1,0 +1,22 @@
+/*
+    COMPONENT VARIABLES
+*/
+:root {
+    --tagus-panel-bg: #fff;
+}
+
+.tagus-panel.full-height {
+    height: 100%;
+}
+
+.tagus-panel .child {
+    height: 100%;
+    background-color: var(--tagus-panel-bg);
+    border-radius: 5px;
+}
+
+.tagus-panel-content {
+    padding: 15px;
+    width: 100%;
+}
+

@@ -1,0 +1,19 @@
+#tagus-side-menu {
+    width: 250px;
+    height: 100%;
+    position: fixed;
+    margin-top: 0;
+    top: 0;
+    background-color: var(--navigation-bg-color);
+    z-index: 1000;
+}
+
+#tagus-side-menu.responsive {
+    left: -250px;
+}
+
+.nav-container {
+    padding-left: 0;
+    padding-right: 0;
+}
+

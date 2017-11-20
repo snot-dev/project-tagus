@@ -1,0 +1,15 @@
+/* 
+  PROJECT VARIABLES
+*/
+:root {
+  /* Main Colors */
+  --main-red: #EC6052;
+  --bridge-red: #892532;
+
+  --navigation-bg-color: #273135;
+}
+
+#tagus-app {
+  height: 100%;
+}
+
