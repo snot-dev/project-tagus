@@ -11,7 +11,7 @@ export let contentReducer = (state, action) => {
         }
         case constants.content.GET_CONTENT_LIST_FULFILLED: {
             newState.fetchingList = false;
-            newState.list = convertArrayDictionary(action.payload.data),
+            newState.list = convertArrayDictionary(action.payload.data);
             newState.treeList = buildContentTree(action.payload.data);
             return newState;
         }

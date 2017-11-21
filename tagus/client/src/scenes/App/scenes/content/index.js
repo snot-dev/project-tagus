@@ -20,9 +20,8 @@ class Content extends Component {
         return (
             <section id="content">
                 <ContentList url={this.props.match.url} contentList={this.props.content.treeList} />
-                <Route exact path={`${this.props.match.url}/:id`} render={(props)=>(<ContentDetail {...props} detail={this.props.content.detail} />)} />
+                <Route exact path={`${this.props.match.url}/:id`} render={(props)=>(<ContentDetail {...props} detail={this.props.content.detail} unit={this.props.content.units[this.props.content.detail.unitType]} />)} />
             </section>
-
         )
     }
 }
