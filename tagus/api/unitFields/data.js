@@ -34,7 +34,7 @@ module.exports = [
             {
                 name: "True or False",
                 alias: 'trueOrFalse',
-                type: "boolean",
+                type: "checkbox",
                 createdBy: "user",
                 created: new Date(),
                 edited: new Date()
@@ -82,7 +82,7 @@ module.exports = [
             {
                 name: "Dropdown List",
                 alias: 'dropdownList',
-                type: "dropdown",
+                type: "select",
                 createdBy: "user",
                 created: new Date(),
                 edited: new Date()

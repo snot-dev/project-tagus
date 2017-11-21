@@ -12,7 +12,7 @@ class ContentDetail extends Component {
     }
     
     shouldComponentUpdate(props) {
-        return this.props.match.params.id === props.detail._id && props.unit;
+        return this.props.match.params.id === props.detail._id && props.unit._id;
     }
 
     componentWillUpdate(newProps) {
