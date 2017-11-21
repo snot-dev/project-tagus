@@ -1,27 +1,27 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import {getContentListIfNeeded, getContentDetailIfNeeded} from '../../../../services/content/actions';
-import {Link} from 'react-router-dom';
-import Panel from '../../components/Panel';
+import {getContentListIfNeeded} from '../../../../services/content/actions';
+import {Route} from 'react-router-dom';
 import store from '../../../../services/store';
 import ContentList from './components/contentList';
+import ContentDetail from './components/contentDetail';
 import './content.css';
 
 class Content extends Component {
     componentWillMount() {
         store.dispatch(getContentListIfNeeded());
-        
-        // if(this.props.params.id) {
-        //     store.dispatch(getContentDetailIfNeeded(this.props.params.id));
-        // }
     };
+    
+    componentDidMount() {
+    }
 
-    render() {
-        console.warn(this.props);
+    render() {  
         return (
-            <Panel header="Content" className="col-xs-4">
-               <ContentList contentList={this.props.content.treeList} />
-            </Panel>
+            <section id="content">
+                <ContentList url={this.props.match.url} contentList={this.props.content.treeList} />
+                <Route exact path={`${this.props.match.url}/:id`} render={(props)=>(<ContentDetail {...props} detail={this.props.content.detail} />)} />
+            </section>
+
         )
     }
 }

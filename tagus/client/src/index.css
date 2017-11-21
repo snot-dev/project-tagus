@@ -18,3 +18,8 @@ a:focus {
 h3, p {
   margin : 0;
 }
+
+ul {
+  list-style: none;
+  margin-bottom: 0;
+}

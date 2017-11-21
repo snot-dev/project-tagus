@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
+import Panel from '../../../../components/Panel';
 import './contentList.css';
 
 class ContentList extends Component {
     _buildContentList() {
         var that = this;
          return (
-            <ul id="page-list" className="list">
+            <ul id="content-list" className="content-list">
                 {that.props.contentList && that.props.contentList.length > 0 
                 ?   that.props.contentList.map((content, index) => {
                         return (
-                            <li  className="page item" key={index}>
-                                <Link to={"/content/" + (content._id)} activeClassName="active" className="link">
+                            <li  className="content-item" key={index}>
+                                <NavLink to={"/content/" + (content._id)} activeClassName="active" className="content-link">
                                     <i className="fa fa-home" aria-hidden="true"></i>{content.name}
-                                </Link>
-                                    
+                                </NavLink>
+                                    {content.children ? this._childList(content) : null}
                             </li>
                         );
                     }) 
@@ -26,14 +27,14 @@ class ContentList extends Component {
 
     _childList(item) {
         return (
-            <ul className="child-list">
+            <ul className="content-list">
                 { item.children.length > 0 
                 ?   item.children.map((child, index) => {
                         return(
-                            <li className="page item" key={index}>
-                                <Link to={"/content/" + (child._id)}  activeClassName="active" className="link">
+                            <li className="content-item" key={index}>
+                                <NavLink to={`${this.props.url}/${child._id}`} className="content-link">
                                     <i className="fa fa-file" aria-hidden="true"></i>{child.name}
-                                </Link>
+                                </NavLink>
                                 {this._childList(child)}
                             </li>
                         );
@@ -43,12 +44,12 @@ class ContentList extends Component {
             </ul>
         );
     };
-
+   
     render() {
         return (
-            <div>
+            <Panel header={"Content"} className="col-xs-4">
                 {this._buildContentList()}
-            </div>  
+            </Panel>  
         );
     };
 }

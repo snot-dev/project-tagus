@@ -3,10 +3,10 @@ import axios from '../axios';
 
 let _shouldGetPageList = function(state) {
     //TODO: add more debug code
-    return state.content.treeList.length === 0;
+    return state.content.list.length === 0;
 };
 
-let _shouldGetPageDetail = function(state, id) {
+let _shouldGetContentDetail = function(state, id) {
     //TODO: add more debug code
 
     return !state.content.detail._id || state.content.detail._id !== id;
@@ -27,13 +27,12 @@ let _getContentUnitTypeIfNeeded = function(dispatch, state, id) {
     }
 };
 
-
 export function getContentListIfNeeded(){
     return (dispatch, getState) => {
         if( _shouldGetPageList(getState())) {
             dispatch( {
                 type: constants.content.GET_CONTENT_LIST,
-                payload: axios ('content').then(results =>{ return results;})
+                payload: axios('content').then(results =>{return results;})
             })
         }
     }
@@ -41,10 +40,10 @@ export function getContentListIfNeeded(){
 
 export function getContentDetailIfNeeded(id) {
     return (dispatch, getState) => {
-        if(_shouldGetPageDetail(getState(), id)) {
+        if(_shouldGetContentDetail(getState(), id)) {
             dispatch({
                 type: constants.content.GET_CONTENT_DETAIL,
-                payload: axios('pages/' + id).then(results => {
+                payload: axios('content/' + id).then(results => {
                     _getContentUnitTypeIfNeeded(dispatch, getState(), results.data.unitType);
                     return results;
                 })

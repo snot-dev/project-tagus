@@ -12,8 +12,8 @@ let rootReducer = combineReducers({
 
 let initialState = {
     content: {
-        list: {},
-        treeList: [],
+        list: [],
+        treeList: {},
         detail: {},
         unit: {},
         fetchingList: false,

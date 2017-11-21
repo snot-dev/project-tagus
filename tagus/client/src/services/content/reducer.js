@@ -1,4 +1,5 @@
 import { constants } from '../constants';
+import {buildContentTree} from './helpers';
 
 export let contentReducer = (state, action) => {
     let newState = Object.assign({}, state);
@@ -10,7 +11,8 @@ export let contentReducer = (state, action) => {
         }
         case constants.content.GET_CONTENT_LIST_FULFILLED: {
             newState.fetchingList = false;
-            newState.treeList = action.payload.data;
+            newState.list = action.payload.data
+            newState.treeList = buildContentTree(action.payload.data);
             return newState;
         }
         case constants.content.GET_CONTENT_DETAIL_PENDING: {
