@@ -5,7 +5,7 @@ import './contentList.css';
 
 class ContentList extends Component {
     _buildContentList() {
-        var that = this;
+        const that = this;
          return (
             <ul id="content-list" className="content-list">
                 {that.props.contentList && that.props.contentList.length > 0 

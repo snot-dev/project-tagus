@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import {getContentDetailIfNeeded} from '../../../../../../services/content/actions';
+import {Form, Text} from 'react-form';
 import store from '../../../../../../services/store';
 import Panel from '../../../../components/Panel';
+import ContentForm from './components/contentForm';
 import './contentDetail.css';
 
 class ContentDetail extends Component {
@@ -26,7 +28,7 @@ class ContentDetail extends Component {
             <Panel header={this.props.detail.name} className="col-xs-8">
                 {
                     this.props.unit
-                    ? this.props.unit.name
+                    ? <ContentForm {...this.props} />
                     : null
                 }
             </Panel>  
