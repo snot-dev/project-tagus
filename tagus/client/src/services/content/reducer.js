@@ -1,5 +1,5 @@
 import { constants } from '../constants';
-import {buildContentTree} from './helpers';
+import {buildContentTree, convertArrayDictionary} from './helpers';
 
 export let contentReducer = (state, action) => {
     let newState = Object.assign({}, state);
@@ -11,8 +11,17 @@ export let contentReducer = (state, action) => {
         }
         case constants.content.GET_CONTENT_LIST_FULFILLED: {
             newState.fetchingList = false;
-            newState.list = action.payload.data
+            newState.list = convertArrayDictionary(action.payload.data),
             newState.treeList = buildContentTree(action.payload.data);
+            return newState;
+        }
+        case constants.content.GET_CONTENT_UNITS_LIST_PENDING: {
+            newState.fetchingList = true;
+            return newState;
+        }
+        case constants.content.GET_CONTENT_UNITS_LIST_FULFILLED: {
+            newState.fetchingList = false;
+            newState.units = convertArrayDictionary(action.payload.data);
             return newState;
         }
         case constants.content.GET_CONTENT_DETAIL_PENDING: {
@@ -20,7 +29,6 @@ export let contentReducer = (state, action) => {
             return newState;
         }    
         case constants.content.GET_CONTENT_DETAIL_FULFILLED: {
-            newState.list[action.payload.data._id] = action.payload.data;
             newState.fetchingDetail = false;
             newState.detail = action.payload.data;
             return newState;
@@ -31,7 +39,7 @@ export let contentReducer = (state, action) => {
         }    
         case constants.content.GET_CONTENT_DETAIL_UNITTYPE_FULFILLED: {
             newState.fetchingDetail = false;
-            newState.unit = action.payload.data;
+            // newState.unit = action.payload.data;
             return newState;
         } 
         case constants.content.GET_UPDATED_CONTENT_FIELD: {

@@ -15,7 +15,7 @@ let initialState = {
         list: [],
         treeList: {},
         detail: {},
-        unit: {},
+        units: {},
         fetchingList: false,
         fetchingDetail: false,
         savingDetail: false

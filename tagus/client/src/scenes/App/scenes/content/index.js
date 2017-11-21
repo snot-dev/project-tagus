@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import {getContentListIfNeeded} from '../../../../services/content/actions';
+import {getContentListIfNeeded, getUnitsListIfNeeded} from '../../../../services/content/actions';
 import {Route} from 'react-router-dom';
 import store from '../../../../services/store';
 import ContentList from './components/contentList';
@@ -10,6 +10,7 @@ import './content.css';
 class Content extends Component {
     componentWillMount() {
         store.dispatch(getContentListIfNeeded());
+        store.dispatch(getUnitsListIfNeeded());
     };
     
     componentDidMount() {
