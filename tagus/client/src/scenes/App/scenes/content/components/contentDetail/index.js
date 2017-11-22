@@ -25,7 +25,7 @@ class ContentDetail extends Component {
 
     render() {
         return (
-            <Panel header={this.props.detail.name} className="col-xs-8">
+            <Panel header={this.props.detail.name} className="col-xs-8 full-height">
                 {
                     this.props.unit
                     ? <ContentForm {...this.props} />

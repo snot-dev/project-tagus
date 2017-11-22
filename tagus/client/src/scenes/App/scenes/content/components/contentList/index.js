@@ -47,7 +47,7 @@ class ContentList extends Component {
    
     render() {
         return (
-            <Panel header={"Content"} className="col-xs-4">
+            <Panel header={"Content"} className="col-xs-4 full-height">
                 {this._buildContentList()}
             </Panel>  
         );

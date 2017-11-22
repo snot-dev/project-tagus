@@ -6,7 +6,7 @@ class Avatar extends Component {
         return (
             <section id="tagus-avatar" className="container-fluid text-center">
                 <div className="hidden-xs row">
-                    <div id="icon" className="col-xs-12 fa fa-user-circle-o mt-1">
+                    <div id="tagus-icon" className="col-xs-12 fa fa-user-circle-o mt-1">
 
                     </div>
                 </div>

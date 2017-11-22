@@ -32,7 +32,7 @@ class ContentForm extends Component {
         return (
             <div className="tagus-form-field">
                 <label htmlFor={field.alias}>{field.name}</label>
-                <Field name={field.alias} id={field.alias} />                
+                <Field field={field.alias} id={field.alias} />                
             </div>
         )
     }
