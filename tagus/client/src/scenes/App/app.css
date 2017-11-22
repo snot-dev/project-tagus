@@ -1,0 +1,31 @@
+/* 
+  PROJECT VARIABLES
+*/
+:root {
+  /* Main Colors */
+  --main-red: #EC6052;
+  --bridge-red: #892532;
+
+  --navigation-bg-color: #273135;
+
+  /* Text Colors */
+  --text-color: rgb(95, 102, 107);;
+  --title-color: #3B4648;
+}
+
+#tagus-app {
+  height: 100%;
+}
+
+.tagus-label {
+  display:block;
+  color: var(--text-color);
+}
+
+.tagus-input {
+  width: 500px;
+  max-width:500px;
+  padding: 12px 6px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}

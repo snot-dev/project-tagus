@@ -69,7 +69,6 @@ class ContentForm extends Component {
     render() {
         return (
             <div>
-                {this.props.unit.name}
                 {this._renderTabs(this.props.unit.tabs)}
             </div>
         );
