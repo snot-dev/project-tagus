@@ -5,7 +5,7 @@ import AppContainer from './components/AppContainer';
 import Content from './scenes/content';
 import Units from './scenes/units';
 import {Route} from 'react-router-dom';
-import  './style.css';
+import  './app.css';
 
 class App extends Component {
   render() {

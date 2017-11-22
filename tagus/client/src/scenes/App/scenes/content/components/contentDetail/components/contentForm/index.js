@@ -31,49 +31,46 @@ class ContentForm extends Component {
 
         return (
             <div className="tagus-form-field">
-                <label htmlFor={field.alias}>{field.name}</label>
-                <Field field={field.alias} id={field.alias} />                
+                <label className="tagus-label" htmlFor={field.alias}>{field.name}</label>
+                <Field className="tagus-input"  field={field.alias} id={field.alias} />                
             </div>
         )
     }
 
     _renderTabs(tabs) {
-        const that = this;
         return (
             <Tabs activeKey={this.state.key} onSelect={this._handleTabchange} id="tagus-content-tabs">
-            {tabs.map((tab, index) => {
-                    return(
-                        <Tab eventKey={index} title={tab.name} key={index}>
-                            {tab.fields.map((field, fieldIndex) => {
-                                return(
-                                    <div className="tagus-form-control" key={fieldIndex}>
-                                        {that._renderField(field)}
-                                    </div>
-                                )
-                            })}
-                        </Tab>
+                {tabs.map((tab, index) => (
+                            <Tab eventKey={index} title={tab.name} key={this.props.detail._id+tab.alias+index}>
+                                <Form defaultValues={this.props.detail.content[tab.alias]}>
+                                    {formApi => (
+                                        <form>
+                                            {tab.fields.map((field, fieldIndex) => (
+                                                    <div className="tagus-form-control" key={field.alias+fieldIndex}>
+                                                        {this._renderField(field)}
+                                                    </div>
+                                                )
+                                            )}
+                                        </form>
+                                    )}
+                                </Form>
+                            </Tab>
+                        )
                     )
-                })
-            }
+                }
             </Tabs>
         )
     }
 
+    _getDefaultValues(tabs) {
+        
+    }
+
     render() {
-        console.log(this.props.unit);
         return (
             <div>
                 {this.props.unit.name}
-                <Form>
-                    {formApi => (
-                        <form>
-                            {
-                                this._renderTabs(this.props.unit.tabs)
-
-                            }
-                        </form>
-                    )}
-                </Form>
+                {this._renderTabs(this.props.unit.tabs)}
             </div>
         );
     };
