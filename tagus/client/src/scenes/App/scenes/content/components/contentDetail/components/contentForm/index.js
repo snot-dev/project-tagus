@@ -16,6 +16,27 @@ class ContentForm extends Component {
         this.setState({key});
     }
 
+    _getFieldType(field) {
+        switch(field.type) {
+            case'text':
+                return Text;
+            default:
+                break;
+        }
+    }
+
+    _renderField(field) {
+        const that = this;
+        const Field = this._getFieldType(field);
+
+        return (
+            <div className="tagus-form-field">
+                <label htmlFor={field.alias}>{field.name}</label>
+                <Field name={field.alias} id={field.alias} />                
+            </div>
+        )
+    }
+
     _renderTabs(tabs) {
         const that = this;
         return (
@@ -23,7 +44,13 @@ class ContentForm extends Component {
             {tabs.map((tab, index) => {
                     return(
                         <Tab eventKey={index} title={tab.name} key={index}>
-                            Hello!
+                            {tab.fields.map((field, fieldIndex) => {
+                                return(
+                                    <div className="tagus-form-control" key={fieldIndex}>
+                                        {that._renderField(field)}
+                                    </div>
+                                )
+                            })}
                         </Tab>
                     )
                 })
