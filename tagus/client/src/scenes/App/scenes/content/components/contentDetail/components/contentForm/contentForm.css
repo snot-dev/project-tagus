@@ -1,15 +1,8 @@
-#tagus-content-tabs .nav>li>a {
-    padding: 10px 30px;
-    font-size: 18px;
-}
-
-.tab-content {
-    padding: 30px;
-    border: 1px solid #ddd;
-    border-top: none;
-}
-
 .tagus-form-control {
-    width: 100%;
     margin-bottom: 15px;
+}
+
+.tagus-form-button-container {
+    padding-top: 15px;
+    padding-bottom: 15px;
 }

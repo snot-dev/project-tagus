@@ -18,7 +18,7 @@ class ContentForm extends Component {
         const Field = this._getFieldType(field);
 
         return (
-            <div className="tagus-form-field">
+            <div className="col-xs-12 tagus-form-field">
                 <label className="tagus-label" htmlFor={field.alias}>{field.name}</label>
                 <Field className="tagus-input"  field={field.alias} id={field.alias} />                
             </div>
@@ -32,15 +32,17 @@ class ContentForm extends Component {
         return (
             <Form defaultValues={this.props.defaultValues}>
                 {formApi => (
-                    <form>
+                    <form className="container-fluid">
                         {this.props.fields.map((field, fieldIndex) => (
-                                <div className="tagus-form-control" key={field.alias+fieldIndex}>
+                                <div className="row tagus-form-control" key={field.alias+fieldIndex}>
                                     {this._renderField(field)}
                                 </div>
                             )
                         )}
-                        <div >
-                            <Button bsStyle={"primary"}>Save</Button>
+                        <div className="row">
+                            <div className="tagus-form-button-container col-xs-12">
+                                <Button className="pull-right" bsStyle={"primary"}>Save</Button>
+                            </div>
                         </div>
                     </form>
                 )}

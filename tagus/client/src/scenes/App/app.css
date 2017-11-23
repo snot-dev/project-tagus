@@ -32,7 +32,7 @@
 
 .tagus-input {
   width: 100%;
-  max-width:500px;
+  /*max-width:500px;*/
   padding: 12px 6px;
   border: 1px solid #ddd;
   border-radius: 5px;
