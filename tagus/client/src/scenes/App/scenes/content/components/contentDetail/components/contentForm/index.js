@@ -12,10 +12,6 @@ class ContentForm extends Component {
         }
     }
 
-    _handleTabchange(key) {
-        this.setState({key});
-    }
-
     _getFieldType(field) {
         switch(field.type) {
             case'text':
@@ -37,40 +33,24 @@ class ContentForm extends Component {
         )
     }
 
-    _renderTabs(tabs) {
-        return (
-            <Tabs activeKey={this.state.key} onSelect={this._handleTabchange} id="tagus-content-tabs">
-                {tabs.map((tab, index) => (
-                            <Tab eventKey={index} title={tab.name} key={this.props.detail._id+tab.alias+index}>
-                                <Form defaultValues={this.props.detail.content[tab.alias]}>
-                                    {formApi => (
-                                        <form>
-                                            {tab.fields.map((field, fieldIndex) => (
-                                                    <div className="tagus-form-control" key={field.alias+fieldIndex}>
-                                                        {this._renderField(field)}
-                                                    </div>
-                                                )
-                                            )}
-                                        </form>
-                                    )}
-                                </Form>
-                            </Tab>
-                        )
-                    )
-                }
-            </Tabs>
-        )
-    }
-
     _getDefaultValues(tabs) {
         
     }
 
     render() {
         return (
-            <div>
-                {this._renderTabs(this.props.unit.tabs)}
-            </div>
+            <Form defaultValues={this.props.detail.content[tab.alias]}>
+                {formApi => (
+                    <form>
+                        {tab.fields.map((field, fieldIndex) => (
+                                <div className="tagus-form-control" key={field.alias+fieldIndex}>
+                                    {this._renderField(field)}
+                                </div>
+                            )
+                        )}
+                    </form>
+                )}
+            </Form>
         );
     };
 }
