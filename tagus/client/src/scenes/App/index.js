@@ -10,7 +10,7 @@ import  './app.css';
 class App extends Component {
   render() {
     return (
-      <div id ="tagus-app" className="App">
+      <div id ="tagus-app" className="App container-fluid">
         <TopBar />
         <AppBar />
         <AppContainer>

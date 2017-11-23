@@ -4,12 +4,10 @@ import './appContainer.css';
 class AppContainer extends Component {
     render() {
         return (
-            <section id="tagus-container">
+            <section id="tagus-container" className="container-fluid">
                 <div className="container-fluid full-height">
                     <div className="row full-height">
-                        <div className="col-xs-12 full-height">
-                            {this.props.children}
-                        </div>
+                        {this.props.children}
                     </div>
                 </div>
             </section>

@@ -7,10 +7,11 @@
 
 .tagus-panel.full-height {
     height: 100%;
+    min-height: 100%;
 }
 
 .tagus-panel .child {
-    height: 100%;
+    min-height: 100%;
     background-color: var(--tagus-panel-bg);
     border-radius: 5px;
     border: 1px solid rgba(206,219,236,0.75);
@@ -19,7 +20,7 @@
 }
 
 .tagus-panel-content {
-    padding: 15px;
-    width: 100%;
+    padding-top: 15px;
+    padding-bottom: 15px;
 }
 
