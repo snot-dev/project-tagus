@@ -1,17 +1,9 @@
 import React, { Component } from 'react';
 import {Form, Text} from 'react-form';
-import {Tabs, Tab} from 'react-bootstrap';
 // import store from '../../../../../../services/store';
 import './contentForm.css';
 
 class ContentForm extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            key: 0
-        }
-    }
-
     _getFieldType(field) {
         switch(field.type) {
             case'text':
@@ -22,7 +14,6 @@ class ContentForm extends Component {
     }
 
     _renderField(field) {
-        const that = this;
         const Field = this._getFieldType(field);
 
         return (
@@ -39,10 +30,10 @@ class ContentForm extends Component {
 
     render() {
         return (
-            <Form defaultValues={this.props.detail.content[tab.alias]}>
+            <Form defaultValues={this.props.defaultValues}>
                 {formApi => (
                     <form>
-                        {tab.fields.map((field, fieldIndex) => (
+                        {this.props.fields.map((field, fieldIndex) => (
                                 <div className="tagus-form-control" key={field.alias+fieldIndex}>
                                     {this._renderField(field)}
                                 </div>

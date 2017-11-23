@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {getContentDetailIfNeeded} from '../../../../../../services/content/actions';
-import {Form, Text} from 'react-form';
 import {Tabs, Tab} from 'react-bootstrap';
 import store from '../../../../../../services/store';
 import Panel from '../../../../components/Panel';
@@ -8,6 +7,13 @@ import ContentForm from './components/contentForm';
 import './contentDetail.css';
 
 class ContentDetail extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            key: 0
+        }
+    }
+    
     componentWillMount() {
         if(this.props.match.params.id) {
             store.dispatch(getContentDetailIfNeeded(this.props.match.params.id));
@@ -34,7 +40,7 @@ class ContentDetail extends Component {
             <Tabs activeKey={this.state.key} onSelect={this._handleTabchange} id="tagus-content-tabs">
                 {tabs.map((tab, index) => (
                             <Tab eventKey={index} title={tab.name} key={this.props.detail._id+tab.alias+index}>
-                                <ContentForm {...this.props} />
+                                <ContentForm defaultValues={this.props.detail.content[tab.alias]} fields={tab.fields} />
                             </Tab>
                         )
                     )
