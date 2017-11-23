@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Form, Text} from 'react-form';
+import {Button} from 'react-bootstrap';
 // import store from '../../../../../../services/store';
 import './contentForm.css';
 
@@ -25,7 +26,6 @@ class ContentForm extends Component {
     }
 
     _getDefaultValues(tabs) {
-        
     }
 
     render() {
@@ -39,6 +39,9 @@ class ContentForm extends Component {
                                 </div>
                             )
                         )}
+                        <div >
+                            <Button bsStyle={"primary"}>Save</Button>
+                        </div>
                     </form>
                 )}
             </Form>

@@ -23,6 +23,8 @@
   background-color: var(--app-container-bg-color);
 }
 
+/* General Class */
+
 .tagus-label {
   display:block;
   color: var(--text-color);
@@ -34,4 +36,10 @@
   padding: 12px 6px;
   border: 1px solid #ddd;
   border-radius: 5px;
+}
+
+/* Libs Overrides */
+.btn {
+  border-radius: 0;
+  min-width: 125px;
 }
