@@ -24,9 +24,6 @@ class ContentForm extends Component {
         )
     }
 
-    _getDefaultValues(tabs) {
-    }
-
     _onSubmit(values, e, formApi) {
         this.props.detail.content[this.props.name] = values;
         this.props.onSubmit(this.props.detail);
