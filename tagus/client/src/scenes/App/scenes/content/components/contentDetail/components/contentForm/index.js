@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {Form, Text} from 'react-form';
 import {Button} from 'react-bootstrap';
-// import store from '../../../../../../services/store';
 import './contentForm.css';
 
 class ContentForm extends Component {
@@ -28,11 +27,16 @@ class ContentForm extends Component {
     _getDefaultValues(tabs) {
     }
 
+    _onSubmit(values, e, formApi) {
+        this.props.detail.content[this.props.name] = values;
+        this.props.onSubmit(this.props.detail);
+    }
+
     render() {
         return (
-            <Form defaultValues={this.props.defaultValues}>
+            <Form onSubmit={this._onSubmit.bind(this)} defaultValues={this.props.defaultValues}>
                 {formApi => (
-                    <form className="container-fluid">
+                    <form onSubmit={formApi.submitForm} className="container-fluid">
                         {this.props.fields.map((field, fieldIndex) => (
                                 <div className="row tagus-form-control" key={field.alias+fieldIndex}>
                                     {this._renderField(field)}
@@ -41,7 +45,7 @@ class ContentForm extends Component {
                         )}
                         <div className="row">
                             <div className="tagus-form-button-container col-xs-12">
-                                <Button className="pull-right" bsStyle={"primary"}>Save</Button>
+                                <Button type="submit" className="pull-right" bsStyle={"primary"}>Save</Button>
                             </div>
                         </div>
                     </form>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {getContentDetailIfNeeded} from '../../../../../../services/content/actions';
+import {getContentDetailIfNeeded, saveContent} from '../../../../../../services/content/actions';
 import {Tabs, Tab} from 'react-bootstrap';
 import store from '../../../../../../services/store';
 import Panel from '../../../../components/Panel';
@@ -35,12 +35,16 @@ class ContentDetail extends Component {
         }
     }
 
+    onSubmit(content) {
+        store.dispatch(saveContent(content));
+    }
+
     _renderTabs(tabs) {
         return (
             <Tabs activeKey={this.state.key} onSelect={this._handleTabchange} id="tagus-content-tabs">
                 {tabs.map((tab, index) => (
                             <Tab eventKey={index} title={tab.name} key={this.props.detail._id+tab.alias+index}>
-                                <ContentForm defaultValues={this.props.detail.content[tab.alias]} fields={tab.fields} />
+                                <ContentForm onSubmit={this.onSubmit} detail={this.props.detail} name={tab.alias} defaultValues={this.props.detail.content[tab.alias]} fields={tab.fields} />
                             </Tab>
                         )
                     )

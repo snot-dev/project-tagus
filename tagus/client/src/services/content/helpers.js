@@ -18,7 +18,7 @@ const buildContentTree = content => {
     return contentTree;
 }
 
-const convertArrayDictionary = array => {
+const convertArrayToDictionary = array => {
     const obj = {};
 
     for(const item of array) {
@@ -28,4 +28,4 @@ const convertArrayDictionary = array => {
     return obj;
 };
 
-export {buildContentTree, convertArrayDictionary};
+export {buildContentTree, convertArrayToDictionary};
