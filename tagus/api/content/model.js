@@ -11,11 +11,12 @@ const contentSchema = new mongoose.Schema({
     published: {type: Boolean, default: true},
     nav: {type: Boolean, default: true},
     publishedAt: { type: Date, default: Date.now() },
-    unitType: String,
+    unitType: {type: mongoose.Schema.Types.ObjectId, ref: 'Unit'},
     content: {},
     template: { type: String, required: true },
     partial: String,
     parent: String,
+    children: [{type: mongoose.Schema.Types.ObjectId, ref: 'Content'}],
     sortOrder: { type: Number },
     isHome: { type: Boolean, default: false }
 });

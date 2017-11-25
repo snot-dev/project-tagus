@@ -33,8 +33,6 @@ app.use(tagusApi.auth.passport.initialize());
 app.use('/api', tagusApi.routes.api());
 app.use('/', tagusApi.routes.site());
 
-app.use()
-
 app.listen(portNumber, function () {  
   console.log("listening to " + portNumber);
 });

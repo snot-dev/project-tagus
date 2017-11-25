@@ -9,6 +9,11 @@ module.exports = [
         partial: "banner",
         template: "master",
         isHome: true,
+        children: [
+            "5a0181a26602223bd865660c",
+            "5a01836b79194430c8f98806",
+            "5a01884e905c9938fc6f011b",
+        ],
         content: {
             default: {
                 title: "Your Favorite Source of Free Bootstrap Themes",
@@ -50,6 +55,12 @@ module.exports = [
         template: "master",
         isHome: false,
         parent: "5a01809eefef172e54fb10cd",
+        children: [
+            "5a01851a8c32cb0f28743b50",
+            "5a01859a73651028d88370f1",
+            "5a01865f9ab1c136a80fb6e9",
+            "5a018702ae30463a68797893"
+        ],
         published: false,
         content: {
             default: {
@@ -152,6 +163,10 @@ module.exports = [
         template: "master",
         isHome: false,
         parent: "5a01809eefef172e54fb10cd",
+        children: [
+            "5a0189329f69783b4035f0fc",
+            "5a0189b52f70e724104dab89"
+        ],
         published: false,
         content: {
             default: {
