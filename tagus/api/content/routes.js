@@ -11,4 +11,24 @@ router.get('/', (req, res) => {
     });  
 });
 
+router.post('/', (req, res) => {
+    let newContent = new Content(req.body);
+    
+    newContent.save()
+    .then(result => {
+        let newContent = result;
+        return Content.findOne({'_id': newContent.parent})
+    })
+    .then( parent => {
+        if(!parent.children.includes(newContent._id)) {
+            parent.push(newContent._id);
+            
+            return parent.save();
+        }
+    })
+    .then( () => {
+        res.json({ message: "Document successfully created!", result: newContent });
+    })
+});
+
 module.exports = router;
