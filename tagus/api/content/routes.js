@@ -16,7 +16,7 @@ router.post('/', (req, res) => {
     
     newContent.save()
     .then(result => {
-        let newContent = result;
+        newContent = result;
         return Content.findOne({'_id': newContent.parent})
     })
     .then( parent => {
