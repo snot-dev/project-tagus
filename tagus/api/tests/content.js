@@ -20,9 +20,9 @@ const mock = {
     created: new Date(),
     edited: new Date(),
     published: new Date(),
-    unitType:  '123213232313131',
+    unitType:  '5a017a9e83dd7214c8661648',
     template: 'index',
-    parent: '',
+    parent: '5a01809eefef172e54fb10cd',
     isHome: false,
     content: {
         'siteName': 'Example Site'
@@ -36,7 +36,55 @@ const updatedMock = Object.assign(mock, {name: updatedValue});
 describe(testName, () => {
     it(`Should list all ${testName} at ${url} GET`, tests.getAll(url, Content));
     
-    it(`Should create a new ${testName} in ${url} POST`, tests.createNew(url, Content, mock));
+    it(`Should create a new ${testName} in ${url} POST`, done => {
+        let totalDocs = 0;
+        chai.request(server)
+        .get(url)
+        .end((err, res) => {
+            res.should.have.status(200);
+            res.should.be.json;
+            res.body.should.be.a('array');
+
+            totalDocs = res.body.length;
+
+            chai.request(server)
+            .post(url)
+            .send(mock)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.be.a('object');
+
+                if(validation) {
+                    validation(res);
+                }
+                else {
+                    const instance = new Content(res.body.result);
+    
+                    should.not.exist(instance.validateSync())
+                }
+                chai.request(server)
+                .get(url)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.be.a('array');
+                    res.body.length.should.to.equal(totalDocs + 1);
+
+                    chai.request(server)
+                    .get(`${url}${mock.parent}`)
+                    .end((err, res) => {
+                        res.should.have.status(200);
+                        res.should.be.json;
+                        res.body.should.be.a('object');
+                        res.body.children.should.be.a('array');
+                        res.body.children.should.include(mock._id);
+                        done();
+                    });
+                });
+            });
+        });
+    });
 
     it(`Should list a single ${testName} in ${url}<id> GET`, tests.getOneById(url, Content, mock._id));
 
@@ -49,5 +97,42 @@ describe(testName, () => {
         should.not.exist(instance.validateSync());
     }));
 
-    it(`Should delete existing ${testName} in ${url}<id> DELETE`, tests.deleteById(url, Content, updatedMock._id));
+    it(`Should delete existing ${testName} in ${url}<id> DELETE`, done => {
+        let totalPages = 0;
+        let deletedId;
+
+        chai.request(server)
+        .get(url)
+        .end((err, res) => {
+            totalPages = res.body.length;
+
+            chai.request(server)
+            .delete(`${url}${id}`)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.be.a('object');
+                
+                if(validation) {
+                    validation(res);
+                }
+                else {
+                    res.body.message.should.equal('Document successfully deleted!');
+                    res.body.result.should.have.property('ok').eql(1);
+                    res.body.result.should.have.property('n').eql(1);
+                }
+
+                chai.request(server)
+                .get(`${url}${mock.parent}`)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.be.a('object');
+                    res.body.children.should.be.a('array');
+                    res.body.children.should.not.include(mock._id);
+                    done();
+                });
+            });
+        });
+    });
 });
