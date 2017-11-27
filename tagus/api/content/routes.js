@@ -19,8 +19,6 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
     let newContent = new Content(req.body);
   
-    console.log("here");
-    console.log(req.body);
     if(newContent.name) {
         newContent.alias = convertToAlias(newContent.name);
     }
@@ -56,13 +54,11 @@ router.put('/:id', (req, res) => {
         const updatedContent = Object.assign(result, req.body);
 
         if(updatedContent.name) {
-            newContent.alias = convertToAlias(newContent.name);
+            updatedContent.alias = convertToAlias(updatedContent.name);
         }
-        console.log("1");
-        return newContent.save();
+        return updatedContent.save();
     })
     .then(result =>{
-        console.log("2");
         res.json({message: "Document updated!", result});
     })
     .catch( err => {
@@ -71,25 +67,30 @@ router.put('/:id', (req, res) => {
 
     router.delete('/:id', (req, res)=>{
         //TODO: Remove all children
-        let resultMessage;
-        console.log("delete");
-        Content.remove({_id : req.params.id}) 
+        let deletedDoc;
+        Content.findOne({_id : req.params.id}) 
         .then( result => {
-            resultMessage = result;
-            return Content.findOne({'_id': req.body.parent});
+            return result.remove(); 
             
         })
+        .then( doc => {
+            deletedDoc = doc;
+            return Content.findOne({'_id': deletedDoc.parent});
+        })
         .then( parent => {
-            const indexOfChildren = parent.children.indexOf(req.body._id);
-            
+            const indexOfChildren = parent.children.indexOf(deletedDoc._id.toString());
+
             if(indexOfChildren > -1) {
-                parent.children.splice(indexOfChildren, 0);
+                parent.children.splice(indexOfChildren, 1);
                 return parent.save();
             }
         })
         .then( () => {
-            res.json(err || { message: "Document successfully deleted!", result });
-        });
+            res.json({ message: "Document successfully deleted!", result: deletedDoc });
+        })
+        .catch( err => {
+            res.json(err);
+        })
     });
 });
 

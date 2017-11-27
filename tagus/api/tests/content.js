@@ -55,14 +55,10 @@ describe(testName, () => {
                 res.should.be.json;
                 res.body.should.be.a('object');
 
-                if(validation) {
-                    validation(res);
-                }
-                else {
-                    const instance = new Content(res.body.result);
-    
-                    should.not.exist(instance.validateSync())
-                }
+                const instance = new Content(res.body.result);
+
+                should.not.exist(instance.validateSync())
+
                 chai.request(server)
                 .get(url)
                 .end((err, res) => {
@@ -78,7 +74,7 @@ describe(testName, () => {
                         res.should.be.json;
                         res.body.should.be.a('object');
                         res.body.children.should.be.a('array');
-                        res.body.children.should.include(mock._id);
+                        res.body.children.should.include(mock._id.toString());
                         done();
                     });
                 });
@@ -90,7 +86,6 @@ describe(testName, () => {
 
     it(`Should update existing ${testName} in ${url}<id> PUT`, tests.updateExisting(url, Content, updatedMock, res => {
         const instance = new Content(res.body.result);
-        
         instance.name.should.be.equal(updatedValue);
         res.body.message.should.be.equal("Document updated!");
 
@@ -107,20 +102,14 @@ describe(testName, () => {
             totalPages = res.body.length;
 
             chai.request(server)
-            .delete(`${url}${id}`)
+            .delete(`${url}${mock._id}`)
             .end((err, res) => {
                 res.should.have.status(200);
                 res.should.be.json;
                 res.body.should.be.a('object');
-                
-                if(validation) {
-                    validation(res);
-                }
-                else {
-                    res.body.message.should.equal('Document successfully deleted!');
-                    res.body.result.should.have.property('ok').eql(1);
-                    res.body.result.should.have.property('n').eql(1);
-                }
+                res.body.message.should.equal('Document successfully deleted!');
+                res.body.should.be.a('object');
+                res.body.result.should.have.property('_id').eql(mock._id.toString());
 
                 chai.request(server)
                 .get(`${url}${mock.parent}`)
@@ -129,7 +118,7 @@ describe(testName, () => {
                     res.should.be.json;
                     res.body.should.be.a('object');
                     res.body.children.should.be.a('array');
-                    res.body.children.should.not.include(mock._id);
+                    res.body.children.should.not.include(mock._id.toString());
                     done();
                 });
             });
