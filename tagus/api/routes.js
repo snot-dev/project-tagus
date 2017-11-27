@@ -35,61 +35,34 @@ const api = (strategy) => {
 const site = () => {
     const router = require('express').Router();
     const bridgesContent = {};
+    const fields = 'name alias url template partial content'
 
-    bridges.model.find({})
-    .then( docs => {
-        if(docs) {
-            for(let i = 0; i < docs.length; i++) {
-                const bridge = docs[i];
-
-                bridgesContent[bridge.alias] = bridge.content;
+    router.get('*', (req, res) => {
+        bridges.model.find({})
+        .then( docs => {
+            if(docs) {
+                for(const bridge of docs) {
+                    bridgesContent[bridge.alias] = bridge.content;
+                }
             }
-        }
-
-        return content.model.find({});
-    })
-    .then( docs => {
-        const contentTree = _buildContentTree(docs);
-        
-        for(doc of docs) {
-            if(doc.published) {
-                const viewContent = contentTree[doc._id];
-
-                router.get(doc.url, (req, res) => {
-                    res.render(doc.template, {viewContent, bridges: bridgesContent});
-                });
-            }
-        }
+    
+            content.model.findOne({'url': req.url})
+            .populate({
+                path: 'children',
+                populate: {path: 'children'}
+            })
+            .exec((err, result) => {
+                if(result && result.published ) {
+                    res.render(result.template, {viewContent: result, bridges: bridgesContent});
+                }
+                else {
+                    res.json("404 - not found");
+                }
+            });
+        })
     });
 
     return router;
-};
-
-const _buildContentTree = content => {
-    const contentTree = {};
-
-    // Convert docs into an object
-    for(doc of content) {
-        const cont = {
-            name: doc.name,
-            alias: doc.alias,
-            url: doc.url,
-            content: doc.content,
-            partial: doc.partial,
-            children: []
-        };
-
-        contentTree[doc._id] = cont;
-    }
-
-    // stablish parent-children relations 
-    for(doc of content) {
-        if(doc.parent) {
-            contentTree[doc.parent].children.push(contentTree[doc._id]);
-        }
-    }
-
-    return contentTree;
 };
 
 

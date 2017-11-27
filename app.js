@@ -13,7 +13,7 @@ const portNumber =   process.env.PORT_NUMBER;
 
 // override this settings to choose the view engine to be used
 const partialsDir = '/SiteName/views/partials';
-app.set('views', [ path.join(__dirname, 'SiteName/views'), path.join(__dirname, partialsDir), path.join(__dirname, 'tagus/tagus_build/views')]);
+app.set('views', [ path.join(__dirname, 'SiteName/views'), path.join(__dirname, partialsDir)]);
 app.set('view engine', 'hbs');
 hbs.registerPartials(path.join(__dirname + partialsDir));
 hbs.registerHelper('partial', name => {
