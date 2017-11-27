@@ -50,6 +50,7 @@
   border-radius: 0;
   min-width: 125px;
   font-weight: bold;
+  box-shadow: none;
 }
 
 .btn-default {

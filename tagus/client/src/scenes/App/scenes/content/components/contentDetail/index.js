@@ -24,7 +24,6 @@ class ContentDetail extends Component {
         this.setState({key});
     }
 
-
     shouldComponentUpdate(props) {
         return this.props.match.params.id === props.detail._id && props.unit._id;
     }
