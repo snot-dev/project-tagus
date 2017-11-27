@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Form, Text} from 'react-form';
+import {Form, StyledText } from 'react-form';
 import {Button} from 'react-bootstrap';
 import './contentForm.css';
 
@@ -7,7 +7,7 @@ class ContentForm extends Component {
     _getFieldType(field) {
         switch(field.type) {
             case'text':
-                return Text;
+                return StyledText;
             default:
                 break;
         }
@@ -29,14 +29,25 @@ class ContentForm extends Component {
         this.props.onSubmit(this.props.detail);
     }
 
+    _errorValidator(values) {
+        const errors = {};
+
+        for(const field of this.props.fields) {
+            errors[field.alias] = field.required && values[field.alias] == ''?"This field is required!":null;
+        }
+
+
+        return errors;
+    }
+
     render() {
         return (
-            <Form onSubmit={this._onSubmit.bind(this)} defaultValues={this.props.defaultValues}>
+            <Form dontValidateOnMount={true} validateError={this._errorValidator.bind(this)} onSubmit={this._onSubmit.bind(this)} defaultValues={this.props.defaultValues}>
                 {formApi => (
                     <form onSubmit={formApi.submitForm} className="container-fluid">
                         {this.props.fields.map((field, fieldIndex) => (
                                 <div className="row tagus-form-control" key={field.alias+fieldIndex}>
-                                    {this._renderField(field)}
+                                    {this._renderField(field, formApi)}
                                 </div>
                             )
                         )}

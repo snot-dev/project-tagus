@@ -38,8 +38,30 @@
   border-radius: 5px;
 }
 
+.tagus-input:focus {
+  outline-color:none;
+  outline: none;
+}
+
 /* Libs Overrides */
+
+/* Buttons */
 .btn {
   border-radius: 0;
   min-width: 125px;
+}
+
+
+.btn-primary {
+  background: #4A90E2;
+  border-color: #4A90E2;
+}
+
+/* Form */
+.react-form-input-error {
+  border: 2px solid var(--bridge-red);
+}
+
+.react-form-message-error {
+  color: var(--bridge-red);
 }
