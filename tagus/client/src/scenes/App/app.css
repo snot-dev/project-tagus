@@ -49,8 +49,13 @@
 .btn {
   border-radius: 0;
   min-width: 125px;
+  font-weight: bold;
 }
 
+.btn-default {
+  background: #fff;
+  background-image: none;
+}
 
 .btn-primary {
   background: #4A90E2;

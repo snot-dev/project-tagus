@@ -24,11 +24,6 @@ class ContentForm extends Component {
         )
     }
 
-    _onSubmit(values, e, formApi) {
-        this.props.detail.content[this.props.name] = values;
-        this.props.onSubmit(this.props.detail);
-    }
-
     _errorValidator(values) {
         const errors = {};
 
@@ -38,6 +33,17 @@ class ContentForm extends Component {
 
 
         return errors;
+    }
+
+    _onSubmit(values, e, formApi) {
+        this.props.detail.content[this.props.name] = values;
+        this.props.onSubmit(this.props.detail);
+    }
+
+    _onReset(formApi) {
+        return () => {
+            formApi.resetAll();
+        }
     }
 
     render() {
@@ -54,6 +60,7 @@ class ContentForm extends Component {
                         <div className="row">
                             <div className="tagus-form-button-container col-xs-12">
                                 <Button type="submit" className="pull-right" bsStyle={"primary"}>Save</Button>
+                                <Button onClick={this._onReset(formApi)} className="pull-left">Cancel</Button>
                             </div>
                         </div>
                     </form>
