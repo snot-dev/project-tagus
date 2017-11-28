@@ -46,9 +46,14 @@ class ContentForm extends Component {
     }
 
     //TODO: Only send if form was touched
-    _onSubmit(values, e, formApi) {
-        this.props.detail.content[this.props.name] = values;
-        this.props.onSubmit(this.props.detail);
+    _onSubmit(formApi) {
+        return () => {
+            if(this.state.formWasTouched){
+                this.props.detail.content[this.props.name] = formApi.values;
+                formApi.submitForm();
+                this.props.onSubmit(this.props.detail);
+            }
+        }
     }
 
     _resetForm(formApi) {
@@ -76,10 +81,9 @@ class ContentForm extends Component {
         const disabled = this.state.formWasTouched ? "" : "disabled";
         return (
             <div>                
-                <Form dontValidateOnMount={true} validateError={this._errorValidator.bind(this)} onSubmit={this._onSubmit.bind(this)} defaultValues={this.props.defaultValues}>
+                <Form dontValidateOnMount={true} validateError={this._errorValidator.bind(this)} defaultValues={this.props.defaultValues}>
                     {formApi => (
                         <form onSubmit={formApi.submitForm} className="container-fluid">
-                        {console.warn(formApi)}
                             {this.props.fields.map((field, fieldIndex) => (
                                 <div className="row tagus-form-control" key={field.alias+fieldIndex}>
                                     {this._renderField(field, formApi)}
@@ -87,7 +91,7 @@ class ContentForm extends Component {
                             ))}
                             <div className="row">
                                 <div className="tagus-form-button-container col-xs-12">
-                                    <Button type="submit" className={`pull-right ${disabled}`} bsStyle={"primary"}>Save</Button>
+                                    <Button onClick={this._onSubmit(formApi).bind(this)} type="button" className={`pull-right ${disabled}`} bsStyle={"primary"}>Save</Button>
                                     <Button onClick={this._toggleCancelModal(true).bind(this)} className={`pull-left ${disabled}`}>Cancel</Button>
                                 </div>
                             </div>
