@@ -29,7 +29,7 @@ class ContentForm extends Component {
         return (
             <div className="col-xs-12 tagus-form-field">
                 <label className="tagus-label" htmlFor={field.alias}>{field.name}</label>
-                <Field className="tagus-input"  field={field.alias} id={field.alias} />                
+                <Field onChange={this._touchTheForm.bind(this)} className="tagus-input"  field={field.alias} id={field.alias} />                
             </div>
         )
     }
@@ -66,8 +66,8 @@ class ContentForm extends Component {
         }
     }
 
-    _formDidUpdate(formState) {
-        if(!this.state.formWasTouched && Object.keys(formState.touched).length > 0 ){
+    _touchTheForm() {
+        if(!this.state.formWasTouched){
             this.setState({formWasTouched: true});
         }
     }
@@ -76,7 +76,7 @@ class ContentForm extends Component {
         const disabled = this.state.formWasTouched ? "" : "disabled";
         return (
             <div>                
-                <Form formDidUpdate={this._formDidUpdate.bind(this)} dontValidateOnMount={true} validateError={this._errorValidator.bind(this)} onSubmit={this._onSubmit.bind(this)} defaultValues={this.props.defaultValues}>
+                <Form dontValidateOnMount={true} validateError={this._errorValidator.bind(this)} onSubmit={this._onSubmit.bind(this)} defaultValues={this.props.defaultValues}>
                     {formApi => (
                         <form onSubmit={formApi.submitForm} className="container-fluid">
                         {console.warn(formApi)}
