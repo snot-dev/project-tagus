@@ -9,7 +9,8 @@ class ContentForm extends Component {
         super(props);
 
         this.state = {
-            cancel: false
+            cancelMode: false,
+            formWasTouched: false
         }
     }
 
@@ -51,21 +52,30 @@ class ContentForm extends Component {
 
     _resetForm(formApi) {
         return () => {
-            this.setState({cancel: false});
+            this.setState({cancelMode: false});
             formApi.resetAll();
         }
     }
 
     _toggleCancelModal(show) {
         return() => {
-            this.setState({cancel: show});
+            if(this.state.formWasTouched) {
+                this.setState({cancelMode: show});
+            }
+        }
+    }
+
+    _formDidUpdate(formState) {
+        if(!this.state.formWasTouched && Object.keys(formState.touched).length > 0 ){
+            this.setState({formWasTouched: true});
         }
     }
 
     render() {
+        const disabled = this.state.formWasTouched ? "" : "disabled";
         return (
             <div>
-                <Form dontValidateOnMount={true} validateError={this._errorValidator.bind(this)} onSubmit={this._onSubmit.bind(this)} defaultValues={this.props.defaultValues}>
+                <Form formDidUpdate={this._formDidUpdate.bind(this)} dontValidateOnMount={true} validateError={this._errorValidator.bind(this)} onSubmit={this._onSubmit.bind(this)} defaultValues={this.props.defaultValues}>
                     {formApi => (
                         <form onSubmit={formApi.submitForm} className="container-fluid">
                             {this.props.fields.map((field, fieldIndex) => (
@@ -76,10 +86,10 @@ class ContentForm extends Component {
                             <div className="row">
                                 <div className="tagus-form-button-container col-xs-12">
                                     <Button type="submit" className="pull-right" bsStyle={"primary"}>Save</Button>
-                                    <Button onClick={this._toggleCancelModal(true).bind(this)} className="pull-left">Cancel</Button>
+                                    <Button onClick={this._toggleCancelModal(true).bind(this)} className={`pull-left ${disabled}`}>Cancel</Button>
                                 </div>
                             </div>
-                        <CancelModal show={this.state.cancel} confirmButton={this._resetForm(formApi)}  closeButton={this._toggleCancelModal(false)} />
+                        <CancelModal show={this.state.cancelMode} confirmButton={this._resetForm(formApi)}  closeButton={this._toggleCancelModal(false)} />
                         </form>
                     )}
                 </Form>
