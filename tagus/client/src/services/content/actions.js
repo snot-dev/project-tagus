@@ -89,8 +89,6 @@ export function updateContentField(data) {
 
 export function saveContent(content) {
     return (dispatch, getState) => {
-        console.warn("saving..");
-        console.warn(content);
         dispatch({
             type:constants.content.POST_CONTENT_DETAIL,
             payload: axios.put('content/' + content._id, content)

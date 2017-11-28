@@ -15,7 +15,6 @@ router.get('/', (req, res) => {
     });  
 });
 
-
 router.post('/', (req, res) => {
     let newContent = new Content(req.body);
   

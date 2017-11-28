@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {getContentDetailIfNeeded, saveContent} from '../../../../../../services/content/actions';
 import {Tabs, Tab} from 'react-bootstrap';
 import store from '../../../../../../services/store';
+import Overlay from '../../../../components/Overlay';
 import Panel from '../../../../components/Panel';
 import ContentForm from './components/contentForm';
 import './contentDetail.css';
@@ -25,7 +26,10 @@ class ContentDetail extends Component {
     }
 
     shouldComponentUpdate(props) {
-        return this.props.match.params.id === props.detail._id && props.unit._id;
+        const hasNeededContent = this.props.match.params.id === props.detail._id && props.unit._id;
+        const processingSave = props.savingContent !== this.props.savingContent;
+
+        return hasNeededContent || processingSave;
     }
 
     componentWillUpdate(newProps) {
@@ -60,6 +64,7 @@ class ContentDetail extends Component {
                     ? this._renderTabs(this.props.unit.tabs)
                     : null
                 }
+                <Overlay show={this.props.savingContent}/>
             </Panel>  
         );
     };

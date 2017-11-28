@@ -51,9 +51,9 @@ export let contentReducer = (state, action) => {
             return newState;
         }
         case constants.content.POST_CONTENT_DETAIL_FULFILLED: {
-            newState.list[action.payload.data._id] = action.payload.data;
+            newState.list[action.payload.data._id] = action.payload.data.result;
             newState.savingContent = false;
-            newState.detail = action.payload.data;
+            newState.detail = action.payload.data.result;
             return newState;
         }
         default:
