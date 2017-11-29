@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Form, StyledText } from 'react-form';
 import {Button} from 'react-bootstrap';
-import CancelModal from './components/cancelModal';
+import CancelModal from '../cancelModal';
 import './contentForm.css';
 
 class ContentForm extends Component {

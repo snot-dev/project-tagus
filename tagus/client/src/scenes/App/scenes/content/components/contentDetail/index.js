@@ -5,13 +5,14 @@ import store from '../../../../../../services/store';
 import Overlay from '../../../../components/Overlay';
 import Panel from '../../../../components/Panel';
 import ContentForm from './components/contentForm';
+import ContentSettings from './components/contentSettings';
 import './contentDetail.css';
 
 class ContentDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            key: 0
+            key: 1
         }
     }
     
@@ -44,14 +45,17 @@ class ContentDetail extends Component {
 
     _renderTabs(tabs) {
         return (
-            <Tabs activeKey={this.state.key} onSelect={this._handleTabchange} id="tagus-content-tabs">
+            <Tabs activeKey={this.state.key} onSelect={this._handleTabchange.bind(this)} id="tagus-content-tabs">
                 {tabs.map((tab, index) => (
-                            <Tab eventKey={index} title={tab.name} key={this.props.detail._id+tab.alias+index}>
+                            <Tab eventKey={index} title={tab.name} key={`${this.props.detail._id}_${tab.alias}_${index}`}>
                                 <ContentForm onSubmit={this.onSubmit} detail={this.props.detail} name={tab.alias} defaultValues={this.props.detail.content[tab.alias]} fields={tab.fields} />
                             </Tab>
                         )
                     )
                 }
+                <Tab eventKey={tabs.length} key={`${this.props.detail._id}_Settings_${tabs.length}`} title='Settings'>
+                    <ContentSettings />
+                </Tab>
             </Tabs>
         )
     }
