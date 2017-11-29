@@ -5,6 +5,7 @@ import store from '../../../../../../services/store';
 import Overlay from '../../../../components/Overlay';
 import Panel from '../../../../components/Panel';
 import ContentForm from './components/contentForm';
+import ContentSettings from './components/contentSettings';
 import './contentDetail.css';
 
 class ContentDetail extends Component {
@@ -52,7 +53,7 @@ class ContentDetail extends Component {
             },
             {
                 name: "Template",
-                type: "text",
+                type: "select",
                 alias: "template",
                 required: true,
                 disabled: false
@@ -130,7 +131,7 @@ class ContentDetail extends Component {
                     )
                 }
                 <Tab eventKey={tabs.length} key={`${this.props.detail._id}_Settings_${tabs.length}`} title='Settings'>
-                    <ContentForm onSubmit={this.onSubmit} name='settings' defaultValues={this._getSettingsDefaultValues()} fields={this.settingsFields} unit={this.props.unit} detail={this.props.detail} />
+                    {/* <ContentSettings onSubmit={this.onSubmit} name='settings' defaultValues={this._getSettingsDefaultValues()} fields={this.settingsFields} unit={this.props.unit} detail={this.props.detail} /> */}
                 </Tab>
             </Tabs>
         )
