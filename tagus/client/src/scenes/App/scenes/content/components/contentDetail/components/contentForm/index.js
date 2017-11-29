@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Form, StyledText } from 'react-form';
+import {Form, StyledText, Checkbox } from 'react-form';
 import {Button} from 'react-bootstrap';
 import CancelModal from '../cancelModal';
 import './contentForm.css';
@@ -18,6 +18,8 @@ class ContentForm extends Component {
         switch(field.type) {
             case'text':
                 return StyledText;
+            case 'checkbox':
+                return Checkbox;
             default:
                 break;
         }
@@ -29,7 +31,7 @@ class ContentForm extends Component {
         return (
             <div className="col-xs-12 tagus-form-field">
                 <label className="tagus-label" htmlFor={field.alias}>{field.name}</label>
-                <Field onChange={this._touchTheForm.bind(this)} className="tagus-input"  field={field.alias} id={field.alias} />                
+                <Field onChange={this._touchTheForm.bind(this)} className={`tagus-input ${field.type}`}   field={field.alias} id={field.alias} />                
             </div>
         )
     }
@@ -80,26 +82,24 @@ class ContentForm extends Component {
     render() {
         const disabled = this.state.formWasTouched ? "" : "disabled";
         return (
-            <div>                
-                <Form dontValidateOnMount={true} validateError={this._errorValidator.bind(this)} defaultValues={this.props.defaultValues}>
-                    {formApi => (
-                        <form onSubmit={formApi.submitForm} className="container-fluid">
-                            {this.props.fields.map((field, fieldIndex) => (
-                                <div className="row tagus-form-control" key={field.alias+fieldIndex}>
-                                    {this._renderField(field, formApi)}
-                                </div>
-                            ))}
-                            <div className="row">
-                                <div className="tagus-form-button-container col-xs-12">
-                                    <Button onClick={this._onSubmit(formApi).bind(this)} type="button" className={`pull-right ${disabled}`} bsStyle={"primary"}>Save</Button>
-                                    <Button onClick={this._toggleCancelModal(true).bind(this)} className={`pull-left ${disabled}`}>Cancel</Button>
-                                </div>
+            <Form dontValidateOnMount={true} validateError={this._errorValidator.bind(this)} defaultValues={this.props.defaultValues}>
+                {formApi => (
+                    <form onSubmit={formApi.submitForm} className="container-fluid">
+                        {this.props.fields.map((field, fieldIndex) => (
+                            <div className="row tagus-form-control" key={field.alias+fieldIndex}>
+                                {this._renderField(field, formApi)}
                             </div>
-                        <CancelModal show={this.state.cancelMode} confirmButton={this._resetForm(formApi)}  closeButton={this._toggleCancelModal(false)} />
-                        </form>
-                    )}
-                </Form>
-            </div>
+                        ))}
+                        <div className="row">
+                            <div className="tagus-form-button-container col-xs-12">
+                                <Button onClick={this._onSubmit(formApi).bind(this)} type="button" className={`pull-right ${disabled}`} bsStyle={"primary"}>Save</Button>
+                                <Button onClick={this._toggleCancelModal(true).bind(this)} className={`pull-left ${disabled}`}>Cancel</Button>
+                            </div>
+                        </div>
+                    <CancelModal show={this.state.cancelMode} confirmButton={this._resetForm(formApi)}  closeButton={this._toggleCancelModal(false)} />
+                    </form>
+                )}
+            </Form>
         );
     };
 }

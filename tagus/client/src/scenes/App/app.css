@@ -37,6 +37,10 @@
   border-radius: 5px;
 }
 
+.tagus-input.checkbox {
+  width: auto;
+}
+
 .tagus-input:focus,
 .btn:focus {
   outline-color:none;
