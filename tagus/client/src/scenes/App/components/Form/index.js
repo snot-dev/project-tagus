@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Form} from 'react-form';
 import {Button} from 'react-bootstrap';
 import CancelModal from './components/cancelModal';
+import FormFields from './components/formFields';
 import './form.css';
 
 class CustomForm extends Component {
@@ -65,7 +66,7 @@ class CustomForm extends Component {
             <Form dontValidateOnMount={true} validateError={this._errorValidator.bind(this)} defaultValues={this.props.defaultValues}>
                 {formApi => (
                     <form onSubmit={formApi.submitForm} className="container-fluid">
-                        {this.props.children ? React.cloneElement(this.props.children, {onFieldChange: this._touchTheForm.bind(this), fields: this.props.fields}) : null}
+                        <FormFields onFieldChange={this._touchTheForm.bind(this)} fields={this.props.fields} />
                         <div className="row">
                             <div className="tagus-form-button-container col-xs-12">
                                 <Button onClick={this._onSubmit(formApi).bind(this)} type="button" className={`pull-right ${disabled}`} bsStyle={"primary"}>Save</Button>

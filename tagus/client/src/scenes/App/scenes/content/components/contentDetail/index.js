@@ -5,8 +5,8 @@ import store from '../../../../../../services/store';
 import Overlay from '../../../../components/Overlay';
 import Panel from '../../../../components/Panel';
 import ContentFields from './components/contentFields';
+import SettingsFields from './components/settingsFields';
 import Form from '../../../../components/Form';
-// import ContentSettings from './components/contentSettings';
 import './contentDetail.css';
 
 class ContentDetail extends Component {
@@ -16,6 +16,29 @@ class ContentDetail extends Component {
             key: 0
         };
 
+        this.settingsFields = [];
+    }
+    
+    componentWillMount() {
+        if(this.props.match.params.id) {
+            store.dispatch(getContentDetailIfNeeded(this.props.match.params.id));
+        }
+    }
+    
+    
+    shouldComponentUpdate(props) {
+        const hasNeededContent = props.detail && props.unit && this.props.match.params.id === props.detail._id && props.unit._id;
+        const processingSave = props.savingContent !== this.props.savingContent;
+        
+        return hasNeededContent || processingSave;
+    }
+    
+    componentWillUpdate(newProps) {
+        if(newProps.match.params.id !== this.props.match.params.id) {
+            store.dispatch(getContentDetailIfNeeded(newProps.match.params.id));
+        }
+
+        const templates = newProps.unit ?  newProps.unit.templates : {};
         this.settingsFields = [
             {
                 name: "Name",
@@ -56,13 +79,15 @@ class ContentDetail extends Component {
                 name: "Template",
                 type: "select",
                 alias: "template",
+                options: templates,
                 required: true,
                 disabled: false
             },
             {
                 name: "Partial",
-                type: "text",
+                type: "select",
                 alias: "partial",
+                options: templates,
                 required: true,
                 disabled: true
             },
@@ -81,26 +106,6 @@ class ContentDetail extends Component {
                 disabled: true
             }
         ];
-    }
-    
-    componentWillMount() {
-        if(this.props.match.params.id) {
-            store.dispatch(getContentDetailIfNeeded(this.props.match.params.id));
-        }
-    }
-    
-    
-    shouldComponentUpdate(props) {
-        const hasNeededContent = props.detail && props.unit && this.props.match.params.id === props.detail._id && props.unit._id;
-        const processingSave = props.savingContent !== this.props.savingContent;
-        
-        return hasNeededContent || processingSave;
-    }
-    
-    componentWillUpdate(newProps) {
-        if(newProps.match.params.id !== this.props.match.params.id) {
-            store.dispatch(getContentDetailIfNeeded(newProps.match.params.id));
-        }
     }
     
     onSubmitContent(formValues) {
@@ -127,16 +132,14 @@ class ContentDetail extends Component {
             <Tabs activeKey={this.state.key} onSelect={this._handleTabchange.bind(this)} id="tagus-content-tabs">
                 {tabs.map((tab, index) => (
                             <Tab eventKey={index} title={tab.name} key={`${this.props.detail._id}_${tab.alias}_${index}`}>
-                                <Form onSubmit={this.onSubmitContent.bind(this)} name={tab.alias} defaultValues={this.props.detail.content[tab.alias]} fields={tab.fields} >
-                                    <ContentFields />
-                                </Form>
+                                <Form onSubmit={this.onSubmitContent.bind(this)} name={tab.alias} defaultValues={this.props.detail.content[tab.alias]} fields={tab.fields} />
                             </Tab>
                         )
                     )
                 }
-                {/* <Tab eventKey={tabs.length} key={`${this.props.detail._id}_Settings_${tabs.length}`} title='Settings'>
-                    <ContentSettings onSubmit={this.onSubmit} name='settings' defaultValues={this._getSettingsDefaultValues()} fields={this.settingsFields} unit={this.props.unit} detail={this.props.detail} />
-                </Tab> */}
+                <Tab eventKey={tabs.length} key={`${this.props.detail._id}_Settings_${tabs.length}`} title='Settings'>
+                    <Form onSubmit={this.onSubmitContent.bind(this)} name="Settings" defaultValues={this._getSettingsDefaultValues()} fields={this.settingsFields} /> 
+                </Tab>
             </Tabs>
         )
     }
