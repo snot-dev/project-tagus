@@ -4,16 +4,17 @@ import {Tabs, Tab} from 'react-bootstrap';
 import store from '../../../../../../services/store';
 import Overlay from '../../../../components/Overlay';
 import Panel from '../../../../components/Panel';
-import ContentForm from './components/contentForm';
-import ContentSettings from './components/contentSettings';
+import ContentFields from './components/contentFields';
+import Form from '../../../../components/Form';
+// import ContentSettings from './components/contentSettings';
 import './contentDetail.css';
 
 class ContentDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            key: 1
-        }
+            key: 0
+        };
 
         this.settingsFields = [
             {
@@ -102,8 +103,9 @@ class ContentDetail extends Component {
         }
     }
     
-    onSubmit(content) {
-        store.dispatch(saveContent(content));
+    onSubmitContent(formValues) {
+        this.props.detail.content = Object.assign(this.props.detail.content, formValues);
+        store.dispatch(saveContent(this.props.detail));
     }
 
     _handleTabchange(key) {
@@ -125,14 +127,16 @@ class ContentDetail extends Component {
             <Tabs activeKey={this.state.key} onSelect={this._handleTabchange.bind(this)} id="tagus-content-tabs">
                 {tabs.map((tab, index) => (
                             <Tab eventKey={index} title={tab.name} key={`${this.props.detail._id}_${tab.alias}_${index}`}>
-                                <ContentForm detail={this.props.detail} name={tab.alias} defaultValues={this.props.detail.content[tab.alias]} fields={tab.fields} />
+                                <Form onSubmit={this.onSubmitContent.bind(this)} name={tab.alias} defaultValues={this.props.detail.content[tab.alias]} fields={tab.fields} >
+                                    <ContentFields />
+                                </Form>
                             </Tab>
                         )
                     )
                 }
-                <Tab eventKey={tabs.length} key={`${this.props.detail._id}_Settings_${tabs.length}`} title='Settings'>
-                    {/* <ContentSettings onSubmit={this.onSubmit} name='settings' defaultValues={this._getSettingsDefaultValues()} fields={this.settingsFields} unit={this.props.unit} detail={this.props.detail} /> */}
-                </Tab>
+                {/* <Tab eventKey={tabs.length} key={`${this.props.detail._id}_Settings_${tabs.length}`} title='Settings'>
+                    <ContentSettings onSubmit={this.onSubmit} name='settings' defaultValues={this._getSettingsDefaultValues()} fields={this.settingsFields} unit={this.props.unit} detail={this.props.detail} />
+                </Tab> */}
             </Tabs>
         )
     }

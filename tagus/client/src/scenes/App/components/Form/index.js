@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import {Form, StyledText, Checkbox } from 'react-form';
+import {Form} from 'react-form';
 import {Button} from 'react-bootstrap';
-// import CancelModal from '../cancelModal';
-import './contentForm.css';
+import CancelModal from './components/cancelModal';
+import './form.css';
 
-class ContentForm extends Component {
+class CustomForm extends Component {
     constructor(props) {
         super(props);
 
@@ -12,28 +12,6 @@ class ContentForm extends Component {
             cancelMode: false,
             formWasTouched: false
         }
-    }
-
-    _getFieldType(field) {
-        switch(field.type) {
-            case'text':
-                return StyledText;
-            case 'checkbox':
-                return Checkbox;
-            default:
-                break;
-        }
-    }
-
-    _renderField(field) {
-        const Field = this._getFieldType(field);
-
-        return (
-            <div className="col-xs-12 tagus-form-field">
-                <label className="tagus-label" htmlFor={field.alias}>{field.name}</label>
-                <Field onChange={this._touchTheForm.bind(this)} className={`tagus-input ${field.type}`}   field={field.alias} id={field.alias} />                
-            </div>
-        )
     }
 
     _errorValidator(values) {
@@ -47,15 +25,15 @@ class ContentForm extends Component {
         return errors;
     }
 
-    //TODO: Only send if form was touched
     _onSubmit(formApi) {
         return () => {
             if(this.state.formWasTouched){
-                // const formValues = {};
-                // formValues[this.props.name] = formApiValues;
-                // formApi.submitForm();
+                const formValues = {};
 
-                // this.props.onSubmit(formValues);
+                formValues[this.props.name] = formApi.values;
+                console.warn(this.props);
+                this.props.onSubmit(formValues);
+                formApi.submitForm();
             }
         }
     }
@@ -87,23 +65,20 @@ class ContentForm extends Component {
             <Form dontValidateOnMount={true} validateError={this._errorValidator.bind(this)} defaultValues={this.props.defaultValues}>
                 {formApi => (
                     <form onSubmit={formApi.submitForm} className="container-fluid">
-                        {this.props.fields.map((field, fieldIndex) => (
-                            <div className="row tagus-form-control" key={field.alias+fieldIndex}>
-                                {this._renderField(field, formApi)}
-                            </div>
-                        ))}
+                        {this.props.children ? React.cloneElement(this.props.children, {onFieldChange: this._touchTheForm.bind(this), fields: this.props.fields}) : null}
                         <div className="row">
                             <div className="tagus-form-button-container col-xs-12">
                                 <Button onClick={this._onSubmit(formApi).bind(this)} type="button" className={`pull-right ${disabled}`} bsStyle={"primary"}>Save</Button>
                                 <Button onClick={this._toggleCancelModal(true).bind(this)} className={`pull-left ${disabled}`}>Cancel</Button>
                             </div>
                         </div>
-                    {/* <CancelModal show={this.state.cancelMode} confirmButton={this._resetForm(formApi)}  closeButton={this._toggleCancelModal(false)} /> */}
+                    <CancelModal show={this.state.cancelMode} confirmButton={this._resetForm(formApi)}  closeButton={this._toggleCancelModal(false)} />
                     </form>
                 )}
             </Form>
         );
     };
+
 }
 
-export default ContentForm;
+export default CustomForm;
