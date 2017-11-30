@@ -4,8 +4,6 @@ import {Tabs, Tab} from 'react-bootstrap';
 import store from '../../../../../../services/store';
 import Overlay from '../../../../components/Overlay';
 import Panel from '../../../../components/Panel';
-import ContentFields from './components/contentFields';
-import SettingsFields from './components/settingsFields';
 import Form from '../../../../components/Form';
 import './contentDetail.css';
 
