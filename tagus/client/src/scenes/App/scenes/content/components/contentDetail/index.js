@@ -107,8 +107,14 @@ class ContentDetail extends Component {
     }
     
     onSubmitContent(formValues) {
-        this.props.detail.content = Object.assign(this.props.detail.content, formValues);
+        const newContent = Object.assign(this.props.detail.content, formValues);
+        this.props.detail.content = newContent;
         store.dispatch(saveContent(this.props.detail));
+    }
+    
+    onSubmitSettings(formValues) {
+        const newContent = Object.assign(this.props.detail, formValues.Settings);
+        store.dispatch(saveContent(newContent));
     }
 
     _handleTabchange(key) {
@@ -136,7 +142,7 @@ class ContentDetail extends Component {
                     )
                 }
                 <Tab eventKey={tabs.length} key={`${this.props.detail._id}_Settings_${tabs.length}`} title='Settings'>
-                    <Form onSubmit={this.onSubmitContent.bind(this)} name="Settings" defaultValues={this._getSettingsDefaultValues()} fields={this.settingsFields} /> 
+                    <Form onSubmit={this.onSubmitSettings.bind(this)} name="Settings" defaultValues={this._getSettingsDefaultValues()} fields={this.settingsFields} /> 
                 </Tab>
             </Tabs>
         )

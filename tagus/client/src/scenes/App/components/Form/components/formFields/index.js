@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {StyledText, Checkbox, Select} from 'react-form';
-import {Button} from 'react-bootstrap';
 import './formFields.css';
 
 class FormFields extends Component {

@@ -32,7 +32,6 @@ class CustomForm extends Component {
                 const formValues = {};
 
                 formValues[this.props.name] = formApi.values;
-                console.warn(this.props);
                 this.props.onSubmit(formValues);
                 formApi.submitForm();
             }
