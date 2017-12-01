@@ -9,16 +9,16 @@ module.exports = [
                 value: "master"
             },
             {
-                label: "home",
-                value: "home"
-            },
-            {
-                label: "standard",
-                value: "standard"
+                label: "about",
+                value: "about"
             },
             {
                 label: "services",
                 value: "services"
+            },
+            {
+                label: "contact",
+                value: "contact"
             }
         ],
         edited: new Date(),
@@ -66,12 +66,12 @@ module.exports = [
                 value: "master"
             },
             {
-                label: "icon",
-                value: "icon"
+                label: "services",
+                value: "services"
             },
             {
-                label: "service",
-                value: "service"
+                label: "contact",
+                value: "contact"
             }
         ],
         edited: new Date(),

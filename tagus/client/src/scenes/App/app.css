@@ -26,7 +26,7 @@
 /* General Class */
 
 .tagus-label {
-  display:block;
+  display: inline-block;
   color: var(--text-color);
 }
 

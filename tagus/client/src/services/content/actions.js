@@ -93,6 +93,10 @@ export function saveContent(content) {
             type:constants.content.POST_CONTENT_DETAIL,
             payload: axios.put('content/' + content._id, content)
             .then(results  => {
+                dispatch( {
+                    type: constants.content.GET_CONTENT_LIST,
+                    payload: axios('content').then(results =>{return results;})
+                })
               return results;
             })
         });

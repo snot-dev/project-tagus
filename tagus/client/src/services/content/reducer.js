@@ -13,6 +13,7 @@ export let contentReducer = (state, action) => {
             newState.fetchingList = false;
             newState.list = convertArrayToDictionary(action.payload.data);
             newState.treeList = buildContentTree(action.payload.data);
+            console.warn(newState);
             return newState;
         }
         case constants.content.GET_CONTENT_UNITS_LIST_PENDING: {
@@ -51,7 +52,7 @@ export let contentReducer = (state, action) => {
             return newState;
         }
         case constants.content.POST_CONTENT_DETAIL_FULFILLED: {
-            newState.list[action.payload.data._id] = action.payload.data.result;
+            // newState.list[action.payload.data._id] = action.payload.data.result;
             newState.savingContent = false;
             newState.detail = action.payload.data.result;
             return newState;
