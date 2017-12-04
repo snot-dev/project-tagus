@@ -138,6 +138,10 @@ class ContentDetail extends Component {
                                 <label className="tagus-label" >Created</label>
                                 <p className="tagus-info">{this.props.detail.created}</p>
                             </div>
+                            <div className="col-xs-12 col-sm-6 tagus-form-field">
+                                <label className="tagus-label" >Unit</label>
+                                <p className="tagus-info">{this.props.unit.name}</p>
+                            </div>
                         </div>
                     </div>
                     <Form onSubmit={this.onSubmitProperties.bind(this)} name="properties" defaultValues={this._getPropertiesDefaultValues()} fields={this.propertiesFields} /> 
