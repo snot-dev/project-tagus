@@ -47,23 +47,9 @@ class ContentDetail extends Component {
                 disabled: false
             },
             {
-                name: "Alias",
-                type: "text",
-                alias: "alias",
-                required: true,
-                disabled: true
-            },
-            {
                 name: "Url",
                 type: "text",
                 alias: "url",
-                required: true,
-                disabled: true
-            },
-            {
-                name: "Edited",
-                type: "text",
-                alias: "edited",
                 required: true,
                 disabled: true
             },
@@ -129,8 +115,6 @@ class ContentDetail extends Component {
             defaultValues[field.alias] = this.props.detail[field.alias];
         }
 
-
-        console.warn(defaultValues);
         return defaultValues;
     }
 
@@ -145,6 +129,21 @@ class ContentDetail extends Component {
                     )
                 }
                 <Tab eventKey={tabs.length} key={`${this.props.detail._id}_Settings_${tabs.length}`} title='Settings'>
+                    <div className="container-fluid tagus-form-info-fields">
+                        <div className="row tagus-form-control">
+                            <div className="col-xs-12 tagus-form-field">
+                                <label className="tagus-label" >Alias</label>
+                                <p className="tagus-info">{this.props.detail.alias}</p>
+                            </div>
+                        </div>
+                        <div className="row tagus-form-control">
+                            <div className="col-xs-12 tagus-form-field">
+                                <label className="tagus-label" >Created</label>
+                                <p className="tagus-info">{this.props.detail.created}</p>
+                            </div>
+                        </div>
+
+                    </div>
                     <Form onSubmit={this.onSubmitSettings.bind(this)} name="Settings" defaultValues={this._getSettingsDefaultValues()} fields={this.settingsFields} /> 
                 </Tab>
             </Tabs>

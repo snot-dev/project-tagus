@@ -10,7 +10,7 @@
   --app-container-bg-color: #e9f0f5;
 
   /* Text Colors */
-  --text-color: rgb(95, 102, 107);
+  --text-color: #5f666b;
   --title-color: #3B4648;
 }
 
@@ -25,27 +25,7 @@
 
 /* General Class */
 
-.tagus-label {
-  display: inline-block;
-  color: var(--text-color);
-}
 
-.tagus-input {
-  width: 100%;
-  padding: 12px 6px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-.tagus-input.checkbox {
-  width: auto;
-}
-
-.tagus-input:focus,
-.btn:focus {
-  outline-color:none;
-  outline: none;
-}
 
 /* Libs Overrides */
 

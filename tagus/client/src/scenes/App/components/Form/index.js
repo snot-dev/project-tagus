@@ -60,10 +60,9 @@ class CustomForm extends Component {
     }
 
     render() {
-        console.warn(this.props.defaulValues)
         const disabled = this.state.formWasTouched ? "" : "disabled";
         return (
-            <Form dontValidateOnMount={true} validateError={this._errorValidator.bind(this)} defaultValues={this.props.defaultValues}>
+            <Form className="tagus-form" dontValidateOnMount={true} validateError={this._errorValidator.bind(this)} defaultValues={this.props.defaultValues}>
                 {formApi => (
                     <form onSubmit={formApi.submitForm} className="container-fluid">
                         <FormFields submits={formApi.submits} formName={this.props.formName} onFieldChange={this._touchTheForm.bind(this)} fields={this.props.fields} />
