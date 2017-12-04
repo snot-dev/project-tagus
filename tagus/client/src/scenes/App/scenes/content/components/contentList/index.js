@@ -4,6 +4,12 @@ import Panel from '../../../../components/Panel';
 import './contentList.css';
 
 class ContentList extends Component {
+    _onMenuButtonClick(content) {
+        return () => {
+            alert(content.name);
+        }
+    }
+
     _buildContentList() {
         const that = this;
          return (
@@ -12,10 +18,13 @@ class ContentList extends Component {
                 ?   that.props.contentList.map((content, index) => {
                         return (
                             <li  className="content-item" key={index}>
-                                <NavLink to={"/content/" + (content._id)} activeClassName="active" className="content-link">
-                                    <i className="fa fa-home" aria-hidden="true"></i>{content.name}
-                                </NavLink>
-                                    {content.children ? this._childList(content) : null}
+                                <div className="content-link-container">
+                                    <NavLink to={"/content/" + (content._id)} activeClassName="active" className="content-link">
+                                        <i className="fa fa-home" aria-hidden="true"></i>{content.name}
+                                    </NavLink>
+                                    <i onClick={this._onMenuButtonClick(content)} className="content-menu-button fa fa-bars"></i>
+                                </div>
+                                {content.children ? this._childList(content) : null}
                             </li>
                         );
                     }) 
@@ -32,9 +41,12 @@ class ContentList extends Component {
                 ?   item.children.map((child, index) => {
                         return(
                             <li className="content-item" key={index}>
-                                <NavLink to={`${this.props.url}/${child._id}`} className="content-link">
-                                    <i className="fa fa-file" aria-hidden="true"></i>{child.name}
-                                </NavLink>
+                                <div className="content-link-container">
+                                    <NavLink to={`${this.props.url}/${child._id}`} className="content-link">
+                                        <i className="fa fa-file" aria-hidden="true"></i>{child.name}
+                                    </NavLink>
+                                    <i onClick={this._onMenuButtonClick(child)} className="content-menu-button fa fa-bars"></i>
+                                </div>
                                 {this._childList(child)}
                             </li>
                         );
