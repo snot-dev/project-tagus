@@ -31,6 +31,7 @@ export let contentReducer = (state, action) => {
         case constants.content.GET_CONTENT_DETAIL_FULFILLED: {
             newState.fetchingDetail = false;
             newState.detail = action.payload.data;
+            newState.editingContent = null;
             return newState;
         }    
         case constants.content.GET_CONTENT_DETAIL_UNITTYPE_PENDING: {
@@ -53,6 +54,7 @@ export let contentReducer = (state, action) => {
         case constants.content.POST_CONTENT_DETAIL_FULFILLED: {
             newState.savingContent = false;
             newState.detail = action.payload.data.result;
+            newState.editingContent = null;
             return newState;
         }
         case constants.content.EDITIING_CONTENT: {

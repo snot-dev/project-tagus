@@ -7,17 +7,9 @@ import ContentMenu from './components/contentMenu';
 import './contentList.css';
 
 class ContentList extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            activeDetail: null
-        }
-    }
-
     _onMenuButtonClick(content) {
         return () => {
-            if(!this.props.editingContent || this.props.editingContent._id !== content._id ) {
+            if(!this.props.editingContent || !content || this.props.editingContent._id !== content._id ) {
                 store.dispatch(editContent(content));
             }
         }
@@ -75,7 +67,7 @@ class ContentList extends Component {
             <Panel title="Content" className="col-xs-4 full-height">
                 {this._buildContentList()}
                 {this.props.editingContent
-                    ? <ContentMenu className="col-xs-6" closeButton={this._onMenuButtonClick()} detail={this.props.editingContent} />
+                    ? <ContentMenu className="col-xs-6" onCloseButton={this._onMenuButtonClick()} detail={this.props.editingContent} />
                     : null
                 }
             </Panel>  

@@ -4,6 +4,7 @@ import './menu.css';
 class Menu extends Component {
     render() {
         const className = this.props.className || '';
+
         return (
             <div className={`tagus-menu ${className}`}>
                 {this.props.title
@@ -17,6 +18,10 @@ class Menu extends Component {
                         {this.props.children}   
                     </div>
                 </div>
+                {this.props.onCloseButton 
+                ? <div className="tagus-menu-close-button" onClick={this.props.onCloseButton}>X</div>
+                : null}
+
             </div>
         );
     }

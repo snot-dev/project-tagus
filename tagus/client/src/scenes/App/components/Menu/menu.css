@@ -21,3 +21,21 @@
     padding-top: 15px;
     padding-bottom: 15px;
 }
+
+.tagus-menu-close-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 15px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    line-height: 1;
+    color: var(--nav-header-text-color);
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+.tagus-menu-close-button:hover {
+  background-color: var(--title-color);
+}

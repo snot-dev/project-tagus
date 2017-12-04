@@ -5,8 +5,8 @@ import './contentMenu.css';
 class ContentMenu extends Component {
     render() {
         return (
-            <Menu title="Menu" className="col-xs-6">
-                this.props.detail.name
+            <Menu onCloseButton={this.props.onCloseButton} title="Menu" className="col-xs-6">
+                {this.props.detail.name}
             </Menu>
         );
     }
