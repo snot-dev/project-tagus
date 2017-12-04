@@ -1,12 +1,25 @@
 import React, { Component } from 'react';
 import {NavLink} from 'react-router-dom';
+import store from '../../../../../../services/store';
+import {editContent} from '../../../../../../services/content/actions';
 import Panel from '../../../../components/Panel';
+import ContentMenu from './components/contentMenu';
 import './contentList.css';
 
 class ContentList extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            activeDetail: null
+        }
+    }
+
     _onMenuButtonClick(content) {
         return () => {
-            alert(content.name);
+            if(!this.props.editingContent || this.props.editingContent._id !== content._id ) {
+                store.dispatch(editContent(content));
+            }
         }
     }
 
@@ -59,8 +72,12 @@ class ContentList extends Component {
    
     render() {
         return (
-            <Panel header={"Content"} className="col-xs-4 full-height">
+            <Panel title="Content" className="col-xs-4 full-height">
                 {this._buildContentList()}
+                {this.props.editingContent
+                    ? <ContentMenu className="col-xs-6" closeButton={this._onMenuButtonClick()} detail={this.props.editingContent} />
+                    : null
+                }
             </Panel>  
         );
     };

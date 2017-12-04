@@ -1,0 +1,7 @@
+#content-menu {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background-color: var(--menu-bg-color);
+}

@@ -19,7 +19,7 @@ class Content extends Component {
     render() {  
         return (
             <section id="content" className="col-xs-12 full-height">
-                <ContentList url={this.props.match.url} contentList={this.props.content.treeList} />
+                <ContentList url={this.props.match.url} contentList={this.props.content.treeList} editingContent={this.props.content.editingContent} />
                 <Route exact path={`${this.props.match.url}/:id`} render={(props)=>(<ContentDetail {...props} savingContent={this.props.content.savingContent} detail={this.props.content.detail} unit={this.props.content.units[this.props.content.detail.unitType]} />)} />
             </section>
         )

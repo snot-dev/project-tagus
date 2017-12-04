@@ -55,6 +55,10 @@ export let contentReducer = (state, action) => {
             newState.detail = action.payload.data.result;
             return newState;
         }
+        case constants.content.EDITIING_CONTENT: {
+            newState.editingContent = action.payload;
+            return newState;
+        }
         default:
             return state || {};
     }

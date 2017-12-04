@@ -102,3 +102,12 @@ export function saveContent(content) {
         })
     };
 };
+
+export function editContent(content) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: constants.content.EDITIING_CONTENT,
+            payload: content
+        });
+    };
+};

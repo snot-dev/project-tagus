@@ -1,0 +1,23 @@
+.tagus-menu {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background-color: var(--menu-bg-color);
+}
+
+.tagus-menu-header {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    line-height: 1;
+    color: var(--nav-header-text-color);
+    border-bottom: 1px solid rgba(206,219,236,0.75);
+}
+
+.tagus-menu-content {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}

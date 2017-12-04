@@ -130,18 +130,15 @@ class ContentDetail extends Component {
                 <Tab eventKey={tabs.length} key={`${this.props.detail._id}_Properties_${tabs.length}`} title='Properties'>
                     <div className="container-fluid tagus-form-info-fields">
                         <div className="row tagus-form-control">
-                            <div className="col-xs-12 tagus-form-field">
+                            <div className="col-xs-12 col-sm-6 tagus-form-field">
                                 <label className="tagus-label" >Alias</label>
                                 <p className="tagus-info">{this.props.detail.alias}</p>
                             </div>
-                        </div>
-                        <div className="row tagus-form-control">
-                            <div className="col-xs-12 tagus-form-field">
+                            <div className="col-xs-12 col-sm-6 tagus-form-field text-right">
                                 <label className="tagus-label" >Created</label>
                                 <p className="tagus-info">{this.props.detail.created}</p>
                             </div>
                         </div>
-
                     </div>
                     <Form onSubmit={this.onSubmitProperties.bind(this)} name="properties" defaultValues={this._getPropertiesDefaultValues()} fields={this.propertiesFields} /> 
                 </Tab>
@@ -151,7 +148,7 @@ class ContentDetail extends Component {
 
     render() {
         return (
-            <Panel header={this.props.detail.name} className="col-xs-8 full-height">
+            <Panel title={this.props.detail.name} className="col-xs-8 full-height">
                 {
                     this.props.unit
                     ? this._renderTabs(this.props.unit.tabs)

@@ -16,11 +16,24 @@
     border-radius: 5px;
     border: 1px solid rgba(206,219,236,0.75);
     box-shadow: 0px 2px 0px 0px rgba(206,219,236,0.5);
+    position: relative;
+}
 
+.tagus-panel-content-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+
+.tagus-panel-content-container.header {
+    padding-top: 56px
 }
 
 .tagus-panel-content {
     padding-top: 15px;
     padding-bottom: 15px;
+    height: 100%;
 }
 
