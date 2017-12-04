@@ -6,7 +6,7 @@ class Navigation extends Component {
         return (
             <div className="tagus-navigation">
                 <p className="tagus-navigation-header">{this.props.title}</p>
-                <ul className="tagus-side-navigation">
+                <ul className="tagus-menu-list">
                     {this.props.children}
                 </ul>
             </div>

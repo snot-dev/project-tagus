@@ -21,7 +21,6 @@ class Menu extends Component {
                 {this.props.onCloseButton 
                 ? <div className="tagus-menu-close-button" onClick={this.props.onCloseButton}>X</div>
                 : null}
-
             </div>
         );
     }

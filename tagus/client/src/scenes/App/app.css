@@ -12,6 +12,10 @@
 
   --menu-bg-color: #f5f5f5;
 
+  --active-nav-item: #171d20;
+  --hover-nav-item: #1f272a;
+  --nav-text-color: #89949B;
+
   /* Text Colors */
   --text-color: #5f666b;
   --title-color: #3B4648;
@@ -28,6 +32,41 @@
 
 /* General Class */
 
+.tagus-menu-list {
+  padding: 0;
+  display: block;
+  list-style-type: none;
+}
+
+.tagus-menu-item {
+  float: none!important;
+  display: block;
+  margin: 0;
+  cursor: pointer;
+}
+
+.tagus-menu-item .fa {
+  margin-right: 15px;
+}
+
+.tagus-menu-link {
+  display: block;
+  font-size: 16px;
+  line-height: 16px;
+  padding: 15px 25px 15px 20px;
+}
+
+.tagus-menu-link.active,
+.tagus-menu-link:visited {
+  text-decoration: none;
+  font-size: 16px;
+  line-height: 16px;
+  padding: 15px 25px 15px 15px;
+}
+
+.tagus-menu-link:hover {
+  text-decoration: none;
+}
 
 
 /* Libs Overrides */

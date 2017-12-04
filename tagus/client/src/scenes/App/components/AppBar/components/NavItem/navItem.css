@@ -2,42 +2,22 @@
     COMPONENT VARIABLES
 */
 :root {
-    --active-nav-item: #171d20;
-    --hover-nav-item: #1f272a;
-    --nav-text-color: #89949B;
+
 }
 
-.tagus-nav-item {
-    float: none!important;
-    display: block;
-    margin: 0;
-}
-
-.tagus-nav-item .fa {
-    margin-right: 15px;
-}
-
-.tagus-nav-link {
+.tagus-menu-link {
     color: var(--nav-text-color);
-    display: block;
-    font-size: 16px;
-    line-height: 16px;
-    padding: 15px 25px 15px 20px;
-}
+} 
 
-.tagus-nav-link.active,
-.tagus-nav-link:visited {
+.tagus-menu-link.active,
+.tagus-menu-link.active:hover,
+.tagus-menu-link:visited {
     background-color: var(--active-nav-item);
     color: var(--nav-text-color);
-    text-decoration: none;
-    font-size: 16px;
-    line-height: 16px;
     border-left: 5px solid var(--main-red);
-    padding: 15px 25px 15px 15px;
 }
 
-.tagus-nav-link:hover {
+.tagus-menu-link:hover {
     color: var(--nav-text-color);
-    text-decoration: none;
     background-color: var(--hover-nav-item);
-}
+} 
