@@ -28,6 +28,7 @@ class ContentDetail extends Component {
         const hasNeededContent = props.detail && props.unit && this.props.match.params.id === props.detail._id && props.unit._id;
         const processingSave = props.savingContent !== this.props.savingContent;
         
+        console.warn(hasNeededContent || processingSave);
         return hasNeededContent || processingSave;
     }
     
@@ -128,6 +129,8 @@ class ContentDetail extends Component {
             defaultValues[field.alias] = this.props.detail[field.alias];
         }
 
+
+        console.warn(defaultValues);
         return defaultValues;
     }
 

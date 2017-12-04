@@ -33,7 +33,8 @@ class FormFields extends Component {
         return (
             <div>
                 {this.props.fields.map((field, fieldIndex) => (
-                    <div className="row tagus-form-control" key={field.alias+fieldIndex}>
+                    <div className="row tagus-form-control" key={`${field.alias}_${this.props.submits}_${fieldIndex}`}>
+                        {console.warn(field)}
                         {this._renderField(field)}
                     </div>
                 ))}
