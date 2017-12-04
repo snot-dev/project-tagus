@@ -14,7 +14,7 @@ class ContentDetail extends Component {
             key: 0
         };
 
-        this.settingsFields = [];
+        this.propertiesFields = [];
     }
     
     componentWillMount() {
@@ -28,7 +28,6 @@ class ContentDetail extends Component {
         const hasNeededContent = props.detail && props.unit && this.props.match.params.id === props.detail._id && props.unit._id;
         const processingSave = props.savingContent !== this.props.savingContent;
         
-        console.warn(hasNeededContent || processingSave);
         return hasNeededContent || processingSave;
     }
     
@@ -38,7 +37,7 @@ class ContentDetail extends Component {
         }
 
         const templates = newProps.unit ?  newProps.unit.templates : {};
-        this.settingsFields = [
+        this.propertiesFields = [
             {
                 name: "Name",
                 type: "text",
@@ -99,8 +98,8 @@ class ContentDetail extends Component {
         store.dispatch(saveContent(this.props.detail));
     }
     
-    onSubmitSettings(formValues) {
-        const newContent = Object.assign(this.props.detail, formValues.Settings);
+    onSubmitProperties(formValues) {
+        const newContent = Object.assign(this.props.detail, formValues.properties);
         store.dispatch(saveContent(newContent));
     }
 
@@ -108,10 +107,10 @@ class ContentDetail extends Component {
         this.setState({key});
     }
 
-    _getSettingsDefaultValues() {
+    _getPropertiesDefaultValues() {
         const defaultValues = {};
 
-        for(const field of this.settingsFields) {
+        for(const field of this.propertiesFields) {
             defaultValues[field.alias] = this.props.detail[field.alias];
         }
 
@@ -128,7 +127,7 @@ class ContentDetail extends Component {
                         )
                     )
                 }
-                <Tab eventKey={tabs.length} key={`${this.props.detail._id}_Settings_${tabs.length}`} title='Settings'>
+                <Tab eventKey={tabs.length} key={`${this.props.detail._id}_Properties_${tabs.length}`} title='Properties'>
                     <div className="container-fluid tagus-form-info-fields">
                         <div className="row tagus-form-control">
                             <div className="col-xs-12 tagus-form-field">
@@ -144,7 +143,7 @@ class ContentDetail extends Component {
                         </div>
 
                     </div>
-                    <Form onSubmit={this.onSubmitSettings.bind(this)} name="Settings" defaultValues={this._getSettingsDefaultValues()} fields={this.settingsFields} /> 
+                    <Form onSubmit={this.onSubmitProperties.bind(this)} name="properties" defaultValues={this._getPropertiesDefaultValues()} fields={this.propertiesFields} /> 
                 </Tab>
             </Tabs>
         )
