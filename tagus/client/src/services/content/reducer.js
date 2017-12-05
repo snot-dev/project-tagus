@@ -70,6 +70,10 @@ export let contentReducer = (state, action) => {
             newState.editingContent = null;
             return newState;
         }
+        case constants.content.CREATE_UNIT: {
+            newState.createUnit = action.payload;
+            return newState;
+        }
         default:
             return state || {};
     }

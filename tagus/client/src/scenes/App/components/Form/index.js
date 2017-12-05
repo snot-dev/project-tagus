@@ -65,7 +65,7 @@ class CustomForm extends Component {
             <Form className="tagus-form" dontValidateOnMount={true} validateError={this._errorValidator.bind(this)} defaultValues={this.props.defaultValues}>
                 {formApi => (
                     <form onSubmit={formApi.submitForm} className="container-fluid">
-                        <FormFields submits={formApi.submits} formName={this.props.formName} onFieldChange={this._touchTheForm.bind(this)} fields={this.props.fields} />
+                        <FormFields formApi={formApi} submits={formApi.submits} formName={this.props.formName} onFieldChange={this._touchTheForm.bind(this)} fields={this.props.fields} />
                         <div className="row">
                             <div className="tagus-form-button-container col-xs-12">
                                 <Button onClick={this._onSubmit(formApi).bind(this)} type="button" className={`pull-right ${disabled}`} bsStyle={"primary"}>Save</Button>

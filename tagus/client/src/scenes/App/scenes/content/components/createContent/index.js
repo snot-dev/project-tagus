@@ -11,10 +11,11 @@ class CreateContent extends Component {
         super(props);
 
         this.formFields = [];
+        this.templates = [{}];
     }
     
     componentWillMount() {
-        const units = this._getUnitsOptions();
+        this.templates = this.props.unit.templates;
 
         this.formFields = [
             {
@@ -24,11 +25,11 @@ class CreateContent extends Component {
                 required: true
             },
             {
-                name: "Unit",
+                name: "Template",
                 type: "select",
-                alias: "unitType",
-                options: units,
-                required: true
+                alias: "template",
+                options: this.templates,
+                required: true,
             },
             {
                 name: "Published",
@@ -37,24 +38,12 @@ class CreateContent extends Component {
                 required: false,
                 disabled: true
             },
+
         ];
     }
     
-    _getUnitsOptions(){
-        const units = [];
-        
-        for(const key in this.props.units) {
-            if(this.props.units.hasOwnProperty(key)) {
-                const unit = this.props.units[key];
-
-                units.push({
-                    label: unit.name,
-                    value: unit._id
-                });
-            }
-        }
-
-        return units;
+    componentWillUpdate(props) {
+        this.templates = props.unit.templates;
     }
 
     _createContentObject(unitId) {
@@ -83,6 +72,7 @@ class CreateContent extends Component {
     render() {
         return (
             <Panel title={`Create new Content under ${this.props.parent.name}`} className="col-xs-8 full-height">
+            {this.props.unit.name}
                 <Form onSubmit={this.onSubmit.bind(this)} name="newContent" fields={this.formFields} />
             </Panel>
         );

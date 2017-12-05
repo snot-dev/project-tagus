@@ -112,6 +112,15 @@ export function editContent(content) {
     };
 };
 
+export function createUnit(unit) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: constants.content.CREATE_UNIT,
+            payload: unit
+        });
+    };
+};
+
 export function createContent(newContent) {
     return (dispatch, getState) => {
         dispatch({

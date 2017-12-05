@@ -19,7 +19,8 @@ let initialState = {
         fetchingList: false,
         fetchingDetail: false,
         savingDetail: false,
-        editingContent: null
+        editingContent: null,
+        createUnit: null
     }
     // ,
     // units: {

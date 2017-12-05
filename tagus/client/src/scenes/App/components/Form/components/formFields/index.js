@@ -16,6 +16,24 @@ class FormFields extends Component {
         }
     }
 
+    _onFieldChange(fieldOnChangeFunc) {
+        return (value) => {
+            this.props.onFieldChange();
+
+            if( fieldOnChangeFunc ) {
+                fieldOnChangeFunc(value);
+            }
+        }
+    }
+
+    _onFieldBlur(fieldOnBlurFunc) {
+        return () => {
+            if( fieldOnBlurFunc) {
+                fieldOnBlurFunc(this.props.formApi);
+            }
+         };
+    }
+
     _renderField(field) {
         const fieldType = this._getFieldType(field);
         
@@ -24,7 +42,7 @@ class FormFields extends Component {
         return (
             <div className="col-xs-12 tagus-form-field">
                 <label className="tagus-label" htmlFor={field.alias}>{field.name}</label>
-                <Component  onChange={this.props.onFieldChange} className={`tagus-input ${field.type}`}  field={field.alias} id={field.alias} options={fieldType.options} />                
+                <Component onBlur={field.onBlur} onChange={this._onFieldChange(field.onChange)} className={`tagus-input ${field.type}`}  field={field.alias} id={field.alias} options={fieldType.options} />                
             </div>
         )
     }

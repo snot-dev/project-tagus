@@ -16,11 +16,10 @@ class ContentList extends Component {
     }
 
     _buildContentList() {
-        const that = this;
          return (
             <ul id="content-list" className="content-list">
-                {that.props.contentList && that.props.contentList.length > 0 
-                ?   that.props.contentList.map((content, index) => {
+                {this.props.contentList && this.props.contentList.length > 0 
+                ?   this.props.contentList.map((content, index) => {
                         return (
                             <li  className="content-item" key={index}>
                                 <div className="content-link-container">
@@ -67,7 +66,7 @@ class ContentList extends Component {
             <Panel title="Content" className="col-xs-4 full-height">
                 {this._buildContentList()}
                 {this.props.editingContent
-                    ? <ContentMenu className="col-xs-6" onCloseButton={this._onMenuButtonClick()} detail={this.props.editingContent} />
+                    ? <ContentMenu className="col-xs-6" onCloseButton={this._onMenuButtonClick()} units={this.props.units} detail={this.props.editingContent} />
                     : null
                 }
             </Panel>  
