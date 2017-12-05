@@ -75,7 +75,6 @@ class CreateContent extends Component {
         newContent.url = this.props.parent.url;
         newContent.content = this._createContentObject(newContent.unitType);
 
-        console.warn(newContent);
         store.dispatch(createContent(newContent));
     }
 

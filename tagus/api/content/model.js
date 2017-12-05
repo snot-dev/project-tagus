@@ -12,14 +12,14 @@ const contentSchema = new mongoose.Schema({
     nav: {type: Boolean, default: true},
     publishedAt: { type: Date, default: Date.now() },
     unitType: {type: mongoose.Schema.Types.ObjectId, ref: 'Unit'},
-    content: Object,
+    content: {type: mongoose.Schema.Types.Mixed, default: {}},
     template: { type: String, required: true },
     partial: String,
     parent: String,
     children: [{type: mongoose.Schema.Types.ObjectId, ref: 'Content'}],
     sortOrder: { type: Number },
     isHome: { type: Boolean, default: false }
-});
+}, {minimize: false});
 
 let model = mongoose.model('Content', contentSchema);
 

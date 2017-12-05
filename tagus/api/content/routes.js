@@ -19,7 +19,6 @@ router.post('/', (req, res) => {
     let newContent = new Content(req.body);
     newContent.content = req.body.content;
     newContent.markModified('content');
-    console.warn(newContent);
   
     if(newContent.name) {
         newContent.alias = convertToAlias(newContent.name);
@@ -34,7 +33,6 @@ router.post('/', (req, res) => {
     //TODO: Fix this ASAP
     newContent.template = 'test';
     
-    console.warn(newContent);
     newContent.save()
     .then(result => {
         newContent = result;
@@ -48,7 +46,6 @@ router.post('/', (req, res) => {
         }
     })
     .then( () => {
-        console.warn(newContent);
         res.json({ message: "Document successfully created!", result: newContent });
     });
 });
