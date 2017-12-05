@@ -138,6 +138,8 @@ class ContentDetail extends Component {
                                 <label className="tagus-label" >Created</label>
                                 <p className="tagus-info">{this.props.detail.created}</p>
                             </div>
+                        </div>
+                        <div className="row tagus-form-control">
                             <div className="col-xs-12 col-sm-6 tagus-form-field">
                                 <label className="tagus-label" >Unit</label>
                                 <p className="tagus-info">{this.props.unit.name}</p>

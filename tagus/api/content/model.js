@@ -12,7 +12,7 @@ const contentSchema = new mongoose.Schema({
     nav: {type: Boolean, default: true},
     publishedAt: { type: Date, default: Date.now() },
     unitType: {type: mongoose.Schema.Types.ObjectId, ref: 'Unit'},
-    content: {},
+    content: Object,
     template: { type: String, required: true },
     partial: String,
     parent: String,

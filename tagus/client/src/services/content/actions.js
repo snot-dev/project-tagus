@@ -99,7 +99,7 @@ export function saveContent(content) {
                 type: constants.content.GET_CONTENT_LIST,
                 payload: axios('content')
             });
-        })
+        });
     };
 };
 
@@ -111,3 +111,18 @@ export function editContent(content) {
         });
     };
 };
+
+export function createContent(newContent) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: constants.content.CREATE_CONTENT,
+            payload: axios.post('content', newContent)
+        })
+        .then(()  => {
+            dispatch( {
+                type: constants.content.GET_CONTENT_LIST,
+                payload: axios('content')
+            });
+        });
+    }
+}

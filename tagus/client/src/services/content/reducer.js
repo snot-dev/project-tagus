@@ -61,6 +61,15 @@ export let contentReducer = (state, action) => {
             newState.editingContent = action.payload;
             return newState;
         }
+        case constants.content.CREATE_CONTENT_PENDING: {
+            newState.savingContent = true;
+            return newState;
+        }
+        case constants.content.CREATE_CONTENT_FULFILLED: {
+            newState.savingContent = false;
+            newState.editingContent = null;
+            return newState;
+        }
         default:
             return state || {};
     }

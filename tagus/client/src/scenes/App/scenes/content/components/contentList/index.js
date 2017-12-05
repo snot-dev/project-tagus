@@ -24,7 +24,7 @@ class ContentList extends Component {
                         return (
                             <li  className="content-item" key={index}>
                                 <div className="content-link-container">
-                                    <NavLink to={"/content/" + (content._id)} activeClassName="active" className="content-link">
+                                    <NavLink to={`${this.props.url}/detail/${content._id}`} activeClassName="active" className="content-link">
                                         <i className="fa fa-home" aria-hidden="true"></i>{content.name}
                                     </NavLink>
                                     <i onClick={this._onMenuButtonClick(content)} className="content-menu-button fa fa-bars"></i>
@@ -47,7 +47,7 @@ class ContentList extends Component {
                         return(
                             <li className="content-item" key={index}>
                                 <div className="content-link-container">
-                                    <NavLink to={`${this.props.url}/${child._id}`} className="content-link">
+                                    <NavLink to={`${this.props.url}/detail/${child._id}`} className="content-link">
                                         <i className="fa fa-file" aria-hidden="true"></i>{child.name}
                                     </NavLink>
                                     <i onClick={this._onMenuButtonClick(child)} className="content-menu-button fa fa-bars"></i>
