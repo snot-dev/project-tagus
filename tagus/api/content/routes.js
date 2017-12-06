@@ -24,14 +24,10 @@ router.post('/', (req, res) => {
         newContent.alias = convertToAlias(newContent.name);
     }
     
-    console.log(req.body);
     //TODO: Change this to an actual user
     newContent.createdBy = 'User';
     newContent.created = new Date();
     newContent.url = `${newContent.url}/${newContent.alias.toLowerCase()}`;
-    
-    //TODO: Fix this ASAP
-    newContent.template = 'test';
     
     newContent.save()
     .then(result => {

@@ -7,39 +7,16 @@ import Form from '../../../../components/Form';
 import './createContent.css';
 
 class CreateContent extends Component {
-    constructor(props) {
-        super(props);
-
-        this.formFields = [];
-    }
-    
     componentWillMount() {
-        this.formFields = [
-            {
-                name: "Name",
-                type: "text",
-                alias: "name",
-                required: true
-            },
-            {
-                name: "Template",
-                type: "select",
-                alias: "template",
-                options: this.props.unit.templates,
-                required: true,
-            },
-            {
-                name: "Published",
-                type: "checkbox",
-                alias: "published",
-                required: false,
-                disabled: true
-            }
-        ];
+        this.formFields = this.createFormFields(this.props.unit);
     }
     
     componentWillUpdate(props) {
-        this.formFields = [
+        this.formFields = this.createFormFields(props.unit);
+    }
+
+    createFormFields(unit){
+        return  [
             {
                 name: "Name",
                 type: "text",
@@ -50,7 +27,7 @@ class CreateContent extends Component {
                 name: "Template",
                 type: "select",
                 alias: "template",
-                options: props.unit.templates,
+                options: unit.templates,
                 required: true,
             },
             {
@@ -77,19 +54,18 @@ class CreateContent extends Component {
         const newContent = formValues.newContent;
         
         newContent.parent = this.props.parent._id;
+        newContent.unitType = this.props.unit._id;
         newContent.url = this.props.parent.url;
         newContent.content = this._createContentObject();
 
         store.dispatch(createContent(newContent));
     }
 
-    
-
     render() {
         return (
             <Panel title={`Create new Content under ${this.props.parent.name}`} className="col-xs-8 full-height">
             {this.props.unit.name}
-                <Form onSubmit={this.onSubmit.bind(this)} name={`newContent_${this.props.unit}`} fields={this.formFields} />
+                <Form onSubmit={this.onSubmit.bind(this)} name={`newContent`} fields={this.formFields} />
             </Panel>
         );
     }
