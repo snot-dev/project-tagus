@@ -39,7 +39,8 @@
 }
 
 .tagus-menu-item {
-  float: none!important;
+  float: left;
+  width: 100%;
   display: block;
   margin: 0;
   cursor: pointer;
