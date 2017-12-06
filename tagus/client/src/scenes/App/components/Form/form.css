@@ -15,11 +15,26 @@
     border-radius: 5px;
 }
 
+.tagus-input.react-form-select {
+    padding: 0;
+    width: 100%;
+    border: none;
+}
+
+.tagus-input.react-form-select > select {
+    width: 100%;
+    padding: 12px 6px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
 .tagus-input.checkbox {
     width: auto;
 }
 
 .tagus-input:focus,
+.tagus-input > select:focus,
 .btn:focus {
     outline-color:none;
     outline: none;

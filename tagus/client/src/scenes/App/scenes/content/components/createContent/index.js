@@ -33,9 +33,7 @@ class CreateContent extends Component {
             {
                 name: "Published",
                 type: "checkbox",
-                alias: "published",
-                required: false,
-                disabled: true
+                alias: "published"
             }
         ];
     }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {StyledText, Checkbox, Select} from 'react-form';
+import {StyledText, Checkbox, StyledSelect} from 'react-form';
 import './formFields.css';
 
 class FormFields extends Component {
@@ -8,9 +8,9 @@ class FormFields extends Component {
             case'text':
                 return {component: StyledText};
             case 'checkbox':
-                return {component:Checkbox};
+                return {component: Checkbox};
             case 'select': 
-                return {component: Select, options: field.options}
+                return {component: StyledSelect, options: field.options}
             default:
                 return {component: StyledText};
         }

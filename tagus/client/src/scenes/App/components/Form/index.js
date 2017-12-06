@@ -19,7 +19,8 @@ class CustomForm extends Component {
         const errors = {};
 
         for(const field of this.props.fields) {
-            errors[field.alias] = field.required && values[field.alias] === ''?"This field is required!":null;
+
+            errors[field.alias] = field.required && !values[field.alias] ?"This field is required!":null;
         }
 
 
@@ -28,7 +29,8 @@ class CustomForm extends Component {
 
     _onSubmit(formApi) {
         return () => {
-            if(this.state.formWasTouched){
+            this._formHasErrors(formApi);
+            if(this.state.formWasTouched && !this._formHasErrors(formApi)){
                 const formValues = {};
 
                 formValues[this.props.name] = formApi.values;
@@ -36,6 +38,20 @@ class CustomForm extends Component {
                 formApi.submitForm();
             }
         }
+    }
+
+    _formHasErrors(formApi) {
+        let error = false;
+        const formErrors = formApi.errors;
+
+        for(const key in formErrors) {
+            if(formErrors.hasOwnProperty(key) && formErrors[key]) {
+                error = true;
+                break;
+            }
+        }
+
+        return error;
     }
 
     _resetForm(formApi) {

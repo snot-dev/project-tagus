@@ -42,52 +42,42 @@ class ContentDetail extends Component {
                 name: "Name",
                 type: "text",
                 alias: "name",
-                required: true,
-                disabled: false
+                required: true
             },
             {
                 name: "Url",
                 type: "text",
                 alias: "url",
-                required: true,
-                disabled: true
+                required: true
             },
             {
                 name: "Created",
                 type: "text",
                 alias: "created",
-                required: true,
-                disabled: true
+                required: true
             },
             {
                 name: "Template",
                 type: "select",
                 alias: "template",
                 options: templates,
-                required: true,
-                disabled: false
+                required: true
             },
             {
                 name: "Partial",
                 type: "select",
                 alias: "partial",
-                options: templates,
-                required: true,
-                disabled: true
+                options: templates
             },
             {
                 name: "Published",
                 type: "checkbox",
-                alias: "published",
-                required: false,
-                disabled: true
+                alias: "published"
             },
             {
                 name: "Nav",
                 type: "checkbox",
-                alias: "nav",
-                required: false,
-                disabled: true
+                alias: "nav"
             }
         ];
     }
