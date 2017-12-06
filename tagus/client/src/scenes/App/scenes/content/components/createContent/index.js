@@ -64,6 +64,7 @@ class CreateContent extends Component {
             <Panel title={`Create new Content under ${this.props.parent.name}`} className="col-xs-8 full-height">
             {this.props.unit.name}
                 <Form onSubmit={this.onSubmit.bind(this)} name={`newContent`} fields={this.formFields} />
+                <Overlay show={this.props.savingContent}/>
             </Panel>
         );
     }
