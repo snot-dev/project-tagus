@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Form} from 'react-form';
 import {Button} from 'react-bootstrap';
-import CancelModal from './components/cancelModal';
+import Modal from '../Modal';
 import FormFields from './components/formFields';
 import './form.css';
 
@@ -88,7 +88,7 @@ class CustomForm extends Component {
                                 <Button onClick={this._toggleCancelModal(true).bind(this)} className={`pull-left ${disabled}`}>Cancel</Button>
                             </div>
                         </div>
-                    <CancelModal show={this.state.cancelMode} confirmButton={this._resetForm(formApi)}  closeButton={this._toggleCancelModal(false)} />
+                        <Modal title="Warning!" body="Are you sure you want to discard all changes?" show={this.state.cancelMode} confirmButton={{onClick:this._resetForm(formApi), text: "Discard Changes!"}}  closeButton={{onClick: this._toggleCancelModal(false), text: "Cancel"}} />
                     </form>
                 )}
             </Form>
