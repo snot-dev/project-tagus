@@ -61,6 +61,10 @@ export let contentReducer = (state, action) => {
             newState.editingContent = action.payload;
             return newState;
         }
+        case constants.content.CREATE_UNIT: {
+            newState.createUnit = action.payload;
+            return newState;
+        }
         case constants.content.CREATE_CONTENT_PENDING: {
             newState.savingContent = true;
             return newState;
@@ -70,8 +74,14 @@ export let contentReducer = (state, action) => {
             newState.editingContent = null;
             return newState;
         }
-        case constants.content.CREATE_UNIT: {
-            newState.createUnit = action.payload;
+        case constants.content.DELETE_CONTENT_PENDING: {
+            newState.savingContent = true;
+            newState.editingContent = null;
+            newState.detail = null;
+            return newState;
+        }
+        case constants.content.DELETE_CONTENT_FULFILLED: {
+            newState.savingContent = false;
             return newState;
         }
         default:

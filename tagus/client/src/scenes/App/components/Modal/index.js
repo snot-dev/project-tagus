@@ -17,7 +17,7 @@ class CustomModal extends Component {
                 :   null}
                 <Modal.Footer>
                     {this.props.closeButton
-                        ? <Button onClick={this.props.closeButton}>{this.props.closeButton.text}</Button>
+                        ? <Button onClick={this.props.closeButton.onClick}>{this.props.closeButton.text}</Button>
                         :null
                     }
                     {this.props.confirmButton

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import Modal from '../../../../../../components/Modal';
 import Menu from '../../../../../../components/Menu';
-import {createUnit} from '../../../../../../../../services/content/actions';
+import Overlay from '../../../../../../components/Overlay';
+import {createUnit, deleteContent} from '../../../../../../../../services/content/actions';
 import store from '../../../../../../../../services/store';
 import {Link} from 'react-router-dom';
 import {Collapse} from 'react-bootstrap';
@@ -11,7 +13,8 @@ class ContentMenu extends Component {
         super(props);
 
         this.state = {
-            open: false
+            open: false,
+            deleteMode: false
         };
     }
 
@@ -46,6 +49,20 @@ class ContentMenu extends Component {
         )
     }
 
+    _toggleModal(show) {
+        return() => {
+            this.setState({
+                deleteMode: show
+            });
+        };
+    }
+
+    _deleteContent() {
+        this.setState({deleteMode:false});
+        store.dispatch(deleteContent(this.props.detail._id));
+        this.props.history.push('/content');
+    }
+
     render() {
         return (
             <Menu onCloseButton={this.props.onCloseButton} title="Menu" className="col-xs-6 content-menu">
@@ -58,8 +75,10 @@ class ContentMenu extends Component {
                             </div>
                         </Collapse>
                     </li>
-                    <li className="tagus-menu-item"><a className="tagus-menu-link">Delete</a></li>
+                    <li className="tagus-menu-item"><a onClick={this._toggleModal(true).bind(this)} className="tagus-menu-link">Delete</a></li>
                 </ul>
+                <Modal show={this.state.deleteMode} title="Warning!" body={"Are you sure you want to DELETE PERMANETLY this page and all the children?"} closeButton={{onClick: this._toggleModal(false), text: "Cancel"}} confirmButton={{onClick:this._deleteContent.bind(this), text: "Yes, I'm sure!"}} />
+                <Overlay show={this.props.savingContent}/>
             </Menu>
         );
     }

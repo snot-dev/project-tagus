@@ -70,34 +70,34 @@ router.put('/:id', (req, res) => {
     .catch( err => {
         res.json(err);
     });
+});
 
-    router.delete('/:id', (req, res)=>{
-        //TODO: Remove all children
-        let deletedDoc;
-        Content.findOne({_id : req.params.id}) 
-        .then( result => {
-            return result.remove(); 
-            
-        })
-        .then( doc => {
-            deletedDoc = doc;
-            return Content.findOne({'_id': deletedDoc.parent});
-        })
-        .then( parent => {
-            const indexOfChildren = parent.children.indexOf(deletedDoc._id.toString());
+router.delete('/:id', (req, res)=>{
+    //TODO: Remove all children
+    let deletedDoc;
+    Content.findOne({_id : req.params.id}) 
+    .then( result => {
+        return result.remove(); 
+        
+    })
+    .then( doc => {
+        deletedDoc = doc;
+        return Content.findOne({'_id': deletedDoc.parent});
+    })
+    .then( parent => {
+        const indexOfChildren = parent.children.indexOf(deletedDoc._id.toString());
 
-            if(indexOfChildren > -1) {
-                parent.children.splice(indexOfChildren, 1);
-                return parent.save();
-            }
-        })
-        .then( () => {
-            res.json({ message: "Document successfully deleted!", result: deletedDoc });
-        })
-        .catch( err => {
-            res.json(err);
-        })
-    });
+        if(indexOfChildren > -1) {
+            parent.children.splice(indexOfChildren, 1);
+            return parent.save();
+        }
+    })
+    .then( () => {
+        res.json({ message: "Document successfully deleted!", result: deletedDoc });
+    })
+    .catch( err => {
+        res.json(err);
+    })
 });
 
 module.exports = router;

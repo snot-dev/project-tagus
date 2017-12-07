@@ -68,7 +68,7 @@ export function getContentDetailIfNeeded(id) {
             } else {
                 dispatch({
                     type: constants.content.GET_CONTENT_DETAIL,
-                    payload: axios('content/' + id).then(results => {
+                    payload: axios(`content/${id}`).then(results => {
                         // _getContentUnitTypeIfNeeded(dispatch, getState(), results.data.unitType);
                         return results;
                     })
@@ -91,7 +91,7 @@ export function saveContent(content) {
     return (dispatch, getState) => {
         dispatch({
             type:constants.content.POST_CONTENT_DETAIL,
-            payload: axios.put('content/' + content._id, content)
+            payload: axios.put(`content/${content._id}`, content)
             
         })
         .then(()  => {
@@ -126,6 +126,21 @@ export function createContent(newContent) {
         dispatch({
             type: constants.content.CREATE_CONTENT,
             payload: axios.post('content', newContent)
+        })
+        .then(()  => {
+            dispatch( {
+                type: constants.content.GET_CONTENT_LIST,
+                payload: axios('content')
+            });
+        });
+    }
+}
+
+export function deleteContent(id) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: constants.content.DELETE_CONTENT,
+            payload: axios.delete(`content/${id}`)
         })
         .then(()  => {
             dispatch( {
