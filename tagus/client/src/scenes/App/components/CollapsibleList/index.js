@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Collapse} from 'react-bootstrap';
-import './collapsiblelist.css';
+import './collapsibleList.css';
 
 class CollapsibleList extends Component {
     constructor(props) {
@@ -27,11 +27,13 @@ class CollapsibleList extends Component {
 
     render() {
         const className = this.props.className || '';
+        const open = this.state.open ? ' open' : '';
 
         return(
-            <div>
-                <a className={`tagus-collapsible-list-button ${className}`} onClick={this._onClick.bind(this)}>{this.props.buttonText}</a>
-                <Collapse>
+            <div className={`tagus-collapsible-list ${className}`}>
+                <a className={`tagus-collapsible-list-button${open}`} onClick={this._onClick.bind(this)}>{this.props.buttonChildren}</a>
+                {this.props.parent}
+                <Collapse in={this.state.open}>
                     <div className="col-xs-12">
                         {this.props.children}
                     </div>

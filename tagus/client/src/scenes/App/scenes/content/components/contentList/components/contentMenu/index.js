@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Modal from '../../../../../../components/Modal';
 import Menu from '../../../../../../components/Menu';
+import CollapsibleList from '../../../../../../components/CollapsibleList';
 import Overlay from '../../../../../../components/Overlay';
 import {createUnit, deleteContent} from '../../../../../../../../services/content/actions';
 import store from '../../../../../../../../services/store';
@@ -64,20 +65,18 @@ class ContentMenu extends Component {
     }
 
     render() {
+        const button = <a onClick={this.onClick.bind(this)} className="tagus-menu-link">Add child to {this.props.detail.name}</a>;
         return (
             <Menu onCloseButton={this.props.onCloseButton} title="Menu" className="col-xs-6 content-menu">
                 <ul className="tagus-menu-list row">
                     <li className="tagus-menu-item">
-                        <a onClick={this.onClick.bind(this)} className="tagus-menu-link">Add child to {this.props.detail.name}</a>
-                        <Collapse in={this.state.open}>
-                            <div className="col-xs-12">
+                        <CollapsibleList buttonChildren={button}>
                                 {this._getUnitsList()}
-                            </div>
-                        </Collapse>
+                        </CollapsibleList>
                     </li>
                     <li className="tagus-menu-item"><a onClick={this._toggleModal(true).bind(this)} className="tagus-menu-link">Delete</a></li>
                 </ul>
-                <Modal show={this.state.deleteMode} title="Warning!" body={"Are you sure you want to DELETE PERMANETLY this page and all the children?"} closeButton={{onClick: this._toggleModal(false), text: "Cancel"}} confirmButton={{onClick:this._deleteContent.bind(this), text: "Yes, I'm sure!"}} />
+                <Modal show={this.state.deleteMode} title="Warning!" body={"Are you sure you want to DELETE PERMANENTLY this page and all the children?"} closeButton={{onClick: this._toggleModal(false), text: "Cancel"}} confirmButton={{onClick:this._deleteContent.bind(this), text: "Yes, I'm sure!"}} />
             </Menu>
         );
     }
