@@ -73,22 +73,36 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res)=>{
+    let docsArray = [req.params.id];
+
     Content.find({})
     .then(docs => {
         const dictionary = {};
-        const parentID = req.params.id;
-        const arr = [parentID];
+        const docID = req.params.id;
         
         for(const doc of docs) {
             dictionary[doc._id] = doc;
         }
         
-        addChildrenToArray(dictionary, parentID, arr);
+        addChildrenToArray(dictionary, docID, docsArray);
 
-        return arr;
+        return Content.findOne({'_id': dictionary[docID].parent})
     })
-    .then(arr => {
-        return Content.remove({'_id': {$in:arr}})
+    .then( doc => {
+        if(doc) {
+            for(const child of docsArray) {
+                const indexOfChild = doc.children.indexOf(child);
+                
+                if(indexOfChild > -1) {
+                    doc.children.splice(indexOfChild, 1);
+                }
+            }            
+
+            return doc.save();
+        }
+    })
+    .then(() => {
+        return Content.remove({'_id': {$in:docsArray}})
     })
     .then(docs => {
         res.json(docs);

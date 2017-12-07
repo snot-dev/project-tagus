@@ -70,7 +70,7 @@ class ContentList extends Component {
                     ? <ContentMenu savingContent={this.props.savingContent} history={this.props.history} className="col-xs-6" onCloseButton={this._onMenuButtonClick()} units={this.props.units} detail={this.props.editingContent} />
                     : null
                 }
-                 <Overlay show={this.props.savingContent}/>
+                 <Overlay show={this.props.savingContent || this.props.fetchingList}/>
             </Panel>  
         );
     };

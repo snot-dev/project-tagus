@@ -78,7 +78,6 @@ class ContentMenu extends Component {
                     <li className="tagus-menu-item"><a onClick={this._toggleModal(true).bind(this)} className="tagus-menu-link">Delete</a></li>
                 </ul>
                 <Modal show={this.state.deleteMode} title="Warning!" body={"Are you sure you want to DELETE PERMANETLY this page and all the children?"} closeButton={{onClick: this._toggleModal(false), text: "Cancel"}} confirmButton={{onClick:this._deleteContent.bind(this), text: "Yes, I'm sure!"}} />
-                <Overlay show={this.props.savingContent}/>
             </Menu>
         );
     }
