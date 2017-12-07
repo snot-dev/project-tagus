@@ -73,31 +73,39 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res)=>{
-    //TODO: Remove all children
-    let deletedDoc;
-    Content.findOne({_id : req.params.id}) 
-    .then( result => {
-        return result.remove(); 
+    Content.find({})
+    .then(docs => {
+        const dictionary = {};
+        const parentID = req.params.id;
+        const arr = [parentID];
         
-    })
-    .then( doc => {
-        deletedDoc = doc;
-        return Content.findOne({'_id': deletedDoc.parent});
-    })
-    .then( parent => {
-        const indexOfChildren = parent.children.indexOf(deletedDoc._id.toString());
-
-        if(indexOfChildren > -1) {
-            parent.children.splice(indexOfChildren, 1);
-            return parent.save();
+        for(const doc of docs) {
+            dictionary[doc._id] = doc;
         }
+        
+        addChildrenToArray(dictionary, parentID, arr);
+
+        return arr;
     })
-    .then( () => {
-        res.json({ message: "Document successfully deleted!", result: deletedDoc });
+    .then(arr => {
+        return Content.remove({'_id': {$in:arr}})
     })
-    .catch( err => {
+    .then(docs => {
+        res.json(docs);
+    }).catch(err => {
         res.json(err);
-    })
+    });
+
+    const addChildrenToArray = (dictionary, id, arr) => {
+        const children = dictionary[id].children;
+        
+        for(const child of children) {
+            arr.push(child);
+            if(dictionary[child].children) {
+                addChildrenToArray(dictionary, child, arr);
+            }
+        }
+    }
 });
 
 module.exports = router;
