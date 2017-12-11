@@ -37,12 +37,8 @@ class ContentList extends Component {
                         const branch = this._createBranch(content);
                         return (
                             <li  className="tagus-content-item" key={index}>
-                                {content.children && content.children.length > 0
-                                ?   <CollapsableList open={true} parent={branch}>
-                                        {this._childList(content)}
-                                    </CollapsableList>
-                                :   this._createBranch(content)
-                                }
+                                {branch}
+                                {this._childList(content)}
                             </li>
                         );
                     }) 
@@ -54,7 +50,7 @@ class ContentList extends Component {
 
     _childList(item) {
         return (
-            <ul className="tagus-content-list row">
+            <ul className="tagus-content-list">
                 { item.children.length > 0 
                 ?   item.children.map((child, index) => {
                         const branch = this._createBranch(child);
