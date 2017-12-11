@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import {Collapse} from 'react-bootstrap';
-import './collapsibleList.css';
+import './collapsableList.css';
 
-class CollapsibleList extends Component {
+class CollapsableList extends Component {
     constructor(props) {
         super(props);
 
@@ -28,11 +28,13 @@ class CollapsibleList extends Component {
     render() {
         const className = this.props.className || '';
         const open = this.state.open ? ' open' : '';
+        const buttonClass = this.state.open ? 'minus' : 'plus';
+        const buttonContent = this.props.buttonChildren || <i className={`fa fa-${buttonClass}`}></i>
 
         return(
-            <div className={`tagus-collapsible-list ${className}`}>
-                <a className={`tagus-collapsible-list-button${open}`} onClick={this._onClick.bind(this)}>{this.props.buttonChildren}</a>
+            <div className={`tagus-collapsable-list ${className}`}>
                 {this.props.parent}
+                <a className={`tagus-collapsable-list-button${open}`} onClick={this._onClick.bind(this)}>{buttonContent}</a>
                 <Collapse in={this.state.open}>
                     <div className="col-xs-12">
                         {this.props.children}
@@ -43,4 +45,4 @@ class CollapsibleList extends Component {
     }
 }
 
-export default CollapsibleList;
+export default CollapsableList;

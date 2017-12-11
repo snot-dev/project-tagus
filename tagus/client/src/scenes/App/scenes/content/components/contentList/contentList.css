@@ -1,41 +1,60 @@
-#content-list {
+#tagus-content-list {
     font-size: 16px;
     color: var(--text-color);
     padding-left: 0;
 }
 
-#content-list .fa {
+#tagus-content-list .fa {
     /* color: var(--title-color); */
     margin-right: 5px;
 }
 
-#content-list .active .fa  {
+#tagus-content-list .active .fa  {
     color: var(--main-red);
 }
 
-#content-list .active  {
+#tagus-content-list .active  {
     border-bottom: 2px solid var(--main-red);
 }
 
-.content-list {
+.tagus-content-list {
     padding-left: 20px;
 }
 
-.content-link  {
+.tagus-content-link  {
     padding: 5px 0;
     display: inline-block;
     min-width: 200px;
 }
 
-.content-menu-button {
+.tagus-content-menu-button {
     float: right;
-    padding: 5px 0;
     margin: 0;
     display: none;
     font-size: 18px;
-    line-height: 26px;
+    line-height: 22px;
+    padding: 5px 0;
+    margin-right: 30px!important;
+    cursor: pointer;
 }
 
-.content-link-container:hover > .content-menu-button {
+.tagus-content-link-container:hover > .tagus-content-menu-button {
     display: inline-block;
 } 
+
+.tagus-content-item .tagus-collapsable-list {
+    position: relative;
+}
+
+.tagus-content-item .tagus-collapsable-list .tagus-collapsable-list-button {
+    position: absolute;
+    display: block;
+    padding: 5px 0;
+    right: 0;
+    margin-top: -30px;
+    cursor: pointer;
+}
+
+.tagus-content-item .tagus-collapsable-list .tagus-collapsable-list-button .fa {
+    margin: 0!important;
+}

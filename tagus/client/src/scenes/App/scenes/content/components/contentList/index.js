@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {NavLink} from 'react-router-dom';
+import CollapsableList from '../../../../components/CollapsableList';
 import store from '../../../../../../services/store';
 import {editContent} from '../../../../../../services/content/actions';
 import Panel from '../../../../components/Panel';
@@ -16,20 +17,32 @@ class ContentList extends Component {
         }
     }
 
+    _createBranch(content) {
+        const icon = content.parent ? "file" : "home";
+        return (
+            <div className="tagus-content-link-container">
+                <NavLink to={`${this.props.url}/detail/${content._id}`} activeClassName="active" className="tagus-content-link">
+                    <i className={`fa fa-${icon}`} aria-hidden="true"></i>{content.name}
+                </NavLink>
+                <i onClick={this._onMenuButtonClick(content)} className="tagus-content-menu-button fa fa-bars"></i>
+            </div>
+        );
+    }
+
     _buildContentList() {
          return (
-            <ul id="content-list" className="content-list">
+            <ul id="tagus-content-list" className="tagus-content-list">
                 {this.props.contentList && this.props.contentList.length > 0 
                 ?   this.props.contentList.map((content, index) => {
+                        const branch = this._createBranch(content);
                         return (
-                            <li  className="content-item" key={index}>
-                                <div className="content-link-container">
-                                    <NavLink to={`${this.props.url}/detail/${content._id}`} activeClassName="active" className="content-link">
-                                        <i className="fa fa-home" aria-hidden="true"></i>{content.name}
-                                    </NavLink>
-                                    <i onClick={this._onMenuButtonClick(content)} className="content-menu-button fa fa-bars"></i>
-                                </div>
-                                {content.children ? this._childList(content) : null}
+                            <li  className="tagus-content-item" key={index}>
+                                {content.children && content.children.length > 0
+                                ?   <CollapsableList open={true} parent={branch}>
+                                        {this._childList(content)}
+                                    </CollapsableList>
+                                :   this._createBranch(content)
+                                }
                             </li>
                         );
                     }) 
@@ -41,18 +54,19 @@ class ContentList extends Component {
 
     _childList(item) {
         return (
-            <ul className="content-list">
+            <ul className="tagus-content-list row">
                 { item.children.length > 0 
                 ?   item.children.map((child, index) => {
+                        const branch = this._createBranch(child);
                         return(
-                            <li className="content-item" key={index}>
-                                <div className="content-link-container">
-                                    <NavLink to={`${this.props.url}/detail/${child._id}`} className="content-link">
-                                        <i className="fa fa-file" aria-hidden="true"></i>{child.name}
-                                    </NavLink>
-                                    <i onClick={this._onMenuButtonClick(child)} className="content-menu-button fa fa-bars"></i>
-                                </div>
-                                {this._childList(child)}
+                            <li className="tagus-content-item" key={index}>
+                                {child.children && child.children.length > 0
+                                ?   <CollapsableList parent={branch}>
+                                        {this._childList(child)}
+                                    </CollapsableList>
+                                :   this._createBranch(child)
+                                }
+                                
                             </li>
                         );
                     }) 

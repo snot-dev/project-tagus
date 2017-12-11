@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import Modal from '../../../../../../components/Modal';
 import Menu from '../../../../../../components/Menu';
-import CollapsibleList from '../../../../../../components/CollapsibleList';
-import Overlay from '../../../../../../components/Overlay';
+import CollapsableList from '../../../../../../components/CollapsableList';
 import {createUnit, deleteContent} from '../../../../../../../../services/content/actions';
 import store from '../../../../../../../../services/store';
 import {Link} from 'react-router-dom';
-import {Collapse} from 'react-bootstrap';
 import './contentMenu.css';
 
 class ContentMenu extends Component {
@@ -65,14 +63,14 @@ class ContentMenu extends Component {
     }
 
     render() {
-        const button = <a onClick={this.onClick.bind(this)} className="tagus-menu-link">Add child to {this.props.detail.name}</a>;
+        const button = <div onClick={this.onClick.bind(this)} className="tagus-menu-link">Add child to {this.props.detail.name}</div>;
         return (
             <Menu onCloseButton={this.props.onCloseButton} title="Menu" className="col-xs-6 content-menu">
                 <ul className="tagus-menu-list row">
                     <li className="tagus-menu-item">
-                        <CollapsibleList buttonChildren={button}>
+                        <CollapsableList buttonChildren={button}>
                                 {this._getUnitsList()}
-                        </CollapsibleList>
+                        </CollapsableList>
                     </li>
                     <li className="tagus-menu-item"><a onClick={this._toggleModal(true).bind(this)} className="tagus-menu-link">Delete</a></li>
                 </ul>
