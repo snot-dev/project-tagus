@@ -7,6 +7,10 @@ const convertToAlias = name => {
     return S(name).slugify().camelize().s;
 };
 
+const convertToUrl = name => {
+    return S(name).slugify().s;
+}
+
 router.get('/', (req, res) => {
     Content.find({})
     .populate('children')
@@ -22,12 +26,15 @@ router.post('/', (req, res) => {
   
     if(newContent.name) {
         newContent.alias = convertToAlias(newContent.name);
+        if(newContent.url === '/') {
+            newContent.url = '';
+        }
+        newContent.url = `${newContent.url}/${convertToUrl(newContent.name)}`;
     }
     
     //TODO: Change this to an actual user
     newContent.createdBy = 'User';
     newContent.created = new Date();
-    newContent.url = `${newContent.url}/${newContent.alias.toLowerCase()}`;
     
     newContent.save()
     .then(result => {
