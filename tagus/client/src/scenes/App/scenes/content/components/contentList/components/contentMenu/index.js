@@ -69,7 +69,9 @@ class ContentMenu extends Component {
                 <ul className="tagus-menu-list row">
                     <li className="tagus-menu-item">
                         <CollapsableList buttonChildren={button}>
+                            <div className="col-xs-12">
                                 {this._getUnitsList()}
+                            </div>
                         </CollapsableList>
                     </li>
                     <li className="tagus-menu-item"><a onClick={this._toggleModal(true).bind(this)} className="tagus-menu-link">Delete</a></li>

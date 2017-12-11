@@ -36,9 +36,7 @@ class CollapsableList extends Component {
                 {this.props.parent}
                 <a className={`tagus-collapsable-list-button${open}`} onClick={this._onClick.bind(this)}>{buttonContent}</a>
                 <Collapse in={this.state.open}>
-                    <div className="col-xs-12">
-                        {this.props.children}
-                    </div>
+                    {this.props.children}
                 </Collapse>
             </div>
         );

@@ -2,6 +2,7 @@
     font-size: 16px;
     color: var(--text-color);
     padding-left: 0;
+    width: 100%;
 }
 
 #tagus-content-list .fa {
@@ -19,6 +20,13 @@
 
 .tagus-content-list {
     padding-left: 20px;
+    width: 100%;
+    float:left;
+}
+
+.tagus-content-item {
+    width: 100%;
+    float: left;
 }
 
 .tagus-content-link  {
