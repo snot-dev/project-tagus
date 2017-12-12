@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import {Route, Redirect} from 'react-router-dom';
+import {Route} from 'react-router-dom';
 import {getUnitsListIfNeeded} from '../../../../services/units/actions';
 import store from '../../../../services/store';
 import UnitList from './components/UnitList';
