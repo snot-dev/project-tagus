@@ -32,7 +32,7 @@ class Content extends Component {
     }
 }
 
-let mapStateToProps = function(state) {
+const mapStateToProps = state => {
     return {
       content: state.content
     };

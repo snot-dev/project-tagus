@@ -1,12 +1,14 @@
 import { combineReducers, createStore, applyMiddleware } from "redux";
 import { contentReducer } from './content/reducer';
+import { unitsReducer } from './units/reducer';
 import thunk from 'redux-thunk';
 import promise from 'redux-promise-middleware';
 import {createLogger} from 'redux-logger';
 
 
 let rootReducer = combineReducers({
-    content: contentReducer
+    content: contentReducer,
+    units: unitsReducer
 });
 
 
@@ -21,15 +23,15 @@ let initialState = {
         savingDetail: false,
         editingContent: null,
         createUnit: null
+    },
+    units: {
+        list: [],
+        detail: {},
+        fetchingList: false,
+        fetchingDetail: false,
+        savingDetail: false
     }
     // ,
-    // units: {
-    //     list: [],
-    //     detail: {},
-    //     fetchingList: false,
-    //     fetchingDetail: false,
-    //     savingDetail: false
-    // },
     // unitFields: {
     //     list: [],
     //     detail: {},

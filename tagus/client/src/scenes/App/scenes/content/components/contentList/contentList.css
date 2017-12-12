@@ -1,21 +1,5 @@
-#tagus-content-list {
-    font-size: 16px;
-    color: var(--text-color);
+ #tagus-content-list {
     padding-left: 0;
-    width: 100%;
-}
-
-#tagus-content-list .fa {
-    /* color: var(--title-color); */
-    margin-right: 5px;
-}
-
-#tagus-content-list .active .fa  {
-    color: var(--main-red);
-}
-
-#tagus-content-list .active  {
-    border-bottom: 2px solid var(--main-red);
 }
 
 .tagus-content-list {
@@ -27,12 +11,6 @@
 .tagus-content-item {
     width: 100%;
     float: left;
-}
-
-.tagus-content-link  {
-    padding: 5px 0;
-    display: inline-block;
-    min-width: 200px;
 }
 
 .tagus-content-menu-button {
