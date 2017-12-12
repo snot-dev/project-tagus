@@ -26,6 +26,7 @@ let initialState = {
     },
     units: {
         list: [],
+        dictionary: {},
         detail: {},
         fetchingList: false,
         fetchingDetail: false,

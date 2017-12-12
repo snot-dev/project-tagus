@@ -68,10 +68,7 @@ export function getContentDetailIfNeeded(id) {
             } else {
                 dispatch({
                     type: constants.content.GET_CONTENT_DETAIL,
-                    payload: axios(`content/${id}`).then(results => {
-                        // _getContentUnitTypeIfNeeded(dispatch, getState(), results.data.unitType);
-                        return results;
-                    })
+                    payload: axios(`content/${id}`)
                 });
             }
         }

@@ -1,5 +1,5 @@
 import { constants } from '../constants';
-import {buildContentTree, convertArrayToDictionary} from './helpers';
+import {buildContentTree, convertArrayToDictionary} from '../helpers';
 
 export let contentReducer = (state, action) => {
     let newState = Object.assign({}, state);

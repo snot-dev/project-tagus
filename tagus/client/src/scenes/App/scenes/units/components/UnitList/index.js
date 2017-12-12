@@ -28,7 +28,6 @@ class UnitsList extends Component {
 
 
     render() {
-        console.warn(this.props);
         return (
             <Panel title="Units" className="col-xs-4 full-height">
                 {this._displayUnitsList()}

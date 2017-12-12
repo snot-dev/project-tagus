@@ -1,4 +1,5 @@
 import { constants } from '../constants';
+import {convertArrayToDictionary} from '../helpers';
 
 export let unitsReducer = function(state, action) {
     let newState = Object.assign({}, state);
@@ -21,6 +22,7 @@ export let unitsReducer = function(state, action) {
         case constants.units.GET_UNITS_LIST_FULFILLED: {
             newState.fetchingList = false;
             newState.list = action.payload.data;
+            newState.dictionary = convertArrayToDictionary(action.payload.data);
             return newState;
         }
         default:

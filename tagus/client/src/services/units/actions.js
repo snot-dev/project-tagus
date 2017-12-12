@@ -14,13 +14,22 @@ let _shouldGetUnitDetail = function(state, id) {
 
 export function getUnitDetailIfNeeded(id) {
     return (dispatch, getState) => {
-        if(_shouldGetUnitDetail(getState(), id)) {
-            dispatch({
-                type: constants.units.GET_UNITS_DETAIL,
-                payload: axios('units/' + id).then(results => {
-                    return results;
-                })
-            });
+        const state = getState();
+        if(_shouldGetUnitDetail(state, id)) {
+            if(state.units.dictionary[id]) {
+                dispatch({
+                    type: constants.units.GET_UNITS_DETAIL_FULFILLED,
+                    payload:{
+                        data: state.units.dictionary[id]
+                    } 
+                });
+            }
+            else {
+                dispatch({
+                    type: constants.units.GET_UNITS_DETAIL,
+                    payload: axios('units/' + id)
+                });
+            }
         }
     };
 };

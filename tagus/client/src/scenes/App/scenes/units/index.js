@@ -13,11 +13,10 @@ class Units extends Component {
     }
 
     render() {
-        console.warn(this.props);
         return (
             <section id="units" className="full-height col-xs-12">
                 <UnitList url={this.props.match.url}  list={this.props.units.list} fetchingList={this.props.units.fetchingList} savingDetail={this.props.savingDetail} />
-                <Route exact={false}  path={`${this.props.match.url}/detail/:id`} render={(props)=>(<UnitDetail {...props}  />)} />
+                <Route exact={false}  path={`${this.props.match.url}/detail/:id`} render={(props)=>(<UnitDetail {...props} detail={this.props.units.detail} />)} />
             </section>
         )
     }
