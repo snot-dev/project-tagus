@@ -12,7 +12,7 @@ module.exports = app => {
 
             for(const file of files) {
                 if( file.split('.').pop() === viewEngine) {
-                    templates.push(file);
+                    templates.push({"label":file, "value": file});
                 }
             }
         }
