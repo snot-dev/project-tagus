@@ -12,7 +12,8 @@ module.exports = app => {
 
             for(const file of files) {
                 if( file.split('.').pop() === viewEngine) {
-                    templates.push({"label":file, "value": file});
+                    const fileName = file.split('.').shift();
+                    templates.push({"label":fileName, "value": fileName});
                 }
             }
         }
