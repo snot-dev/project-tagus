@@ -30,7 +30,7 @@ app.use(express.static('SiteName'));
 app.use(tagusApi.auth.passport.initialize());
 
 
-app.use('/api', tagusApi.routes.api());
+app.use('/api', tagusApi.routes.api(app));
 app.use('/', tagusApi.routes.site());
 
 app.listen(portNumber, function () {  

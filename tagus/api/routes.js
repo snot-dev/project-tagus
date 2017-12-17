@@ -7,10 +7,12 @@ const bridges = require('./bridges');
 const settings = require('./settings').routes;
 const User = require('./users').model;
 const auth = require('./auth');
+const templates = require('./templates/routes');
 
-const api = (strategy) => {
+const api = (app, strategy) => {
     const router = require('express').Router();
-    let protectMiddleware = (req, res, next) => {
+
+        let protectMiddleware = (req, res, next) => {
         next();
     };
 
@@ -27,6 +29,7 @@ const api = (strategy) => {
     router.use('/users', protectMiddleware, users);
     router.use('/translates', protectMiddleware, translates);
     router.use('/settings', protectMiddleware, settings);
+    router.use('/templates', protectMiddleware, templates(app));
     router.use('/authenticate', auth.routes(User));
 
     return router;
