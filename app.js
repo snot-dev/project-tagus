@@ -9,7 +9,7 @@ const hbs = require('hbs');
 const app = express();
 const tagusApi = require('./tagus/api');
 
-const portNumber =   process.env.PORT_NUMBER;
+const portNumber = process.env.PORT_NUMBER;
 
 // override this settings to choose the view engine to be used
 const partialsDir = '/SiteName/views/partials';

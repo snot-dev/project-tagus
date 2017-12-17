@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Form} from 'react-form';
+import * as bnn from 'react-form';
 import {Button} from 'react-bootstrap';
 import Modal from '../Modal';
 import FormFields from './components/formFields';
@@ -12,7 +13,9 @@ class CustomForm extends Component {
         this.state = {
             cancelMode: false,
             formWasTouched: false
-        }
+        };
+
+        console.warn(bnn);
     }
 
     _errorValidator(values) {
@@ -37,7 +40,7 @@ class CustomForm extends Component {
                 this.props.onSubmit(formValues);
                 formApi.submitForm();
             }
-        }
+        };
     }
 
     _formHasErrors(formApi) {
@@ -58,7 +61,7 @@ class CustomForm extends Component {
         return () => {
             this.setState({cancelMode: false});
             formApi.resetAll();
-        }
+        };
     }
 
     _toggleCancelModal(show) {
@@ -66,7 +69,7 @@ class CustomForm extends Component {
             if(this.state.formWasTouched) {
                 this.setState({cancelMode: show});
             }
-        }
+        };
     }
 
     _touchTheForm() {
@@ -82,6 +85,7 @@ class CustomForm extends Component {
                 {formApi => (
                     <form onSubmit={formApi.submitForm} className="container-fluid">
                         <FormFields formApi={formApi} submits={formApi.submits} formName={this.props.formName} onFieldChange={this._touchTheForm.bind(this)} fields={this.props.fields} />
+                        {this.props.children ?  React.cloneElement(this.props.children, {...this.props}) : null}
                         <div className="row">
                             <div className="tagus-form-button-container col-xs-12">
                                 <Button onClick={this._onSubmit(formApi).bind(this)} type="button" className={`pull-right ${disabled}`} bsStyle={"primary"}>Save</Button>

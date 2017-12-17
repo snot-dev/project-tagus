@@ -40,13 +40,28 @@ export function getUnitsListIfNeeded(){
             dispatch( {
                 type: constants.units.GET_UNITS_LIST,
                 payload: axios ('units')
-            })
-            .then(() => {
-                dispatch({
-                    type: constants.units.GET_UNITS_TEMPLATES,
-                    payload: axios('templates')
-                });
             });
         }
-    }
+    };
 };
+
+export function addTab() {
+    return (dispatch, getState) => {
+        const state = getState();
+
+        if(!state.units.addingTab) {
+            dispatch({
+                type: constants.units.ADDING_TAB
+            });
+        }
+    };
+}
+
+export function getTemplatesIfNeeded() {
+    return (dispatch, getState) => {
+        dispatch({
+            type: constants.units.GET_UNITS_TEMPLATES,
+            payload: axios('templates')
+        });
+    };
+}

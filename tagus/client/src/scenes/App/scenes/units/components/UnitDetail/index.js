@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Panel from '../../../../components/Panel';
 import Overlay from '../../../../components/Overlay';
 import Form from '../../../../components/Form';
-import {getUnitDetailIfNeeded} from '../../../../../../services/units/actions';
+import {getUnitDetailIfNeeded, addTab} from '../../../../../../services/units/actions';
 import store from '../../../../../../services/store';
 import './unitsDetail.css';
 
@@ -17,8 +17,7 @@ class UnitsDetail extends Component {
                 alias: "name",
                 required: true
             }
-        ]
-       
+        ];
     }
 
     _getFieldsDefaultValues() {
@@ -48,26 +47,45 @@ class UnitsDetail extends Component {
         if(newProps.match.params.id !== this.props.match.params.id) {
             store.dispatch(getUnitDetailIfNeeded(newProps.match.params.id));
         }
+    }
 
-       
+    _addTabClick() {
+       if(!this.props.addingTab) {
+           store.dispatch(addTab());
+       }
+    }
+
+    addTab() {
+        return (
+            <div className="text-center">
+                <a className="tagus-unit-add-link" onClick={this._addTabClick.bind(this)}><i className="fa fa-plus-square" aria-hidden="true"></i>Add new tab</a>
+            </div>
+        )
     }
 
     renderForm() {
         return (
             <div>
-                    <div className="container-fluid tagus-form-info-fields">
-                        <div className="row tagus-form-control">
-                            <div className="col-xs-12 col-sm-6 tagus-form-field">
-                                <label className="tagus-label" >Alias</label>
-                                <p className="tagus-info">{this.props.detail.alias}</p>
-                            </div>
-                            <div className="col-xs-12 col-sm-6 tagus-form-field text-right">
-                                <label className="tagus-label" >Created</label>
-                                <p className="tagus-info">{this.props.detail.created}</p>
-                            </div>
+                <div className="container-fluid tagus-form-info-fields">
+                    <div className="row tagus-form-control">
+                        <div className="col-xs-12 col-sm-6 tagus-form-field">
+                            <label className="tagus-label" >Alias</label>
+                            <p className="tagus-info">{this.props.detail.alias}</p>
+                        </div>
+                        <div className="col-xs-12 col-sm-6 tagus-form-field text-right">
+                            <label className="tagus-label" >Created</label>
+                            <p className="tagus-info">{this.props.detail.created}</p>
                         </div>
                     </div>
-                <Form key={this.props.detail._id} name="unit" fields={this.fields} defaultValues={this._getFieldsDefaultValues()} />
+                </div>
+                <Form key={this.props.detail._id} name="unit" fields={this.fields} defaultValues={this._getFieldsDefaultValues()} >
+                    <div>
+                        { !this.props.addingTab
+                        ?   this.addTab()
+                        :   null
+                        }
+                    </div>
+                </Form>
             </div>
         );
     }
