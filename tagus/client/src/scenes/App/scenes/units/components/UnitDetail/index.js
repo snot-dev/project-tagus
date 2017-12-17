@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import Panel from '../../../../components/Panel';
 import Overlay from '../../../../components/Overlay';
 import Form from '../../../../components/Form';
-import {getUnitDetailIfNeeded, addTab} from '../../../../../../services/units/actions';
+import AddTabButton from './components/AddTabButton';
+import AddTabMenu from './components/AddTabMenu';
+import {getUnitDetailIfNeeded} from '../../../../../../services/units/actions';
 import store from '../../../../../../services/store';
 import './unitsDetail.css';
 
@@ -49,20 +51,6 @@ class UnitsDetail extends Component {
         }
     }
 
-    _addTabClick() {
-       if(!this.props.addingTab) {
-           store.dispatch(addTab());
-       }
-    }
-
-    addTab() {
-        return (
-            <div className="text-center">
-                <a className="tagus-unit-add-link" onClick={this._addTabClick.bind(this)}><i className="fa fa-plus-square" aria-hidden="true"></i>Add new tab</a>
-            </div>
-        )
-    }
-
     renderForm() {
         return (
             <div>
@@ -81,7 +69,7 @@ class UnitsDetail extends Component {
                 <Form key={this.props.detail._id} name="unit" fields={this.fields} defaultValues={this._getFieldsDefaultValues()} >
                     <div>
                         { !this.props.addingTab
-                        ?   this.addTab()
+                        ?   <AddTabButton addingTab={this.props.addingTab} />
                         :   null
                         }
                     </div>
@@ -97,6 +85,8 @@ class UnitsDetail extends Component {
                 ?   this.renderForm()
                 :   null
                 }
+
+                <AddTabMenu show={this.props.addingTab} />
                 <Overlay show={this.props.fetchingList || this.props.savingDetail}/>
             </Panel>
         );

@@ -35,7 +35,7 @@ export let unitsReducer = function(state, action) {
             return newState;
         }
         case constants.units.ADDING_TAB: {
-            newState.addingTab = true;
+            newState.addingTab = !state.addingTab;
             return newState;
         }
         default:

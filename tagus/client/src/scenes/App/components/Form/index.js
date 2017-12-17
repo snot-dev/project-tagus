@@ -14,8 +14,6 @@ class CustomForm extends Component {
             cancelMode: false,
             formWasTouched: false
         };
-
-        console.warn(bnn);
     }
 
     _errorValidator(values) {

@@ -47,13 +47,9 @@ export function getUnitsListIfNeeded(){
 
 export function addTab() {
     return (dispatch, getState) => {
-        const state = getState();
-
-        if(!state.units.addingTab) {
-            dispatch({
-                type: constants.units.ADDING_TAB
-            });
-        }
+        dispatch({
+            type: constants.units.ADDING_TAB
+        });
     };
 }
 
