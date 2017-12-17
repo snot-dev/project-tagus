@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Panel from '../../../../components/Panel';
 import Overlay from '../../../../components/Overlay';
-import Form from '../../../../components/Form';
 import AddTabButton from './components/AddTabButton';
 import AddTabMenu from './components/AddTabMenu';
 import {getUnitDetailIfNeeded} from '../../../../../../services/units/actions';
@@ -12,24 +11,9 @@ class UnitsDetail extends Component {
     constructor(props) {
         super(props);
 
-        this.fields = [
-            {
-                name: "Name",
-                type: "text",
-                alias: "name",
-                required: true
-            }
-        ];
-    }
-
-    _getFieldsDefaultValues() {
-        const values = {};
-        
-        for(const field of this.fields)  {
-            values[field.alias] = this.props.detail[field.alias];
-        }
-
-        return values;
+        this.state = {
+            touched: false
+        };
     }
 
     componentWillMount() {
@@ -41,19 +25,45 @@ class UnitsDetail extends Component {
     
     shouldComponentUpdate(props) {
         const hasNeededUnit = !!props.detail._id || props.match.params.id !== this.props.detail._id;
-        
+                
         return  hasNeededUnit;
     }
     
     componentWillUpdate(newProps) {
         if(newProps.match.params.id !== this.props.match.params.id) {
+            this.setState({
+                touched: false,
+                values: {}
+            });
+
             store.dispatch(getUnitDetailIfNeeded(newProps.match.params.id));
+        }
+    }
+
+    _onBlur(e) {
+        const state = {};
+        const values = {};
+
+        if(!this.state.touched) {
+            state.touched = true;
+        }
+
+        values[e.target.name] = e.target.value;
+        
+        state.values = values;
+
+        this.setState(state);
+    }
+
+    _onChange() {
+        if(!this.state.touched) {
+            this.setState({touched: true, values: {}});
         }
     }
 
     renderForm() {
         return (
-            <div>
+            <div key={this.props.detail._id}>
                 <div className="container-fluid tagus-form-info-fields">
                     <div className="row tagus-form-control">
                         <div className="col-xs-12 col-sm-6 tagus-form-field">
@@ -65,15 +75,19 @@ class UnitsDetail extends Component {
                             <p className="tagus-info">{this.props.detail.created}</p>
                         </div>
                     </div>
-                </div>
-                <Form key={this.props.detail._id} name="unit" fields={this.fields} defaultValues={this._getFieldsDefaultValues()} >
-                    <div>
-                        { !this.props.addingTab
-                        ?   <AddTabButton addingTab={this.props.addingTab} />
-                        :   null
-                        }
+                    <div className="row tagus-form-control" >
+                        <div className="col-xs-12 tagus-form-field">
+                            <label className="tagus-label" htmlFor="name">Name</label>
+                            <input type="text" onChange={this._onChange.bind(this)}  onBlur={this._onBlur.bind(this)} defaultValue={this.props.detail.name} name="name" id="name" className="tagus-input text" />
+                        </div>
                     </div>
-                </Form>
+                </div>
+                <div>
+                    { !this.props.addingTab
+                    ?   <AddTabButton addingTab={this.props.addingTab} />
+                    :   null
+                    }
+                </div>
             </div>
         );
     }

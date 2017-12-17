@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {Form} from 'react-form';
-import * as bnn from 'react-form';
 import {Button} from 'react-bootstrap';
 import Modal from '../Modal';
 import FormFields from './components/formFields';
