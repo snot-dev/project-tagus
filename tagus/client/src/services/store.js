@@ -30,7 +30,9 @@ let initialState = {
         detail: {},
         fetchingList: false,
         fetchingDetail: false,
-        savingDetail: false
+        fetchingTemplates: false,
+        savingDetail: false,
+        templates: []
     }
     // ,
     // unitFields: {

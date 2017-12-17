@@ -13,6 +13,7 @@ class Units extends Component {
     }
 
     render() {
+        console.warn(this.props.units); 
         return (
             <section id="units" className="full-height col-xs-12">
                 <UnitList url={this.props.match.url}  list={this.props.units.list} fetchingList={this.props.units.fetchingList} savingDetail={this.props.savingDetail} />

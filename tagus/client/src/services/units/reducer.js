@@ -25,6 +25,15 @@ export let unitsReducer = function(state, action) {
             newState.dictionary = convertArrayToDictionary(action.payload.data);
             return newState;
         }
+        case constants.units.GET_UNITS_TEMPLATES_PENDING: {
+            newState.fetchingTemplates = true;
+            return newState;
+        }
+        case constants.units.GET_UNITS_TEMPLATES_FULFILLED: {
+            newState.fetchingTemplates = false;
+            newState.templates = action.payload.data;
+            return newState;
+        }
         default:
             return state || {};   
     }

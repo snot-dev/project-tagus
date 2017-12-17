@@ -40,6 +40,12 @@ export function getUnitsListIfNeeded(){
             dispatch( {
                 type: constants.units.GET_UNITS_LIST,
                 payload: axios ('units')
+            })
+            .then(() => {
+                dispatch({
+                    type: constants.units.GET_UNITS_TEMPLATES,
+                    payload: axios('templates')
+                });
             });
         }
     }
