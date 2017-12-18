@@ -3,7 +3,7 @@ import Panel from '../../../../components/Panel';
 import Overlay from '../../../../components/Overlay';
 import AddTabButton from './components/AddTabButton';
 import AddTabMenu from './components/AddTabMenu';
-import {getUnitDetailIfNeeded} from '../../../../../../services/units/actions';
+import {getUnitDetailIfNeeded, updateUnit, addTab, addNewTab} from '../../../../../../services/units/actions';
 import store from '../../../../../../services/store';
 import './unitsDetail.css';
 
@@ -20,7 +20,6 @@ class UnitsDetail extends Component {
         if (this.props.match.params.id) {
             store.dispatch(getUnitDetailIfNeeded(this.props.match.params.id));
         }
-
     }
     
     shouldComponentUpdate(props) {
@@ -32,33 +31,52 @@ class UnitsDetail extends Component {
     componentWillUpdate(newProps) {
         if(newProps.match.params.id !== this.props.match.params.id) {
             this.setState({
-                touched: false,
-                values: {}
+                touched: false
             });
 
             store.dispatch(getUnitDetailIfNeeded(newProps.match.params.id));
         }
+    }   
+
+    _camelize(str){
+        // https://stackoverflow.com/questions/2970525/converting-any-string-into-camel-case
+        return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(letter, index) {
+            return index === 0 ? letter.toLowerCase() : letter.toUpperCase();
+          }).replace(/\s+/g, '');
     }
 
     _onBlur(e) {
         const state = {};
-        const values = {};
 
         if(!this.state.touched) {
-            state.touched = true;
+            this.setState({touched: true});
         }
 
-        values[e.target.name] = e.target.value;
-        
-        state.values = values;
+        state[e.target.name] = e.target.value;
 
-        this.setState(state);
+        if(e.target.name === "name") {
+            state.alias = this._camelize(e.target.value);
+        }
+        
+        store.dispatch(updateUnit(state));
     }
 
     _onChange() {
         if(!this.state.touched) {
-            this.setState({touched: true, values: {}});
+            this.setState({touched: true});
         }
+    }
+
+    onTabFormSubmit(values) {
+        const alias = this._camelize(values.tab.name);
+        const tab = {
+            name: values.tab.name,
+            alias,
+            fields: []
+        };
+
+        store.dispatch(addNewTab(tab));
+        store.dispatch(addTab(false));
     }
 
     renderForm() {
@@ -100,7 +118,7 @@ class UnitsDetail extends Component {
                 :   null
                 }
 
-                <AddTabMenu show={this.props.addingTab} />
+                <AddTabMenu show={this.props.addingTab} onSubmit={this.onTabFormSubmit.bind(this)} />
                 <Overlay show={this.props.fetchingList || this.props.savingDetail}/>
             </Panel>
         );

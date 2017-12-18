@@ -45,10 +45,11 @@ export function getUnitsListIfNeeded(){
     };
 };
 
-export function addTab() {
+export function addTab(adding) {
     return (dispatch, getState) => {
         dispatch({
-            type: constants.units.ADDING_TAB
+            type: constants.units.ADDING_TAB,
+            payload: adding
         });
     };
 }
@@ -60,4 +61,28 @@ export function getTemplatesIfNeeded() {
             payload: axios('templates')
         });
     };
+}
+
+export function updateUnit(values) {
+    return (dispatch, getState) => {
+        const state = getState();
+        const newDetail = Object.assign(state.units.detail, values);
+
+        dispatch({
+            type: constants.units.UPDATE_UNIT,
+            payload: newDetail
+        });
+    };
+}
+
+export function addNewTab(tab) {
+    return (dispatch, getState) => {
+        const detail = getState().units.detail;
+        detail.tabs.push(tab);
+
+        dispatch({
+            type: constants.units.UPDATE_UNIT,
+            payload: detail
+        });
+    }
 }

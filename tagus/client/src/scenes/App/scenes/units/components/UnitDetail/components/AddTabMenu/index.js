@@ -24,10 +24,12 @@ class AddTabMenu extends Component {
         }
     }
 
+
+
     _renderMenu() {
         return(
             <Menu title="Add new Tab" className="col-xs-6" onCloseButton={this._onClose.bind(this)} >
-                <Form fields={this.fields} />
+                <Form name="tab" fields={this.fields} onSubmit={this.props.onSubmit}/>
             </Menu>
         );
     }
