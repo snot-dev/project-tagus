@@ -99,12 +99,7 @@ class UnitsDetail extends Component {
                             <input type="text" onChange={this._onChange.bind(this)}  onBlur={this._onBlur.bind(this)} defaultValue={this.props.detail.name} name="name" id="name" className="tagus-input text" />
                         </div>
                     </div>
-                </div>
-                <div>
-                    { !this.props.addingTab
-                    ?   <AddTabButton addingTab={this.props.addingTab} />
-                    :   null
-                    }
+                    <AddTabButton show={!this.props.addingTab} />
                 </div>
             </div>
         );

@@ -9,12 +9,20 @@ class AddTabButton extends Component {
         }
      }
 
-    render() {
+    _render() {
         return (
-            <div className="text-center">
-                <a className="tagus-unit-add-link" onClick={this._addTabClick.bind(this)}><i className="fa fa-plus-square" aria-hidden="true"></i>Add new tab</a>
+            <div className="row" >
+                <div className="col-xs-12">
+                    <a className="tagus-unit-add-link" onClick={this._addTabClick.bind(this)}><i className="fa fa-plus-square" aria-hidden="true"></i>Add new tab</a>
+                </div>
             </div>
-        );
+        ); 
+    }
+
+    render() {
+        const render = this.props.show ? this._render() : null;
+
+        return render;
     }
 }
 
