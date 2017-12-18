@@ -3,7 +3,8 @@ import Panel from '../../../../components/Panel';
 import Overlay from '../../../../components/Overlay';
 import AddTabButton from './components/AddTabButton';
 import AddTabMenu from './components/AddTabMenu';
-import {getUnitDetailIfNeeded, updateUnit, addTab, addNewTab} from '../../../../../../services/units/actions';
+import TemplatesList from './components/TemplatesList';
+import {getUnitDetailIfNeeded, updateUnit, addTab, addNewTab, getTemplatesIfNeeded} from '../../../../../../services/units/actions';
 import store from '../../../../../../services/store';
 import './unitsDetail.css';
 
@@ -20,12 +21,15 @@ class UnitsDetail extends Component {
         if (this.props.match.params.id) {
             store.dispatch(getUnitDetailIfNeeded(this.props.match.params.id));
         }
+
+        store.dispatch(getTemplatesIfNeeded());
     }
     
-    shouldComponentUpdate(props) {
-        const hasNeededUnit = !!props.detail._id || props.match.params.id !== this.props.detail._id;
-                
-        return  hasNeededUnit;
+    shouldComponentUpdate(nextProps) {
+        const hasNeededUnit = !!nextProps.detail._id || nextProps.match.params.id !== this.props.detail._id;
+        const templates = this.props.fetchingTemplates !== nextProps.fetchingTemplates;
+        
+        return  hasNeededUnit || templates;
     }
     
     componentWillUpdate(newProps) {
@@ -99,6 +103,10 @@ class UnitsDetail extends Component {
                             <input type="text" onChange={this._onChange.bind(this)}  onBlur={this._onBlur.bind(this)} defaultValue={this.props.detail.name} name="name" id="name" className="tagus-input text" />
                         </div>
                     </div>
+                    { this.props.templates 
+                    ? <TemplatesList templates={this.props.templates} />
+                    :null
+                    }
                     <AddTabButton show={!this.props.addingTab} />
                 </div>
             </div>

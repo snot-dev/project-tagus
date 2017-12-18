@@ -56,10 +56,13 @@ export function addTab(adding) {
 
 export function getTemplatesIfNeeded() {
     return (dispatch, getState) => {
-        dispatch({
-            type: constants.units.GET_UNITS_TEMPLATES,
-            payload: axios('templates')
-        });
+        if(getState().units.templates.length === 0) {
+            console.warn("ah rooz!");
+            dispatch({
+                type: constants.units.GET_UNITS_TEMPLATES,
+                payload: axios('templates')
+            });
+        }
     };
 }
 
