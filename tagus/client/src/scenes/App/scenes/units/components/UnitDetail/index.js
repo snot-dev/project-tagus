@@ -4,6 +4,7 @@ import Overlay from '../../../../components/Overlay';
 import AddTabButton from './components/AddTabButton';
 import AddTabMenu from './components/AddTabMenu';
 import TemplatesList from './components/TemplatesList';
+import TabContent from './components/TabContent';
 import {getUnitDetailIfNeeded, updateUnit, addTab, addNewTab, getTemplatesIfNeeded} from '../../../../../../services/units/actions';
 import store from '../../../../../../services/store';
 import './unitsDetail.css';
@@ -83,6 +84,18 @@ class UnitsDetail extends Component {
         store.dispatch(addTab(false));
     }
 
+    renderTabs() {
+        return (
+            <div className="row tagus-form-control">
+                {this.props.detail.tabs.map((tab, index) => {
+                    return (
+                        <TabContent tab={tab} key={index} />
+                    );
+                })}
+            </div>
+        )
+    }
+
     renderForm() {
         return (
             <div key={this.props.detail._id}>
@@ -107,6 +120,8 @@ class UnitsDetail extends Component {
                     ? <TemplatesList templates={this.props.templates} unitTemplates={this.props.detail.templates} />
                     :null
                     }
+
+                    {this.renderTabs()}
                     <AddTabButton show={!this.props.addingTab} />
                 </div>
             </div>
