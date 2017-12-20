@@ -4,9 +4,9 @@ module.exports = app => {
     const router = require('express').Router();
     const viewPaths = app.settings.views;
     const viewEngine = app.settings['view engine'];
-    const templates = [];
     
     router.get('/', (req, res) => {
+        const templates = [];
         for(const path of viewPaths) {
             const files = fs.readdirSync(path);
 
