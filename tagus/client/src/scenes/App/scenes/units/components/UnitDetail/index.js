@@ -104,7 +104,7 @@ class UnitsDetail extends Component {
                         </div>
                     </div>
                     { this.props.templates 
-                    ? <TemplatesList templates={this.props.templates} />
+                    ? <TemplatesList templates={this.props.templates} unitTemplates={this.props.detail.templates} />
                     :null
                     }
                     <AddTabButton show={!this.props.addingTab} />
