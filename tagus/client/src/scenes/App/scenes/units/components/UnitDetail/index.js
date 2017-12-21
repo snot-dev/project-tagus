@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Panel from '../../../../components/Panel';
 import Overlay from '../../../../components/Overlay';
-import AddTabButton from './components/AddTabButton';
+import AddLink from '../../../../components/AddLink';
 import AddTabMenu from './components/AddTabMenu';
 import TemplatesList from './components/TemplatesList';
 import TabContent from './components/TabContent';
@@ -72,6 +72,12 @@ class UnitsDetail extends Component {
         }
     }
 
+    addTabClick() {
+        if(!this.props.addingTab) {
+            store.dispatch(addTab());
+        }
+     }
+
     onTabFormSubmit(values) {
         const alias = this._camelize(values.tab.name);
         const tab = {
@@ -86,10 +92,10 @@ class UnitsDetail extends Component {
 
     renderTabs() {
         return (
-            <div className="row tagus-form-control">
+            <div className="col-xs-12">
                 {this.props.detail.tabs.map((tab, index) => {
                     return (
-                        <TabContent tab={tab} key={index} />
+                        <TabContent tab={tab} key={`${tab.alias}_${index}`} />
                     );
                 })}
             </div>
@@ -120,9 +126,10 @@ class UnitsDetail extends Component {
                     ? <TemplatesList templates={this.props.templates} unitTemplates={this.props.detail.templates} />
                     :null
                     }
-
-                    {this.renderTabs()}
-                    <AddTabButton show={!this.props.addingTab} />
+                    <div className="row tagus-form-control">
+                        {this.renderTabs()}
+                    </div>
+                    <AddLink onClick={this.addTabClick.bind(this)} show={!this.props.addingTab} text="Add a new Tab" />
                 </div>
             </div>
         );

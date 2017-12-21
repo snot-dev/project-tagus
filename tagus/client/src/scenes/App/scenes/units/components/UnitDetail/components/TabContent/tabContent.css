@@ -1,0 +1,9 @@
+.tagus-unit-field {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.tagus-unit-field:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
