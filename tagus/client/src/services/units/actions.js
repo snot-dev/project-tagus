@@ -54,6 +54,15 @@ export function addTab(adding) {
     };
 }
 
+export function addField(tab) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: constants.units.ADDING_FIELD,
+            payload: tab
+        });
+    };
+}
+
 export function getTemplatesIfNeeded() {
     return (dispatch, getState) => {
         if(getState().units.templates.length === 0) {

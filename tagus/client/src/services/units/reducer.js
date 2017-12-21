@@ -38,6 +38,10 @@ export let unitsReducer = function(state, action) {
             newState.addingTab = action.payload || !state.addingTab;
             return newState;
         }
+        case constants.units.ADDING_FIELD: {
+            newState.addingField = action.payload || false;
+            return newState;
+        }
         case constants.units.UPDATE_UNIT: {
             newState.detail = action.payload;
             return newState;

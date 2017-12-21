@@ -3,9 +3,10 @@ import Panel from '../../../../components/Panel';
 import Overlay from '../../../../components/Overlay';
 import AddLink from '../../../../components/AddLink';
 import AddTabMenu from './components/AddTabMenu';
+import AddFieldMenu from './components/AddFieldMenu';
 import TemplatesList from './components/TemplatesList';
 import TabContent from './components/TabContent';
-import {getUnitDetailIfNeeded, updateUnit, addTab, addNewTab, getTemplatesIfNeeded} from '../../../../../../services/units/actions';
+import {getUnitDetailIfNeeded, updateUnit, addTab, addField, addNewTab, getTemplatesIfNeeded} from '../../../../../../services/units/actions';
 import store from '../../../../../../services/store';
 import './unitsDetail.css';
 
@@ -70,6 +71,14 @@ class UnitsDetail extends Component {
         if(!this.state.touched) {
             this.setState({touched: true});
         }
+
+        if(this.props.addingTab) {
+            store.dispatch(addTab(false));
+        }
+        
+        if(this.props.addingField) {
+            store.dispatch(addField(false));
+        }
     }
 
     addTabClick() {
@@ -90,12 +99,16 @@ class UnitsDetail extends Component {
         store.dispatch(addTab(false));
     }
 
+    onFieldFormSubmit(values) {
+        store.dispatch(addField(false));
+    }
+
     renderTabs() {
         return (
             <div className="col-xs-12">
                 {this.props.detail.tabs.map((tab, index) => {
                     return (
-                        <TabContent tab={tab} key={`${tab.alias}_${index}`} />
+                        <TabContent addingField={this.props.addingField} addingTab={this.props.addingTab} tab={tab} key={`${tab.alias}_${index}`} />
                     );
                 })}
             </div>
@@ -123,13 +136,13 @@ class UnitsDetail extends Component {
                         </div>
                     </div>
                     { this.props.templates 
-                    ? <TemplatesList templates={this.props.templates} unitTemplates={this.props.detail.templates} />
+                    ? <TemplatesList onChange={this._onChange.bind(this)} templates={this.props.templates} unitTemplates={this.props.detail.templates} />
                     :null
                     }
                     <div className="row tagus-form-control">
                         {this.renderTabs()}
                     </div>
-                    <AddLink onClick={this.addTabClick.bind(this)} show={!this.props.addingTab} text="Add a new Tab" />
+                    <AddLink className="text-center" onClick={this.addTabClick.bind(this)} show={!this.props.addingTab && !this.props.addingField} text="Add a new Tab" />
                 </div>
             </div>
         );
@@ -142,8 +155,8 @@ class UnitsDetail extends Component {
                 ?   this.renderForm()
                 :   null
                 }
-
-                <AddTabMenu show={this.props.addingTab} onSubmit={this.onTabFormSubmit.bind(this)} />
+                <AddFieldMenu tab={this.props.addingField} show={this.props.addingField && !this.props.addingTab} />
+                <AddTabMenu show={this.props.addingTab && !this.props.addingField} onSubmit={this.onTabFormSubmit.bind(this)} />
                 <Overlay show={this.props.fetchingList || this.props.savingDetail}/>
             </Panel>
         );

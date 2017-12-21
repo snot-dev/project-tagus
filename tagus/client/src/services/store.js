@@ -33,7 +33,8 @@ let initialState = {
         fetchingTemplates: false,
         savingDetail: false,
         templates: [],
-        addingTab: false
+        addingTab: false,
+        addingField: false
     }
     // ,
     // unitFields: {
