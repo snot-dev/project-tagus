@@ -97,3 +97,15 @@ export function addNewTab(tab) {
         });
     }
 }
+
+export function getUnitFieldsIfNeeded() {
+    return (dispatch, getState) => {
+        
+        if(getState().units.unitFields.length === 0) {
+            dispatch({
+                type: constants.units.GET_UNITS_FIELDS,
+                payload: axios('unitfields')
+            });
+        }
+    }
+}

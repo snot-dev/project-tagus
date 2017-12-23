@@ -31,10 +31,12 @@ let initialState = {
         fetchingList: false,
         fetchingDetail: false,
         fetchingTemplates: false,
+        fetchingUnitFields: false,
         savingDetail: false,
         templates: [],
         addingTab: false,
-        addingField: false
+        addingField: false,
+        unitFields: []
     }
     // ,
     // unitFields: {

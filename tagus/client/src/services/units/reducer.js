@@ -34,6 +34,15 @@ export let unitsReducer = function(state, action) {
             newState.templates = action.payload.data;
             return newState;
         }
+        case constants.units.GET_UNITS_FIELDS_PENDING: {
+            newState.fetchingUnitFields = true;
+            return newState;
+        }
+        case constants.units.GET_UNITS_FIELDS_FULFILLED: {
+            newState.unitFields = action.payload.data;
+            newState.fetchingUnitFields = false;
+            return newState;
+        }
         case constants.units.ADDING_TAB: {
             newState.addingTab = action.payload || !state.addingTab;
             return newState;
