@@ -36,7 +36,8 @@ class ContentDetail extends Component {
             store.dispatch(getContentDetailIfNeeded(newProps.match.params.id));
         }
 
-        const templates = newProps.unit ?  newProps.unit.templates : {};
+        const templates = newProps.unit ?  this._convertToOptions(newProps.unit.templates) : [];
+        
         this.propertiesFields = [
             {
                 name: "Name",
@@ -82,6 +83,19 @@ class ContentDetail extends Component {
         ];
     }
     
+    _convertToOptions(arr) {
+        const options = [];
+
+        for(const item of arr) {
+            options.push({
+                value: item,
+                label: item
+            });
+        }
+
+        return options;
+    }
+
     onSubmitContent(formValues) {
         const newContent = Object.assign(this.props.detail.content, formValues);
         this.props.detail.content = newContent;

@@ -16,6 +16,8 @@ class CreateContent extends Component {
     }
 
     createFormFields(unit){
+        const templates = this._convertToOptions(unit.templates);
+
         return  [
             {
                 name: "Name",
@@ -27,7 +29,7 @@ class CreateContent extends Component {
                 name: "Template",
                 type: "select",
                 alias: "template",
-                options: unit.templates,
+                options: templates,
                 required: true,
             },
             {
@@ -36,6 +38,19 @@ class CreateContent extends Component {
                 alias: "published"
             }
         ];
+    }
+
+    _convertToOptions(arr) {
+        const options = [];
+
+        for(const item of arr) {
+            options.push({
+                value: item,
+                label: item
+            });
+        }
+
+        return options;
     }
 
     _createContentObject() {

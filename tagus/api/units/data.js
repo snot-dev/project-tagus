@@ -4,22 +4,10 @@ module.exports = [
         name: "Plain Text",
         alias: "plainText",
         templates: [
-            {
-                label: "master",
-                value: "master"
-            },
-            {
-                label: "about",
-                value: "about"
-            },
-            {
-                label: "services",
-                value: "services"
-            },
-            {
-                label: "contact",
-                value: "contact"
-            }
+                "master",
+                "about",
+                "services",
+                "contact"
         ],
         edited: new Date(),
         created: new Date(),
@@ -61,18 +49,9 @@ module.exports = [
         name: "Icon",
         alias: "icon",
         templates: [ 
-            {
-                label: "master",
-                value: "master"
-            },
-            {
-                label: "services",
-                value: "services"
-            },
-            {
-                label: "contact",
-                value: "contact"
-            }
+                "master",
+                "services",
+                "contact"
         ],
         edited: new Date(),
         created: new Date(),

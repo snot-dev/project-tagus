@@ -13,7 +13,7 @@ module.exports = app => {
             for(const file of files) {
                 if( file.split('.').pop() === viewEngine) {
                     const fileName = file.split('.').shift();
-                    templates.push({"label":fileName, "value": fileName});
+                    templates.push(fileName);
                 }
             }
         }
