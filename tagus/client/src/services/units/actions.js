@@ -95,7 +95,7 @@ export function addNewTab(tab) {
             type: constants.units.UPDATE_UNIT,
             payload: detail
         });
-    }
+    };
 }
 
 export function getUnitFieldsIfNeeded() {
@@ -107,5 +107,26 @@ export function getUnitFieldsIfNeeded() {
                 payload: axios('unitfields')
             });
         }
-    }
+    };
+}
+
+export function addNewField(field, tab) {   
+    return(dispatch, getState) => {
+        const detail = getState().units.detail;
+        let fieldTab;
+
+        for(const t of detail.tabs) {
+            if(t.alias === tab) {
+                fieldTab = t;
+                break;
+            }
+        }
+
+        fieldTab.fields.push(field);
+
+        dispatch({
+            type: constants.units.UPDATE_UNIT,
+            payload: detail
+        });
+    };
 }

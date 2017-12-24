@@ -6,7 +6,7 @@ import AddTabMenu from './components/AddTabMenu';
 import AddFieldMenu from './components/AddFieldMenu';
 import TemplatesList from './components/TemplatesList';
 import TabContent from './components/TabContent';
-import {getUnitDetailIfNeeded, updateUnit, addTab, addField, addNewTab, getTemplatesIfNeeded, getUnitFieldsIfNeeded} from '../../../../../../services/units/actions';
+import {getUnitDetailIfNeeded, updateUnit, addTab, addField, addNewTab, addNewField, getTemplatesIfNeeded, getUnitFieldsIfNeeded} from '../../../../../../services/units/actions';
 import store from '../../../../../../services/store';
 import './unitsDetail.css';
 
@@ -102,6 +102,12 @@ class UnitsDetail extends Component {
     }
 
     onFieldFormSubmit(values) {
+        const field = values.field;
+
+        field.alias = this._camelize(field.name);
+        field.required = !!values.required;
+
+        store.dispatch(addNewField(field, this.props.addingField));
         store.dispatch(addField(false));
     }
 
@@ -157,7 +163,7 @@ class UnitsDetail extends Component {
                 ?   this.renderForm()
                 :   null
                 }
-                <AddFieldMenu unitFields={this.props.unitFields} tab={this.props.addingField} show={this.props.addingField && !this.props.addingTab} />
+                <AddFieldMenu onSubmit={this.onFieldFormSubmit.bind(this)} unitFields={this.props.unitFields} tab={this.props.addingField} show={this.props.addingField && !this.props.addingTab} />
                 <AddTabMenu show={this.props.addingTab && !this.props.addingField} onSubmit={this.onTabFormSubmit.bind(this)} />
                 <Overlay show={this.props.fetchingList || this.props.savingDetail}/>
             </Panel>
