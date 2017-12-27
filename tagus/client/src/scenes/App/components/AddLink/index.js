@@ -2,25 +2,26 @@ import React, { Component } from 'react';
 import './addLink.css';
 
 class AddLink extends Component {
-    _addTabClick() {
-        if(!this.props.addingTab) {
-            // store.dispatch(addTab());
+    _onClick() {
+        if(!this.props.disabled && this.props.onClick) {
+            this.props.onClick();
         }
-     }
+    }
 
     _render() {
         const className = this.props.className || '';
+        const disabled = this.props.disabled ? 'disabled' : '';
         return (
             <div className="row" >
-                <div className={`col-xs-12 ${className}`} >
-                    <a className="tagus-unit-add-link" onClick={this.props.onClick}><i className="fa fa-plus-square" aria-hidden="true"></i>{this.props.text}</a>
+                <div className={`col-xs-12 ${disabled} ${className}`} >
+                    <a className="tagus-unit-add-link" onClick={this._onClick.bind(this)}><i className="fa fa-plus-square" aria-hidden="true"></i>{this.props.text}</a>
                 </div>
             </div>
         ); 
     }
 
     render() {
-        const render = this.props.show ? this._render() : null;
+        const render = this.props.show || typeof this.props.show === 'undefined' ? this._render() : null;
 
         return render;
     }

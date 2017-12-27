@@ -16,3 +16,10 @@
     color: var(--main-red);
     border-bottom: 2px solid var(--main-red);
 }
+
+.disabled .tagus-unit-add-link,
+.disabled .tagus-unit-add-link:hover {
+    color: var(--text-color);
+    cursor: not-allowed;
+    border-bottom: 2px solid transparent;
+}

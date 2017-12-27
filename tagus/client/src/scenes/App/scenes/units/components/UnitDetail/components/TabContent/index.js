@@ -37,7 +37,7 @@ class TabContent extends Component {
                         </div>
                     );
                 })}
-                <AddLink onClick={this._addFieldClick(this.props.tab.alias)} className="text-cent" show={!this.props.addingField && !this.props.addingTab} text="Add a new Field" />
+                <AddLink onClick={this._addFieldClick(this.props.tab.alias)} className="text-cent" disabled={this.props.addingField || this.props.addingTab} text="Add a new Field" />
             </div>
         );
     }

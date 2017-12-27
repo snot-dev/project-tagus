@@ -149,7 +149,7 @@ class UnitsDetail extends Component {
                 <div className="row tagus-form-control">
                     {this.renderTabs()}
                 </div>
-                <AddLink className="text-center" onClick={this.addTabClick.bind(this)} show={!this.props.addingTab && !this.props.addingField} text="Add a new Tab" />
+                <AddLink className="text-center" onClick={this.addTabClick.bind(this)} disabled={this.props.addingTab || this.props.addingField} text="Add a new Tab" />
             </div>
         );
     }
