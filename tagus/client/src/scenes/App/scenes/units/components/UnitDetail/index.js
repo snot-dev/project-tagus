@@ -125,46 +125,47 @@ class UnitsDetail extends Component {
 
     renderForm() {
         return (
-            <div key={this.props.detail._id}>
-                <div className="container-fluid tagus-form-info-fields">
-                    <div className="row tagus-form-control">
-                        <div className="col-xs-12 col-sm-6 tagus-form-field">
-                            <label className="tagus-label" >Alias</label>
-                            <p className="tagus-info">{this.props.detail.alias}</p>
-                        </div>
-                        <div className="col-xs-12 col-sm-6 tagus-form-field text-right">
-                            <label className="tagus-label" >Created</label>
-                            <p className="tagus-info">{this.props.detail.created}</p>
-                        </div>
+            <div key={this.props.detail._id} className="container-fluid tagus-form-info-fields">
+                <div className="row tagus-form-control">
+                    <div className="col-xs-12 col-sm-6 tagus-form-field">
+                        <label className="tagus-label" >Alias</label>
+                        <p className="tagus-info">{this.props.detail.alias}</p>
                     </div>
-                    <div className="row tagus-form-control" >
-                        <div className="col-xs-12 tagus-form-field">
-                            <label className="tagus-label" htmlFor="name">Name</label>
-                            <input type="text" onChange={this._onChange.bind(this)}  onBlur={this._onBlur.bind(this)} defaultValue={this.props.detail.name} name="name" id="name" className="tagus-input text" />
-                        </div>
+                    <div className="col-xs-12 col-sm-6 tagus-form-field text-right">
+                        <label className="tagus-label" >Created</label>
+                        <p className="tagus-info">{this.props.detail.created}</p>
                     </div>
-                    { this.props.templates 
-                    ? <TemplatesList onChange={this._onChange.bind(this)} templates={this.props.templates} unitTemplates={this.props.detail.templates} />
-                    :null
-                    }
-                    <div className="row tagus-form-control">
-                        {this.renderTabs()}
-                    </div>
-                    <AddLink className="text-center" onClick={this.addTabClick.bind(this)} show={!this.props.addingTab && !this.props.addingField} text="Add a new Tab" />
                 </div>
+                <div className="row tagus-form-control" >
+                    <div className="col-xs-12 tagus-form-field">
+                        <label className="tagus-label" htmlFor="name">Name</label>
+                        <input type="text" onChange={this._onChange.bind(this)}  onBlur={this._onBlur.bind(this)} defaultValue={this.props.detail.name} name="name" id="name" className="tagus-input text" />
+                    </div>
+                </div>
+                { this.props.templates 
+                ? <TemplatesList onChange={this._onChange.bind(this)} templates={this.props.templates} unitTemplates={this.props.detail.templates} />
+                :null
+                }
+                <div className="row tagus-form-control">
+                    {this.renderTabs()}
+                </div>
+                <AddLink className="text-center" onClick={this.addTabClick.bind(this)} show={!this.props.addingTab && !this.props.addingField} text="Add a new Tab" />
             </div>
         );
     }
 
     render() {
+        const menu = [
+                <AddFieldMenu key='addFieldMenu' onSubmit={this.onFieldFormSubmit.bind(this)} unitFields={this.props.unitFields} tab={this.props.addingField} show={this.props.addingField && !this.props.addingTab} />,
+                <AddTabMenu key='addTabMenu' show={this.props.addingTab && !this.props.addingField} onSubmit={this.onTabFormSubmit.bind(this)} />
+        ];
+
         return (
-            <Panel title={`${this.props.detail.name}`} className="col-xs-8 full-height">
+            <Panel title={`${this.props.detail.name}`} className="col-xs-8 full-height" menu={menu}>
                 {this.props.detail._id  
                 ?   this.renderForm()
                 :   null
                 }
-                <AddFieldMenu onSubmit={this.onFieldFormSubmit.bind(this)} unitFields={this.props.unitFields} tab={this.props.addingField} show={this.props.addingField && !this.props.addingTab} />
-                <AddTabMenu show={this.props.addingTab && !this.props.addingField} onSubmit={this.onTabFormSubmit.bind(this)} />
                 <Overlay show={this.props.fetchingList || this.props.savingDetail}/>
             </Panel>
         );
