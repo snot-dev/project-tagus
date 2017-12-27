@@ -38,3 +38,7 @@
     overflow: auto;
 }
 
+.tagus-panel-content-container.header .tagus-menu {
+    padding-top: 56px;
+}
+

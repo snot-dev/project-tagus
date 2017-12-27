@@ -6,21 +6,27 @@ class Menu extends Component {
         const className = this.props.className || '';
 
         return (
-            <div className={`tagus-menu ${className}`}>
-                {this.props.title
-                ? <div className="row">
-                    <div className="col-xs-12 tagus-menu-header">{this.props.title}</div>
-                  </div>
-                : null}
-                
-                <div className="row">
-                    <div className="col-xs-12 tagus-menu-content">
-                        {this.props.children}   
+            <div className="tagus-menu-container">
+                <div className="tagus-menu-backdrop"></div>
+                <div className={`tagus-menu ${className}`}>
+                    {this.props.title
+                    ? <div className="row">
+                            <div className="col-xs-12 tagus-menu-header">
+                            {this.props.title}
+                            {this.props.onCloseButton 
+                            ? <div className="tagus-menu-close-button" onClick={this.props.onCloseButton}>X</div>
+                            : null}
+                            </div>
+                        </div>
+                    : null}
+                    
+                    <div className="row">
+                        <div className="col-xs-12 tagus-menu-content">
+                            {this.props.children}   
+                        </div>
                     </div>
                 </div>
-                {this.props.onCloseButton 
-                ? <div className="tagus-menu-close-button" onClick={this.props.onCloseButton}>X</div>
-                : null}
+
             </div>
         );
     }

@@ -4,10 +4,12 @@ import './header.css'
 class Header extends Component {
     render() {
         return (
-            <div className="tagus-panel-header">
-                <h3>
-                   {this.props.children}
-                </h3>
+            <div className="row header-container">
+                <div className="tagus-panel-header">
+                    <h3>
+                        {this.props.children}
+                    </h3>
+                </div>
             </div>
         );
     }

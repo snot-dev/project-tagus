@@ -10,11 +10,10 @@ class Panel extends Component {
             <div className={`tagus-panel ${panelClass}`}>
                 <div className="child container-fluid">
                     {this.props.title
-                    ?   <div className="row">
-                            <Header className={this.props.header}>
-                                {this.props.title}
-                            </Header>
-                        </div>
+                    ?   
+                        <Header className={this.props.header}>
+                            {this.props.title}
+                        </Header>
                     : null
                     }
                     <div className={`tagus-panel-content-container ${header}`}>

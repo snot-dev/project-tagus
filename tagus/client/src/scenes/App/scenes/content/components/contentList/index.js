@@ -75,13 +75,13 @@ class ContentList extends Component {
     };
    
     render() {
+        const menu = this.props.editingContent
+        ? <ContentMenu savingContent={this.props.savingContent} history={this.props.history} className="col-xs-6" onCloseButton={this._onMenuButtonClick()} units={this.props.units} detail={this.props.editingContent} />
+        : null;
+
         return (
-            <Panel title="Content" className="col-xs-4 full-height">
+            <Panel title="Content" className="col-xs-4 full-height" menu={menu}>
                 {this._buildContentList()}
-                {this.props.editingContent
-                    ? <ContentMenu savingContent={this.props.savingContent} history={this.props.history} className="col-xs-6" onCloseButton={this._onMenuButtonClick()} units={this.props.units} detail={this.props.editingContent} />
-                    : null
-                }
                  <Overlay show={this.props.savingContent || this.props.fetchingList}/>
             </Panel>  
         );
