@@ -17,10 +17,11 @@ export function getUnitDetailIfNeeded(id) {
         const state = getState();
         if(_shouldGetUnitDetail(state, id)) {
             if(state.units.dictionary[id]) {
+                //TODO: Check if should get the object from db or clone it like this
                 dispatch({
                     type: constants.units.GET_UNITS_DETAIL_FULFILLED,
                     payload:{
-                        data: state.units.dictionary[id]
+                        data: JSON.parse(JSON.stringify(state.units.dictionary[id]))
                     } 
                 });
             }
