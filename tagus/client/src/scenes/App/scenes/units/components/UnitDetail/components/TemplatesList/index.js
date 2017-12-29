@@ -14,9 +14,13 @@ class TemplatesList extends Component {
 
     _onChange(e) {
         if(this.props.onChange) {
-            this.props.onChange();
+            const template = {
+                name: e.target.value,
+                value: e.target.checked
+            };
+            
+            this.props.onChange(template);
         }
-
     }
 
     _renderTemplates() {
@@ -35,12 +39,13 @@ class TemplatesList extends Component {
     }
 
     render() {
+        console.warn(this.props.unitTemplates);
         return (
             <div className="row tagus-form-control" >
                 <div className="col-xs-12">
                     <label className="tagus-label">Templates</label>
                 </div>
-                {this._renderTemplates()}
+                {this.props.unitTemplates ? this._renderTemplates() : null}
             </div>
         );
     }

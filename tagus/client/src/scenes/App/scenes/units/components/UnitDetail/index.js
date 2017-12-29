@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import Panel from '../../../../components/Panel';
 import Overlay from '../../../../components/Overlay';
 import AddLink from '../../../../components/AddLink';
+import Form from '../../../../components/Form';
 import AddTabMenu from './components/AddTabMenu';
 import AddFieldMenu from './components/AddFieldMenu';
 import TemplatesList from './components/TemplatesList';
 import TabContent from './components/TabContent';
 import FormButtons from '../../../../components/FormButtons';
-import {getUnitDetailIfNeeded, updateUnit, addTab, addField, addNewTab, addNewField, getTemplatesIfNeeded, getUnitFieldsIfNeeded} from '../../../../../../services/units/actions';
+import {getUnitDetailIfNeeded, updateUnit, addTab, addField, addNewTab, addNewField, getTemplatesIfNeeded, getUnitFieldsIfNeeded, resetUnit} from '../../../../../../services/units/actions';
 import store from '../../../../../../services/store';
 import './unitsDetail.css';
 
@@ -27,8 +28,31 @@ class UnitsDetail extends Component {
 
         store.dispatch(getUnitFieldsIfNeeded());
         store.dispatch(getTemplatesIfNeeded());
+
+        this._fields = [{
+            name: "Name",
+            alias: "name",
+            type: "text",
+            required: true
+        }];
+
+        this._defaultValues = {
+            name: this.props.detail.name
+        };
+
+        if(this.props.detail.templates) {
+            this._resetTemplates();
+        }
     }
     
+    _resetTemplates() {
+        const templates = this.props.detail.templates.slice(0);
+        console.warn(templates);
+        this.setState({
+            templates
+        });
+    }
+
     shouldComponentUpdate(nextProps) {
         const hasNeededUnit = !!nextProps.detail._id || nextProps.match.params.id !== this.props.detail._id;
         const templates = this.props.fetchingTemplates !== nextProps.fetchingTemplates;
@@ -45,6 +69,15 @@ class UnitsDetail extends Component {
 
             store.dispatch(getUnitDetailIfNeeded(newProps.match.params.id));
         }
+
+        this._defaultValues = {
+            name: newProps.detail.name
+        };
+
+        if(!this.state.templates && this.props.detail.templates) {
+            
+            this._resetTemplates();
+        }
     }   
 
     _camelize(str){
@@ -56,21 +89,21 @@ class UnitsDetail extends Component {
 
     _onBlur(e) {
         const state = {};
-
+        const update = {};
         if(!this.state.touched) {
             this.setState({touched: true});
         }
 
-        state[e.target.name] = e.target.value;
+        update[e.target.name] = e.target.value;
 
         if(e.target.name === "name") {
-            state.alias = this._camelize(e.target.value);
+            update.alias = this._camelize(e.target.value);
         }
-        
-        store.dispatch(updateUnit(state));
+
+        store.dispatch(updateUnit(update));
     }
 
-    _onChange() {
+    _onTemplatesChange(update) {
         if(!this.state.touched) {
             this.setState({touched: true});
         }
@@ -81,6 +114,31 @@ class UnitsDetail extends Component {
         
         if(this.props.addingField) {
             store.dispatch(addField(false));
+        }
+
+        this._updateTemplates(update);
+
+    }
+
+    _updateTemplates(update) {
+        const templates = this.state.templates.slice(0);
+        if(update.value) {
+            if(templates.indexOf())
+            templates.push(update.name);
+        }
+        else {
+            const index = templates.indexOf(update.name);
+            templates.splice(index,1);
+        }
+
+        this.setState({
+            templates
+        });
+    }
+
+    _onCancelButton(id) {
+        return () => {
+            store.dispatch(resetUnit(id));
         }
     }
 
@@ -101,7 +159,7 @@ class UnitsDetail extends Component {
         if(!this.state.touched) {
             this.setState({touched: true});
         }
-        
+
         store.dispatch(addNewTab(tab));
         store.dispatch(addTab(false));
     }
@@ -145,21 +203,25 @@ class UnitsDetail extends Component {
                         <p className="tagus-info">{this.props.detail.created}</p>
                     </div>
                 </div>
-                <div className="row tagus-form-control" >
-                    <div className="col-xs-12 tagus-form-field">
-                        <label className="tagus-label" htmlFor="name">Name</label>
-                        <input type="text" onChange={this._onChange.bind(this)}  onBlur={this._onBlur.bind(this)} defaultValue={this.props.detail.name} name="name" id="name" className="tagus-input text" />
-                    </div>
+                <div className="row">
+                    <Form disabled={this.state.disabled} name="unitName" fields={this._fields} defaultValues={this._defaultValues} >
+                        {/* <div className="row tagus-form-control" >
+                            <div className="col-xs-12 tagus-form-field">
+                                <label className="tagus-label" htmlFor="name">Name</label>
+                                <input type="text" onChange={this._onChange.bind(this)}  onBlur={this._onBlur.bind(this)} defaultValue={this.props.detail.name} name="name" id="name" className="tagus-input text" />
+                            </div>
+                        </div> */}
+                        { this.props.templates 
+                        ? <TemplatesList onChange={this._onTemplatesChange.bind(this)} templates={this.props.templates} unitTemplates={this.state.templates} />
+                        :null
+                        }
+                        <div className="row tagus-form-control">
+                            {this.renderTabs()}
+                        </div>
+                        <AddLink className="text-center" onClick={this.addTabClick.bind(this)} disabled={this.props.addingTab || this.props.addingField} text="Add a new Tab" />
+                        {/* <FormButtons onCancel={this._onCancelButton(this.props.detail._id)} disabled={!this.state.touched} />  */}
+                    </Form>
                 </div>
-                { this.props.templates 
-                ? <TemplatesList onChange={this._onChange.bind(this)} templates={this.props.templates} unitTemplates={this.props.detail.templates} />
-                :null
-                }
-                <div className="row tagus-form-control">
-                    {this.renderTabs()}
-                </div>
-                <AddLink className="text-center" onClick={this.addTabClick.bind(this)} disabled={this.props.addingTab || this.props.addingField} text="Add a new Tab" />
-                <FormButtons disabled={!this.state.touched} /> 
             </div>
         );
     }

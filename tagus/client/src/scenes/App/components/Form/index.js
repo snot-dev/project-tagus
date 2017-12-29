@@ -61,6 +61,9 @@ class CustomForm extends Component {
     _resetForm(formApi) {
         return () => {
             this.setState({cancelMode: false});
+            if(this.props.onReset) {
+                this.props.onReset();
+            }
             formApi.resetAll();
         };
     }
@@ -80,13 +83,17 @@ class CustomForm extends Component {
     }
 
     render() {
+        const buttons = this.props.button || true;
         return (
             <Form className="tagus-form" dontValidateOnMount={true} validateError={this._errorValidator.bind(this)} defaultValues={this.props.defaultValues}>
                 {formApi => (
                     <form onSubmit={formApi.submitForm} className="container-fluid">
                         <FormFields formApi={formApi} submits={formApi.submits} formName={this.props.formName} onFieldChange={this._touchTheForm.bind(this)} fields={this.props.fields} />
-                        {this.props.children ?  React.cloneElement(this.props.children, {...this.props}) : null}
-                        <FormButtons onSubmit={this._onSubmit(formApi).bind(this)} onCancel={this._toggleCancelModal(true).bind(this)} disabled={!this.state.formWasTouched} />
+                        {this.props.children}
+                        {buttons 
+                        ?   <FormButtons onSubmit={this._onSubmit(formApi).bind(this)} onReset={this._toggleCancelModal(true).bind(this)} disabled={this.props.disabled ||   !this.state.formWasTouched} />
+                        :   null 
+                        }
                         <Modal title="Warning!" body="Are you sure you want to discard all changes?" show={this.state.cancelMode} confirmButton={{onClick:this._resetForm(formApi), text: "Discard Changes!"}}  closeButton={{onClick: this._toggleCancelModal(false), text: "Cancel"}} />
                     </form>
                 )}

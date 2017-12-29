@@ -101,7 +101,6 @@ export function addNewTab(tab) {
 
 export function getUnitFieldsIfNeeded() {
     return (dispatch, getState) => {
-        
         if(getState().units.unitFields.length === 0) {
             dispatch({
                 type: constants.units.GET_UNITS_FIELDS,
@@ -130,4 +129,24 @@ export function addNewField(field, tab) {
             payload: detail
         });
     };
+}
+
+export function saveUnit(unit) {
+    return(dispatch, getState) => {
+        dispatch({
+            type: constants.units.POST_UNIT_DETAIL,
+            payload: axios.put(`units/${unit._id}`, unit)
+        })
+    };
+}
+
+export function resetUnit(id) {
+    return ( dispatch, getState) => {
+        dispatch({
+            type: constants.units.GET_UNITS_DETAIL_FULFILLED,
+            payload:{
+                data: JSON.parse(JSON.stringify(getState().units.dictionary[id]))
+            } 
+        });
+    }
 }
