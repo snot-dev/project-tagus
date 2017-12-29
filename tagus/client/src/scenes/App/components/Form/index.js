@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Form} from 'react-form';
-import {Button} from 'react-bootstrap';
 import Modal from '../Modal';
+import FormButtons from '../FormButtons';
 import FormFields from './components/formFields';
 import './form.css';
 
@@ -80,19 +80,13 @@ class CustomForm extends Component {
     }
 
     render() {
-        const disabled = this.state.formWasTouched ? "" : "disabled";
         return (
             <Form className="tagus-form" dontValidateOnMount={true} validateError={this._errorValidator.bind(this)} defaultValues={this.props.defaultValues}>
                 {formApi => (
                     <form onSubmit={formApi.submitForm} className="container-fluid">
                         <FormFields formApi={formApi} submits={formApi.submits} formName={this.props.formName} onFieldChange={this._touchTheForm.bind(this)} fields={this.props.fields} />
                         {this.props.children ?  React.cloneElement(this.props.children, {...this.props}) : null}
-                        <div className="row">
-                            <div className="tagus-form-button-container col-xs-12">
-                                <Button onClick={this._onSubmit(formApi).bind(this)} type="button" className={`pull-right ${disabled}`} bsStyle={"primary"}>Save</Button>
-                                <Button onClick={this._toggleCancelModal(true).bind(this)} className={`pull-left ${disabled}`}>Cancel</Button>
-                            </div>
-                        </div>
+                        <FormButtons onSubmit={this._onSubmit(formApi).bind(this)} onCancel={this._toggleCancelModal(true).bind(this)} disabled={!this.state.formWasTouched} />
                         <Modal title="Warning!" body="Are you sure you want to discard all changes?" show={this.state.cancelMode} confirmButton={{onClick:this._resetForm(formApi), text: "Discard Changes!"}}  closeButton={{onClick: this._toggleCancelModal(false), text: "Cancel"}} />
                     </form>
                 )}

@@ -6,6 +6,7 @@ import AddTabMenu from './components/AddTabMenu';
 import AddFieldMenu from './components/AddFieldMenu';
 import TemplatesList from './components/TemplatesList';
 import TabContent from './components/TabContent';
+import FormButtons from '../../../../components/FormButtons';
 import {getUnitDetailIfNeeded, updateUnit, addTab, addField, addNewTab, addNewField, getTemplatesIfNeeded, getUnitFieldsIfNeeded} from '../../../../../../services/units/actions';
 import store from '../../../../../../services/store';
 import './unitsDetail.css';
@@ -97,6 +98,10 @@ class UnitsDetail extends Component {
             fields: []
         };
 
+        if(!this.state.touched) {
+            this.setState({touched: true});
+        }
+        
         store.dispatch(addNewTab(tab));
         store.dispatch(addTab(false));
     }
@@ -106,6 +111,10 @@ class UnitsDetail extends Component {
 
         field.alias = this._camelize(field.name);
         field.required = !!values.required;
+
+        if(!this.state.touched) {
+            this.setState({touched: true});
+        }
 
         store.dispatch(addNewField(field, this.props.addingField));
         store.dispatch(addField(false));
@@ -150,14 +159,15 @@ class UnitsDetail extends Component {
                     {this.renderTabs()}
                 </div>
                 <AddLink className="text-center" onClick={this.addTabClick.bind(this)} disabled={this.props.addingTab || this.props.addingField} text="Add a new Tab" />
+                <FormButtons disabled={!this.state.touched} /> 
             </div>
         );
     }
 
     render() {
         const menu = [
-                <AddFieldMenu key='addFieldMenu' onSubmit={this.onFieldFormSubmit.bind(this)} unitFields={this.props.unitFields} tab={this.props.addingField} show={this.props.addingField && !this.props.addingTab} />,
-                <AddTabMenu key='addTabMenu' show={this.props.addingTab && !this.props.addingField} onSubmit={this.onTabFormSubmit.bind(this)} />
+            <AddFieldMenu key='addFieldMenu' onSubmit={this.onFieldFormSubmit.bind(this)} unitFields={this.props.unitFields} tab={this.props.addingField} show={this.props.addingField && !this.props.addingTab} />,
+            <AddTabMenu key='addTabMenu' show={this.props.addingTab && !this.props.addingField} onSubmit={this.onTabFormSubmit.bind(this)} />
         ];
 
         return (

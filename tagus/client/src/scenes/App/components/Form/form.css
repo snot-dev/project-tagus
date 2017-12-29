@@ -35,8 +35,7 @@
 }
 
 .tagus-input:focus,
-.tagus-input > select:focus,
-.btn:focus {
+.tagus-input > select:focus {
     outline-color:none;
     outline: none;
 }
@@ -46,7 +45,3 @@
     color: var(--text-color);
 }
 
-.tagus-form-button-container {
-    padding-top: 15px;
-    padding-bottom: 15px;
-}
