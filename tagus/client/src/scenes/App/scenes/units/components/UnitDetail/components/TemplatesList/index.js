@@ -24,13 +24,14 @@ class TemplatesList extends Component {
     }
 
     _renderTemplates() {
+        console.warn("Rendered");
         return (
             <div className="col-xs-12 tagus-form-field">
                 {this.props.templates.map((template, index) => {
                     const checked = this.props.unitTemplates.includes(template);
                     return (
                         <div key={index} >
-                            <label className="tagus-checkbox-list-label"><input onChange={this._onChange.bind(this)} defaultChecked={checked} className="tagus-input checkbox tagus-checkbox-list-item" type="checkbox" name="templates" value={template}/>{template}</label>
+                            <label className="tagus-checkbox-list-label"><input onChange={this._onChange.bind(this)} checked={checked} className="tagus-input checkbox tagus-checkbox-list-item" type="checkbox" name="templates" value={template}/>{template}</label>
                         </div>
                     );
                 })}

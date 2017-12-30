@@ -60,7 +60,11 @@ class CustomForm extends Component {
 
     _resetForm(formApi) {
         return () => {
-            this.setState({cancelMode: false});
+            this.setState({
+                cancelMode: false,
+                 formWasTouched: false
+                });
+                
             if(this.props.onReset) {
                 this.props.onReset();
             }
@@ -70,7 +74,8 @@ class CustomForm extends Component {
 
     _toggleCancelModal(show) {
         return() => {
-            if(this.state.formWasTouched) {
+            const disabled = typeof this.props.disabled !== 'undefined' ? this.props.disabled && !this.state.formWasTouched : !this.state.formWasTouched;
+            if(!disabled) {
                 this.setState({cancelMode: show});
             }
         };
@@ -84,6 +89,8 @@ class CustomForm extends Component {
 
     render() {
         const buttons = this.props.button || true;
+        const disabled = typeof this.props.disabled !== 'undefined' ? this.props.disabled && !this.state.formWasTouched : !this.state.formWasTouched;
+
         return (
             <Form className="tagus-form" dontValidateOnMount={true} validateError={this._errorValidator.bind(this)} defaultValues={this.props.defaultValues}>
                 {formApi => (
@@ -91,7 +98,7 @@ class CustomForm extends Component {
                         <FormFields formApi={formApi} submits={formApi.submits} formName={this.props.formName} onFieldChange={this._touchTheForm.bind(this)} fields={this.props.fields} />
                         {this.props.children}
                         {buttons 
-                        ?   <FormButtons onSubmit={this._onSubmit(formApi).bind(this)} onReset={this._toggleCancelModal(true).bind(this)} disabled={this.props.disabled ||   !this.state.formWasTouched} />
+                        ?   <FormButtons onSubmit={this._onSubmit(formApi).bind(this)} onReset={this._toggleCancelModal(true).bind(this)} disabled={disabled} />
                         :   null 
                         }
                         <Modal title="Warning!" body="Are you sure you want to discard all changes?" show={this.state.cancelMode} confirmButton={{onClick:this._resetForm(formApi), text: "Discard Changes!"}}  closeButton={{onClick: this._toggleCancelModal(false), text: "Cancel"}} />

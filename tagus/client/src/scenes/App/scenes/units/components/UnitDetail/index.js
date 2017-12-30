@@ -45,11 +45,13 @@ class UnitsDetail extends Component {
         }
     }
     
-    _resetTemplates() {
+    _resetTemplates(formTouched) {
         const templates = this.props.detail.templates.slice(0);
-        console.warn(templates);
+        const touched = !!formTouched;
+
         this.setState({
-            templates
+            templates,
+            touched
         });
     }
 
@@ -75,7 +77,6 @@ class UnitsDetail extends Component {
         };
 
         if(!this.state.templates && this.props.detail.templates) {
-            
             this._resetTemplates();
         }
     }   
@@ -117,7 +118,6 @@ class UnitsDetail extends Component {
         }
 
         this._updateTemplates(update);
-
     }
 
     _updateTemplates(update) {
@@ -141,6 +141,12 @@ class UnitsDetail extends Component {
             store.dispatch(resetUnit(id));
         }
     }
+
+    _onReset(reset) {
+        return () => {
+            this._resetTemplates(reset);
+        }
+    }    
 
     addTabClick() {
         if(!this.props.addingTab) {
@@ -204,7 +210,7 @@ class UnitsDetail extends Component {
                     </div>
                 </div>
                 <div className="row">
-                    <Form disabled={this.state.disabled} name="unitName" fields={this._fields} defaultValues={this._defaultValues} >
+                    <Form disabled={!this.state.touched} onReset={this._onReset(false)} name="unitName" fields={this._fields} defaultValues={this._defaultValues} >
                         {/* <div className="row tagus-form-control" >
                             <div className="col-xs-12 tagus-form-field">
                                 <label className="tagus-label" htmlFor="name">Name</label>
