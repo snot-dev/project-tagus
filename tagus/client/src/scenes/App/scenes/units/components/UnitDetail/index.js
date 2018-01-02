@@ -6,10 +6,11 @@ import Form from '../../../../components/Form';
 import AddTabMenu from './components/AddTabMenu';
 import AddFieldMenu from './components/AddFieldMenu';
 import TemplatesList from './components/TemplatesList';
-import TabContent from './components/TabContent';
+import TabsList from './components/TabsList';
 import FormButtons from '../../../../components/FormButtons';
-import {getUnitDetailIfNeeded, updateUnit, addTab, addField, addNewTab, addNewField, getTemplatesIfNeeded, getUnitFieldsIfNeeded, resetUnit} from '../../../../../../services/units/actions';
+import {getUnitDetailIfNeeded, updateUnit, addTab, addField, addNewField, getTemplatesIfNeeded, getUnitFieldsIfNeeded, resetUnit} from '../../../../../../services/units/actions';
 import store from '../../../../../../services/store';
+import {camelize} from '../../../../../../services/helpers';
 import './unitsDetail.css';
 
 class UnitsDetail extends Component {
@@ -17,7 +18,9 @@ class UnitsDetail extends Component {
         super(props);
 
         this.state = {
-            touched: false
+            touched: false,
+            addTab: false,
+            addField: false
         };
     }
 
@@ -42,14 +45,19 @@ class UnitsDetail extends Component {
     }
     
     _resetTemplates(formTouched, nextProps) {
-        const propsTemplates = nextProps ? nextProps.detail.templates : this.props.detail.templates;
-        const templates = propsTemplates.slice(0);
-        const touched = !!formTouched;
-
-        this.setState({
-            templates,
-            touched
-        });
+        const props = nextProps ||  this.props;
+        const state = {
+            touched: !!formTouched
+        };
+        if(props.detail.templates) {
+            state.templates = props.detail.templates.slice(0);
+        }
+        
+        if(props.detail.tabs) {
+            state.tabs = props.detail.tabs.slice(0);
+        }
+        
+        this.setState(state);
     }
 
     shouldComponentUpdate(nextProps) {
@@ -62,7 +70,8 @@ class UnitsDetail extends Component {
     
     componentWillReceiveProps(nextProps) {
         const diffDetail = nextProps.detail._id && nextProps.detail._id !== this.props.detail._id;
-        const noState = nextProps.detail.templates && !this.state.templates;
+        const noState = nextProps.detail._id && nextProps.detail.templates && !this.state.templates;
+
         if(diffDetail || noState) {
             this._resetTemplates(false, nextProps);
         }
@@ -78,14 +87,6 @@ class UnitsDetail extends Component {
         };
     }   
 
-    //TODO: Move this to the reducer
-    _camelize(str){
-        // https://stackoverflow.com/questions/2970525/converting-any-string-into-camel-case
-        return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(letter, index) {
-            return index === 0 ? letter.toLowerCase() : letter.toUpperCase();
-          }).replace(/\s+/g, '');
-    }
-
     _onBlur(e) {
         const state = {};
         const update = {};
@@ -97,7 +98,7 @@ class UnitsDetail extends Component {
         update[e.target.name] = e.target.value;
 
         if(e.target.name === "name") {
-            update.alias = this._camelize(e.target.value);
+            update.alias = camelize(e.target.value);
         }
 
         store.dispatch(updateUnit(update));
@@ -105,15 +106,11 @@ class UnitsDetail extends Component {
 
     _onTemplatesChange(update) {
         if(!this.state.touched) {
-            this.setState({touched: true});
-        }
-
-        if(this.props.addingTab) {
-            store.dispatch(addTab(false));
-        }
-        
-        if(this.props.addingField) {
-            store.dispatch(addField(false));
+            this.setState({
+                touched: true,
+                addTab: false,
+                addField: false
+            });
         }
 
         this._updateTemplates(update);
@@ -149,13 +146,18 @@ class UnitsDetail extends Component {
     }    
 
     addTabClick() {
-        if(!this.props.addingTab) {
-            store.dispatch(addTab());
+        if(!this.state.addTab) {
+            this.setState({
+                addTab: true
+            })
         }
+        // if(!this.props.addingTab) {
+        //     store.dispatch(addTab());
+        // }
      }
 
     onTabFormSubmit(values) {
-        const alias = this._camelize(values.tab.name);
+        const alias = camelize(values.tab.name);
         const tab = {
             name: values.tab.name,
             alias,
@@ -163,17 +165,22 @@ class UnitsDetail extends Component {
         };
 
         if(!this.state.touched) {
-            this.setState({touched: true});
+            this.setState({
+                touched: true,
+                addTab: false, 
+                addField: false,
+                tabs: this.state.tabs.concat(tab)
+            });
         }
 
-        store.dispatch(addNewTab(tab));
-        store.dispatch(addTab(false));
+        
+        // store.dispatch(addTab(false));
     }
 
     onFieldFormSubmit(values) {
         const field = values.field;
 
-        field.alias = this._camelize(field.name);
+        field.alias = camelize(field.name);
         field.required = !!values.required;
 
         if(!this.state.touched) {
@@ -182,18 +189,6 @@ class UnitsDetail extends Component {
 
         store.dispatch(addNewField(field, this.props.addingField));
         store.dispatch(addField(false));
-    }
-
-    renderTabs() {
-        return (
-            <div className="col-xs-12">
-                {this.props.detail.tabs.map((tab, index) => {
-                    return (
-                        <TabContent addingField={this.props.addingField} addingTab={this.props.addingTab} tab={tab} key={`${tab.alias}_${index}`} />
-                    );
-                })}
-            </div>
-        )
     }
 
     renderForm() {
@@ -217,14 +212,12 @@ class UnitsDetail extends Component {
                                 <input type="text" onChange={this._onChange.bind(this)}  onBlur={this._onBlur.bind(this)} defaultValue={this.props.detail.name} name="name" id="name" className="tagus-input text" />
                             </div>
                         </div> */}
-                        { this.props.templates 
-                        ? <TemplatesList onChange={this._onTemplatesChange.bind(this)} templates={this.props.templates} unitTemplates={this.state.templates || this.props.detail.templates} />
+                        { this.props.templates  
+                        ? <TemplatesList onChange={this._onTemplatesChange.bind(this)} templates={this.props.templates} unitTemplates={this.props.detail.templates} />
                         :null
                         }
-                        <div className="row tagus-form-control">
-                            {this.renderTabs()}
-                        </div>
-                        <AddLink className="text-center" onClick={this.addTabClick.bind(this)} disabled={this.props.addingTab || this.props.addingField} text="Add a new Tab" />
+                        <TabsList addingField={this.props.addingField} addingTab={this.props.addingTab} tabs={this.state.tabs || this.props.detail.tabs} />
+                        <AddLink className="text-center" onClick={this.addTabClick.bind(this)} disabled={this.state.addTab || this.props.addingField} text="Add a new Tab" />
                         {/* <FormButtons onCancel={this._onCancelButton(this.props.detail._id)} disabled={!this.state.touched} />  */}
                     </Form>
                 </div>
@@ -235,7 +228,7 @@ class UnitsDetail extends Component {
     render() {
         const menu = [
             <AddFieldMenu key='addFieldMenu' onSubmit={this.onFieldFormSubmit.bind(this)} unitFields={this.props.unitFields} tab={this.props.addingField} show={this.props.addingField && !this.props.addingTab} />,
-            <AddTabMenu key='addTabMenu' show={this.props.addingTab && !this.props.addingField} onSubmit={this.onTabFormSubmit.bind(this)} />
+            <AddTabMenu key='addTabMenu' show={this.state.addTab && !this.props.addingField} onSubmit={this.onTabFormSubmit.bind(this)} />
         ];
 
         return (
