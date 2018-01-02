@@ -8,7 +8,7 @@ import './tabContent.css';
 class TabContent extends Component {
     _addFieldClick(tab) {
         return () => {
-            store.dispatch(addField(tab));
+            this.props.addFieldClick(tab)
         }
     }
 

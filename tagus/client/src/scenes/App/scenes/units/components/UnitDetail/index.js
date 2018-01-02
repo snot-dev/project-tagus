@@ -19,8 +19,8 @@ class UnitsDetail extends Component {
 
         this.state = {
             touched: false,
-            addTab: false,
-            addField: false
+            addingTab: false,
+            addingField: false
         };
     }
 
@@ -43,8 +43,44 @@ class UnitsDetail extends Component {
             name: this.props.detail.name
         };
     }
+  
+    shouldComponentUpdate(nextProps) {
+        const hasNeededUnit = !!nextProps.detail._id || nextProps.match.params.id !== this.props.detail._id;
+        const templates = nextProps.templates !== this.props.templates || this.props.fetchingTemplates !== nextProps.fetchingTemplates;
+        const unitFields = this.props.fetchingUnitFields !== nextProps.fetchingUnitFields;
+        
+        return  hasNeededUnit || templates || unitFields;
+    }
     
-    _resetTemplates(formTouched, nextProps) {
+    componentWillReceiveProps(nextProps) {
+        const diffDetail = nextProps.detail._id && nextProps.detail._id !== this.props.detail._id;
+        const noState = nextProps.detail._id && nextProps.detail.templates && !this.state.templates;
+
+        if(diffDetail || noState) {
+            this._resetState(false, nextProps);
+        }
+    }
+    
+    componentWillUpdate(nextProps) {
+        if(nextProps.match.params.id !== this.props.match.params.id) {
+            store.dispatch(getUnitDetailIfNeeded(nextProps.match.params.id));
+        }
+
+        this._defaultValues = {
+            name: nextProps.detail.name
+        };
+    }   
+
+    _resetUIState() {
+        console.warn("Reset");
+        this.setState({
+            addingTab: false,
+            addingField: false,
+            touched: false
+        });
+    }
+
+    _resetState(formTouched, nextProps) {
         const props = nextProps ||  this.props;
         const state = {
             touched: !!formTouched
@@ -60,32 +96,6 @@ class UnitsDetail extends Component {
         this.setState(state);
     }
 
-    shouldComponentUpdate(nextProps) {
-        const hasNeededUnit = !!nextProps.detail._id || nextProps.match.params.id !== this.props.detail._id;
-        const templates = nextProps.templates !== this.props.templates || this.props.fetchingTemplates !== nextProps.fetchingTemplates;
-        const unitFields = this.props.fetchingUnitFields !== nextProps.fetchingUnitFields;
-        
-        return  hasNeededUnit || templates || unitFields;
-    }
-    
-    componentWillReceiveProps(nextProps) {
-        const diffDetail = nextProps.detail._id && nextProps.detail._id !== this.props.detail._id;
-        const noState = nextProps.detail._id && nextProps.detail.templates && !this.state.templates;
-
-        if(diffDetail || noState) {
-            this._resetTemplates(false, nextProps);
-        }
-    }
-    
-    componentWillUpdate(nextProps) {
-        if(nextProps.match.params.id !== this.props.match.params.id) {
-            store.dispatch(getUnitDetailIfNeeded(nextProps.match.params.id));
-        }
-
-        this._defaultValues = {
-            name: nextProps.detail.name
-        };
-    }   
 
     _onBlur(e) {
         const state = {};
@@ -108,8 +118,8 @@ class UnitsDetail extends Component {
         if(!this.state.touched) {
             this.setState({
                 touched: true,
-                addTab: false,
-                addField: false
+                addingTab: false,
+                addingField: false
             });
         }
 
@@ -141,14 +151,14 @@ class UnitsDetail extends Component {
 
     _onReset(reset) {
         return () => {
-            this._resetTemplates(reset);
+            this._resetState(reset);
         }
     }    
 
     addTabClick() {
-        if(!this.state.addTab) {
+        if(!this.state.addingTab) {
             this.setState({
-                addTab: true
+                addingTab: true
             })
         }
         // if(!this.props.addingTab) {
@@ -167,14 +177,20 @@ class UnitsDetail extends Component {
         if(!this.state.touched) {
             this.setState({
                 touched: true,
-                addTab: false, 
-                addField: false,
+                addingTab: false, 
+                addingField: false,
                 tabs: this.state.tabs.concat(tab)
             });
         }
-
-        
         // store.dispatch(addTab(false));
+    }
+
+    addFieldClick(tab) {
+        if(!this.state.addingField) {
+            this.setState({
+                addingField: tab 
+            });
+        }
     }
 
     onFieldFormSubmit(values) {
@@ -188,7 +204,7 @@ class UnitsDetail extends Component {
         }
 
         store.dispatch(addNewField(field, this.props.addingField));
-        store.dispatch(addField(false));
+        // store.dispatch(addField(false));
     }
 
     renderForm() {
@@ -216,8 +232,8 @@ class UnitsDetail extends Component {
                         ? <TemplatesList onChange={this._onTemplatesChange.bind(this)} templates={this.props.templates} unitTemplates={this.props.detail.templates} />
                         :null
                         }
-                        <TabsList addingField={this.props.addingField} addingTab={this.props.addingTab} tabs={this.state.tabs || this.props.detail.tabs} />
-                        <AddLink className="text-center" onClick={this.addTabClick.bind(this)} disabled={this.state.addTab || this.props.addingField} text="Add a new Tab" />
+                        <TabsList addFieldClick={this.addFieldClick.bind(this)} addingField={this.state.addingField} addingTab={this.state.addingTab} tabs={this.state.tabs || this.props.detail.tabs} />
+                        <AddLink className="text-center" onClick={this.addTabClick.bind(this)} disabled={this.state.addingTab || this.props.addingField} text="Add a new Tab" />
                         {/* <FormButtons onCancel={this._onCancelButton(this.props.detail._id)} disabled={!this.state.touched} />  */}
                     </Form>
                 </div>
@@ -227,8 +243,8 @@ class UnitsDetail extends Component {
 
     render() {
         const menu = [
-            <AddFieldMenu key='addFieldMenu' onSubmit={this.onFieldFormSubmit.bind(this)} unitFields={this.props.unitFields} tab={this.props.addingField} show={this.props.addingField && !this.props.addingTab} />,
-            <AddTabMenu key='addTabMenu' show={this.state.addTab && !this.props.addingField} onSubmit={this.onTabFormSubmit.bind(this)} />
+            <AddFieldMenu key='addFieldMenu' onClose={this._resetUIState.bind(this)} onSubmit={this.onFieldFormSubmit.bind(this)} unitFields={this.props.unitFields} tab={this.state.addingField} show={this.state.addingField && !this.state.addingTabaddTab} />,
+            <AddTabMenu key='addTabMenu' onClose={this._resetUIState.bind(this)} show={this.state.addingTab && !this.state.addingField} onSubmit={this.onTabFormSubmit.bind(this)} />
         ];
 
         return (

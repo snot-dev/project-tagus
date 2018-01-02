@@ -19,8 +19,8 @@ class AddTabMenu extends Component {
     }
     
     _onClose() {
-        if(this.props.show) {
-            store.dispatch(addTab());
+        if(this.props.show && this.props.onClose) {
+            this.props.onClose()
         }
     }
 

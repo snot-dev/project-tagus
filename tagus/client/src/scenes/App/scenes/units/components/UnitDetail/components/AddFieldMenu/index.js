@@ -72,8 +72,8 @@ class AddFieldMenu extends Component {
     }
 
     _onClose() {
-        if(this.props.show) {
-            store.dispatch(addField(false));
+        if(this.props.show && this.props.onClose) {
+            this.props.onClose()
         }
     }
 
