@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import {Tabs, Tab} from 'react-bootstrap';
 import AddLink from '../../../../../../components/AddLink';
-import store from '../../../../../../../../services/store';
-import {addField} from '../../../../../../../../services/units/actions';
 import './tabContent.css';
 
 class TabContent extends Component {

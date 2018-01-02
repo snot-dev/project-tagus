@@ -7,8 +7,7 @@ import AddTabMenu from './components/AddTabMenu';
 import AddFieldMenu from './components/AddFieldMenu';
 import TemplatesList from './components/TemplatesList';
 import TabsList from './components/TabsList';
-import FormButtons from '../../../../components/FormButtons';
-import {getUnitDetailIfNeeded, updateUnit, addTab, addField, addNewField, getTemplatesIfNeeded, getUnitFieldsIfNeeded, resetUnit} from '../../../../../../services/units/actions';
+import {getUnitDetailIfNeeded, getTemplatesIfNeeded, getUnitFieldsIfNeeded, resetUnit} from '../../../../../../services/units/actions';
 import store from '../../../../../../services/store';
 import {camelize} from '../../../../../../services/helpers';
 import './unitsDetail.css';
@@ -72,7 +71,6 @@ class UnitsDetail extends Component {
     }   
 
     _resetUIState() {
-        console.warn("Reset");
         this.setState({
             addingTab: false,
             addingField: false,
@@ -85,33 +83,17 @@ class UnitsDetail extends Component {
         const state = {
             touched: !!formTouched
         };
+
         if(props.detail.templates) {
             state.templates = props.detail.templates.slice(0);
         }
         
         if(props.detail.tabs) {
-            state.tabs = props.detail.tabs.slice(0);
+            //Deep clone tabs array
+            state.tabs = JSON.parse(JSON.stringify(props.detail.tabs));
         }
-        
+
         this.setState(state);
-    }
-
-
-    _onBlur(e) {
-        const state = {};
-        const update = {};
-
-        if(!this.state.touched) {
-            this.setState({touched: true});
-        }
-
-        update[e.target.name] = e.target.value;
-
-        if(e.target.name === "name") {
-            update.alias = camelize(e.target.value);
-        }
-
-        store.dispatch(updateUnit(update));
     }
 
     _onTemplatesChange(update) {
@@ -161,9 +143,6 @@ class UnitsDetail extends Component {
                 addingTab: true
             })
         }
-        // if(!this.props.addingTab) {
-        //     store.dispatch(addTab());
-        // }
      }
 
     onTabFormSubmit(values) {
@@ -182,7 +161,6 @@ class UnitsDetail extends Component {
                 tabs: this.state.tabs.concat(tab)
             });
         }
-        // store.dispatch(addTab(false));
     }
 
     addFieldClick(tab) {
@@ -194,17 +172,27 @@ class UnitsDetail extends Component {
     }
 
     onFieldFormSubmit(values) {
-        const field = values.field;
+        if(this.state.addingField) {
+            const field = values.field;
+            const tabs = this.state.tabs.slice(0);
 
-        field.alias = camelize(field.name);
-        field.required = !!values.required;
+            field.alias = camelize(field.name);
+            field.required = !!values.required;
+            
+            for(const tab of tabs) {
+                if(tab.alias === this.state.addingField) {
+                    tab.fields.push(field);
+                    break;
+                }
+            }
 
-        if(!this.state.touched) {
-            this.setState({touched: true});
+            this.setState({
+                touched: true,
+                tabs,
+                addingField: false,
+                addingTab: false
+            });
         }
-
-        store.dispatch(addNewField(field, this.props.addingField));
-        // store.dispatch(addField(false));
     }
 
     renderForm() {
@@ -222,19 +210,12 @@ class UnitsDetail extends Component {
                 </div>
                 <div className="row">
                     <Form disabled={!this.state.touched} onReset={this._onReset(false)} name="unitName" fields={this._fields} defaultValues={this._defaultValues} >
-                        {/* <div className="row tagus-form-control" >
-                            <div className="col-xs-12 tagus-form-field">
-                                <label className="tagus-label" htmlFor="name">Name</label>
-                                <input type="text" onChange={this._onChange.bind(this)}  onBlur={this._onBlur.bind(this)} defaultValue={this.props.detail.name} name="name" id="name" className="tagus-input text" />
-                            </div>
-                        </div> */}
                         { this.props.templates  
-                        ? <TemplatesList onChange={this._onTemplatesChange.bind(this)} templates={this.props.templates} unitTemplates={this.props.detail.templates} />
+                        ? <TemplatesList onChange={this._onTemplatesChange.bind(this)} templates={this.props.templates} unitTemplates={this.state.templates} />
                         :null
                         }
                         <TabsList addFieldClick={this.addFieldClick.bind(this)} addingField={this.state.addingField} addingTab={this.state.addingTab} tabs={this.state.tabs || this.props.detail.tabs} />
                         <AddLink className="text-center" onClick={this.addTabClick.bind(this)} disabled={this.state.addingTab || this.props.addingField} text="Add a new Tab" />
-                        {/* <FormButtons onCancel={this._onCancelButton(this.props.detail._id)} disabled={!this.state.touched} />  */}
                     </Form>
                 </div>
             </div>

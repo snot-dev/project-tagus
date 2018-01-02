@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import Menu from '../../../../../../components/Menu';
 import Form from '../../../../../../components/Form';
-import store from '../../../../../../../../services/store';
-import {addTab} from '../../../../../../../../services/units/actions';
 
 class AddTabMenu extends Component {
     constructor(props) {
@@ -23,8 +21,6 @@ class AddTabMenu extends Component {
             this.props.onClose()
         }
     }
-
-
 
     _renderMenu() {
         return(

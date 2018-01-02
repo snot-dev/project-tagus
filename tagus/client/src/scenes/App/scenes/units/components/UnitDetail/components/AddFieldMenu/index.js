@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import Menu from '../../../../../../components/Menu';
 import Form from '../../../../../../components/Form';
-import store from '../../../../../../../../services/store';
-import {addField} from '../../../../../../../../services/units/actions';
 
 class AddFieldMenu extends Component {
     componentWillMount() {
