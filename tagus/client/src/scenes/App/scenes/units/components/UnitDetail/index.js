@@ -19,7 +19,8 @@ class UnitsDetail extends Component {
         this.state = {
             touched: false,
             addingTab: false,
-            addingField: false
+            addingField: false,
+            editingField: null
         };
     }
 
@@ -74,7 +75,7 @@ class UnitsDetail extends Component {
         this.setState({
             addingTab: false,
             addingField: false,
-            touched: false
+            editingField: null
         });
     }
 
@@ -137,14 +138,15 @@ class UnitsDetail extends Component {
         }
     }    
 
+    
     addTabClick() {
         if(!this.state.addingTab) {
             this.setState({
                 addingTab: true
             })
         }
-     }
-
+    }
+    
     onTabFormSubmit(values) {
         const alias = camelize(values.tab.name);
         const tab = {
@@ -152,7 +154,7 @@ class UnitsDetail extends Component {
             alias,
             fields: []
         };
-
+        
         if(!this.state.touched) {
             this.setState({
                 touched: true,
@@ -162,7 +164,7 @@ class UnitsDetail extends Component {
             });
         }
     }
-
+    
     addFieldClick(tab) {
         if(!this.state.addingField) {
             this.setState({
@@ -170,7 +172,14 @@ class UnitsDetail extends Component {
             });
         }
     }
-
+    
+    onFieldClick(tab, field) {
+        this.setState({
+            addingField: tab,      
+            editingField: field     
+        })
+    }
+    
     onFieldFormSubmit(values) {
         if(this.state.addingField) {
             const field = values.field;
@@ -181,7 +190,19 @@ class UnitsDetail extends Component {
             
             for(const tab of tabs) {
                 if(tab.alias === this.state.addingField) {
-                    tab.fields.push(field);
+                    if(this.state.editingField) {
+                        for(let i = 0; i < tab.fields.length; i++) {
+                            let tabField = tab.fields[i];
+
+                            if(tabField.alias === this.state.editingField.alias) {
+                                tab.fields[i] = field;
+                                break;
+                            }
+                        }
+                    }
+                    else {
+                        tab.fields.push(field);
+                    }
                     break;
                 }
             }
@@ -190,7 +211,8 @@ class UnitsDetail extends Component {
                 touched: true,
                 tabs,
                 addingField: false,
-                addingTab: false
+                addingTab: false,
+                editingField: null
             });
         }
     }
@@ -214,7 +236,7 @@ class UnitsDetail extends Component {
                         ? <TemplatesList onChange={this._onTemplatesChange.bind(this)} templates={this.props.templates} unitTemplates={this.state.templates} />
                         :null
                         }
-                        <TabsList addFieldClick={this.addFieldClick.bind(this)} addingField={this.state.addingField} addingTab={this.state.addingTab} tabs={this.state.tabs || this.props.detail.tabs} />
+                        <TabsList onFieldClick={this.onFieldClick.bind(this)} addFieldClick={this.addFieldClick.bind(this)} addingField={this.state.addingField} addingTab={this.state.addingTab} tabs={this.state.tabs || this.props.detail.tabs} />
                         <AddLink className="text-center" onClick={this.addTabClick.bind(this)} disabled={this.state.addingTab || this.props.addingField} text="Add a new Tab" />
                     </Form>
                 </div>
@@ -224,7 +246,7 @@ class UnitsDetail extends Component {
 
     render() {
         const menu = [
-            <AddFieldMenu key='addFieldMenu' onClose={this._resetUIState.bind(this)} onSubmit={this.onFieldFormSubmit.bind(this)} unitFields={this.props.unitFields} tab={this.state.addingField} show={this.state.addingField && !this.state.addingTabaddTab} />,
+            <AddFieldMenu key='addFieldMenu' defaultValues={this.state.editingField} onClose={this._resetUIState.bind(this)} onSubmit={this.onFieldFormSubmit.bind(this)} unitFields={this.props.unitFields} tab={this.state.addingField} show={this.state.addingField && !this.state.addingTabaddTab} />,
             <AddTabMenu key='addTabMenu' onClose={this._resetUIState.bind(this)} show={this.state.addingTab && !this.state.addingField} onSubmit={this.onTabFormSubmit.bind(this)} />
         ];
 

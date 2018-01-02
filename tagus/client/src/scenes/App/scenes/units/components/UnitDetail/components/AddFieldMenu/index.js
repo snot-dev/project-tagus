@@ -76,9 +76,10 @@ class AddFieldMenu extends Component {
     }
 
     _renderMenu() {
+        const title = this.props.defaultValues ? `Edit ${this.props.defaultValues.name}` : `Add a new Field to ${this.props.tab}`;
         return(
-            <Menu title= {`Add a new Field to ${this.props.tab}`} className="col-xs-6" onCloseButton={this._onClose.bind(this)} >
-                <Form name="field" fields={this.fields} onSubmit={this.props.onSubmit}/>
+            <Menu title= {title} className="col-xs-6" onCloseButton={this._onClose.bind(this)} >
+                <Form name="field" fields={this.fields} defaultValues={this.props.defaultValues} onSubmit={this.props.onSubmit}/>
             </Menu>
         );
     }

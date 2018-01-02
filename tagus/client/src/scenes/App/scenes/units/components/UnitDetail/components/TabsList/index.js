@@ -8,7 +8,7 @@ class TabsList extends Component {
                 <div className="col-xs-12">
                     {this.props.tabs.map((tab, index) => {
                         return (
-                            <TabContent addFieldClick={this.props.addFieldClick} addingField={this.props.addingField} addingTab={this.props.addingTab} tab={tab} key={`${tab.alias}_${index}`} />
+                            <TabContent onFieldClick={this.props.onFieldClick} addFieldClick={this.props.addFieldClick} addingField={this.props.addingField} addingTab={this.props.addingTab} tab={tab} key={`${tab.alias}_${index}`} />
                         );
                     })}
                 </div>

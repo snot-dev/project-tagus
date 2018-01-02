@@ -10,12 +10,19 @@ class TabContent extends Component {
         }
     }
 
+
+    _onFieldClick(field) {
+        return() => {
+            this.props.onFieldClick(this.props.tab.alias, field);
+        }
+    }
+
     renderFields () {
         return (
-            <div className="col-xs-12 tagus-unit-fields">
+            <div className="col-xs-12 tagus-unit-fieldss">
                 {this.props.tab.fields.map((field, index) => {
                     return(
-                        <div className="row tagus-form-field tagus-unit-field" key={`${field.alias}_${index}`}>
+                        <a onClick={this._onFieldClick(field)} className="row tagus-form-field tagus-unit-field" key={`${field.alias}_${index}`}>
                             <div className="col-xs-12 col-sm-6" >
                                 <label className="tagus-label">Name</label>
                                 <p className="tagus-info">{field.name}</p>
@@ -32,7 +39,7 @@ class TabContent extends Component {
                                 <label className="tagus-label">Required</label>
                                 <p className="tagus-info">{field.required.toString()}</p>
                             </div>
-                        </div>
+                        </a>
                     );
                 })}
                 <AddLink onClick={this._addFieldClick(this.props.tab.alias)} className="text-cent" disabled={this.props.addingField || this.props.addingTab} text="Add a new Field" />

@@ -5,6 +5,7 @@
 .tagus-unit-field {
     padding-top: 5px;
     padding-bottom: 5px;
+    display: block;
 }
 
 .tagus-unit-field:hover {
