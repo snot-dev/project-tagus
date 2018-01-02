@@ -3,6 +3,7 @@ import Panel from '../../../../components/Panel';
 import Overlay from '../../../../components/Overlay';
 import AddLink from '../../../../components/AddLink';
 import Form from '../../../../components/Form';
+import Modal from '../../../../components/Modal';
 import AddTabMenu from './components/AddTabMenu';
 import AddFieldMenu from './components/AddFieldMenu';
 import TemplatesList from './components/TemplatesList';
@@ -20,7 +21,9 @@ class UnitsDetail extends Component {
             touched: false,
             addingTab: false,
             addingField: false,
-            editingField: null
+            editingField: null,
+            deletingField: null,
+            deletingTab: null
         };
     }
 
@@ -173,13 +176,49 @@ class UnitsDetail extends Component {
         }
     }
     
-    onFieldClick(tab, field) {
+    onEditField(tab, field) {
         this.setState({
             addingField: tab,      
             editingField: field     
         })
     }
     
+    onToggleDeleteModal(tab, field) {
+        this.setState({
+            deletingField: field,
+            deletingTab: tab
+        });
+    }
+
+    deleteField() {
+        let tabIndex = 0;
+        let fieldIndex = 0;
+        const tabs = this.state.tabs.slice(0);
+
+        for(let i = 0; i < tabs.length; i++) {
+            if(this.state.deletingTab === tabs[i].alias) {
+                const tab = tabs[i];
+                tabIndex = i;
+
+                for(let j = 0; j < tab.fields.length; j++) {
+                    if(tab.fields[j].alias === this.state.deletingField.alias) {
+                        fieldIndex = j;
+                        break;
+                    }
+                }
+
+                break;
+            }
+        }
+
+        tabs[tabIndex].fields.splice(fieldIndex, 1);
+
+        this.setState({
+            deletingField: null,
+            deletingTab: null
+        });
+    }
+
     onFieldFormSubmit(values) {
         if(this.state.addingField) {
             const field = values.field;
@@ -236,7 +275,7 @@ class UnitsDetail extends Component {
                         ? <TemplatesList onChange={this._onTemplatesChange.bind(this)} templates={this.props.templates} unitTemplates={this.state.templates} />
                         :null
                         }
-                        <TabsList onFieldClick={this.onFieldClick.bind(this)} addFieldClick={this.addFieldClick.bind(this)} addingField={this.state.addingField} addingTab={this.state.addingTab} tabs={this.state.tabs || this.props.detail.tabs} />
+                        <TabsList onDeleteField={this.onToggleDeleteModal.bind(this)} onEditField={this.onEditField.bind(this)} addFieldClick={this.addFieldClick.bind(this)} addingField={this.state.addingField} addingTab={this.state.addingTab} tabs={this.state.tabs || this.props.detail.tabs} />
                         <AddLink className="text-center" onClick={this.addTabClick.bind(this)} disabled={this.state.addingTab || this.props.addingField} text="Add a new Tab" />
                     </Form>
                 </div>
@@ -250,6 +289,8 @@ class UnitsDetail extends Component {
             <AddTabMenu key='addTabMenu' onClose={this._resetUIState.bind(this)} show={this.state.addingTab && !this.state.addingField} onSubmit={this.onTabFormSubmit.bind(this)} />
         ];
 
+        const fieldModalBody = this.state.deletingField ? `Are you sure you want to delete ${this.state.deletingField.name}?` : '';
+        
         return (
             <Panel title={`${this.props.detail.name}`} className="col-xs-8 full-height" menu={menu}>
                 {this.props.detail._id  
@@ -257,6 +298,7 @@ class UnitsDetail extends Component {
                 :   null
                 }
                 <Overlay show={this.props.fetchingList || this.props.savingDetail}/>
+                <Modal title="Warning!" body={fieldModalBody} show={!!this.state.deletingField} confirmButton={{onClick:this.deleteField.bind(this), text: "Delete!"}}  closeButton={{onClick: this.onToggleDeleteModal.bind(this), text: "Cancel"}} />
             </Panel>
         );
     }
