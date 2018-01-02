@@ -25,7 +25,7 @@ class AddTabMenu extends Component {
     _renderMenu() {
         return(
             <Menu title="Add new Tab" className="col-xs-6" onCloseButton={this._onClose.bind(this)} >
-                <Form name="tab" fields={this.fields} onSubmit={this.props.onSubmit}/>
+                <Form defaultValues={this.props.defaultValues} name="tab" fields={this.fields} onSubmit={this.props.onSubmit}/>
             </Menu>
         );
     }

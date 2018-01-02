@@ -137,6 +137,12 @@ export function saveUnit(unit) {
             type: constants.units.POST_UNIT_DETAIL,
             payload: axios.put(`units/${unit._id}`, unit)
         })
+        .then(() => {
+            dispatch( {
+                type: constants.units.GET_UNITS_LIST,
+                payload: axios ('units')
+            });
+        });
     };
 }
 

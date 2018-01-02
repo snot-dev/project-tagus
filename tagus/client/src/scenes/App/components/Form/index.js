@@ -15,6 +15,14 @@ class CustomForm extends Component {
         };
     }
 
+    componentWillReceiveProps(nextProps) {
+        if(typeof nextProps.disabled !== undefined) {
+            this.setState({
+                formWasTouched: !nextProps.disabled
+            });
+        }
+    }
+
     _errorValidator(values) {
         const errors = {};
 
@@ -29,7 +37,6 @@ class CustomForm extends Component {
 
     _onSubmit(formApi) {
         return () => {
-            this._formHasErrors(formApi);
             if(this.state.formWasTouched && !this._formHasErrors(formApi)){
                 const formValues = {};
 
@@ -74,7 +81,7 @@ class CustomForm extends Component {
 
     _toggleCancelModal(show) {
         return() => {
-            const disabled = typeof this.props.disabled !== 'undefined' ? this.props.disabled && !this.state.formWasTouched : !this.state.formWasTouched;
+            const disabled = !this.state.formWasTouched;
             if(!disabled) {
                 this.setState({cancelMode: show});
             }
@@ -89,7 +96,7 @@ class CustomForm extends Component {
 
     render() {
         const buttons = this.props.button || true;
-        const disabled = typeof this.props.disabled !== 'undefined' ? this.props.disabled && !this.state.formWasTouched : !this.state.formWasTouched;
+        const disabled = !this.state.formWasTouched;
 
         return (
             <Form className="tagus-form" dontValidateOnMount={true} validateError={this._errorValidator.bind(this)} defaultValues={this.props.defaultValues}>

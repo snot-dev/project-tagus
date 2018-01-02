@@ -23,11 +23,11 @@ class TabContent extends Component {
             </div>
         );
     }
-
+  
     render() {
         return (
             <Tabs defaultActiveKey={0}  id={`tagus-unit-${this.props.tab.alias}`}  className="tagus-unit-tabs" >
-                <Tab eventKey={0} title={`${this.props.tab.name}`} >
+                <Tab eventKey={0} title={`${this.props.tab.name}`} >                    
                     <div className="row tagus-form-control">    
                         <div className="col-xs-12 tagus-form-field">
                             <label className="tagus-label">Alias</label>
