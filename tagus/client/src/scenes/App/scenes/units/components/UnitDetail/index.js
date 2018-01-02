@@ -39,14 +39,11 @@ class UnitsDetail extends Component {
         this._defaultValues = {
             name: this.props.detail.name
         };
-
-        if(this.props.detail.templates) {
-            this._resetTemplates();
-        }
     }
     
-    _resetTemplates(formTouched) {
-        const templates = this.props.detail.templates.slice(0);
+    _resetTemplates(formTouched, nextProps) {
+        const propsTemplates = nextProps ? nextProps.detail.templates : this.props.detail.templates;
+        const templates = propsTemplates.slice(0);
         const touched = !!formTouched;
 
         this.setState({
@@ -57,30 +54,31 @@ class UnitsDetail extends Component {
 
     shouldComponentUpdate(nextProps) {
         const hasNeededUnit = !!nextProps.detail._id || nextProps.match.params.id !== this.props.detail._id;
-        const templates = this.props.fetchingTemplates !== nextProps.fetchingTemplates;
+        const templates = nextProps.templates !== this.props.templates || this.props.fetchingTemplates !== nextProps.fetchingTemplates;
         const unitFields = this.props.fetchingUnitFields !== nextProps.fetchingUnitFields;
         
         return  hasNeededUnit || templates || unitFields;
     }
     
-    componentWillUpdate(newProps) {
-        if(newProps.match.params.id !== this.props.match.params.id) {
-            this.setState({
-                touched: false
-            });
-
-            store.dispatch(getUnitDetailIfNeeded(newProps.match.params.id));
+    componentWillReceiveProps(nextProps) {
+        const diffDetail = nextProps.detail._id && nextProps.detail._id !== this.props.detail._id;
+        const noState = nextProps.detail.templates && !this.state.templates;
+        if(diffDetail || noState) {
+            this._resetTemplates(false, nextProps);
+        }
+    }
+    
+    componentWillUpdate(nextProps) {
+        if(nextProps.match.params.id !== this.props.match.params.id) {
+            store.dispatch(getUnitDetailIfNeeded(nextProps.match.params.id));
         }
 
         this._defaultValues = {
-            name: newProps.detail.name
+            name: nextProps.detail.name
         };
-
-        if(!this.state.templates && this.props.detail.templates) {
-            this._resetTemplates();
-        }
     }   
 
+    //TODO: Move this to the reducer
     _camelize(str){
         // https://stackoverflow.com/questions/2970525/converting-any-string-into-camel-case
         return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(letter, index) {
@@ -91,6 +89,7 @@ class UnitsDetail extends Component {
     _onBlur(e) {
         const state = {};
         const update = {};
+
         if(!this.state.touched) {
             this.setState({touched: true});
         }
@@ -122,6 +121,7 @@ class UnitsDetail extends Component {
 
     _updateTemplates(update) {
         const templates = this.state.templates.slice(0);
+
         if(update.value) {
             if(templates.indexOf())
             templates.push(update.name);
@@ -218,7 +218,7 @@ class UnitsDetail extends Component {
                             </div>
                         </div> */}
                         { this.props.templates 
-                        ? <TemplatesList onChange={this._onTemplatesChange.bind(this)} templates={this.props.templates} unitTemplates={this.state.templates} />
+                        ? <TemplatesList onChange={this._onTemplatesChange.bind(this)} templates={this.props.templates} unitTemplates={this.state.templates || this.props.detail.templates} />
                         :null
                         }
                         <div className="row tagus-form-control">

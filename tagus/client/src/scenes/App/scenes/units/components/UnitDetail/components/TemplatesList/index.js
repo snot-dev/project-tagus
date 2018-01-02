@@ -24,7 +24,6 @@ class TemplatesList extends Component {
     }
 
     _renderTemplates() {
-        console.warn("Rendered");
         return (
             <div className="col-xs-12 tagus-form-field">
                 {this.props.templates.map((template, index) => {
@@ -40,7 +39,6 @@ class TemplatesList extends Component {
     }
 
     render() {
-        console.warn(this.props.unitTemplates);
         return (
             <div className="row tagus-form-control" >
                 <div className="col-xs-12">
