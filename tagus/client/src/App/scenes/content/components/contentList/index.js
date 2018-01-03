@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import {NavLink} from 'react-router-dom';
 import CollapsableList from '../../../../components/CollapsableList';
-import store from '../../../../../../services/store';
-import {editContent} from '../../../../../../services/content/actions';
 import Panel from '../../../../components/Panel';
 import List from '../../../../components/List';
 import ListItem from '../../../../components/ListItem';
 import Overlay from '../../../../components/Overlay';
 import ContentMenu from './components/contentMenu';
+import store from '../../../../../services/store';
+import {editContent} from '../../../../../services/content/actions';
 import './contentList.css';
 
 class ContentList extends Component {
