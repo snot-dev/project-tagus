@@ -11,7 +11,7 @@ class TabsList extends Component {
 
     _onDeleteClick(tab) {
         return () => {
-            // this.props.onDeleteTab(this.props.tab)
+            this.props.onDeleteTab(tab)
         }
     }
 
