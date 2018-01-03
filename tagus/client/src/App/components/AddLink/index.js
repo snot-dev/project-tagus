@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './addLink.css';
 
 class AddLink extends Component {
@@ -26,5 +27,13 @@ class AddLink extends Component {
         return render;
     }
 }
+
+AddLink.propTypes = {
+    className: PropTypes.string,
+    disabled: PropTypes.string,
+    onClick: PropTypes.func,
+    text: PropTypes.string.isRequired,
+    show: PropTypes.bool.isRequired
+};
 
 export default AddLink;

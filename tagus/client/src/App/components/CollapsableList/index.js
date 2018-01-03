@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {Collapse} from 'react-bootstrap';
 import './collapsableList.css';
 
@@ -41,6 +42,13 @@ class CollapsableList extends Component {
             </div>
         );
     }
+}
+
+CollapsableList.propTypes = {
+    className: PropTypes.string,
+    buttonChildren: PropTypes.string,
+    children: PropTypes.object.isRequired,
+    parent: PropTypes.object.isRequired
 }
 
 export default CollapsableList;

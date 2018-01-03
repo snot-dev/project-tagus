@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {NavLink} from 'react-router-dom';
 import './navItem.css';
 
@@ -11,5 +12,11 @@ class NavItem extends Component {
         );
     }
 }
+
+NavItem.propTypes = {
+    to: PropTypes.string.isRequired,
+    icon: PropTypes.string.isRequired,
+    children: PropTypes.string
+};
 
 export default NavItem;

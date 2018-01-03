@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './navigation.css';
 
 class Navigation extends Component {
@@ -13,5 +14,10 @@ class Navigation extends Component {
         );
     }
 }
+
+Navigation.propTypes = {
+    title: PropTypes.string.isRequired,
+    children: PropTypes.array.isRequired
+};
 
 export default Navigation;

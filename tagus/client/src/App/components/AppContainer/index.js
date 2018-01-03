@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './appContainer.css';
 
 class AppContainer extends Component {
@@ -13,6 +14,10 @@ class AppContainer extends Component {
             </section>
         );
     }
+}
+
+AppContainer.propTypes = {
+    children: PropTypes.array
 }
 
 export default AppContainer;
