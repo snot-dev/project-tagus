@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './menu.css';
 
 class Menu extends Component {
@@ -31,5 +32,14 @@ class Menu extends Component {
         );
     }
 }
+
+Menu.propTypes = {
+    title: PropTypes.string.isRequired,
+    onCloseButton: PropTypes.func,
+    children: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.array
+    ])
+};
 
 export default Menu;

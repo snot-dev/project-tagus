@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {Button} from 'react-bootstrap';
 import './formButtons.css';
 
@@ -16,5 +17,11 @@ class FormButtons extends Component {
         );
     }
 }
+
+FormButtons.propTypes = {
+    disabled: PropTypes.bool,
+    onSubmit: PropTypes.func,
+    onReset: PropTypes.func,
+};
 
 export default FormButtons;

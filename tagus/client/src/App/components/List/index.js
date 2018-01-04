@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './list.css';
 
 class List extends Component {
@@ -11,5 +12,11 @@ class List extends Component {
         );
     }
 }
+
+List.propTypes = {
+    className: PropTypes.string,
+    id: PropTypes.string,
+    children: PropTypes.array
+};
 
 export default List;

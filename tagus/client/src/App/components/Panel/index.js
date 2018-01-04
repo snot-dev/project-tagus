@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Header from './Header';
 import './panel.css'
 
@@ -27,5 +28,19 @@ class Panel extends Component {
         );
     }
 }
+
+Panel.propTypes = {
+    title: PropTypes.string,
+    className: PropTypes.string,
+    header: PropTypes.string,
+    menu: PropTypes.oneOfType([
+        PropTypes.array,
+        PropTypes.object
+    ]),
+    children: PropTypes.oneOfType([
+        PropTypes.array,
+        PropTypes.object
+    ])
+};
 
 export default Panel;

@@ -359,7 +359,7 @@ class UnitsDetail extends Component {
                         :null
                         }
                         <TabsList onEditTab={this.onEditTab.bind(this)} onDeleteTab={this.onToggleDeleteModal.bind(this)} onDeleteField={this.onToggleDeleteModal.bind(this)} onEditField={this.onEditField.bind(this)} addFieldClick={this.addFieldClick.bind(this)} addingField={this.state.addingField} addingTab={this.state.addingTab} tabs={this.state.tabs || this.props.detail.tabs} />
-                        <AddLink className="text-center" onClick={this.addTabClick.bind(this)} disabled={this.state.addingTab || this.props.addingField} text="Add a new Tab" />
+                        <AddLink className="text-center" onClick={this.addTabClick.bind(this)} disabled={!!this.state.addingTab || !!this.props.addingField} text="Add a new Tab" />
                     </Form>
                 </div>
             </div>

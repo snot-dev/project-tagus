@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './overlay.css';
 
 class Overlay extends Component {
@@ -12,5 +13,9 @@ class Overlay extends Component {
         )
     }
 }
+
+Overlay.propTypes = {
+    show: PropTypes.bool
+};
 
 export default Overlay;

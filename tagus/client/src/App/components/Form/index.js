@@ -103,7 +103,7 @@ class CustomForm extends Component {
             <Form className="tagus-form" dontValidateOnMount={true} validateError={this._errorValidator.bind(this)} defaultValues={this.props.defaultValues}>
                 {formApi => (
                     <form onSubmit={formApi.submitForm} className="container-fluid">
-                        <FormFields formApi={formApi} submits={formApi.submits} formName={this.props.formName} onFieldChange={this._touchTheForm.bind(this)} fields={this.props.fields} />
+                        <FormFields formApi={formApi} submits={formApi.submits} formName={this.props.name} onFieldChange={this._touchTheForm.bind(this)} fields={this.props.fields} />
                         {this.props.children}
                         {buttons 
                         ?   <FormButtons onSubmit={this._onSubmit(formApi).bind(this)} onReset={this._toggleCancelModal(true).bind(this)} disabled={disabled} />
@@ -117,14 +117,14 @@ class CustomForm extends Component {
     };
 }
 
-Form.propTypes = {
-    formName: PropTypes.string.isRequired,
+CustomForm.propTypes = {
+    name: PropTypes.string.isRequired,
     fields: PropTypes.array.isRequired,
     disabled: PropTypes.bool,
     defaultValues: PropTypes.object,
     onReset: PropTypes.func,
     onSubmit: PropTypes.func,
-    children: PropTypes.string,
+    children: PropTypes.array,
     buttons: PropTypes.bool
 };
 

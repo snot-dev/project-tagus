@@ -19,7 +19,7 @@ class TabContent extends Component {
                         <TabField onDeleteField={this.props.onDeleteField} onEditField={this.props.onEditField} tab={this.props.tab.alias} field={field} key={`${field.alias}_${index}`} />
                     );
                 })}
-                <AddLink onClick={this._addFieldClick(this.props.tab.alias)} className="text-cent" disabled={this.props.addingField || this.props.addingTab} text="Add a new Field" />
+                <AddLink onClick={this._addFieldClick(this.props.tab.alias)} className="text-cent" disabled={!!this.props.addingField || !!this.props.addingTab} text="Add a new Field" />
             </div>
         );
     }

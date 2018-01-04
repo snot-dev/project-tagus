@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './listItem.css';
 
 class ListItem extends Component {
@@ -11,5 +12,14 @@ class ListItem extends Component {
         );
     }
 }
+
+ListItem.propTypes = {
+    className: PropTypes.string,
+    id: PropTypes.string,
+    children: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.array
+    ])
+};
 
 export default ListItem;

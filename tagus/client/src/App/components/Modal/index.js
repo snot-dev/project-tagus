@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {Modal, Button} from 'react-bootstrap';
 
 class CustomModal extends Component {
@@ -29,5 +30,19 @@ class CustomModal extends Component {
         );
     }
 }
+
+CustomModal.propTypes = {
+    show: PropTypes.bool.isRequired,
+    title: PropTypes.string,
+    body: PropTypes.string,
+    onCloseButton: PropTypes.shape({
+        onClick: PropTypes.func,
+        text: PropTypes.string
+    }),
+    confirmButton: PropTypes.shape({
+        onClick: PropTypes.func,
+        text: PropTypes.string
+    })
+};
 
 export default CustomModal;

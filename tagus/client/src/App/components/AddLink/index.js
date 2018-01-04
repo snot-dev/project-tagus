@@ -30,10 +30,10 @@ class AddLink extends Component {
 
 AddLink.propTypes = {
     className: PropTypes.string,
-    disabled: PropTypes.string,
+    disabled: PropTypes.bool,
     onClick: PropTypes.func,
     text: PropTypes.string.isRequired,
-    show: PropTypes.bool.isRequired
+    show: PropTypes.bool
 };
 
 export default AddLink;

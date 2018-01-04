@@ -46,9 +46,9 @@ class CollapsableList extends Component {
 
 CollapsableList.propTypes = {
     className: PropTypes.string,
-    buttonChildren: PropTypes.string,
+    buttonChildren: PropTypes.object,
     children: PropTypes.object.isRequired,
-    parent: PropTypes.object.isRequired
+    parent: PropTypes.object
 }
 
 export default CollapsableList;
