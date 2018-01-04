@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {StyledText, Checkbox, StyledSelect} from 'react-form';
+import PropTypes from 'prop-types';
+import {StyledText, Checkbox, StyledSelect, FormField} from 'react-form';
 import './formFields.css';
 
 class FormFields extends Component {
@@ -59,5 +60,12 @@ class FormFields extends Component {
         );
     };
 }
+
+FormFields.propTypes = {
+    onFieldChange: PropTypes.func.isRequired,
+    formApi: PropTypes.object.isRequired,
+    fields: PropTypes.array.isRequired,
+    submits: PropTypes.number.isRequired
+};
 
 export default FormFields;

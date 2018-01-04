@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {Form} from 'react-form';
 import Modal from '../Modal';
 import FormButtons from '../FormButtons';
@@ -95,7 +96,7 @@ class CustomForm extends Component {
     }
 
     render() {
-        const buttons = this.props.button || true;
+        const buttons = this.props.buttons || true;
         const disabled = !this.state.formWasTouched;
 
         return (
@@ -114,7 +115,17 @@ class CustomForm extends Component {
             </Form>
         );
     };
-
 }
+
+Form.propTypes = {
+    formName: PropTypes.string.isRequired,
+    fields: PropTypes.array.isRequired,
+    disabled: PropTypes.bool,
+    defaultValues: PropTypes.object,
+    onReset: PropTypes.func,
+    onSubmit: PropTypes.func,
+    children: PropTypes.string,
+    buttons: PropTypes.bool
+};
 
 export default CustomForm;
