@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import Overlay from '../../../../components/Overlay';
 import Panel from '../../../../components/Panel';
 import Form from '../../../../components/Form';
-import {createContent} from '../../../../../services/content/actions';
-import store from '../../../../../services/store';
+import {createContent} from '../../../../services/content/actions';
+import store from '../../../../services/store';
 import './createContent.css';
 
 class CreateContent extends Component {

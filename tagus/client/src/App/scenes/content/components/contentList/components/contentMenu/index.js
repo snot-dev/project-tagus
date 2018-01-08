@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import Modal from '../../../../../../components/Modal';
 import Menu from '../../../../../../components/Menu';
 import CollapsableList from '../../../../../../components/CollapsableList';
-import {createUnit, deleteContent} from '../../../../../../../services/content/actions';
-import store from '../../../../../../../services/store';
+import {createUnit, deleteContent} from '../../../../../../services/content/actions';
+import store from '../../../../../../services/store';
 import {Link} from 'react-router-dom';
 import './contentMenu.css';
 

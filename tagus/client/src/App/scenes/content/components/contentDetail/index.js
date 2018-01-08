@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import {getContentDetailIfNeeded, saveContent} from '../../../../../services/content/actions';
+import {getContentDetailIfNeeded, saveContent} from '../../../../services/content/actions';
 import {Tabs, Tab} from 'react-bootstrap';
 import Overlay from '../../../../components/Overlay';
 import Panel from '../../../../components/Panel';
 import Form from '../../../../components/Form';
-import store from '../../../../../services/store';
+import store from '../../../../services/store';
 import './contentDetail.css';
 
 class ContentDetail extends Component {

@@ -7,7 +7,7 @@ import './vendor/bootstrap/css/bootstrap-theme.min.css';
 import './vendor/font-awesome/css/font-awesome.min.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
-import store from './services/store';
+import store from './App/services/store';
 
 
 ReactDOM.render(

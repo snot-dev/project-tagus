@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {Route} from 'react-router-dom';
-import {getUnitsListIfNeeded} from '../../../services/units/actions';
-import store from '../../../services/store';
+import {getUnitsListIfNeeded} from '../../services/units/actions';
+import store from '../../services/store';
 import UnitList from './components/UnitList';
 import UnitDetail from './components/UnitDetail';
 import './units.css';

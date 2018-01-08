@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import {getContentListIfNeeded, getUnitsListIfNeeded} from '../../../services/content/actions';
+import {getContentListIfNeeded, getUnitsListIfNeeded} from '../../services/content/actions';
 import {Route, Redirect} from 'react-router-dom';
-import store from '../../../services/store';
+import store from '../../services/store';
 import ContentList from './components/contentList';
 import ContentDetail from './components/contentDetail';
 import CreateContent from './components/createContent';

@@ -8,9 +8,9 @@ import AddTabMenu from './components/AddTabMenu';
 import AddFieldMenu from './components/AddFieldMenu';
 import TemplatesList from './components/TemplatesList';
 import TabsList from './components/TabsList';
-import {getUnitDetailIfNeeded, getTemplatesIfNeeded, getUnitFieldsIfNeeded, resetUnit, saveUnit} from '../../../../../services/units/actions';
-import store from '../../../../../services/store';
-import {camelize} from '../../../../../services/helpers';
+import {getUnitDetailIfNeeded, getTemplatesIfNeeded, getUnitFieldsIfNeeded, resetUnit, saveUnit} from '../../../../services/units/actions';
+import store from '../../../../services/store';
+import {camelize} from '../../../../services/helpers';
 import './unitsDetail.css';
 
 class UnitsDetail extends Component {
