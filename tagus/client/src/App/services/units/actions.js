@@ -147,12 +147,27 @@ export function saveUnit(unit) {
 }
 
 export function resetUnit(id) {
-    return ( dispatch, getState) => {
+    return (dispatch, getState) => {
         dispatch({
             type: constants.units.GET_UNITS_DETAIL_FULFILLED,
             payload:{
                 data: JSON.parse(JSON.stringify(getState().units.dictionary[id]))
             } 
+        });
+    };
+}
+
+export function createNewUnit(unit) {
+    return(dispatch, getState) => {
+        dispatch({
+            type: constants.units.CREATE_UNIT,
+            payload: axios.post('units', unit)
+        })
+        .then(() => {
+            dispatch( {
+                type: constants.units.GET_UNITS_LIST,
+                payload: axios ('units')
+            });
         });
     }
 }

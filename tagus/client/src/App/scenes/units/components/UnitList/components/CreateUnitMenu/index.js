@@ -20,10 +20,16 @@ class CreateUnitMenu extends Component {
         }
     }
 
+    _onSubmit(values) {
+        if(this.props.onSubmit) {
+            this.props.onSubmit(values);
+        }
+    }
+
     _render() {
         return (
             <Menu title="Create new Unit" className="tagus-unit-create col-xs-9" onCloseButton={this._onClose.bind(this)} >
-                <Form name="create-unit" fields={this.fields}/>
+                <Form onSubmit={this._onSubmit.bind(this)} name="newUnit" fields={this.fields}/>
             </Menu>
         );
     }

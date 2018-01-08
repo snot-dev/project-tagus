@@ -6,6 +6,8 @@ import List from '../../../../components/List';
 import AddLink from '../../../../components/AddLink';
 import ListItem from '../../../../components/ListItem';
 import CreateUnitMenu from './components/CreateUnitMenu';
+import store from '../../../../services/store';
+import {createNewUnit} from '../../../../services/units/actions';
 import './unitsList.css';
 
 class UnitsList extends Component {
@@ -25,9 +27,17 @@ class UnitsList extends Component {
         }
     }
 
+    createUnit(values) {
+        const newUnit = values.newUnit;
+        
+        store.dispatch(createNewUnit(newUnit));
+        this.setState({
+            creatingUnit: false
+        });
+    }
     render() {
         const menu = [
-            <CreateUnitMenu key="createUnit" show={this.state.creatingUnit} onClose={this.toggleCreatingUnit(false)} />
+            <CreateUnitMenu key="createUnit" onSubmit={this.createUnit.bind(this)} show={this.state.creatingUnit} onClose={this.toggleCreatingUnit(false)} />
         ];
 
         return (
@@ -45,7 +55,6 @@ class UnitsList extends Component {
                         })
                     :   null}
                 </List>
-                
                 <AddLink text="Create new Unit" disabled={this.state.creatingUnit} onClick={this.toggleCreatingUnit(true)} />
                 <Overlay show={this.props.fetchingList || this.props.savingDetail}/>
             </Panel>

@@ -55,12 +55,21 @@ export let unitsReducer = function(state, action) {
             newState.detail = action.payload;
             return newState;
         }  
-        case constants.unitFields.POST_UNIT_DETAIL_PENDING: {
+        case constants.units.POST_UNIT_DETAIL_PENDING: {
+            newState.savingDetail = true;
+        
+            return newState;
+        }
+        case constants.units.POST_UNIT_DETAIL_FULFILLED: { 
+            newState.detail = action.payload.data;
+            newState.savingDetail = false;
+            return newState;
+        }
+        case constants.units.CREATE_UNIT_PENDING: {
             newState.savingDetail = true;
             return newState;
         }
-        case constants.unitFields.POST_UNIT_DETAIL_FULFILLED: { 
-            newState.detail = action.payload.data;
+        case constants.units.CREATE_UNIT_FULFILLED: {
             newState.savingDetail = false;
             return newState;
         }
