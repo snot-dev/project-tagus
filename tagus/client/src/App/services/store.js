@@ -37,6 +37,14 @@ let initialState = {
         addingTab: false,
         addingField: false,
         unitFields: []
+    },
+    bridges: {
+        list: [],
+        fetchingList: false,
+        detail: {},
+        fetchingDetail: false,
+        savingDetail: false,
+        createNew: null
     }
     // ,
     // unitFields: {
