@@ -40,6 +40,7 @@ const initialState = {
     },
     bridges: {
         list: [],
+        units: {},
         fetchingList: false,
         detail: {},
         fetchingDetail: false,

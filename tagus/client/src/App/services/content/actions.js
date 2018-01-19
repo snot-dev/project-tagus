@@ -40,7 +40,7 @@ export function getUnitsListIfNeeded(){
             })
         }
     };
-}
+};
 
 export function getContentListIfNeeded(){
     return (dispatch, getState) => {
@@ -131,7 +131,7 @@ export function createContent(newContent) {
             });
         });
     }
-}
+};
 
 export function deleteContent(id) {
     return (dispatch, getState) => {
@@ -146,4 +146,4 @@ export function deleteContent(id) {
             });
         });
     }
-}
+};
