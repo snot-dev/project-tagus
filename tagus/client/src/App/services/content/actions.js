@@ -36,7 +36,7 @@ export function getUnitsListIfNeeded(){
         if(_shouldGetUnitsList(getState())) {
             dispatch({
                 type: constants.content.GET_CONTENT_UNITS_LIST,
-                payload: axios('units').then(results =>{return results;})
+                payload: axios('units')
             })
         }
     };
@@ -47,7 +47,7 @@ export function getContentListIfNeeded(){
         if( _shouldGetPageList(getState())) {
             dispatch( {
                 type: constants.content.GET_CONTENT_LIST,
-                payload: axios('content').then(results =>{return results;})
+                payload: axios('content')
             })
         }
     };

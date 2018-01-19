@@ -1,18 +1,18 @@
 import { combineReducers, createStore, applyMiddleware } from "redux";
 import { contentReducer } from './content/reducer';
 import { unitsReducer } from './units/reducer';
+import { bridgesReducer } from './bridges/reducer';
 import thunk from 'redux-thunk';
 import promise from 'redux-promise-middleware';
 import {createLogger} from 'redux-logger';
 
-
-let rootReducer = combineReducers({
+const rootReducer = combineReducers({
     content: contentReducer,
-    units: unitsReducer
+    units: unitsReducer,
+    bridges: bridgesReducer
 });
 
-
-let initialState = {
+const initialState = {
     content: {
         list: [],
         treeList: {},

@@ -1,8 +1,8 @@
 import { constants } from '../constants';
 import {buildContentTree, convertArrayToDictionary} from '../helpers';
 
-export let contentReducer = (state, action) => {
-    let newState = Object.assign({}, state);
+export const contentReducer = (state, action) => {
+    const newState = Object.assign({}, state);
 
     switch (action.type) {
         case constants.content.GET_CONTENT_LIST_PENDING: {

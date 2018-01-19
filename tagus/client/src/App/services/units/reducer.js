@@ -1,8 +1,8 @@
 import { constants } from '../constants';
 import {convertArrayToDictionary} from '../helpers';
 
-export let unitsReducer = function(state, action) {
-    let newState = Object.assign({}, state);
+export const unitsReducer = function(state, action) {
+    const newState = Object.assign({}, state);
 
     switch (action.type) {
         case constants.units.GET_UNITS_DETAIL_PENDING: {
