@@ -23,11 +23,10 @@ class Bridges extends Component {
     }
 }
 
-
 const mapStateToProps = state => {
     return {
-      bridges: state.bridges
+        bridges: state.bridges
     };
-  };
+};
   
 export default connect(mapStateToProps)(Bridges);

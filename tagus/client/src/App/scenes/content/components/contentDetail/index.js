@@ -98,8 +98,7 @@ class ContentDetail extends Component {
 
     onSubmitContent(formValues) {
         const newContent = Object.assign(this.props.detail.content, formValues);
-        this.props.detail.content = newContent;
-        store.dispatch(saveContent(this.props.detail));
+        store.dispatch(saveContent(newContent));
     }
     
     onSubmitProperties(formValues) {

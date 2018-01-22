@@ -12,21 +12,6 @@ const _shouldGetContentDetail = (state, id) => {
     return !state.content.detail._id || state.content.detail._id !== id;
 };
 
-// const _shouldGetContentUnit = (state, id) => {
-//     return !state.content.unit._id || state.content.unit._id !== id;
-// };
-
-// const _getContentUnitTypeIfNeeded = (dispatch, state, id) => {
-//     if(_shouldGetContentUnit(state, id)) {
-//         dispatch( {
-//             type: constants.content.GET_CONTENT_DETAIL_UNITTYPE,
-//             payload: axios('units/' + id).then( results => {
-//                 return results
-//             })
-//         });
-//     }
-// };
-
 const _shouldGetUnitsList = state => {
     return state.content.units;
 };
