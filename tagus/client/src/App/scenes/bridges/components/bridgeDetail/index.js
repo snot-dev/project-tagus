@@ -14,6 +14,15 @@ class  BridgeDetail extends Component {
         this.state = {
             key: 0
         };
+
+        this.propertiesFields = [
+            {
+                name: "Name",
+                type: "text",
+                alias: "name",
+                required: true
+            }
+        ];
     }
 
     componentWillMount() {
@@ -26,11 +35,16 @@ class  BridgeDetail extends Component {
         this.setState({key});
     }
 
-    onSubmitContentBridge(formValues) {
-        const updatedBridge = Object.assign(this.props.detail, {content: formValues});
-        store.dispatch(saveBridge(updatedBridge));
-    }
+    _getPropertiesDefaultValues() {
+        const defaultValues = {};
 
+        for(const field of this.propertiesFields) {
+            defaultValues[field.alias] = this.props.detail[field.alias];
+        }
+
+        return defaultValues;
+    }
+    
     _renderTabs(tabs) {
         return (
             <Tabs activeKey={this.state.key} onSelect={this._handleTabchange.bind(this)} id="tagus-content-tabs">
@@ -41,8 +55,39 @@ class  BridgeDetail extends Component {
                         )
                     )
                 }
+                <Tab eventKey={tabs.length} key={`${this.props.detail._id}_Properties_${tabs.length}`} title='Properties'>
+                    <div className="container-fluid tagus-form-info-fields">
+                        <div className="row tagus-form-control">
+                            <div className="col-xs-12 col-sm-6 tagus-form-field">
+                                <label className="tagus-label" >Alias</label>
+                                <p className="tagus-info">{this.props.detail.alias}</p>
+                            </div>
+                            <div className="col-xs-12 col-sm-6 tagus-form-field text-right">
+                                <label className="tagus-label" >Created</label>
+                                <p className="tagus-info">{this.props.detail.created}</p>
+                            </div>
+                        </div>
+                        <div className="row tagus-form-control">
+                            <div className="col-xs-12 col-sm-6 tagus-form-field">
+                                <label className="tagus-label" >Unit</label>
+                                <p className="tagus-info">{this.props.unit.name}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <Form onSubmit={this.onSubmitProperties.bind(this)} name="properties" defaultValues={this._getPropertiesDefaultValues()} fields={this.propertiesFields} /> 
+                </Tab>
             </Tabs>
         )
+    }
+    
+    onSubmitContentBridge(formValues) {
+        const updatedBridge = Object.assign(this.props.detail, {content: formValues});
+        store.dispatch(saveBridge(updatedBridge));
+    }
+
+    onSubmitProperties(formValues) {
+        const updatedBridge = Object.assign(this.props.detail, formValues.properties);
+        store.dispatch(saveBridge(updatedBridge));
     }
 
     render() {
