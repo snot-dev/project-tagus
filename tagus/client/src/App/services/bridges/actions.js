@@ -61,7 +61,6 @@ export function getBridgeDetailIfNeeded(id) {
 
 export function saveBridge(bridge) {
     return (dispatch, getState) => {
-        console.warn(bridge);
         dispatch({
             type:constants.bridges.POST_BRIDGES_DETAIL,
             payload: axios.put(`bridges/${bridge._id}`, bridge)

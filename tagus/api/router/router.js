@@ -74,7 +74,6 @@ module.exports = {
                     routes.updateById(req, res);
                 }
                 else {
-                    
                     model.findOne({'_id': req.params.id})
                     .then(doc => {
                         const updatedDoc = Object.assign(doc, req.body);

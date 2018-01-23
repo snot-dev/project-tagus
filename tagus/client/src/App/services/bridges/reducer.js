@@ -32,12 +32,12 @@ export const bridgesReducer = (state, action) => {
             newState.detail = action.payload.data;
             return newState;
         }
-        case constants.bridges.POST_CONTENT_DETAIL_PENDING: {
-            newState.savingContent = true;
+        case constants.bridges.POST_BRIDGES_DETAIL_PENDING: {
+            newState.savingDetail = true;
             return newState;
         }
-        case constants.bridges.POST_CONTENT_DETAIL_FULFILLED: {
-            newState.savingContent = false;
+        case constants.bridges.POST_BRIDGES_DETAIL_FULFILLED: {
+            newState.savingDetail = false;
             newState.detail = action.payload.data.result;
             return newState;
         }
