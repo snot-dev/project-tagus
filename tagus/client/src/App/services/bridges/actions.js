@@ -74,3 +74,18 @@ export function saveBridge(bridge) {
         });
     };
 };
+
+export function createBridge(newBridge) {
+    return (dispatch, getState) => {
+        dispatch({
+            type:constants.bridges.CREATE_BRIDGE,
+            payload: axios.post(`bridges`, newBridge)
+        })
+        .then(()  => {
+            dispatch( {
+                type: constants.bridges.GET_BRIDGES_LIST,
+                payload: axios('bridges')
+            });
+        });
+    }
+}

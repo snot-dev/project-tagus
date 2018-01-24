@@ -1,76 +1,71 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
 import Menu from '../../../../../../components/Menu';
-// import Form from '../../../../../../components/Form';
-import Modal from '../../../../../../components/Modal';
-import CollapsableList from '../../../../../../components/CollapsableList';
+import Form from '../../../../../../components/Form';
 import './createBridgeMenu.css';
 
 class CreateBridgeMenu extends Component {
-    constructor(props) {
-        super(props);
+    componentWillUpdate() {
+        const units = this.props.units ? this._convertToOptions(this.props.units) : null;
 
-        this.state = {
-            open: false,
-            deleteMode: false
-        };
+        this.fields = [
+            {
+                name: "Name",
+                alias: "name",
+                type: "text",
+                required: true
+            },
+            {
+                name: "Unit",
+                alias: "unitType",
+                type: "select",
+                options: units,
+                required: true
+            }
+        ];
     }
-
-    onClick() {
-        this.setState({
-            open: !this.state.open
-        });
-    }
-
-    onLinkClick(unit) {
-        return() => {
-            // store.dispatch(createUnit(unit));
-        };
-    }
-
-    _getUnitsList() {
+ 
+    _convertToOptions(arr) {
         const units = [];
         
         for(const key in this.props.units) {
             if(this.props.units.hasOwnProperty(key)) {
                 const unit = this.props.units[key];
                 units.push(
-                    <li className="tagus-menu-item" key={key}><Link onClick={this.onLinkClick(unit)} to={`/content/create/${unit._id}`} className="tagus-menu-link">{unit.name}</Link></li>
+                    {
+                        label: unit.name,
+                        value: unit._id 
+                    }
                 );
             }
         }
 
-        return(
-            <ul className="tagus-menu-list row">
-                {units}
-            </ul>
-        )
+        return units;
     }
 
-    _toggleModal(show) {
-        return() => {
-            this.setState({
-                deleteMode: show
-            });
-        };
+    _onClose() {
+        if(this.props.show && this.props.onClose) {
+            this.props.onClose()
+        }
+    }
+
+    _onSubmit(values) {
+        if(this.props.onSubmit) {
+            this.props.onSubmit(values);
+        }
+    }
+
+    _render() {
+        return (
+            <Menu title="Create new Bridge" className="tagus-unit-create col-xs-9" onCloseButton={this._onClose.bind(this)} >
+                <Form onSubmit={this._onSubmit.bind(this)} name="newBridge" fields={this.fields}/>
+            </Menu>
+        );
     }
 
     render() {
-        return (
-            <Menu onCloseButton={this.props.onCloseButton} title="Menu" className="col-xs-6 content-menu">
-                <ul className="tagus-menu-list row">
-                    <li className="tagus-menu-item">
-                        <CollapsableList buttonChildren={button}>
-                            <div className="col-xs-12">
-                                {this._getUnitsList()}
-                            </div>
-                        </CollapsableList>
-                    </li>
-                    <li className="tagus-menu-item"><a onClick={this._toggleModal(true).bind(this)} className="tagus-menu-link">Delete</a></li>
-                </ul>
-                <Modal show={this.state.deleteMode} title="Warning!" body={"Are you sure you want to DELETE PERMANENTLY this page and all the children?"} closeButton={{onClick: this._toggleModal(false), text: "Cancel"}} confirmButton={{onClick:this._deleteContent.bind(this), text: "Yes, I'm sure!"}} />
-            </Menu>
-        );
+        const render = this.props.show ? this._render() : null;
+        
+        return render;
     }
 }
 

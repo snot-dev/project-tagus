@@ -4,11 +4,11 @@ mongoose.Promise = require('bluebird');
 const bridgeSchema = new mongoose.Schema({
     name: {type: String, required: true},
     alias: {type: String, required: true},
-    content: {},
+    content: {type: mongoose.Schema.Types.Mixed, default: {}},
     unitType: {type: String, required: true},
     createdBy: String,
     created: {type:Date, default: Date.now()},
     edited: {type:Date, default: Date.now()}
-});
+}, {minimize: false});
 
 module.exports = mongoose.model('Bridge', bridgeSchema);

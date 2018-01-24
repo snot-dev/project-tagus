@@ -41,6 +41,14 @@ export const bridgesReducer = (state, action) => {
             newState.detail = action.payload.data.result;
             return newState;
         }
+        case constants.bridges.CREATE_BRIDGE_PENDING: {
+            newState.savingDetail = true;
+            return newState;
+        }
+        case constants.bridges.CREATE_BRIDGE_FULFILLED: {
+            newState.savingDetail = false;
+            return newState;
+        }
         default:
             return state || {}; 
     }

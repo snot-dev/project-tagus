@@ -5,6 +5,8 @@ import Panel from '../../../../components/Panel';
 import ListItem from '../../../../components/ListItem';
 import AddLink from '../../../../components/AddLink';
 import CreateBridgeMenu from './components/createBridgeMenu';
+import store from '../../../../services/store';
+import {createBridge} from '../../../../services/bridges/actions';
 import './bridgeList.css';
 
 class BridgeList extends Component {
@@ -24,9 +26,18 @@ class BridgeList extends Component {
         }
     }
 
+    onSubmitCreatingBridge(values) {
+        this.setState({
+            creatingBridge: false
+        });
+
+        this.props.history.push('/bridges');
+        store.dispatch(createBridge(values.newBridge));
+    }
+
     render() {
         const menu = [
-            <CreateBridgeMenu key="createBridge"  show={this.state.creatingBridge}  />
+            <CreateBridgeMenu key="createBridge" units={this.props.units}  show={this.state.creatingBridge} onClose={this.toggleCreatingBridge(false)} onSubmit={this.onSubmitCreatingBridge.bind(this)} />
         ];
 
         return (

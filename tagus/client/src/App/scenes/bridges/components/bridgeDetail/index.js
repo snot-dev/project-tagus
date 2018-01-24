@@ -30,6 +30,12 @@ class  BridgeDetail extends Component {
             store.dispatch(getBridgeDetailIfNeeded(this.props.match.params.id));
         }
     }
+    
+    componentWillUpdate(newProps) {
+        if(newProps.match.params.id !== this.props.match.params.id) {
+            store.dispatch(getBridgeDetailIfNeeded(newProps.match.params.id));
+        }
+    }
 
     _handleTabchange(key) {
         this.setState({key});
