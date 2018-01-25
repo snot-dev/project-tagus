@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import Panel from '../../../../components/Panel';
 import Overlay from '../../../../components/Overlay';
 import AddLink from '../../../../components/AddLink';
@@ -100,7 +101,7 @@ class UnitsDetail extends Component {
         
         if(props.detail.tabs) {
             //Deep clone tabs array
-            state.tabs = JSON.parse(JSON.stringify(props.detail.tabs));
+            state.tabs = _.cloneDeep(props.detail.tabs);
         }
 
         this.setState(state);

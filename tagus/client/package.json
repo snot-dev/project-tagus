@@ -19,6 +19,7 @@
     "axios": "^0.17.1",
     "concurrency": "^0.1.4",
     "font-awesome": "^4.7.0",
+    "lodash": "^4.17.4",
     "prop-types": "^15.6.0",
     "react-form": "^2.12.1",
     "react-redux": "^5.0.6",

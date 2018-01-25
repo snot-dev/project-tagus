@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import {constants} from '../constants';
 import axios from '../axios';
 
@@ -21,7 +22,7 @@ export function getUnitDetailIfNeeded(id) {
                 dispatch({
                     type: constants.units.GET_UNITS_DETAIL_FULFILLED,
                     payload:{
-                        data: JSON.parse(JSON.stringify(state.units.dictionary[id]))
+                        data: _.cloneDeep(state.units.dictionary[id])
                     } 
                 });
             }
@@ -151,7 +152,7 @@ export function resetUnit(id) {
         dispatch({
             type: constants.units.GET_UNITS_DETAIL_FULFILLED,
             payload:{
-                data: JSON.parse(JSON.stringify(getState().units.dictionary[id]))
+                data: _.cloneDeep(getState().units.dictionary[id])
             } 
         });
     };
