@@ -72,6 +72,7 @@ export const contentReducer = (state, action) => {
         case constants.content.CREATE_CONTENT_FULFILLED: {
             newState.savingContent = false;
             newState.editingContent = null;
+            newState.createUnit = null;
             return newState;
         }
         case constants.content.DELETE_CONTENT_PENDING: {

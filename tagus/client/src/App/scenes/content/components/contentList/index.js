@@ -6,11 +6,23 @@ import List from '../../../../components/List';
 import ListItem from '../../../../components/ListItem';
 import Overlay from '../../../../components/Overlay';
 import ContentMenu from './components/contentMenu';
+import NewRootContent from './components/newRootContent';
 import store from '../../../../services/store';
+import AddLink from '../../../../components/AddLink';
 import {editContent} from '../../../../services/content/actions';
 import './contentList.css';
 
 class ContentList extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            creatingRootContent: false
+        };
+    }
+
+
+
     _onMenuButtonClick(content) {
         return () => {
             if(!this.props.editingContent || !content || this.props.editingContent._id !== content._id ) {
@@ -74,15 +86,25 @@ class ContentList extends Component {
         );
     };
    
-    render() {
-        const menu = this.props.editingContent
-        ? <ContentMenu savingContent={this.props.savingContent} history={this.props.history} className="col-xs-6" onCloseButton={this._onMenuButtonClick()} units={this.props.units} detail={this.props.editingContent} />
-        : null;
+    _toggleCreateRootContentMenu(show) {
+        return () => {
+            this.setState({
+                creatingRootContent: show
+            });
+        };
+    }
 
+    render() {
+        const menu = [
+            <ContentMenu key='ContentMenu' savingContent={this.props.savingContent} history={this.props.history} className="col-xs-6" onCloseButton={this._onMenuButtonClick()} units={this.props.units} detail={this.props.editingContent} />,
+            <NewRootContent key='NewRootContent' show={this.state.creatingRootContent}  savingContent={this.props.savingContent} history={this.props.history} className="col-xs-6" onCloseButton={this._toggleCreateRootContentMenu(false)} units={this.props.units} />
+        ];
+        
         return (
             <Panel title="Content" className="col-xs-4 full-height" menu={menu}>
                 {this._buildContentList()}
-                 <Overlay show={this.props.savingContent || this.props.fetchingList}/>
+                <AddLink text="Create a new Root page" onClick={this._toggleCreateRootContentMenu(true)} show={true} disabled={this.state.creatingRootContent} />
+                <Overlay show={this.props.savingContent || this.props.fetchingList}/>
             </Panel>  
         );
     };

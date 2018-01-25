@@ -26,10 +26,15 @@ router.post('/', (req, res) => {
   
     if(newContent.name) {
         newContent.alias = convertToAlias(newContent.name);
-        if(newContent.url === '/') {
-            newContent.url = '';
+        if (!newContent.parent) {
+            newContent.url = '/'; 
         }
-        newContent.url = `${newContent.url}/${convertToUrl(newContent.name)}`;
+        else {
+            if(newContent.url === '/') {
+                newContent.url = '';
+            }
+            newContent.url = `${newContent.url}/${convertToUrl(newContent.name)}`;
+        }
     }
     
     //TODO: Change this to an actual user
@@ -42,7 +47,7 @@ router.post('/', (req, res) => {
         return Content.findOne({'_id': newContent.parent})
     })
     .then( parent => {
-        if(!parent.children.includes(newContent._id)) {
+        if(parent && !parent.children.includes(newContent._id)) {
             parent.children.push(newContent._id);
             
             return parent.save();

@@ -62,7 +62,7 @@ class ContentMenu extends Component {
         this.props.history.push('/content');
     }
 
-    render() {
+    _render() {
         const button = <div onClick={this.onClick.bind(this)} className="tagus-menu-link">Add child to {this.props.detail.name}</div>;
         return (
             <Menu onCloseButton={this.props.onCloseButton} title="Menu" className="col-xs-6 content-menu">
@@ -78,6 +78,12 @@ class ContentMenu extends Component {
                 </ul>
                 <Modal show={this.state.deleteMode} title="Warning!" body={"Are you sure you want to DELETE PERMANENTLY this page and all the children?"} closeButton={{onClick: this._toggleModal(false), text: "Cancel"}} confirmButton={{onClick:this._deleteContent.bind(this), text: "Yes, I'm sure!"}} />
             </Menu>
+        );
+    }
+
+    render() {
+        return(
+            this.props.detail ? this._render() : null
         );
     }
 }
