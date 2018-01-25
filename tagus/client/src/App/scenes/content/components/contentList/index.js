@@ -9,7 +9,7 @@ import ContentMenu from './components/contentMenu';
 import NewRootContent from './components/newRootContent';
 import store from '../../../../services/store';
 import AddLink from '../../../../components/AddLink';
-import {editContent} from '../../../../services/content/actions';
+import {editContent, getContentDetailIfNeeded} from '../../../../services/content/actions';
 import './contentList.css';
 
 class ContentList extends Component {
@@ -21,7 +21,13 @@ class ContentList extends Component {
         };
     }
 
-
+    componentWillReceiveProps(newProps) {
+        if(newProps.savingContent && this.state.creatingRootContent) {
+            this.setState({
+                creatingRootContent: false
+            });
+        }
+    }
 
     _onMenuButtonClick(content) {
         return () => {
@@ -50,7 +56,7 @@ class ContentList extends Component {
                 ?   this.props.contentList.map((content, index) => {
                         const branch = this._createBranch(content);
                         return (
-                            <ListItem  className="tagus-content-item" key={index}>
+                            <ListItem className="tagus-content-item" key={index}>
                                 {branch}
                                 {this._childList(content)}
                             </ListItem>
@@ -103,7 +109,7 @@ class ContentList extends Component {
         return (
             <Panel title="Content" className="col-xs-4 full-height" menu={menu}>
                 {this._buildContentList()}
-                <AddLink text="Create a new Root page" onClick={this._toggleCreateRootContentMenu(true)} show={true} disabled={this.state.creatingRootContent} />
+                <AddLink text="Create a new Root page" onClick={this._toggleCreateRootContentMenu(true)} show={this.props.contentList.length ===0} disabled={this.state.creatingRootContent} />
                 <Overlay show={this.props.savingContent || this.props.fetchingList}/>
             </Panel>  
         );

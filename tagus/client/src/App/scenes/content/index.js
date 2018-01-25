@@ -13,9 +13,6 @@ class Content extends Component {
         store.dispatch(getContentListIfNeeded());
         store.dispatch(getUnitsListIfNeeded());
     };
-    
-    componentDidMount() {
-    }
 
     render() {  
         return (

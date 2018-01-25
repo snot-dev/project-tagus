@@ -73,16 +73,22 @@ export const contentReducer = (state, action) => {
             newState.savingContent = false;
             newState.editingContent = null;
             newState.createUnit = null;
+            newState.createdContent = true;
+            newState.detail = {};
             return newState;
         }
         case constants.content.DELETE_CONTENT_PENDING: {
             newState.savingContent = true;
             newState.editingContent = null;
-            newState.detail = null;
+            newState.detail = {};
             return newState;
         }
         case constants.content.DELETE_CONTENT_FULFILLED: {
             newState.savingContent = false;
+            return newState;
+        }
+        case constants.content.TURN_CREATED_TO_DETAIL: {
+            newState.createdContent = false;
             return newState;
         }
         default:
