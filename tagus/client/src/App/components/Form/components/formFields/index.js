@@ -45,7 +45,7 @@ class FormFields extends Component {
         return (
             <div className="col-xs-12 tagus-form-field">
                 <label className="tagus-label" htmlFor={field.alias}>{field.name}</label>
-                <Component onBlur={field.onBlur} onChange={this._onFieldChange(field.onChange)} className={`tagus-input ${field.type}`}  field={field.alias} id={field.alias} options={fieldType.options} />                
+                <Component onBlur={this._onFieldBlur(field.onBlur)} onChange={this._onFieldChange(field.onChange)} className={`tagus-input ${field.type}`}  field={field.alias} id={field.alias} options={fieldType.options} />                
             </div>
         )
     }

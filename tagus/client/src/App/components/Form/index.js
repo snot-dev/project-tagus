@@ -89,9 +89,11 @@ class CustomForm extends Component {
         };
     }
 
-    _touchTheForm() {
-        if(!this.state.formWasTouched){
-            this.setState({formWasTouched: true});
+    _touchTheForm(formApi) {
+        return () => {
+            if(!this.state.formWasTouched){
+                this.setState({formWasTouched: true});
+            }
         }
     }
 
@@ -103,7 +105,7 @@ class CustomForm extends Component {
             <Form className="tagus-form" dontValidateOnMount={true} validateError={this._errorValidator.bind(this)} defaultValues={this.props.defaultValues}>
                 {formApi => (
                     <form onSubmit={formApi.submitForm} className="container-fluid">
-                        <FormFields formApi={formApi} submits={formApi.submits} formName={this.props.name} onFieldChange={this._touchTheForm.bind(this)} fields={this.props.fields} />
+                        <FormFields formApi={formApi} submits={formApi.submits} formName={this.props.name} onFieldChange={this._touchTheForm(formApi.getFormState())} fields={this.props.fields} />
                         {this.props.children}
                         {buttons 
                         ?   <FormButtons onSubmit={this._onSubmit(formApi).bind(this)} onReset={this._toggleCancelModal(true).bind(this)} disabled={disabled} />

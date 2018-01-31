@@ -3,6 +3,22 @@ import Menu from '../../../../../../components/Menu';
 import Form from '../../../../../../components/Form';
 
 class AddFieldMenu extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            type: null
+        };
+    }
+
+    componentWillReceiveProps(props) {
+        if(props.defaultValues) {
+            this.setState({
+                type: props.defaultValues.type
+            });
+        }
+    }
+
     componentWillMount() {
         const fields = this._convertToLabelValue(this.props.unitFields);
 
@@ -28,15 +44,17 @@ class AddFieldMenu extends Component {
         ];
     }
 
-    shouldComponentUpdate(nextProps) {
+    shouldComponentUpdate(nextProps, nextState) {
         const fields = this.props.unitFields.length !== nextProps.unitFields.length;
         const show = this.props.show !== nextProps.show;
+        const type = this.state.type !== nextState.type;
 
-        return show || fields;
+        return show || fields || type;
     }
 
     componentWillUpdate(nextProps) {
         const fields = this._convertToLabelValue(nextProps.unitFields);
+
         this.fields = [
             {
                 name: "Name",
@@ -49,7 +67,8 @@ class AddFieldMenu extends Component {
                 alias: "type",
                 type: "select",
                 options: fields,
-                required: true
+                required: true,
+                onChange: this._onTypeChange.bind(this)
             },
             {
                 name: "Required",
@@ -58,10 +77,11 @@ class AddFieldMenu extends Component {
             }
         ];
     }
-
-    _getFieldType() {
-        if(this.props.defaultValues) {
-            console.warn(this.props.defaultValues);
+    
+    _onTypeChange(value) {
+        if(value !== this.state.type) {
+            this.setState({type: value});
+            console.warn(this.state);
         }
     }
 
@@ -82,12 +102,12 @@ class AddFieldMenu extends Component {
     }
 
     _renderMenu() {
-        this._getFieldType();
         const title = this.props.defaultValues ? `Edit ${this.props.defaultValues.name}` : `Add a new Field to ${this.props.tab}`;
         return(
             <Menu title= {title} className="col-xs-6" onCloseButton={this._onClose.bind(this)} >
-                <Form name="field" fields={this.fields} defaultValues={this.props.defaultValues} onSubmit={this.props.onSubmit}/>
-                
+                <Form name="field" fields={this.fields} defaultValues={this.props.defaultValues} onSubmit={this.props.onSubmit}>
+                    {this.state.type === 'dropdownList' ? "Options will appear here" : null }
+                </Form>
             </Menu>
         );
     }
