@@ -29,7 +29,8 @@
     border-radius: 5px;
 }
 
-.tagus-input.checkbox {
+.tagus-input.checkbox,
+.tagus-input.trueOrFalse {
     width: auto;
     display: inline-block;
 }

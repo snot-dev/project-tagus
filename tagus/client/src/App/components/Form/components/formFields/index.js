@@ -9,9 +9,11 @@ class FormFields extends Component {
             case'text':
                 return {component: StyledText};
             case 'checkbox':
+            case 'trueOrFalse':
                 return {component: Checkbox};
             case 'select': 
-                return {component: StyledSelect, options: field.options}
+            case 'dropdownList':
+                return {component: StyledSelect, options: field.options || []}
             default:
                 return {component: StyledText};
         }

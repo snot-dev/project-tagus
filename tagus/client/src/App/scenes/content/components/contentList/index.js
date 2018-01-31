@@ -9,7 +9,7 @@ import ContentMenu from './components/contentMenu';
 import NewRootContent from './components/newRootContent';
 import store from '../../../../services/store';
 import AddLink from '../../../../components/AddLink';
-import {editContent, getContentDetailIfNeeded} from '../../../../services/content/actions';
+import {editContent} from '../../../../services/content/actions';
 import './contentList.css';
 
 class ContentList extends Component {

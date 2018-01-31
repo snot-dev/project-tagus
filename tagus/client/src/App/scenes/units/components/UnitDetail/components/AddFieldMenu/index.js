@@ -59,6 +59,12 @@ class AddFieldMenu extends Component {
         ];
     }
 
+    _getFieldType() {
+        if(this.props.defaultValues) {
+            console.warn(this.props.defaultValues);
+        }
+    }
+
     _convertToLabelValue(fields) {
         const arr = [];
 
@@ -76,10 +82,12 @@ class AddFieldMenu extends Component {
     }
 
     _renderMenu() {
+        this._getFieldType();
         const title = this.props.defaultValues ? `Edit ${this.props.defaultValues.name}` : `Add a new Field to ${this.props.tab}`;
         return(
             <Menu title= {title} className="col-xs-6" onCloseButton={this._onClose.bind(this)} >
                 <Form name="field" fields={this.fields} defaultValues={this.props.defaultValues} onSubmit={this.props.onSubmit}/>
+                
             </Menu>
         );
     }

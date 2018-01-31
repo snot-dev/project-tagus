@@ -100,7 +100,6 @@ class UnitsDetail extends Component {
         }
         
         if(props.detail.tabs) {
-            //Deep clone tabs array
             state.tabs = _.cloneDeep(props.detail.tabs);
         }
 
