@@ -7,6 +7,7 @@ import Form from '../../../../components/Form';
 import Modal from '../../../../components/Modal';
 import AddTabMenu from './components/AddTabMenu';
 import AddFieldMenu from './components/AddFieldMenu';
+import AddDropdownOptionMenu from './components/AddDropdownOptionMenu';
 import TemplatesList from './components/TemplatesList';
 import TabsList from './components/TabsList';
 import {getUnitDetailIfNeeded, getTemplatesIfNeeded, getUnitFieldsIfNeeded, resetUnit, saveUnit} from '../../../../services/units/actions';
@@ -22,6 +23,7 @@ class UnitsDetail extends Component {
             touched: false,
             addingTab: false,
             addingField: false,
+            addingOption: false,
             editingField: null,
             deletingField: null,
             editingTab: null,
@@ -339,6 +341,29 @@ class UnitsDetail extends Component {
         store.dispatch(saveUnit(Object.assign(this.props.detail, unit)));
     }    
 
+    toggleAddOptionMenu(show) {
+        return () => {
+            this.setState({
+                addingOption: show
+            });
+        };
+    }
+
+    onAddingOptionSubmit(values) {
+        const field = _.cloneDeep(this.state.editingField);
+        
+        if(!field.options) {
+            field.options = [];
+        }
+
+        field.options.push(values.dropdownOption);
+
+        this.setState({
+            editingField: field,
+            addingOption: false
+        });
+    }
+
     renderForm() {
         return (
             <div key={this.props.detail._id} className="container-fluid tagus-form-info-fields">
@@ -368,8 +393,9 @@ class UnitsDetail extends Component {
 
     render() {
         const menu = [
-            <AddFieldMenu key='addFieldMenu' defaultValues={this.state.editingField} onClose={this._resetUIState.bind(this)} onSubmit={this.onFieldFormSubmit.bind(this)} unitFields={this.props.unitFields} tab={this.state.addingField} show={this.state.addingField && !this.state.addingTab} />,
-            <AddTabMenu key='addTabMenu' defaultValues={this.state.editingTab} onClose={this._resetUIState.bind(this)} show={this.state.addingTab && !this.state.addingField} onSubmit={this.onTabFormSubmit.bind(this)} />
+            <AddFieldMenu key='addFieldMenu' onAddOptionClick={this.toggleAddOptionMenu(true)} defaultValues={this.state.editingField} onClose={this._resetUIState.bind(this)} onSubmit={this.onFieldFormSubmit.bind(this)} unitFields={this.props.unitFields} tab={this.state.addingField} show={this.state.addingField && !this.state.addingTab} />,
+            <AddTabMenu key='addTabMenu' defaultValues={this.state.editingTab} onClose={this._resetUIState.bind(this)} show={this.state.addingTab && !this.state.addingField} onSubmit={this.onTabFormSubmit.bind(this)} />,
+            <AddDropdownOptionMenu key='addDrodownOptionsMenu' show={this.state.addingOption} onClose={this.toggleAddOptionMenu(false)} onSubmit={this.onAddingOptionSubmit.bind(this)} />
         ];
 
         return (

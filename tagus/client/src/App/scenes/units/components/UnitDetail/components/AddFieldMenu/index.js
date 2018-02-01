@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import Menu from '../../../../../../components/Menu';
 import Form from '../../../../../../components/Form';
 import DropdownOptionsList from '../DropdownOptionsList';
@@ -8,14 +9,19 @@ class AddFieldMenu extends Component {
         super(props);
 
         this.state = {
-            type: null
+            type: null,
+            options: null
         };
     }
 
     componentWillReceiveProps(props) {
         if(props.defaultValues) {
+            const options = props.defaultValues.options && props.defaultValues.options.length > 0 ? 
+            _.cloneDeep(props.defaultValues.options) : null;
+
             this.setState({
-                type: props.defaultValues.type
+                type: props.defaultValues.type,
+                options: options
             });
         }
     }
@@ -49,8 +55,9 @@ class AddFieldMenu extends Component {
         const fields = this.props.unitFields.length !== nextProps.unitFields.length;
         const show = this.props.show !== nextProps.show;
         const type = this.state.type !== nextState.type;
+        const options = !_.isEqual(nextProps.defaultValues, this.props.defaultValues);
 
-        return show || fields || type;
+        return show || fields || type || options;
     }
 
     componentWillUpdate(nextProps) {
@@ -82,7 +89,6 @@ class AddFieldMenu extends Component {
     _onTypeChange(value) {
         if(value !== this.state.type) {
             this.setState({type: value});
-            console.warn(this.state);
         }
     }
 
@@ -102,22 +108,12 @@ class AddFieldMenu extends Component {
         }
     }
 
-    _generateOptions() {
-        return [
-            {label: "option 1", value: "1"},
-            {label: "option 2", value: "2"},
-            {label: "option 3", value: "3"},
-            {label: "option 4", value: "4"},
-            {label: "option 5", value: "5"}
-        ];
-    }
-
     _renderMenu() {
         const title = this.props.defaultValues ? `Edit ${this.props.defaultValues.name}` : `Add a new Field to ${this.props.tab}`;
         return(
-            <Menu title= {title} className="col-xs-6" onCloseButton={this._onClose.bind(this)} >
+            <Menu title={title} className="col-xs-6" onCloseButton={this._onClose.bind(this)} >
                 <Form name="field" fields={this.fields} defaultValues={this.props.defaultValues} onSubmit={this.props.onSubmit}>
-                    {this.state.type === 'dropdownList' ? <DropdownOptionsList options={this._generateOptions()}/> : null }
+                    {this.state.type === 'dropdownList' ? <DropdownOptionsList onAddOptionClick={this.props.onAddOptionClick} options={this.state.options}/> : null }
                 </Form>
             </Menu>
         );

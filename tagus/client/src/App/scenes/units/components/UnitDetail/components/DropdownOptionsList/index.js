@@ -3,15 +3,6 @@ import AddLink from '../../../../../../components/AddLink';
 import './dropdownOptionsList.css';
 
 class DropdownOptionsList extends Component {
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            addingOption: false
-        };
-    }
-
     renderOptions() {
         return(
             <ul className="tagus-drowpdown-options-list col-xs-12">
@@ -33,12 +24,14 @@ class DropdownOptionsList extends Component {
 
     render() {
         return(
-            <div className="tagus-dropdown-options-list">
-                <label className="tagus-label">Options</label>
-                {this.renderOptions()}
-                <AddLink text="Add new Option" show={!this.state.addingOption} disabled={this.state.addingOption} />
+            <div className="tagus-dropdown-options-list col-xs-12">
+                <div className="row">
+                    <label className="tagus-label">Options</label>
+                    {this.props.options && this.props.options.length > 0 ? this.renderOptions() : null}
+                    <AddLink text="Add new Option" onClick={this.props.onAddOptionClick} disabled={false} />
+                </div>
             </div>
-        )
+        );
     }
 }
 
