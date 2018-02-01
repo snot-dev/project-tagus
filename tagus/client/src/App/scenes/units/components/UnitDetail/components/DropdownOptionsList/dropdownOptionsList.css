@@ -1,0 +1,7 @@
+.tagus-drowpdown-options-list {
+    max-height: 130px;
+    overflow: auto;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}

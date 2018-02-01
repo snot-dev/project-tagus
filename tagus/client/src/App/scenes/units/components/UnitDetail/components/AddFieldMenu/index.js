@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Menu from '../../../../../../components/Menu';
 import Form from '../../../../../../components/Form';
+import DropdownOptionsList from '../DropdownOptionsList';
 
 class AddFieldMenu extends Component {
     constructor(props) {
@@ -101,12 +102,22 @@ class AddFieldMenu extends Component {
         }
     }
 
+    _generateOptions() {
+        return [
+            {label: "option 1", value: "1"},
+            {label: "option 2", value: "2"},
+            {label: "option 3", value: "3"},
+            {label: "option 4", value: "4"},
+            {label: "option 5", value: "5"}
+        ];
+    }
+
     _renderMenu() {
         const title = this.props.defaultValues ? `Edit ${this.props.defaultValues.name}` : `Add a new Field to ${this.props.tab}`;
         return(
             <Menu title= {title} className="col-xs-6" onCloseButton={this._onClose.bind(this)} >
                 <Form name="field" fields={this.fields} defaultValues={this.props.defaultValues} onSubmit={this.props.onSubmit}>
-                    {this.state.type === 'dropdownList' ? "Options will appear here" : null }
+                    {this.state.type === 'dropdownList' ? <DropdownOptionsList options={this._generateOptions()}/> : null }
                 </Form>
             </Menu>
         );

@@ -126,7 +126,10 @@ CustomForm.propTypes = {
     defaultValues: PropTypes.object,
     onReset: PropTypes.func,
     onSubmit: PropTypes.func,
-    children: PropTypes.array,
+    children: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.array
+    ]),
     buttons: PropTypes.bool
 };
 
