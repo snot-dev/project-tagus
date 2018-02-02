@@ -97,6 +97,19 @@ class DropdownOptionsMenu extends Component {
         }
     }
 
+    _onDelete(index) {
+        return () => {
+            const options = _.cloneDeep(this.state.options);
+
+            options.splice(index, 1);
+
+            this.setState({
+                options,
+                touched:true
+            });
+        }
+    }
+
     _render() {
         return(
             <Menu title="Dropdown List Options" className="col-xs-6" onCloseButton={this.props.onClose} >
@@ -108,6 +121,11 @@ class DropdownOptionsMenu extends Component {
                         this.state.options.map((option, i) => {
                             return (
                                 <div key={`options_${i}`} className="row tagus-dropdown-menu-options-list-item">
+                                    <div className="tagus-dropdown-menu-options-list-item-delete">
+                                    <a onClick={this._onDelete(i)} className="tagus-dropdown-menu-options-list-item-delete-icon">
+                                        <i className="fa fa-trash-o" aria-hidden="true"></i>
+                                    </a>
+                                    </div>
                                     <div className="col-xs-12 col-sm-6">
                                         <label htmlFor="label" className="tagus-drodpdown-label">Label</label>
                                         <input name="label" type='text' className="tagus-dropdown-input" defaultValue={option.label} onChange={this._onChange.bind(this)} onBlur={this._onBlur(i)} />
@@ -120,10 +138,9 @@ class DropdownOptionsMenu extends Component {
                             );
                         })
                     }
-
-                    <AddLink text="Add a new option" onClick={this._addNewOption.bind(this)} />
-                    {this.state.options.length > 0 ? <FormButtons disabled={!this.state.touched} onSubmit={this._validate.bind(this)} /> : null}
-                </div>           
+                </div>     
+                <AddLink text="Add a new option" onClick={this._addNewOption.bind(this)} />
+                <FormButtons disabled={!this.state.touched} onSubmit={this._validate.bind(this)} />
             </Menu>
         );
     }

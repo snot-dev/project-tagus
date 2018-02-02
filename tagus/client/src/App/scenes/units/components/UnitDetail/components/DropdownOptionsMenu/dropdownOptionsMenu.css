@@ -11,11 +11,40 @@
     border-radius: 5px;
 }
 
+.tagus-dropdown-menu-options-list {
+    /* max-height: 100%; */
+    /* overflow: auto; */
+}
+
 .tagus-dropdown-menu-options-list-item {
-    margin-bottom: 5px;
+    padding-top: 5px;
+    padding-bottom: 10px;
+    padding-right: 45px;
+    position: relative;
 }
 
 .tagus-dropdown-options-menu-error {
-    color: red;
+    color:var(--bridge-red);
     margin-bottom: 15px;
+}
+
+.tagus-dropdown-menu-options-list-item-delete {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.tagus-dropdown-menu-options-list-item-delete-icon {
+    margin-right: 15px;
+    margin-top: 20px;
+    display: inline-block;
+    width: 30px;
+    font-size: 24px;
+    text-align: center;
+}
+
+.tagus-dropdown-menu-options-list-item-delete-icon:hover {
+    cursor: pointer;
+    color: var(--main-red);
 }
