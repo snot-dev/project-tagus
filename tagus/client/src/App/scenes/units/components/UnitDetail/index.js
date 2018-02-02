@@ -8,6 +8,7 @@ import Modal from '../../../../components/Modal';
 import AddTabMenu from './components/AddTabMenu';
 import AddFieldMenu from './components/AddFieldMenu';
 import AddDropdownOptionMenu from './components/AddDropdownOptionMenu';
+import DropdownOptionsMenu from './components/DropdownOptionsMenu';
 import TemplatesList from './components/TemplatesList';
 import TabsList from './components/TabsList';
 import {getUnitDetailIfNeeded, getTemplatesIfNeeded, getUnitFieldsIfNeeded, resetUnit, saveUnit} from '../../../../services/units/actions';
@@ -404,7 +405,9 @@ class UnitsDetail extends Component {
         const menu = [
             <AddFieldMenu key='addFieldMenu' onAddOptionClick={this.toggleAddOptionMenu(true)} defaultValues={this.state.editingField} onClose={this._resetUIState.bind(this)} onSubmit={this.onFieldFormSubmit.bind(this)} unitFields={this.props.unitFields} tab={this.state.addingField} show={this.state.addingField && !this.state.addingTab} />,
             <AddTabMenu key='addTabMenu' defaultValues={this.state.editingTab} onClose={this._resetUIState.bind(this)} show={this.state.addingTab && !this.state.addingField} onSubmit={this.onTabFormSubmit.bind(this)} />,
-            <AddDropdownOptionMenu key='addDrodownOptionsMenu' show={this.state.addingOption && this.state.editingField} onClose={this.toggleAddOptionMenu(false)} onSubmit={this.onAddingOptionSubmit.bind(this)} />
+            // <AddDropdownOptionMenu key='addDrodownOptionsMenu' show={this.state.addingOption && this.state.editingField} onClose={this.toggleAddOptionMenu(false)} onSubmit={this.onAddingOptionSubmit.bind(this)} />
+            <DropdownOptionsMenu key="dopdownOptionsMenu" field={this.state.editingField} show={this.state.addingOption && this.state.editingField} onClose={this.toggleAddOptionMenu(false)}  />
+
         ];
 
         return (

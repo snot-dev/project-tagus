@@ -1,0 +1,16 @@
+.tagus-dropdown-label {
+    display: inline-block;
+    color: var(--title-color);
+    margin-right: 15px;
+  }
+
+.tagus-dropdown-input {
+    width: 100%;
+    padding: 6px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.tagus-dropdown-menu-options-list-item {
+    margin-bottom: 5px;
+}
