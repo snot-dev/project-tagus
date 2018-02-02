@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import Menu from '../../../../../../components/Menu';
 import AddLink from '../../../../../../components/AddLink';
+import FormButtons from '../../../../../../components/FormButtons';
 import './dropdownOptionsMenu.css';
 
 class DropdownOptionsMenu extends Component {
@@ -11,8 +12,8 @@ class DropdownOptionsMenu extends Component {
         this.state = {
             touched: false,
             submited: false,
-            valid: false,
             timesSubmited:0,
+            valid: true,
             options: [],
             fields: []
         };
@@ -39,10 +40,17 @@ class DropdownOptionsMenu extends Component {
     }
 
     _onChange() {
+        const state = {};
         if(!this.state.touched) {
-            this.setState({
-                touched: true
-            });
+            state.touched = true;
+        }
+
+        if (!this.state.valid) {
+            state.valid = true;
+        }
+
+        if (Object.keys(state).length > 0) {
+            this.setState(state);
         }
     }
 
@@ -57,10 +65,45 @@ class DropdownOptionsMenu extends Component {
         this.setState({options});
     }
  
+    _validate() {
+        let valid = true;
+        for(const option of this.state.options) {
+            if(!option.label || !option.value) {
+                valid = false;
+                break;
+            }
+        }
+
+        if (valid) {
+            this._onSubmit();
+        } 
+        else {
+            this.setState({
+                valid: false
+            });
+        } 
+
+    }
+
+    _onSubmit() {
+        this.setState({
+            valid: true, 
+            submited: true,
+            timesSubmited: this.state.timesSubmited+1
+        });
+
+        if(this.props.onOptionsSubmit) {
+            this.props.onOptionsSubmit(this.state.options);
+        }
+    }
+
     _render() {
         return(
             <Menu title="Dropdown List Options" className="col-xs-6" onCloseButton={this.props.onClose} >
                 <div className="fluid-container tagus-dropdown-menu-options-list">
+                    {!this.state.valid 
+                    ?  <div className="row"> <p className="tagus-dropdown-options-menu-error col-xs-12">You must fill every option!</p> </div>
+                    : null }
                     {
                         this.state.options.map((option, i) => {
                             return (
@@ -79,7 +122,7 @@ class DropdownOptionsMenu extends Component {
                     }
 
                     <AddLink text="Add a new option" onClick={this._addNewOption.bind(this)} />
-
+                    {this.state.options.length > 0 ? <FormButtons disabled={!this.state.touched} onSubmit={this._validate.bind(this)} /> : null}
                 </div>           
             </Menu>
         );
