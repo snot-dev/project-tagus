@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import {getContentDetailIfNeeded, saveContent} from '../../../../services/content/actions';
 import {Tabs, Tab} from 'react-bootstrap';
 import Overlay from '../../../../components/Overlay';
@@ -97,8 +98,10 @@ class ContentDetail extends Component {
     }
 
     onSubmitContent(formValues) {
-        const newContent = Object.assign(this.props.detail.content, formValues);
-        store.dispatch(saveContent(newContent));
+        const updatedContent = _.cloneDeep(this.props.detail); 
+        updatedContent.content = Object.assign(updatedContent.content, formValues);
+
+        store.dispatch(saveContent(updatedContent));
     }
     
     onSubmitProperties(formValues) {

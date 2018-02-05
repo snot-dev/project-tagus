@@ -53,8 +53,8 @@ export const contentReducer = (state, action) => {
         }
         case constants.content.POST_CONTENT_DETAIL_FULFILLED: {
             newState.savingContent = false;
-            newState.detail = action.payload.data.result;
             newState.editingContent = null;
+            newState.detail = action.payload.data.result;
             return newState;
         }
         case constants.content.EDITIING_CONTENT: {

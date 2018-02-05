@@ -22,20 +22,20 @@ module.exports = [
                 createdBy: "user",
                 created: new Date(),
                 edited: new Date()
+            },
+            {
+                name: "Rich Text Editor",
+                alias: 'richTextEditor',
+                type: "richText",
+                createdBy: "user",
+                created: new Date(),
+                edited: new Date()
             }
             // ,
             // {
             //     name: "Long Text",
             //     alias: 'longText',
             //     type: "textarea",
-            //     createdBy: "user",
-            //     created: new Date(),
-            //     edited: new Date()
-            // },
-            // {
-            //     name: "Rich Text Editor",
-            //     alias: 'richTextEditor',
-            //     type: "richText",
             //     createdBy: "user",
             //     created: new Date(),
             //     edited: new Date()

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {StyledText, Checkbox, StyledSelect} from 'react-form';
+import {StyledText, Checkbox, StyledSelect, FormField } from 'react-form';
+import RichTextEditor from '../../../RichTextEditor';
 import './formFields.css';
 
 class FormFields extends Component {
@@ -14,6 +15,8 @@ class FormFields extends Component {
             case 'select': 
             case 'dropdownList':
                 return {component: StyledSelect, options: field.options || []}
+            case 'richTextEditor': 
+                return {component: FormField(RichTextEditor)};
             default:
                 return {component: StyledText};
         }
