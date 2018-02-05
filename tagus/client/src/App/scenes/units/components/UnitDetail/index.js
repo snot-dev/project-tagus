@@ -23,7 +23,7 @@ class UnitsDetail extends Component {
             touched: false,
             addingTab: false,
             addingField: false,
-            addingOption: false,
+            editingOptions: false,
             editingField: null,
             deletingField: null,
             editingTab: null,
@@ -56,7 +56,7 @@ class UnitsDetail extends Component {
         const hasNeededUnit = !!nextProps.detail._id || nextProps.match.params.id !== this.props.detail._id;
         const templates = nextProps.templates !== this.props.templates || this.props.fetchingTemplates !== nextProps.fetchingTemplates;
         const unitFields = this.props.fetchingUnitFields !== nextProps.fetchingUnitFields;
-        const addedOption = this.state.addingOption !== nextState.addingOption;
+        const addedOption = this.state.editingOptions !== nextState.editingOptions;
         
         return  hasNeededUnit || templates || unitFields || addedOption;
     }
@@ -332,7 +332,7 @@ class UnitsDetail extends Component {
                 addingField: false,
                 addingTab: false,
                 editingField: null,
-                addingOption: false
+                editingOptions: false
             });
         }
     }
@@ -353,23 +353,19 @@ class UnitsDetail extends Component {
     toggleAddOptionMenu(show) {
         return () => {
             this.setState({
-                addingOption: show
+                editingOptions: show
             });
         };
     }
 
-    onAddingOptionSubmit(values) {
+    onOptionsSubmit(values) {
         const field = _.cloneDeep(this.state.editingField);
         
-        if(!field.options) {
-            field.options = [];
-        }
-
-        field.options.push(values.dropdownOption);
+        field.options = values;
 
         this.setState({
             editingField: field,
-            addingOption: false
+            editingOptions: false
         });
     }
 
@@ -404,7 +400,7 @@ class UnitsDetail extends Component {
         const menu = [
             <AddFieldMenu key='addFieldMenu' onAddOptionClick={this.toggleAddOptionMenu(true)} defaultValues={this.state.editingField} onClose={this._resetUIState.bind(this)} onSubmit={this.onFieldFormSubmit.bind(this)} unitFields={this.props.unitFields} tab={this.state.addingField} show={this.state.addingField && !this.state.addingTab} />,
             <AddTabMenu key='addTabMenu' defaultValues={this.state.editingTab} onClose={this._resetUIState.bind(this)} show={this.state.addingTab && !this.state.addingField} onSubmit={this.onTabFormSubmit.bind(this)} />,
-            <DropdownOptionsMenu key="dopdownOptionsMenu" field={this.state.editingField} show={this.state.addingOption && this.state.editingField} onClose={this.toggleAddOptionMenu(false)}  />
+            <DropdownOptionsMenu key="dopdownOptionsMenu" onOptionsSubmit={this.onOptionsSubmit.bind(this)} field={this.state.editingField} show={this.state.editingOptions && this.state.editingField} onClose={this.toggleAddOptionMenu(false)}  />
 
         ];
 

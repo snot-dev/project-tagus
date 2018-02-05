@@ -89,6 +89,7 @@ class DropdownOptionsMenu extends Component {
         this.setState({
             valid: true, 
             submited: true,
+            touched: false,
             timesSubmited: this.state.timesSubmited+1
         });
 
