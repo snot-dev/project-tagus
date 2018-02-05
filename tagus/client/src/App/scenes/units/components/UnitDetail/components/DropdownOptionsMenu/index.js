@@ -3,6 +3,7 @@ import _ from 'lodash';
 import Menu from '../../../../../../components/Menu';
 import AddLink from '../../../../../../components/AddLink';
 import FormButtons from '../../../../../../components/FormButtons';
+import Modal from '../../../../../../components/Modal';
 import './dropdownOptionsMenu.css';
 
 class DropdownOptionsMenu extends Component {
@@ -15,7 +16,8 @@ class DropdownOptionsMenu extends Component {
             timesSubmited:0,
             valid: true,
             options: [],
-            fields: []
+            fields: [],
+            showWarningModal: false
         };
     }
 
@@ -111,9 +113,49 @@ class DropdownOptionsMenu extends Component {
         }
     }
 
+    _toggleWarningModal(show) {
+        return () => {
+            this.setState({
+                showWarningModal:show
+            });
+        }
+    }
+
+
+    _onCloseMenu() {
+        if (this.state.touched) {
+            this.setState({
+                showWarningModal: true
+            });
+        } 
+        else {
+            this._close();
+        }
+    }
+    
+    _close() {
+        this._resetState();
+    
+        if (this.props.onClose) {
+            this.props.onClose();
+        }
+    }
+
+    _resetState() {
+        this.setState({
+            touched: false,
+            submited: false,
+            timesSubmited:0,
+            valid: true,
+            options: [],
+            fields: [],
+            showWarningModal: false
+        });
+    }
+
     _render() {
         return(
-            <Menu title="Dropdown List Options" className="col-xs-6" onCloseButton={this.props.onClose} >
+            <Menu title="Dropdown List Options" className="col-xs-6" onCloseButton={this._onCloseMenu.bind(this)} >
                 <div className="fluid-container tagus-dropdown-menu-options-list">
                     {!this.state.valid 
                     ?  <div className="row"> <p className="tagus-dropdown-options-menu-error col-xs-12">You must fill every option!</p> </div>
@@ -141,7 +183,8 @@ class DropdownOptionsMenu extends Component {
                     }
                 </div>     
                 <AddLink text="Add a new option" onClick={this._addNewOption.bind(this)} />
-                <FormButtons disabled={!this.state.touched} onSubmit={this._validate.bind(this)} />
+                <FormButtons disabled={!this.state.touched} onSubmit={this._validate.bind(this)} onReset={this._onCloseMenu.bind(this)} />
+                <Modal title="Warning!" body="Are you sure you want to discard all changes?" show={this.state.showWarningModal} confirmButton={{onClick:this._close.bind(this), text: "Discard Changes!"}}  closeButton={{onClick: this._toggleWarningModal(false), text: "Cancel"}} />
             </Menu>
         );
     }
