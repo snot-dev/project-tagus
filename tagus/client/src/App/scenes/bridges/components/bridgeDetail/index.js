@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import {Tabs, Tab} from 'react-bootstrap';
+import {constants} from '../../../../services/constants';
+import moment from 'moment';
 import Panel from '../../../../components/Panel';
 import Form from '../../../../components/Form';
 import {getBridgeDetailIfNeeded, saveBridge} from '../../../../services/bridges/actions'; 
@@ -52,6 +54,8 @@ class  BridgeDetail extends Component {
     }
     
     _renderTabs(tabs) {
+        const created = moment(this.props.detail.created).format(constants.config.DATE_FORMAT);
+
         return (
             <Tabs activeKey={this.state.key} onSelect={this._handleTabchange.bind(this)} id="tagus-bridges-tabs">
                 {tabs.map((tab, index) => (
@@ -70,7 +74,7 @@ class  BridgeDetail extends Component {
                             </div>
                             <div className="col-xs-12 col-sm-6 tagus-form-field text-right">
                                 <label className="tagus-label" >Created</label>
-                                <p className="tagus-info">{this.props.detail.created}</p>
+                                <p className="tagus-info">{created}</p>
                             </div>
                         </div>
                         <div className="row tagus-form-control">

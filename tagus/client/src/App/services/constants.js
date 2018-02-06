@@ -1,4 +1,7 @@
 export const constants = {
+    config: {
+        DATE_FORMAT: 'MMMM Do YYYY, HH:mm'
+    },
     content: {
         GET_CONTENT_LIST: 'GET_CONTENT_LIST',
         GET_CONTENT_LIST_PENDING: 'GET_CONTENT_LIST_PENDING',

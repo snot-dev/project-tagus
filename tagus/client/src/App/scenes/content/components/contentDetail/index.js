@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
+import moment from 'moment';
+import {constants} from '../../../../services/constants';
 import {getContentDetailIfNeeded, saveContent} from '../../../../services/content/actions';
 import {Tabs, Tab} from 'react-bootstrap';
 import Overlay from '../../../../components/Overlay';
@@ -23,7 +25,6 @@ class ContentDetail extends Component {
             store.dispatch(getContentDetailIfNeeded(this.props.match.params.id));
         }
     }
-    
     
     shouldComponentUpdate(props) {
         const hasNeededContent = props.detail && props.unit && this.props.match.params.id === props.detail._id && props.unit._id;
@@ -50,12 +51,6 @@ class ContentDetail extends Component {
                 name: "Url",
                 type: "text",
                 alias: "url",
-                required: true
-            },
-            {
-                name: "Created",
-                type: "text",
-                alias: "created",
                 required: true
             },
             {
@@ -124,6 +119,8 @@ class ContentDetail extends Component {
     }
 
     _renderTabs(tabs) {
+        const created = moment(this.props.detail.created).format(constants.config.DATE_FORMAT);
+
         return (
             <Tabs activeKey={this.state.key} onSelect={this._handleTabchange.bind(this)} id="tagus-content-tabs">
                 {tabs.map((tab, index) => (
@@ -142,7 +139,7 @@ class ContentDetail extends Component {
                             </div>
                             <div className="col-xs-12 col-sm-6 tagus-form-field text-right">
                                 <label className="tagus-label" >Created</label>
-                                <p className="tagus-info">{this.props.detail.created}</p>
+                                <p className="tagus-info">{created}</p>
                             </div>
                         </div>
                         <div className="row tagus-form-control">

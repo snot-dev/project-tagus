@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
+import moment from 'moment';
+import {constants} from '../../../../services/constants';
 import Panel from '../../../../components/Panel';
 import Overlay from '../../../../components/Overlay';
 import AddLink from '../../../../components/AddLink';
@@ -370,6 +372,8 @@ class UnitsDetail extends Component {
     }
 
     renderForm() {
+        const created = moment(this.props.detail.created).format(constants.config.DATE_FORMAT);
+
         return (
             <div key={this.props.detail._id} className="container-fluid tagus-form-info-fields">
                 <div className="row tagus-form-control">
@@ -379,7 +383,7 @@ class UnitsDetail extends Component {
                     </div>
                     <div className="col-xs-12 col-sm-6 tagus-form-field text-right">
                         <label className="tagus-label" >Created</label>
-                        <p className="tagus-info">{this.props.detail.created}</p>
+                        <p className="tagus-info">{created}</p>
                     </div>
                 </div>
                 <div className="row">

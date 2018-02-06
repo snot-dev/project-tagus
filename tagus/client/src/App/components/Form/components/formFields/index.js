@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {StyledText, Checkbox, StyledSelect, FormField } from 'react-form';
+import {StyledText, Checkbox, StyledSelect} from 'react-form';
 import RichTextEditor from '../../../RichTextEditor';
 import './formFields.css';
 
