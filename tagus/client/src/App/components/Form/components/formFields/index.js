@@ -16,26 +16,30 @@ class FormFields extends Component {
             case 'dropdownList':
                 return {component: StyledSelect, options: field.options || []}
             case 'richTextEditor': 
-                return {component: FormField(RichTextEditor)};
+                return {component: RichTextEditor};
             default:
                 return {component: StyledText};
         }
     }
 
-    _onFieldChange(fieldOnChangeFunc) {
+    _onFieldChange(field) {
         return (value) => {
             this.props.onFieldChange();
 
-            if( fieldOnChangeFunc ) {
-                fieldOnChangeFunc(value);
+            if(value !== this.props.formApi.values[field.alias]) {
+                this.props.formApi.setValue(field.alias, value);
+            }
+
+            if( field.onChange ) {
+                field.onChange(value);
             }
         }
     }
-
-    _onFieldBlur(fieldOnBlurFunc) {
-        return () => {
-            if( fieldOnBlurFunc) {
-                fieldOnBlurFunc(this.props.formApi);
+    
+    _onFieldBlur(field) {
+        return (value) => {
+            if( field.onBlur) {
+                field.onBlur(this.props.formApi);
             }
          };
     }
@@ -48,7 +52,7 @@ class FormFields extends Component {
         return (
             <div className="col-xs-12 tagus-form-field">
                 <label className="tagus-label" htmlFor={field.alias}>{field.name}</label>
-                <Component onBlur={this._onFieldBlur(field.onBlur)} onChange={this._onFieldChange(field.onChange)} className={`tagus-input ${field.type}`}  field={field.alias} id={field.alias} options={fieldType.options} />                
+                <Component onBlur={this._onFieldBlur(field)} onChange={this._onFieldChange(field)} default={this.props.formApi.values[field.alias]} className={`tagus-input ${field.type}`}  field={field.alias} id={field.alias} options={fieldType.options} />                
             </div>
         )
     }

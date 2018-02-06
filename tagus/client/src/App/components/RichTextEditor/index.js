@@ -1,57 +1,41 @@
-import React, { Component } from 'react';
-import ReactQuill from 'react-quill';
-import './richTextEditor.css';
+import React, {Component} from 'react';
+import RichTextEditor from 'react-rte';
 
-class RichTextEditor extends Component {
+class MyStatefulEditor extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            text: ''
+            value: RichTextEditor.createEmptyValue()
         };
-    }
+    }    
 
-    onChange(value) {
+    componentWillMount() {
+        if(this.props.default) {
             this.setState({
-                text: value
-            });
-    }
-
-    onBlur(fieldApi) {
-        return () => {
-            if(this.props.onBlur) {
-                this.props.onBlur(this.state);
-            }
+                value: RichTextEditor.createValueFromString(this.props.default, 'html')
+            })
         }
     }
 
-    render() {
-        const {
-            fieldApi,
-            onInput,
-            ...rest
-          } = this.props;
-    
-          const {
-            getValue,
-            getError,
-            getWarning,
-            getSuccess,
-            setValue,
-            setTouched,
-          } = fieldApi;
-    
-          const error = getError();
-          const warning = getWarning();
-          const success = getSuccess();
+    onChange(value) {
+        const currentValue = value.toString('html');
+        const state = this.state.value.toString('html');
 
+        this.setState({value});
+        if(currentValue !== state && this.props.onChange) {
+            this.props.onChange(currentValue);
+        }
+    };
+
+    render () {
         return (
-                <ReactQuill  value={this.state.text}
-                    onChange={this.onChange.bind(this)}
-                    {...rest} 
-                />
+            <RichTextEditor
+                value={this.state.value}
+                onChange={this.onChange.bind(this)}
+            />
         );
     }
 }
 
-export default RichTextEditor;
+export default MyStatefulEditor;
