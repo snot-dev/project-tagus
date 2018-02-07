@@ -62,10 +62,11 @@ class ContentMenu extends Component {
         this.props.history.push('/content');
     }
 
-    _render() {
-        const button = <div onClick={this.onClick.bind(this)} className="tagus-menu-link">Add child to {this.props.detail.name}</div>;
+    render() {
+        const show = !!this.props.detail;
+        const button = show ? <div onClick={this.onClick.bind(this)} className="tagus-menu-link">Add child to {this.props.detail.name}</div> : null;
         return (
-            <Menu show={!!this.props.detail} onCloseButton={this.props.onCloseButton} title="Menu" className="col-xs-6 content-menu">
+            <Menu show={show} onCloseButton={this.props.onCloseButton} title="Menu" className="col-xs-6 content-menu">
                 <ul className="tagus-menu-list row">
                     <li className="tagus-menu-item">
                         <CollapsableList buttonChildren={button}>
@@ -81,11 +82,11 @@ class ContentMenu extends Component {
         );
     }
 
-    render() {
-        return(
-            this.props.detail ? this._render() : null
-        );
-    }
+    // render() {
+    //     return(
+    //         this.props.detail ? this._render() : null
+    //     );
+    // }
 }
 
 export default ContentMenu;
