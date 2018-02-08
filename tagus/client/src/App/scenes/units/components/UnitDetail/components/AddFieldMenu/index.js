@@ -108,21 +108,16 @@ class AddFieldMenu extends Component {
         }
     }
 
-    _renderMenu() {
+    render() {
         const title = this.props.defaultValues ? `Edit ${this.props.defaultValues.name}` : `Add a new Field to ${this.props.tab}`;
-        return(
-            <Menu title={title} className="col-xs-6" onCloseButton={this._onClose.bind(this)} >
+        
+        return (
+            <Menu show={this.props.show} title={title} className="col-xs-6" onCloseButton={this._onClose.bind(this)} >
                 <Form name="field" fields={this.fields} defaultValues={this.props.defaultValues} onSubmit={this.props.onSubmit}>
                     {this.state.type === 'dropdownList' ? <DropdownOptionsList onAddOptionClick={this.props.onAddOptionClick} options={this.state.options}/> : null }
                 </Form>
             </Menu>
         );
-    }
-
-    render() {
-        const menu = this.props.show ? this._renderMenu() : null;
-        
-        return menu;
     }
 }
 

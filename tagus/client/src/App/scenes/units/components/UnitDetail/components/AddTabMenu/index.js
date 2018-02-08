@@ -21,19 +21,13 @@ class AddTabMenu extends Component {
             this.props.onClose()
         }
     }
-
-    _renderMenu() {
-        return(
-            <Menu title="Add new Tab" className="col-xs-6" onCloseButton={this._onClose.bind(this)} >
+    
+    render() {
+        return (
+            <Menu show={this.props.show} title="Add new Tab" className="col-xs-6" onCloseButton={this._onClose.bind(this)} >
                 <Form defaultValues={this.props.defaultValues} name="tab" fields={this.fields} onSubmit={this.props.onSubmit}/>
             </Menu>
         );
-    }
-
-    render() {
-        const menu = this.props.show ? this._renderMenu() : null;
-        
-        return menu;
     }
 }
 

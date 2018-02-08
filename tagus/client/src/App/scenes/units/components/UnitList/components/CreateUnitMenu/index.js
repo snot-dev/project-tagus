@@ -26,18 +26,12 @@ class CreateUnitMenu extends Component {
         }
     }
 
-    _render() {
+    render() {
         return (
-            <Menu title="Create new Unit" className="tagus-unit-create col-xs-9" onCloseButton={this._onClose.bind(this)} >
+            <Menu show={this.props.show} title="Create new Unit" className="tagus-unit-create col-xs-9" onCloseButton={this._onClose.bind(this)} >
                 <Form onSubmit={this._onSubmit.bind(this)} name="newUnit" fields={this.fields}/>
             </Menu>
         );
-    }
-
-    render() {
-        const render = this.props.show ? this._render() : null;
-        
-        return render;
     }
 }
 

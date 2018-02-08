@@ -81,12 +81,6 @@ class ContentMenu extends Component {
             </Menu>
         );
     }
-
-    // render() {
-    //     return(
-    //         this.props.detail ? this._render() : null
-    //     );
-    // }
 }
 
 export default ContentMenu;

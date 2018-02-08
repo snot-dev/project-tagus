@@ -4,6 +4,26 @@ import Form from '../../../../../../components/Form';
 import './createBridgeMenu.css';
 
 class CreateBridgeMenu extends Component {
+    constructor(props) {
+        super(props);
+
+        this.fields = [
+            {
+                name: "Name",
+                alias: "name",
+                type: "text",
+                required: true
+            },
+            {
+                name: "Unit",
+                alias: "unitType",
+                type: "select",
+                options: [],
+                required: true
+            }
+        ];
+    }
+    
     componentWillUpdate() {
         const units = this.props.units ? this._convertToOptions(this.props.units) : null;
 
@@ -54,18 +74,12 @@ class CreateBridgeMenu extends Component {
         }
     }
 
-    _render() {
+    render() {
         return (
-            <Menu title="Create new Bridge" className="tagus-unit-create col-xs-9" onCloseButton={this._onClose.bind(this)} >
+            <Menu show={this.props.show} title="Create new Bridge" className="tagus-unit-create col-xs-9" onCloseButton={this._onClose.bind(this)} >
                 <Form onSubmit={this._onSubmit.bind(this)} name="newBridge" fields={this.fields}/>
             </Menu>
         );
-    }
-
-    render() {
-        const render = this.props.show ? this._render() : null;
-        
-        return render;
     }
 }
 

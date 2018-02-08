@@ -37,7 +37,7 @@ class BridgeList extends Component {
 
     render() {
         const menu = [
-            <CreateBridgeMenu key="createBridge" units={this.props.units}  show={this.state.creatingBridge} onClose={this.toggleCreatingBridge(false)} onSubmit={this.onSubmitCreatingBridge.bind(this)} />
+            <CreateBridgeMenu key="createBridge" units={this.props.units}  show={!!this.state.creatingBridge} onClose={this.toggleCreatingBridge(false)} onSubmit={this.onSubmitCreatingBridge.bind(this)} />
         ];
 
         return (
