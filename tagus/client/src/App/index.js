@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import AppBar from './components/AppBar';
 import TopBar from './components/TopBar';
 import AppContainer from './components/AppContainer';
+import Notification from './components/Notification';
 import Content from './scenes/content';
 import Units from './scenes/units';
 import Bridges from './scenes/bridges';
@@ -12,6 +13,7 @@ class App extends Component {
   render() {
     return (
       <div id ="tagus-app" className="App container-fluid">
+        <Notification />
         <TopBar />
         <AppBar />
         <AppContainer>
