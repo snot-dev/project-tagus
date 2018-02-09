@@ -17,7 +17,9 @@ export const messagesReducer = (state, action) => {
             newState.list.splice(action.payload, 1);
             return newState;
         }
-        case constants.content.POST_CONTENT_DETAIL_FULFILLED: {
+        case constants.content.POST_CONTENT_DETAIL_FULFILLED:
+        case constants.units.POST_UNIT_DETAIL_FULFILLED: 
+        case constants.bridges.POST_BRIDGES_DETAIL_FULFILLED: {
             newState.list.push({
                 type: 'success',
                 subject: action.payload.data.result.name,

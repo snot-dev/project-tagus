@@ -14,7 +14,6 @@ export const unitsReducer = function(state, action) {
             newState.detail = action.payload.data;
             return newState;
         }
-
         case constants.units.GET_UNITS_LIST_PENDING: {
             newState.fetchingList = true;
             return newState;
@@ -57,11 +56,10 @@ export const unitsReducer = function(state, action) {
         }  
         case constants.units.POST_UNIT_DETAIL_PENDING: {
             newState.savingDetail = true;
-        
             return newState;
         }
         case constants.units.POST_UNIT_DETAIL_FULFILLED: { 
-            newState.detail = action.payload.data;
+            newState.detail = action.payload.data.result;
             newState.savingDetail = false;
             return newState;
         }
