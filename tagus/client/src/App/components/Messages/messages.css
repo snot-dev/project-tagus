@@ -1,9 +1,11 @@
-.tagus-notification-container {
+.tagus-messages-container {
     position: absolute;
     z-index: 1000;
     top: 70px;
     right: 0;
-    background-color: black;
     width: 300px;
-    height: 150px;
+}
+
+.tagus-message-list {
+    width: 100%;
 }

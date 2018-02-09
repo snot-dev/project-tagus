@@ -82,5 +82,8 @@ export const constants = {
         SAVING_USER: 'SAVING_USER',
         SAVING_USER_PENDING: 'SAVING_USER_PENDING',
         SAVING_USER_FULFILLED: 'SAVING_USER_FULFILLED'
+    },
+    messages: {
+        DELETE_MESSAGE: 'DELETE_MESSAGE'
     }
 };

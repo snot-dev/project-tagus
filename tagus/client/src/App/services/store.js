@@ -2,6 +2,7 @@ import { combineReducers, createStore, applyMiddleware } from "redux";
 import { contentReducer } from './content/reducer';
 import { unitsReducer } from './units/reducer';
 import { bridgesReducer } from './bridges/reducer';
+import { messagesReducer } from './messages/reducer';
 import thunk from 'redux-thunk';
 import promise from 'redux-promise-middleware';
 import {createLogger} from 'redux-logger';
@@ -9,7 +10,8 @@ import {createLogger} from 'redux-logger';
 const rootReducer = combineReducers({
     content: contentReducer,
     units: unitsReducer,
-    bridges: bridgesReducer
+    bridges: bridgesReducer,
+    messages: messagesReducer
 });
 
 const initialState = {
@@ -46,6 +48,9 @@ const initialState = {
         fetchingDetail: false,
         savingDetail: false,
         createNew: null
+    },
+    messages: {
+        list: []
     }
     // ,
     // unitFields: {

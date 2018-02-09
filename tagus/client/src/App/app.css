@@ -19,6 +19,12 @@
   /* Text Colors */
   --text-color: #5f666b;
   --title-color: #3B4648;
+
+  /* Status Colors */
+  --status-default: #5bc0de;
+  --status-success: #5cb85c;
+  --status-error: #d9534f;
+  --status-warning: #f0ad4e;
 }
 
 html, body, #root {
