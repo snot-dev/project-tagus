@@ -1,14 +1,5 @@
 import { constants } from '../constants';
 
-const createMessage = (type, object) => {
-    return {
-        type,
-        subject: object.subject,
-        verb: object.verb,
-
-    };
-}
-
 export const messagesReducer = (state, action) => {
     const newState = Object.assign({}, state);
 
@@ -17,13 +8,67 @@ export const messagesReducer = (state, action) => {
             newState.list.splice(action.payload, 1);
             return newState;
         }
+        case constants.content.GET_CONTENT_LIST_FULFILLED:
+        case constants.content.GET_CONTENT_UNITS_LIST_FULFILLED:
+        case constants.content.GET_CONTENT_UNITS_LIST_REJECTED:
+        case constants.content.GET_CONTENT_DETAIL_REJECTED:
+        case constants.content.GET_CONTENT_DETAIL_UNITTYPE_REJECTED:
+        case constants.content.POST_CONTENT_DETAIL_REJECTED:
+        case constants.content.CREATE_CONTENT_REJECTED:
+        case constants.content.DELETE_CONTENT_REJECTED:
+        case constants.bridges.GET_BRIDGES_LIST_FULFILLED:
+        case constants.bridges.GET_BRIDGES_UNITS_LIST_FULFILLED:
+        case constants.bridges.GET_BRIDGES_LIST_REJECTED:
+        case constants.bridges.GET_BRIDGES_UNITS_LIST_REJECTED:
+        case constants.bridges.GET_BRIDGES_DETAIL_REJECTED:
+        case constants.bridges.POST_BRIDGES_DETAIL_REJECTED:
+        case constants.bridges.CREATE_BRIDGE_REJECTED:
+        case constants.units.GET_UNITS_LIST_FULFILLED:
+        case constants.units.GET_UNITS_DETAIL_REJECTED:
+        case constants.units.GET_UNITS_TEMPLATES_REJECTED:
+        case constants.units.GET_UNITS_FIELDS_REJECTED:
+        case constants.units.POST_UNIT_DETAIL_REJECTED:
+        case constants.units.CREATE_UNIT_REJECTED: {
+            if (!action.payload.data.list) {
+                newState.list.unshift({
+                    type: 'error',
+                    subject: `An error`,
+                    verb: 'has ocurred',
+                    result: `in "${action.payload.config.url}"`
+                });
+            }
+
+            return newState;
+        }
         case constants.content.POST_CONTENT_DETAIL_FULFILLED:
         case constants.units.POST_UNIT_DETAIL_FULFILLED: 
         case constants.bridges.POST_BRIDGES_DETAIL_FULFILLED: {
-            newState.list.push({
+            newState.list.unshift({
                 type: 'success',
-                subject: action.payload.data.result.name,
+                subject: `"${action.payload.data.result.name}"`,
                 verb: 'was updated',
+                result: 'with success'
+            });
+
+            return newState;
+        }
+        case constants.content.CREATE_CONTENT_FULFILLED:
+        case constants.bridges.CREATE_BRIDGE_FULFILLED:
+        case constants.units.CREATE_UNIT_FULFILLED: {
+            newState.list.unshift({
+                type: 'success',
+                subject: `"${action.payload.data.result.name}"`,
+                verb: 'was created',
+                result: 'with success'
+            });
+
+            return newState;
+        }
+        case constants.content.DELETE_CONTENT_FULFILLED: {
+            newState.list.unshift({
+                type: 'success',
+                subject: "Item",
+                verb: 'was deleted',
                 result: 'with success'
             });
 

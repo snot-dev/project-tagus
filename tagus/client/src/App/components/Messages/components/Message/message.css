@@ -12,6 +12,14 @@
     background-color: var(--status-success);
 }
 
+.tagus-message.error {
+    background-color: var(--status-error);
+}
+
+.tagus-message.warning {
+    background-color: var(--status-warning);
+}
+
 .tagus-message-close-button {
     position: absolute;
     display: inline-block;

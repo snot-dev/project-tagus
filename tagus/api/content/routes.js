@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
     Content.find({})
     .populate('children')
     .exec((err,docs) => {
-        res.json(err || docs);
+        res.json(err ||{list: docs});
     });  
 });
 

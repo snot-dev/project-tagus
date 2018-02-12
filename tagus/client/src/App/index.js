@@ -11,7 +11,7 @@ import  './app.css';
 
 class App extends Component {
   render() {
-    return (
+    return (  
       <div id ="tagus-app" className="App container-fluid">
         <Messages />
         <TopBar />

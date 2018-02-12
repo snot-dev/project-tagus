@@ -71,7 +71,7 @@ class ContentList extends Component {
     _childList(item) {
         return (
             <List className="tagus-content-list">
-                { item.children.length > 0 
+                { item.children && item.children.length > 0 
                 ?   item.children.map((child, index) => {
                         const branch = this._createBranch(child);
                         return(

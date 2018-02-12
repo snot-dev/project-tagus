@@ -8,7 +8,7 @@ class Message extends Component {
     constructor(props) {
         super(props);
 
-        this.timeout = 3000;
+        this.timeout = 3500;
     }
     
     _deleteMessage() {

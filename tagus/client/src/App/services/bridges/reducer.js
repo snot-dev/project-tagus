@@ -11,7 +11,9 @@ export const bridgesReducer = (state, action) => {
         }
         case constants.bridges.GET_BRIDGES_LIST_FULFILLED: {
             newState.fetchingList = false;
-            newState.list = action.payload.data;
+            if (action.payload.data.list) {
+                newState.list = action.payload.data.list;
+            }
             return newState;
         }
         case constants.bridges.GET_BRIDGES_UNITS_LIST_PENDING: {
@@ -20,7 +22,9 @@ export const bridgesReducer = (state, action) => {
         }
         case constants.bridges.GET_BRIDGES_UNITS_LIST_FULFILLED: {
             newState.fetchingList = false;
-            newState.units = convertArrayToDictionary(action.payload.data);
+            if (action.payload.data.list) {
+                newState.units = convertArrayToDictionary(action.payload.data.list);
+            }
             return newState;
         }
         case constants.bridges.GET_BRIDGES_DETAIL_PENDING: {

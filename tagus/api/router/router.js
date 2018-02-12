@@ -25,7 +25,7 @@ module.exports = {
                 else {
                     model.find({})
                     .then(items => {
-                        res.json(items);
+                        res.json({list:items});
                     })
                     .catch(err => {
                         res.json(err);

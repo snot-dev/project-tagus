@@ -20,8 +20,10 @@ export const unitsReducer = function(state, action) {
         }
         case constants.units.GET_UNITS_LIST_FULFILLED: {
             newState.fetchingList = false;
-            newState.list = action.payload.data;
-            newState.dictionary = convertArrayToDictionary(action.payload.data);
+            if(action.payload.data.list) {
+                newState.list = action.payload.data.list;
+                newState.dictionary = convertArrayToDictionary(action.payload.data.list);
+            }
             return newState;
         }
         case constants.units.GET_UNITS_TEMPLATES_PENDING: {
@@ -30,7 +32,9 @@ export const unitsReducer = function(state, action) {
         }
         case constants.units.GET_UNITS_TEMPLATES_FULFILLED: {
             newState.fetchingTemplates = false;
-            newState.templates = action.payload.data;
+            if(action.payload.data.list) {
+                newState.templates = action.payload.data.list;
+            }
             return newState;
         }
         case constants.units.GET_UNITS_FIELDS_PENDING: {
@@ -38,7 +42,9 @@ export const unitsReducer = function(state, action) {
             return newState;
         }
         case constants.units.GET_UNITS_FIELDS_FULFILLED: {
-            newState.unitFields = action.payload.data;
+            if(action.payload.data.list) {
+                newState.unitFields = action.payload.data.list;
+            }
             newState.fetchingUnitFields = false;
             return newState;
         }

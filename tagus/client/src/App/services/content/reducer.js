@@ -11,8 +11,10 @@ export const contentReducer = (state, action) => {
         }
         case constants.content.GET_CONTENT_LIST_FULFILLED: {
             newState.fetchingList = false;
-            newState.list = convertArrayToDictionary(action.payload.data);
-            newState.treeList = buildContentTree(action.payload.data);
+            if(action.payload.data.list) {
+                newState.list = convertArrayToDictionary(action.payload.data.list);
+                newState.treeList = buildContentTree(action.payload.data.list);
+            }
             return newState;
         }
         case constants.content.GET_CONTENT_UNITS_LIST_PENDING: {
@@ -21,7 +23,9 @@ export const contentReducer = (state, action) => {
         }
         case constants.content.GET_CONTENT_UNITS_LIST_FULFILLED: {
             newState.fetchingList = false;
-            newState.units = convertArrayToDictionary(action.payload.data);
+            if (action.payload.data.list) {
+                newState.units = convertArrayToDictionary(action.payload.data.list);
+            }
             return newState;
         }
         case constants.content.GET_CONTENT_DETAIL_PENDING: {
