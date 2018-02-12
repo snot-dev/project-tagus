@@ -6,6 +6,7 @@
     background-color: var(--status-default);
     border-radius: 5px;
     font-weight: bold;
+    margin-bottom:2px;
 }
 
 .tagus-message.success {

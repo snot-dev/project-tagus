@@ -12,9 +12,12 @@ class Message extends Component {
     }
     
     _deleteMessage() {
+        store.dispatch(deleteMessage());
+    }
+    
+    _onClick() {
         store.dispatch(deleteMessage(this.props.index));
     }
-
 
     componentDidMount() {
         setTimeout(()=> {
@@ -25,8 +28,8 @@ class Message extends Component {
     render() {
         const text = `${this.props.subject} ${this.props.verb} ${ this.props.result}`;
         return ( 
-            <div onClick={this._deleteMessage.bind(this)} className={`tagus-message ${this.props.type}`}>
-                <a className="tagus-message-close-button">x</a>
+            <div className={`tagus-message ${this.props.type}`}>
+                <a onClick={this._onClick.bind(this)} className="tagus-message-close-button">x</a>
                 <p className="tagus-message-text">{text}</p>
             </div>
         );

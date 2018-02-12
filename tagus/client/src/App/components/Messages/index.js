@@ -1,33 +1,33 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import Message from './components/Message';
 import './messages.css';
 
 class Messages extends Component {
-    constructor(props) {
-        super(props);
-    }
+    _renderMessages() {
+        const messages = [];
 
-    _renderList() {
-        return (
-            <div className="tagus-message-list">
-                {this.props.messages.list.map((message, index) => {
-                    const {type, subject, verb, result} = message;
+        for(let i = 0; i < this.props.messages.list.length; i++) {
+            const {type, subject, verb, result} = this.props.messages.list[i];
 
-                    return (
-                        <Message key={`${index}_${type}`} index={index} type={type} subject={subject} verb={verb} result={result} />
-                    );
-                })}
-            </div>
-        )
+            messages.unshift(
+                <CSSTransition key={`${i}_${type}`} timeout={500} classNames="fade">
+                    <Message index={i} type={type} subject={subject} verb={verb} result={result} />
+                </CSSTransition>
+            );
+        }
+
+        return messages;
     }
-    
 
     render() {
         return (
             <div className="tagus-messages-container">
-                {this.props.messages.list.length > 0 ? this._renderList() : null}
+                <TransitionGroup className="tagus-message-list">
+                    {this._renderMessages()}
+                </TransitionGroup>
             </div>
         );
     }

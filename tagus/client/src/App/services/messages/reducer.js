@@ -5,7 +5,13 @@ export const messagesReducer = (state, action) => {
 
     switch(action.type) {
         case constants.messages.DELETE_MESSAGE: {
-            newState.list.splice(action.payload, 1);
+            if (action.payload || action.payload === 0) {
+                newState.list.splice(action.payload, 1);
+            } 
+            else {
+                newState.list.shift();
+            }
+            
             return newState;
         }
         case constants.content.GET_CONTENT_LIST_FULFILLED:
@@ -30,7 +36,7 @@ export const messagesReducer = (state, action) => {
         case constants.units.POST_UNIT_DETAIL_REJECTED:
         case constants.units.CREATE_UNIT_REJECTED: {
             if (!action.payload.data.list) {
-                newState.list.unshift({
+                newState.list.push({
                     type: 'error',
                     subject: `An error`,
                     verb: 'has ocurred',
@@ -43,7 +49,7 @@ export const messagesReducer = (state, action) => {
         case constants.content.POST_CONTENT_DETAIL_FULFILLED:
         case constants.units.POST_UNIT_DETAIL_FULFILLED: 
         case constants.bridges.POST_BRIDGES_DETAIL_FULFILLED: {
-            newState.list.unshift({
+            newState.list.push({
                 type: 'success',
                 subject: `"${action.payload.data.result.name}"`,
                 verb: 'was updated',
@@ -55,7 +61,7 @@ export const messagesReducer = (state, action) => {
         case constants.content.CREATE_CONTENT_FULFILLED:
         case constants.bridges.CREATE_BRIDGE_FULFILLED:
         case constants.units.CREATE_UNIT_FULFILLED: {
-            newState.list.unshift({
+            newState.list.push({
                 type: 'success',
                 subject: `"${action.payload.data.result.name}"`,
                 verb: 'was created',
@@ -65,7 +71,7 @@ export const messagesReducer = (state, action) => {
             return newState;
         }
         case constants.content.DELETE_CONTENT_FULFILLED: {
-            newState.list.unshift({
+            newState.list.push({
                 type: 'success',
                 subject: "Item",
                 verb: 'was deleted',
