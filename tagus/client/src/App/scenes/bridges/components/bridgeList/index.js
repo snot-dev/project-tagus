@@ -5,6 +5,7 @@ import Panel from '../../../../components/Panel';
 import ListItem from '../../../../components/ListItem';
 import AddLink from '../../../../components/AddLink';
 import CreateBridgeMenu from './components/createBridgeMenu';
+import Overlay from '../../../../components/Overlay';
 import store from '../../../../services/store';
 import {createBridge} from '../../../../services/bridges/actions';
 import './bridgeList.css';
@@ -46,9 +47,12 @@ class BridgeList extends Component {
                     {this.props.list && this.props.list.length > 0
                     ?   this.props.list.map((bridge, key) => {
                             return (
-                                <ListItem key={`${bridge._id}_${key}`}>
+                                <ListItem key={`${bridge._id}_${key}`} className="tagus-bridges-list-item">
                                     <NavLink to={`${this.props.url}/detail/${bridge._id}`} activeClassName="active" className="tagus-list-item-link">
                                         <i className={`fa fa-file`} aria-hidden="true"></i>{bridge.name}
+                                        <div className="tagus-bridges-list-delete">
+                                            <i className="fa fa-trash-o" aria-hidden="true"></i>
+                                        </div>
                                     </NavLink>
                                 </ListItem>
                             );
@@ -56,6 +60,7 @@ class BridgeList extends Component {
                     :   null}
                 </List>
                 <AddLink text="Create new Bridge" disabled={this.state.creatingBridge} onClick={this.toggleCreatingBridge(true)} />
+                <Overlay show={this.props.savingDetail || this.props.fetchingList || this.props.fetchingDetail}/>
             </Panel>
         );
     }

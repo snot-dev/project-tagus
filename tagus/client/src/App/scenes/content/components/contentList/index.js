@@ -17,7 +17,8 @@ class ContentList extends Component {
         super(props);
 
         this.state = {
-            creatingRootContent: false
+            creatingRootContent: false,
+            deleteMode: false
         };
     }
 
@@ -111,6 +112,8 @@ class ContentList extends Component {
                 {this._buildContentList()}
                 <AddLink text="Create a new Root page" onClick={this._toggleCreateRootContentMenu(true)} show={this.props.contentList.length ===0} disabled={this.state.creatingRootContent} />
                 <Overlay show={this.props.savingContent || this.props.fetchingList}/>
+                <Modal show={this.state.deleteMode} title="Warning!" body={"Are you sure you want to DELETE PERMANENTLY this page and all the children?"} closeButton={{onClick: this._toggleModal(false), text: "Cancel"}} confirmButton={{onClick:this._deleteContent.bind(this), text: "Yes, I'm sure!"}} />
+
             </Panel>  
         );
     };

@@ -89,3 +89,18 @@ export function createBridge(newBridge) {
         });
     }
 }
+
+export function deleteBridge(id) {
+    return (dispatch, getState) => {
+        dispatch({
+            type:constants.bridges.CREATE_BRIDGE,
+            payload: axios.delete(`bridges/${id}`)
+        })
+        .then(() => {
+            dispatch( {
+                type: constants.bridges.GET_BRIDGES_LIST,
+                payload: axios('bridges')
+            });
+        });
+    };
+}

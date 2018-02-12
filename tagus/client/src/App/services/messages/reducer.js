@@ -30,6 +30,7 @@ export const messagesReducer = (state, action) => {
         case constants.bridges.POST_BRIDGES_DETAIL_REJECTED:
         case constants.bridges.CREATE_BRIDGE_REJECTED:
         case constants.units.GET_UNITS_LIST_FULFILLED:
+        case constants.units.GET_UNITS_LIST_REJECTED:
         case constants.units.GET_UNITS_DETAIL_REJECTED:
         case constants.units.GET_UNITS_TEMPLATES_REJECTED:
         case constants.units.GET_UNITS_FIELDS_REJECTED:

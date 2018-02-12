@@ -28,6 +28,10 @@
     display: inline-block;
 } 
 
+.tagus-content-menu-button:hover {
+    color: var(--main-red);
+}
+
 .tagus-content-item .tagus-collapsable-list {
     position: relative;
 }
