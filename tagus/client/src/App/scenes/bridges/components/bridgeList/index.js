@@ -8,7 +8,7 @@ import AddLink from '../../../../components/AddLink';
 import CreateBridgeMenu from './components/createBridgeMenu';
 import Overlay from '../../../../components/Overlay';
 import store from '../../../../services/store';
-import {createBridge} from '../../../../services/bridges/actions';
+import {createBridge, deleteBridge} from '../../../../services/bridges/actions';
 import './bridgeList.css';
 
 class BridgeList extends Component {
@@ -17,19 +17,19 @@ class BridgeList extends Component {
 
         this.state = {
             creatingBridge: null,
-            deleteMode: false
+            deleteBridge: null
         };
     }
 
-    toggleDeleteModal(show) {
+    _toggleDeleteModal(id) {
         return() => {
             this.setState({
-                deleteMode: show
+                deleteBridge: id
             });
         };
     }
 
-    toggleCreatingBridge(state) {
+    _toggleCreatingBridge(state) {
         return () => {
             this.setState({
                 creatingBridge: state
@@ -38,14 +38,17 @@ class BridgeList extends Component {
     }
 
     _deleteBridge() {
+        store.dispatch(deleteBridge(this.state.deleteBridge));
         this.setState({
-            deleteMode: false
+            deleteBridge: null
         });
+
+        this.props.history.push('/bridges');
     }
 
-    onSubmitCreatingBridge(values) {
+    _onSubmitCreatingBridge(values) {
         this.setState({
-            creatingBridge: false
+            creatingBridge: null
         });
 
         this.props.history.push('/bridges');
@@ -54,7 +57,7 @@ class BridgeList extends Component {
 
     render() {
         const menu = [
-            <CreateBridgeMenu key="createBridge" units={this.props.units}  show={!!this.state.creatingBridge} onClose={this.toggleCreatingBridge(false)} onSubmit={this.onSubmitCreatingBridge.bind(this)} />
+            <CreateBridgeMenu key="createBridge" units={this.props.units}  show={!!this.state.creatingBridge} onClose={this._toggleCreatingBridge(false)} onSubmit={this._onSubmitCreatingBridge.bind(this)} />
         ];
 
         return (
@@ -66,7 +69,7 @@ class BridgeList extends Component {
                                 <ListItem key={`${bridge._id}_${key}`} className="tagus-bridges-list-item">
                                     <NavLink to={`${this.props.url}/detail/${bridge._id}`} activeClassName="active" className="tagus-list-item-link">
                                         <i className={`fa fa-file`} aria-hidden="true"></i>{bridge.name}
-                                        <div onClick={this.toggleDeleteModal(bridge._id)} className="tagus-bridges-list-delete">
+                                        <div onClick={this._toggleDeleteModal(bridge._id)} className="tagus-bridges-list-delete">
                                             <i className="fa fa-trash-o" aria-hidden="true"></i>
                                         </div>
                                     </NavLink>
@@ -75,9 +78,9 @@ class BridgeList extends Component {
                         })
                     :   null}
                 </List>
-                <AddLink text="Create new Bridge" disabled={this.state.creatingBridge} onClick={this.toggleCreatingBridge(true)} />
+                <AddLink text="Create new Bridge" disabled={this.state.creatingBridge} onClick={this._toggleCreatingBridge(true)} />
                 <Overlay show={this.props.savingDetail || this.props.fetchingList || this.props.fetchingDetail}/>
-                <Modal show={!!this.state.deleteMode} title="Warning!" body={"Are you sure you want to DELETE PERMANENTLY this bridge?"} closeButton={{onClick: this.toggleDeleteModal(false), text: "Cancel"}} confirmButton={{onClick:this._deleteBridge.bind(this), text: "Yes, I'm sure!"}} />
+                <Modal show={!!this.state.deleteBridge} title="Warning!" body={"Are you sure you want to DELETE PERMANENTLY this bridge?"} closeButton={{onClick: this._toggleDeleteModal(false), text: "Cancel"}} confirmButton={{onClick:this._deleteBridge.bind(this), text: "Yes, I'm sure!"}} />
             </Panel>
         );
     }

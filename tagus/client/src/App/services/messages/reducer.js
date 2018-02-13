@@ -71,7 +71,8 @@ export const messagesReducer = (state, action) => {
 
             return newState;
         }
-        case constants.content.DELETE_CONTENT_FULFILLED: {
+        case constants.content.DELETE_CONTENT_FULFILLED:
+        case constants.bridges.DELETE_BRIDGE_FULFILLED: {
             newState.list.push({
                 type: 'success',
                 subject: "Item",
