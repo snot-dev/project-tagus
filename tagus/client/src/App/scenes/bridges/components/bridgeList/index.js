@@ -3,6 +3,7 @@ import {NavLink} from 'react-router-dom';
 import List from '../../../../components/List';
 import Panel from '../../../../components/Panel';
 import ListItem from '../../../../components/ListItem';
+import Modal from '../../../../components/Modal ';
 import AddLink from '../../../../components/AddLink';
 import CreateBridgeMenu from './components/createBridgeMenu';
 import Overlay from '../../../../components/Overlay';
@@ -15,8 +16,15 @@ class BridgeList extends Component {
         super(props);
 
         this.state = {
-            creatingBridge: null
+            creatingBridge: null,
+            deleteMode: false
         };
+    }
+
+    toggleDeleteModal(show) {
+        this.setState({
+            deleteMode: show
+        });
     }
 
     toggleCreatingBridge(state) {
@@ -61,6 +69,7 @@ class BridgeList extends Component {
                 </List>
                 <AddLink text="Create new Bridge" disabled={this.state.creatingBridge} onClick={this.toggleCreatingBridge(true)} />
                 <Overlay show={this.props.savingDetail || this.props.fetchingList || this.props.fetchingDetail}/>
+                <Modal show={this.state.deleteMode} title="Warning!" body={"Are you sure you want to DELETE PERMANENTLY this page and all the children?"} closeButton={{onClick: this._toggleModal(false), text: "Cancel"}} confirmButton={{onClick:this._deleteContent.bind(this), text: "Yes, I'm sure!"}} />
             </Panel>
         );
     }
