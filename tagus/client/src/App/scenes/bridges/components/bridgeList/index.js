@@ -69,10 +69,10 @@ class BridgeList extends Component {
                                 <ListItem key={`${bridge._id}_${key}`} className="tagus-bridges-list-item">
                                     <NavLink to={`${this.props.url}/detail/${bridge._id}`} activeClassName="active" className="tagus-list-item-link">
                                         <i className={`fa fa-file`} aria-hidden="true"></i>{bridge.name}
-                                        <div onClick={this._toggleDeleteModal(bridge._id)} className="tagus-bridges-list-delete">
-                                            <i className="fa fa-trash-o" aria-hidden="true"></i>
-                                        </div>
                                     </NavLink>
+                                    <div onClick={this._toggleDeleteModal(bridge._id)} className="tagus-bridges-list-delete">
+                                        <i className="fa fa-trash-o" aria-hidden="true"></i>
+                                    </div>
                                 </ListItem>
                             );
                         })
