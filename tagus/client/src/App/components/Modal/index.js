@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {Modal, Button} from 'react-bootstrap';
+import Button from '../Button';
+import {Modal} from 'react-bootstrap';
 import './modal.css';
 
 class CustomModal extends Component {
@@ -23,7 +24,7 @@ class CustomModal extends Component {
                         :null
                     }
                     {this.props.confirmButton
-                        ?<Button onClick={this.props.confirmButton.onClick} bsStyle="primary">{this.props.confirmButton.text}</Button>
+                        ?<Button onClick={this.props.confirmButton.onClick} type="warning">{this.props.confirmButton.text}</Button>
                         :null
                     }
                 </Modal.Footer>

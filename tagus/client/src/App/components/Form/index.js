@@ -17,9 +17,9 @@ class CustomForm extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(typeof nextProps.disabled !== undefined) {
+        if(typeof nextProps.disabled !== undefined && nextProps.disabled !== this.props.disabled) {
             this.setState({
-                formWasTouched: !nextProps.disabled
+                formWasTouched: nextProps.disabled
             });
         }
     }
@@ -31,7 +31,6 @@ class CustomForm extends Component {
 
             errors[field.alias] = field.required && !values[field.alias] ?"This field is required!":null;
         }
-
 
         return errors;
     }

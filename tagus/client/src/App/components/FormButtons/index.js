@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {Button} from 'react-bootstrap';
+import Button from '../Button';
 import './formButtons.css';
 
 class FormButtons extends Component {
@@ -10,18 +10,18 @@ class FormButtons extends Component {
         return (
             <div className="row">
                 <div className="tagus-form-button-container col-xs-12">
-                    <Button disabled={this.props.disabled} onClick={this.props.onSubmit} type="button" className={`pull-right ${disabled}`} bsStyle={"primary"}>Save</Button>
+                    <Button type='success' disabled={this.props.disabled} onClick={this.props.onSubmit} className={`pull-right ${disabled}`}>Save</Button>
                     <Button disabled={this.props.disabled} onClick={this.props.onReset} className={`pull-left ${disabled}`}>Cancel</Button>
                 </div>
             </div>
         );
-    }
+    }   
 }
 
 FormButtons.propTypes = {
     disabled: PropTypes.bool,
     onSubmit: PropTypes.func,
-    onReset: PropTypes.func,
+    onReset: PropTypes.func
 };
 
 export default FormButtons;

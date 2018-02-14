@@ -14,7 +14,8 @@ class ContentDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            key: 0
+            key: 0,
+            disabled: true
         };
 
         this.propertiesFields = [];
@@ -105,7 +106,10 @@ class ContentDetail extends Component {
     }
 
     _handleTabchange(key) {
-        this.setState({key});
+        this.setState({
+            key,
+            disabled: true
+        });
     }
 
     _getPropertiesDefaultValues() {
@@ -125,7 +129,7 @@ class ContentDetail extends Component {
             <Tabs activeKey={this.state.key} onSelect={this._handleTabchange.bind(this)} id="tagus-content-tabs">
                 {tabs.map((tab, index) => (
                             <Tab eventKey={index} title={tab.name} key={`${this.props.detail._id}_${tab.alias}_${index}`}>
-                                <Form onSubmit={this.onSubmitContent.bind(this)} name={tab.alias} defaultValues={this.props.detail.content[tab.alias]} fields={tab.fields} />
+                                <Form disabled={this.state.disabled} onSubmit={this.onSubmitContent.bind(this)} name={tab.alias} defaultValues={this.props.detail.content[tab.alias]} fields={tab.fields} />
                             </Tab>
                         )
                     )

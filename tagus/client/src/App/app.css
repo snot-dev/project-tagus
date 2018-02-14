@@ -21,10 +21,10 @@
   --title-color: #3B4648;
 
   /* Status Colors */
-  --status-default: #5bc0de;
-  --status-success: #5cb85c;
-  --status-error: #d9534f;
-  --status-warning: #f0ad4e;
+  --status-default: #55acee;
+  --status-success: #2ecc71;
+  --status-error: #e74c3c;
+  --status-warning: #e67e22;
 }
 
 html, body, #root {
