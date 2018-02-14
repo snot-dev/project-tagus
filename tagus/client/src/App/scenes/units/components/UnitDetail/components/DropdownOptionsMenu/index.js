@@ -184,7 +184,7 @@ class DropdownOptionsMenu extends Component {
                 </div>     
                 <AddLink text="Add a new option" onClick={this._addNewOption.bind(this)} />
                 <FormButtons disabled={!this.state.touched} onSubmit={this._validate.bind(this)} onReset={this._onCloseMenu.bind(this)} />
-                <Modal title="Warning!" body="Are you sure you want to discard all changes?" show={this.state.showWarningModal} confirmButton={{onClick:this._close.bind(this), text: "Discard Changes!"}}  closeButton={{onClick: this._toggleWarningModal(false), text: "Cancel"}} />
+                <Modal type='warning' title="Warning!" body="Are you sure you want to discard all changes?" show={this.state.showWarningModal} confirmButton={{onClick:this._close.bind(this), text: "Discard Changes!"}}  closeButton={{onClick: this._toggleWarningModal(false), text: "Cancel"}} />
             </Menu>
         );
     }

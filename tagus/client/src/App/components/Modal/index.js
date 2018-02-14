@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {Modal, Button} from 'react-bootstrap';
+import './modal.css';
 
 class CustomModal extends Component {
     render() {
         return(
             <Modal show={this.props.show}>
-                <Modal.Header >
+                <Modal.Header className={this.props.type} >
                     {this.props.title
                     ?   <Modal.Title>{this.props.title}</Modal.Title>
                     :   null}
@@ -32,8 +33,9 @@ class CustomModal extends Component {
 }
 
 CustomModal.propTypes = {
+    type: PropTypes.string.isRequired,
     show: PropTypes.bool.isRequired,
-    title: PropTypes.string,
+    title: PropTypes.string.isRequired,
     body: PropTypes.string,
     onCloseButton: PropTypes.shape({
         onClick: PropTypes.func,

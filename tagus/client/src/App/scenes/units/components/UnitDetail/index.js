@@ -415,7 +415,7 @@ class UnitsDetail extends Component {
                 :   null
                 }
                 <Overlay show={this.props.fetchingList || this.props.savingDetail}/>
-                <Modal title="Warning!" body={this.state.modalBodyText} show={!!this.state.deletingTab} confirmButton={{onClick:this.onClickConfirmModal.bind(this), text: "Delete!"}}  closeButton={{onClick: this.onToggleDeleteModal.bind(this, null), text: "Cancel"}} />
+                <Modal type='warning' title="Warning!" body={this.state.modalBodyText} show={!!this.state.deletingTab} confirmButton={{onClick:this.onClickConfirmModal.bind(this), text: "Delete!"}}  closeButton={{onClick: this.onToggleDeleteModal.bind(this, null), text: "Cancel"}} />
             </Panel>
         );
     }

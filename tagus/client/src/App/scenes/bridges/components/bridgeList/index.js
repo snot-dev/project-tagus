@@ -80,7 +80,7 @@ class BridgeList extends Component {
                 </List>
                 <AddLink text="Create new Bridge" disabled={this.state.creatingBridge} onClick={this._toggleCreatingBridge(true)} />
                 <Overlay show={this.props.savingDetail || this.props.fetchingList || this.props.fetchingDetail}/>
-                <Modal show={!!this.state.deleteBridge} title="Warning!" body={"Are you sure you want to DELETE PERMANENTLY this bridge?"} closeButton={{onClick: this._toggleDeleteModal(false), text: "Cancel"}} confirmButton={{onClick:this._deleteBridge.bind(this), text: "Yes, I'm sure!"}} />
+                <Modal type='warning' show={!!this.state.deleteBridge} title="Warning!" body={"Are you sure you want to DELETE PERMANENTLY this bridge?"} closeButton={{onClick: this._toggleDeleteModal(false), text: "Cancel"}} confirmButton={{onClick:this._deleteBridge.bind(this), text: "Yes, I'm sure!"}} />
             </Panel>
         );
     }
