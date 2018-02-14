@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import moment from 'moment';
-import {constants} from '../../../../services/constants';
 import {getContentDetailIfNeeded, saveContent} from '../../../../services/content/actions';
 import {Tabs, Tab} from 'react-bootstrap';
 import Overlay from '../../../../components/Overlay';
 import Panel from '../../../../components/Panel';
 import Form from '../../../../components/Form';
+import Properties from './components/properties'
 import store from '../../../../services/store';
 import './contentDetail.css';
 
@@ -17,8 +16,6 @@ class ContentDetail extends Component {
             key: 0,
             disabled: true
         };
-
-        this.propertiesFields = [];
     }
     
     componentWillMount() {
@@ -38,61 +35,8 @@ class ContentDetail extends Component {
         if(newProps.match.params.id !== this.props.match.params.id) {
             store.dispatch(getContentDetailIfNeeded(newProps.match.params.id));
         }
-
-        const templates = newProps.unit ?  this._convertToOptions(newProps.unit.templates) : [];
-        
-        this.propertiesFields = [
-            {
-                name: "Name",
-                type: "text",
-                alias: "name",
-                required: true
-            },
-            {
-                name: "Url",
-                type: "text",
-                alias: "url",
-                required: true
-            },
-            {
-                name: "Template",
-                type: "select",
-                alias: "template",
-                options: templates,
-                required: true
-            },
-            {
-                name: "Partial",
-                type: "select",
-                alias: "partial",
-                options: templates
-            },
-            {
-                name: "Published",
-                type: "checkbox",
-                alias: "published"
-            },
-            {
-                name: "Nav",
-                type: "checkbox",
-                alias: "nav"
-            }
-        ];
     }
     
-    _convertToOptions(arr) {
-        const options = [];
-
-        for(const item of arr) {
-            options.push({
-                value: item,
-                label: item
-            });
-        }
-
-        return options;
-    }
-
     onSubmitContent(formValues) {
         const updatedContent = _.cloneDeep(this.props.detail); 
         updatedContent.content = Object.assign(updatedContent.content, formValues);
@@ -123,8 +67,6 @@ class ContentDetail extends Component {
     }
 
     _renderTabs(tabs) {
-        const created = moment(this.props.detail.created).format(constants.config.DATE_FORMAT);
-
         return (
             <Tabs activeKey={this.state.key} onSelect={this._handleTabchange.bind(this)} id="tagus-content-tabs">
                 {tabs.map((tab, index) => (
@@ -135,25 +77,7 @@ class ContentDetail extends Component {
                     )
                 }
                 <Tab eventKey={tabs.length} key={`${this.props.detail._id}_Properties_${tabs.length}`} title='Properties'>
-                    <div className="container-fluid tagus-form-info-fields">
-                        <div className="row tagus-form-control">
-                            <div className="col-xs-12 col-sm-6 tagus-form-field">
-                                <label className="tagus-label" >Alias</label>
-                                <p className="tagus-info">{this.props.detail.alias}</p>
-                            </div>
-                            <div className="col-xs-12 col-sm-6 tagus-form-field text-right">
-                                <label className="tagus-label" >Created</label>
-                                <p className="tagus-info">{created}</p>
-                            </div>
-                        </div>
-                        <div className="row tagus-form-control">
-                            <div className="col-xs-12 col-sm-6 tagus-form-field">
-                                <label className="tagus-label" >Unit</label>
-                                <p className="tagus-info">{this.props.unit.name}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <Form onSubmit={this.onSubmitProperties.bind(this)} name="properties" defaultValues={this._getPropertiesDefaultValues()} fields={this.propertiesFields} /> 
+                    <Properties detail={this.props.detail} unit={this.props.unit} onSubmit={this.onSubmitProperties.bind(this)} />
                 </Tab>
             </Tabs>
         )
