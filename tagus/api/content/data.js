@@ -9,6 +9,7 @@ module.exports = [
         partial: null,
         template: "master",
         isHome: true,
+        published: true,
         children: [
             "5a0181a26602223bd865660c",
             "5a01836b79194430c8f98806",
@@ -35,6 +36,7 @@ module.exports = [
         isHome: false,
         parent: "5a01809eefef172e54fb10cd",
         published: false,
+        accessible: true,
         content: {
             default: {
                 title: "We've got what you need!",
@@ -62,6 +64,7 @@ module.exports = [
             "5a018702ae30463a68797893"
         ],
         published: false,
+        accessible: true,
         content: {
             default: {
                 title: "At Your Service"
@@ -81,6 +84,7 @@ module.exports = [
         parent: "5a01836b79194430c8f98806",
         nav: false,
         published: false,
+        accessible: true,
         content: {
             default: {
                 icon: "fa-diamond",
@@ -101,6 +105,7 @@ module.exports = [
         isHome: false,
         parent: "5a01836b79194430c8f98806",
         nav: false,
+        accessible: true,
         published: false,
         content: {
             default: {
@@ -122,6 +127,7 @@ module.exports = [
         isHome: false,
         parent: "5a01836b79194430c8f98806",
         nav: false,
+        accessible: true,
         published: false,
         content: {
             default: {
@@ -143,6 +149,7 @@ module.exports = [
         isHome: false,
         parent: "5a01836b79194430c8f98806",
         nav: false,
+        accessible: true,
         published: false,
         content: {
             default: {
@@ -168,6 +175,7 @@ module.exports = [
             "5a0189b52f70e724104dab89"
         ],
         published: false,
+        accessible: true,
         content: {
             default: {
                 title: "Let's Get In Touch!",
@@ -188,6 +196,7 @@ module.exports = [
         nav: false,
         parent: "5a01884e905c9938fc6f011b",
         published: false,
+        accessible: true,
         content: {
             default: {
                 icon: "fa-phone",
@@ -208,6 +217,7 @@ module.exports = [
         nav: false,
         parent: "5a01884e905c9938fc6f011b",
         published: false,
+        accessible: true,
         content: {
             default: {
                 icon: "fa-envelope-o",

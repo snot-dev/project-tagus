@@ -64,7 +64,9 @@
     </header>
 
     {{#each viewContent.children}}
-      {{> ( partial this.partial this )}}
+      {{#if this.accessible}}
+        {{> ( partial this.partial this )}}
+      {{/if}}
     {{/each}}
 
     <!-- Bootstrap core JavaScript -->

@@ -79,10 +79,12 @@ router.put('/:id', (req, res) => {
     if(req.body.name) {
         alias = convertToAlias(req.body.name);
     }
+
+    
     //TODO: Assign to a new Parent
     Content.findOne({'alias': alias})
     .then( doc => {
-        if(doc && doc._id !== req.params.id) {
+        if(doc && doc._id != req.params.id) {
             res.json({message: "warning", result:alias})
         } 
         else {

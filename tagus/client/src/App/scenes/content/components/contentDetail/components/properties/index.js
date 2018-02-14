@@ -52,6 +52,11 @@ class properties extends Component {
                 alias: "published"
             },
             {
+                name: "Accessible",
+                type: "checkbox",
+                alias: "accessible"
+            },
+            {
                 name: "Nav",
                 type: "checkbox",
                 alias: "nav"
