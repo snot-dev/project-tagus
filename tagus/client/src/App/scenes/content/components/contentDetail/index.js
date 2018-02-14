@@ -5,7 +5,6 @@ import {Tabs, Tab} from 'react-bootstrap';
 import Overlay from '../../../../components/Overlay';
 import Panel from '../../../../components/Panel';
 import Form from '../../../../components/Form';
-import Button from '../../../../components/Button';
 import Properties from './components/properties'
 import Preview from './components/preview'
 import store from '../../../../services/store';

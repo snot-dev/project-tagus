@@ -56,9 +56,12 @@ export const contentReducer = (state, action) => {
             return newState;
         }
         case constants.content.POST_CONTENT_DETAIL_FULFILLED: {
+            if (action.payload.data.message !== 'warning') {
+                newState.detail = action.payload.data.result;
+                newState.editingContent = null;
+            } 
+
             newState.savingContent = false;
-            newState.editingContent = null;
-            newState.detail = action.payload.data.result;
             return newState;
         }
         case constants.content.EDITIING_CONTENT: {
@@ -75,10 +78,12 @@ export const contentReducer = (state, action) => {
         }
         case constants.content.CREATE_CONTENT_FULFILLED: {
             newState.savingContent = false;
-            newState.editingContent = null;
-            newState.createUnit = null;
-            newState.createdContent = true;
-            newState.detail = {};
+            if (action.payload.data.message !== 'warning') {
+                newState.editingContent = null;
+                newState.createUnit = null;
+                newState.detail = {};
+                newState.createdContent = true;
+            }
             return newState;
         }
         case constants.content.DELETE_CONTENT_PENDING: {

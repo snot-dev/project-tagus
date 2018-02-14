@@ -23,10 +23,17 @@ module.exports = router.defineCRUDRoutes(Unit, {
 
         const newUnit = new Unit(unit);
 
-
-        newUnit.save()
-        .then(result => {
-            res.json({ message: "Document successfully created!", result });
-        });
+        Unit.findOne({'alias': unit.alias})
+        .then( doc => {
+            if(doc && doc._id !== req.params.id) {
+                res.json({message: "warning", result: unit.alias})
+            } 
+            else {
+                newUnit.save()
+                .then(result => {
+                    res.json({ message: "Document successfully created!", result });
+                });
+            }
+        })
     }
 });

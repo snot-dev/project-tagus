@@ -32,8 +32,8 @@ export const bridgesReducer = (state, action) => {
             return newState;
         }
         case constants.bridges.GET_BRIDGES_DETAIL_FULFILLED: {
-            newState.fetchingDetail = false;
             newState.detail = action.payload.data;
+            newState.fetchingDetail = false;
             return newState;
         }
         case constants.bridges.POST_BRIDGES_DETAIL_PENDING: {
@@ -41,8 +41,10 @@ export const bridgesReducer = (state, action) => {
             return newState;
         }
         case constants.bridges.POST_BRIDGES_DETAIL_FULFILLED: {
+            if (action.payload.data.message !== 'warning') {
+                newState.detail = action.payload.data.result;
+            }
             newState.savingDetail = false;
-            newState.detail = action.payload.data.result;
             return newState;
         }
         case constants.bridges.CREATE_BRIDGE_PENDING: {

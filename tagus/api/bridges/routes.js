@@ -22,12 +22,20 @@ module.exports = router.defineCRUDRoutes(Bridge, {
         // TODO: Change this
         newBridge.createdBy = 'Admin';
 
-        newBridge.save()
-        .then(result => {
-            res.json({ message: "Document successfully created!", result });
+        Bridge.findOne({'alias': newBridge.alias})
+        .then( doc => {
+            if (doc && doc._id !== req.params.id) {
+                res.json({message: "warning", result: newBridge.alias})
+            } 
+            else {
+                newBridge.save()
+                .then(result => {
+                    res.json({ message: "Document successfully created!", result });
+                })
+                .catch(err =>{
+                    res.json(err);
+                });
+            }
         })
-        .catch(err =>{
-            res.json(err);
-        });
     }
 });

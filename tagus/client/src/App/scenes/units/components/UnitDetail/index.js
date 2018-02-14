@@ -341,6 +341,7 @@ class UnitsDetail extends Component {
 
     saveUnit(form) {
         const unit = form ? form.unit : {};
+        const detail = _.cloneDeep(this.props.detail);
 
         if(unit.name) {
             unit.alias = camelize(unit.name);
@@ -349,7 +350,8 @@ class UnitsDetail extends Component {
         unit.tabs = this.state.tabs;
         unit.templates = this.state.templates;
 
-        store.dispatch(saveUnit(Object.assign(this.props.detail, unit)));
+
+        store.dispatch(saveUnit(Object.assign(detail, unit)));
     }    
 
     toggleAddOptionMenu(show) {

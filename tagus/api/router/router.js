@@ -74,22 +74,33 @@ module.exports = {
                     routes.updateById(req, res);
                 }
                 else {
-                    model.findOne({'_id': req.params.id})
-                    .then(doc => {
-                        const updatedDoc = Object.assign(doc, req.body);
+                    if(req.body.name) {
+                        const alias = convertToAlias(req.body.name);
                         
-                        if(updatedDoc.name) {
-                            updatedDoc.alias = convertToAlias(updatedDoc.name);
-                        }
-
-                        return updatedDoc.save();
-                    })
-                    .then(result =>{
-                        res.json({message: "Document updated!", result});
-                    })
-                    .catch( err => {
-                        res.json(err);
-                    })
+                        model.findOne({'alias': alias})
+                        .then(doc => {
+                            if (doc && doc._id !== req.params.id) {
+                                res.json({message: "warning", result: alias})
+                            } else {
+                                model.findOne({'_id': req.params.id})
+                                .then(doc => {
+                                    const updatedDoc = Object.assign(doc, req.body);
+                                    
+                                    if(updatedDoc.name) {
+                                        updatedDoc.alias = convertToAlias(updatedDoc.name);
+                                    }
+            
+                                    return updatedDoc.save();
+                                })
+                                .then(result =>{
+                                    res.json({message: "Document updated!", result});
+                                })
+                                .catch( err => {
+                                    res.json(err);
+                                })
+                            }
+                        })
+                    }
                 }
             });
 

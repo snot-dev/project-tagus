@@ -37,25 +37,34 @@ router.post('/', (req, res) => {
         }
     }
     
-    //TODO: Change this to an actual user
-    newContent.createdBy = 'User';
-    newContent.created = new Date();
-    
-    newContent.save()
-    .then(result => {
-        newContent = result;
-        return Content.findOne({'_id': newContent.parent})
-    })
-    .then( parent => {
-        if(parent && !parent.children.includes(newContent._id)) {
-            parent.children.push(newContent._id);
+    Content.findOne({'alias': newContent.alias})
+    .then(doc => {
+        if(doc) {
+            res.json({message: "warning", result: newContent.alias})
+        }
+        else {
+            //TODO: Change this to an actual user
+            newContent.createdBy = 'User';
+            newContent.created = new Date();
             
-            return parent.save();
+            newContent.save()
+            .then(result => {
+                newContent = result;
+                return Content.findOne({'_id': newContent.parent})
+            })
+            .then( parent => {
+                if(parent && !parent.children.includes(newContent._id)) {
+                    parent.children.push(newContent._id);
+                    
+                    return parent.save();
+                }
+            })
+            .then( () => {
+                res.json({ message: "Document successfully created!", result: newContent });
+            });
         }
     })
-    .then( () => {
-        res.json({ message: "Document successfully created!", result: newContent });
-    });
+
 });
 
 router.get('/:id', (req, res) => {
@@ -66,18 +75,30 @@ router.get('/:id', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
+    let alias = '';
+    if(req.body.name) {
+        alias = convertToAlias(req.body.name);
+    }
     //TODO: Assign to a new Parent
-    Content.findOne({'_id': req.params.id})
-    .then(result => {
-        const updatedContent = Object.assign(result, req.body);
-
-        if(updatedContent.name) {
-            updatedContent.alias = convertToAlias(updatedContent.name);
+    Content.findOne({'alias': alias})
+    .then( doc => {
+        if(doc && doc._id !== req.params.id) {
+            res.json({message: "warning", result:alias})
+        } 
+        else {
+            Content.findOne({'_id': req.params.id})
+            .then(result => {
+                const updatedContent = Object.assign(result, req.body);
+        
+                if(updatedContent.name) {
+                    updatedContent.alias = convertToAlias(updatedContent.name);
+                }
+                return updatedContent.save();
+            })
+            .then(result =>{
+                res.json({message: "Document updated!", result});
+            });
         }
-        return updatedContent.save();
-    })
-    .then(result =>{
-        res.json({message: "Document updated!", result});
     })
     .catch( err => {
         res.json(err);

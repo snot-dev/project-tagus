@@ -50,24 +50,44 @@ export const messagesReducer = (state, action) => {
         case constants.content.POST_CONTENT_DETAIL_FULFILLED:
         case constants.units.POST_UNIT_DETAIL_FULFILLED: 
         case constants.bridges.POST_BRIDGES_DETAIL_FULFILLED: {
-            newState.list.push({
-                type: 'success',
-                subject: `"${action.payload.data.result.name}"`,
-                verb: 'was updated',
-                result: 'with success'
-            });
+            if(action.payload.data.message !== 'warning') {
+                newState.list.push({
+                    type: 'success',
+                    subject: `"${action.payload.data.result.name}"`,
+                    verb: 'was updated',
+                    result: 'with success'
+                });
+            }
+            else {
+                newState.list.push({
+                    type: 'warning',
+                    subject: `"${action.payload.data.result}" alias`,
+                    verb: 'already exist',
+                    result: ''
+                });
+            }
 
             return newState;
         }
         case constants.content.CREATE_CONTENT_FULFILLED:
         case constants.bridges.CREATE_BRIDGE_FULFILLED:
         case constants.units.CREATE_UNIT_FULFILLED: {
-            newState.list.push({
-                type: 'success',
-                subject: `"${action.payload.data.result.name}"`,
-                verb: 'was created',
-                result: 'with success'
-            });
+            if (action.payload.data.message !== 'warning') {
+                newState.list.push({
+                    type: 'success',
+                    subject: `"${action.payload.data.result.name}"`,
+                    verb: 'was created',
+                    result: 'with success'
+                });
+            }
+            else {
+                newState.list.push({
+                    type: 'warning',
+                    subject: `"${action.payload.data.result}" alias`,
+                    verb: 'already exist',
+                    result: ''
+                });
+            }
 
             return newState;
         }

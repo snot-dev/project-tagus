@@ -65,7 +65,9 @@ export const unitsReducer = function(state, action) {
             return newState;
         }
         case constants.units.POST_UNIT_DETAIL_FULFILLED: { 
-            newState.detail = action.payload.data.result;
+            if (action.payload.data.message !== 'warning') {
+                newState.detail = action.payload.data.result;
+            }
             newState.savingDetail = false;
             return newState;
         }
