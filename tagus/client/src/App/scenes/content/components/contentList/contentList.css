@@ -45,6 +45,10 @@
     cursor: pointer;
 }
 
+.tagus-content-item .tagus-collapsable-list .tagus-collapsable-list-button:hover {
+    color: var(--main-red);
+}
+
 .tagus-content-item .tagus-collapsable-list .tagus-collapsable-list-button .fa {
     margin: 0!important;
 }

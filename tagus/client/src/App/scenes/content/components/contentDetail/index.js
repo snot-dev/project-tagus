@@ -5,7 +5,9 @@ import {Tabs, Tab} from 'react-bootstrap';
 import Overlay from '../../../../components/Overlay';
 import Panel from '../../../../components/Panel';
 import Form from '../../../../components/Form';
+import Button from '../../../../components/Button';
 import Properties from './components/properties'
+import Preview from './components/preview'
 import store from '../../../../services/store';
 import './contentDetail.css';
 
@@ -41,6 +43,10 @@ class ContentDetail extends Component {
         const updatedContent = _.cloneDeep(this.props.detail); 
         updatedContent.content = Object.assign(updatedContent.content, formValues);
 
+        this.setState({
+            disabled: true
+        });
+
         store.dispatch(saveContent(updatedContent));
     }
     
@@ -70,15 +76,16 @@ class ContentDetail extends Component {
         return (
             <Tabs activeKey={this.state.key} onSelect={this._handleTabchange.bind(this)} id="tagus-content-tabs">
                 {tabs.map((tab, index) => (
-                            <Tab eventKey={index} title={tab.name} key={`${this.props.detail._id}_${tab.alias}_${index}`}>
-                                <Form disabled={this.state.disabled} onSubmit={this.onSubmitContent.bind(this)} name={tab.alias} defaultValues={this.props.detail.content[tab.alias]} fields={tab.fields} />
-                            </Tab>
-                        )
-                    )
+                        <Tab eventKey={index} title={tab.name} key={`${this.props.detail._id}_${tab.alias}_${index}`}>
+                            <Form disabled={this.state.disabled} onSubmit={this.onSubmitContent.bind(this)} name={tab.alias} defaultValues={this.props.detail.content[tab.alias]} fields={tab.fields} />
+                        </Tab>
+                    ))
                 }
                 <Tab eventKey={tabs.length} key={`${this.props.detail._id}_Properties_${tabs.length}`} title='Properties'>
                     <Properties detail={this.props.detail} unit={this.props.unit} onSubmit={this.onSubmitProperties.bind(this)} />
                 </Tab>
+
+                <Preview id={this.props.detail._id} />
             </Tabs>
         )
     }

@@ -47,6 +47,16 @@
   background-color: #FF983C;
 }
   
+.button.info {
+  background-color: var(--status-info);
+  box-shadow: 0px 5px 0px 0px #D8AB00;
+}
+
+.button.info:hover {
+  background-color: #FFDE29;
+}
+
+
 .button:active {
   transform: translate(0px, 5px);
   -webkit-transform: translate(0px, 5px);

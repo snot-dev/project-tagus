@@ -25,6 +25,7 @@
   --status-success: #2ecc71;
   --status-error: #e74c3c;
   --status-warning: #e67e22;
+  --status-info: #f1c40f;
 }
 
 html, body, #root {

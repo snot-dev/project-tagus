@@ -39,6 +39,31 @@ const site = () => {
     const router = require('express').Router();
     const bridgesContent = {};
     const fields = 'name alias url template partial content'
+    
+    router.post('/preview/:id', (req, res) => {
+        bridges.model.find({})
+        .then( docs => {
+            if(docs) {
+                for(const bridge of docs) {
+                    bridgesContent[bridge.alias] = bridge.content;
+                }
+            }
+    
+            content.model.findOne({'_id': req.params.id})
+            .populate({
+                path: 'children',
+                populate: {path: 'children'}
+            })
+            .exec((err, result) => {
+                if(result) {
+                    res.render(result.template, {viewContent: result, bridges: bridgesContent});
+                }
+                else {
+                    res.json("404 - not found");
+                }
+            });
+        })
+    });
 
     router.get('*', (req, res) => {
         bridges.model.find({})
