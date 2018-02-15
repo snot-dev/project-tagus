@@ -153,9 +153,9 @@ class DropdownOptionsMenu extends Component {
         });
     }
 
-    _render() {
+    render() {
         return(
-            <Menu title="Dropdown List Options" className="col-xs-6" onCloseButton={this._onCloseMenu.bind(this)} >
+            <Menu show={this.props.show} title="Dropdown List Options" className="col-xs-6" onCloseButton={this._onCloseMenu.bind(this)} >
                 <div className="fluid-container tagus-dropdown-menu-options-list">
                     {!this.state.valid 
                     ?  <div className="row"> <p className="tagus-dropdown-options-menu-error col-xs-12">You must fill every option!</p> </div>
@@ -187,10 +187,6 @@ class DropdownOptionsMenu extends Component {
                 <Modal type='warning' title="Warning!" body="Are you sure you want to discard all changes?" show={this.state.showWarningModal} confirmButton={{onClick:this._close.bind(this), text: "Discard Changes!"}}  closeButton={{onClick: this._toggleWarningModal(false), text: "Cancel"}} />
             </Menu>
         );
-    }
-
-    render() {
-        return this.props.show ? this._render() : null;
     }
 }
 

@@ -295,48 +295,48 @@ class UnitsDetail extends Component {
     }
 
     onFieldFormSubmit(values) {
-        if(this.state.addingField) {
-            const field = values.field;
-            const tabs = this.state.tabs.slice(0);
+        const field = values.field;
+        const tabs = this.state.tabs.slice(0);
 
-            field.alias = camelize(field.name);
-            field.required = !!values.required;
-            
-            if (field.type === 'dropdownList' && this.state.editingField.options) {
-                field.options = this.state.editingField.options.slice(0);
-            } else {
-                field.options = null;
-                delete field.options;
-            }
+        field.alias = camelize(field.name);
+        field.required = !!values.required;
+        
 
-            for(const tab of tabs) {
-                if(tab.alias === this.state.addingField) {
-                    if(this.state.editingField) {
-                        for(let i = 0; i < tab.fields.length; i++) {
-                            let tabField = tab.fields[i];
+        if (field.type === 'dropdownList') {
+            const stateField = this.state.addingField || this.state.editingField;
+            field.options = field.options ? _.cloneDeep(stateField.options) : []
+        } else {
+            field.options = null;
+            delete field.options;
+        }
 
-                            if(tabField.alias === this.state.editingField.alias) {
-                                tab.fields[i] = field;
-                                break;
-                            }
+        for(const tab of tabs) {
+            if(tab.alias === this.state.addingField) {
+                if(this.state.editingField) {
+                    for(let i = 0; i < tab.fields.length; i++) {
+                        let tabField = tab.fields[i];
+
+                        if(tabField.alias === this.state.editingField.alias) {
+                            tab.fields[i] = field;
+                            break;
                         }
                     }
-                    else {
-                        tab.fields.push(field);
-                    }
-                    break;
                 }
+                else {
+                    tab.fields.push(field);
+                }
+                break;
             }
-
-            this.setState({
-                touched: true,
-                tabs,
-                addingField: false,
-                addingTab: false,
-                editingField: null,
-                editingOptions: false
-            });
         }
+
+        this.setState({
+            touched: true,
+            tabs,
+            addingField: false,
+            addingTab: false,
+            editingField: null,
+            editingOptions: false
+        });
     }
 
     saveUnit(form) {
@@ -403,11 +403,12 @@ class UnitsDetail extends Component {
     }
 
     render() {
+        console.warn(this.state);
+
         const menu = [
             <AddFieldMenu key='addFieldMenu' onAddOptionClick={this.toggleAddOptionMenu(true)} defaultValues={this.state.editingField} onClose={this._resetUIState.bind(this)} onSubmit={this.onFieldFormSubmit.bind(this)} unitFields={this.props.unitFields} tab={this.state.addingField} show={this.state.addingField && !this.state.addingTab} />,
             <AddTabMenu key='addTabMenu' defaultValues={this.state.editingTab} onClose={this._resetUIState.bind(this)} show={this.state.addingTab && !this.state.addingField} onSubmit={this.onTabFormSubmit.bind(this)} />,
-            <DropdownOptionsMenu key="dopdownOptionsMenu" onOptionsSubmit={this.onOptionsSubmit.bind(this)} field={this.state.editingField} show={this.state.editingOptions && this.state.editingField} onClose={this.toggleAddOptionMenu(false)}  />
-
+            <DropdownOptionsMenu key="dopdownOptionsMenu" onOptionsSubmit={this.onOptionsSubmit.bind(this)} field={this.state.editingField} show={!!(this.state.editingOptions &&  (this.state.addingField || this.state.editingField))} onClose={this.toggleAddOptionMenu(false)}  />
         ];
 
         return (
