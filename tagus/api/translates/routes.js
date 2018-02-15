@@ -1,4 +1,26 @@
 const Translate = require('./model');
-const router = require('../router/router');
+const router = require('express').Router();
 
-module.exports = router.defineCRUDRoutes(Translate);
+router.get('/', (req, res) => {
+    Translate.findOne()
+    .then(doc => {
+        res.json(doc);
+    });
+});
+
+router.post('/', (req, res) => {
+    Translate.findOne()
+    .then(doc => {
+        doc.translates = req.body;
+
+        return doc.save();
+    })
+    .then( result => {
+        res.json({message: "Document updated!", result});
+    })
+    .catch(err => {
+        res.json(err);
+    })
+}); 
+
+module.exports = router;

@@ -1,16 +1,7 @@
-module.exports = [
-    {
-        key: "helloWorld",
-        langs: [{
-            "en": "Hello World",
-            "pt": "Olá Mundo"
-        }]
-    },
-    {
-        key: "goodbye",
-        langs: [{
-            "en": "Goodbye",
-            "pt": "Adeus"
-        }]
+module.exports = [{
+    translates: {
+        test: "this is a test",
+        another: "this is another tes",
+        number: 9
     }
-];
+}];
