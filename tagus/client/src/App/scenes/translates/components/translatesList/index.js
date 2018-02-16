@@ -20,13 +20,12 @@ class TranslatesList extends Component {
             valid: true,
             errorMessage: '',
             translates: [],
-            fields: [],
             showWarningModal: false
         };
     }
 
     componentWillReceiveProps(props) {
-        if (props.list) {
+        if (props.list && !this.state.touched && !this.state.submited) {
             this.setState({
                 translates: this._convertKeyValueToArray(props.list)
             }); 
@@ -142,7 +141,6 @@ class TranslatesList extends Component {
             valid: true,
             errorMessage: '',
             translates: this._convertKeyValueToArray(this.props.list),
-            fields: [],
             showWarningModal: false
         });
     }
@@ -155,7 +153,7 @@ class TranslatesList extends Component {
             valid: true,
             errorMessage: '',
             showWarningModal: false
-        })
+        });
         store.dispatch(saveTranslates(translates));
     }
 
