@@ -24,6 +24,7 @@ class TabContent extends Component {
         );
     }
   
+    
     render() {
         return (
             <Tabs defaultActiveKey={0}  id={`tagus-unit-${this.props.tab.alias}`}  className="tagus-unit-tabs" >

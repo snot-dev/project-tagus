@@ -37,9 +37,13 @@ class FormFields extends Component {
     }
     
     _onFieldBlur(field) {
-        return (value) => {
+        return (e) => {
             if( field.onBlur) {
                 field.onBlur(this.props.formApi);
+            }
+
+            if(this.props.onFieldBlur) {
+                this.props.onFieldBlur(this.props.formApi); 
             }
          };
     }

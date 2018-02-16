@@ -24,7 +24,8 @@ class UnitsDetail extends Component {
         this.state = {
             touched: false,
             addingTab: false,
-            addingField: false,
+            addingFieldTab: null,
+            addingField: null,
             editingOptions: false,
             editingField: null,
             deletingField: null,
@@ -85,12 +86,14 @@ class UnitsDetail extends Component {
     _resetUIState() {
         this.setState({
             addingTab: false,
-            addingField: false,
+            addingFieldTab: null,
+            addingField: null,
             editingField: null,
             deletingField: null,
             editingTab: null,
             deletingTab: null,
-            modalBodyText: null
+            modalBodyText: null,
+            touched: false
         });
     }
 
@@ -116,7 +119,7 @@ class UnitsDetail extends Component {
             this.setState({
                 touched: true,
                 addingTab: false,
-                addingField: false
+                addingFieldTab: null
             });
         }
 
@@ -151,7 +154,6 @@ class UnitsDetail extends Component {
             this._resetState(reset);
         }
     }    
-
     
     addTabClick() {
         if(!this.state.addingTab) {
@@ -187,23 +189,23 @@ class UnitsDetail extends Component {
         this.setState({
             touched: true,
             addingTab: false, 
-            addingField: false,
+            addingFieldTab: null,
             editingTab: null,
             tabs: tabs
         });
     }
     
     addFieldClick(tab) {
-        if(!this.state.addingField) {
+        if(!this.state.addingFieldTab) {
             this.setState({
-                addingField: tab 
+                addingFieldTab: tab 
             });
         }
     }
     
     onEditField(tab, field) {
         this.setState({
-            addingField: tab,      
+            addingFieldTab: tab,      
             editingField: field     
         })
     }
@@ -220,7 +222,7 @@ class UnitsDetail extends Component {
 
         if(tab) {
             if(field) {
-                modalBodyText = `Are you sure you want to delete ${field.name} from ${tab.name}?`;
+                modalBodyText = `Are you sure you want to delete ${field.name} from ${tab}?`;
             } 
             else {
                 modalBodyText = `Are you sure you want to delete ${tab.name} and ALL of its fields?`;
@@ -296,22 +298,21 @@ class UnitsDetail extends Component {
 
     onFieldFormSubmit(values) {
         const field = values.field;
-        const tabs = this.state.tabs.slice(0);
+        const tabs = _.cloneDeep(this.state.tabs);
 
         field.alias = camelize(field.name);
         field.required = !!values.required;
         
-
         if (field.type === 'dropdownList') {
             const stateField = this.state.addingField || this.state.editingField;
-            field.options = field.options ? _.cloneDeep(stateField.options) : []
+            field.options = stateField.options ? _.cloneDeep(stateField.options) : []
         } else {
             field.options = null;
             delete field.options;
         }
 
         for(const tab of tabs) {
-            if(tab.alias === this.state.addingField) {
+            if(tab.alias === this.state.addingFieldTab) {
                 if(this.state.editingField) {
                     for(let i = 0; i < tab.fields.length; i++) {
                         let tabField = tab.fields[i];
@@ -332,8 +333,9 @@ class UnitsDetail extends Component {
         this.setState({
             touched: true,
             tabs,
-            addingField: false,
+            addingFieldTab: null,
             addingTab: false,
+            addingField: null,
             editingField: null,
             editingOptions: false
         });
@@ -352,6 +354,8 @@ class UnitsDetail extends Component {
 
 
         store.dispatch(saveUnit(Object.assign(detail, unit)));
+
+        this._resetUIState();
     }    
 
     toggleAddOptionMenu(show) {
@@ -363,17 +367,31 @@ class UnitsDetail extends Component {
     }
 
     onOptionsSubmit(values) {
-        const field = _.cloneDeep(this.state.editingField);
-        
-        field.options = values;
+        const isNewField = !!this.state.addingField;
+        const field = _.cloneDeep(isNewField ? this.state.addingField : this.state.editingField);
+        const newState = {};
 
-        this.setState({
-            editingField: field,
-            editingOptions: false
-        });
+        field.options = values;
+        
+        if(isNewField) {
+            newState.addingField = field;
+        }
+        else {
+            newState.editingField = field;
+        }
+
+        newState.editingOptions = false;
+
+        this.setState(newState);
     }
 
-    renderForm() {
+    onfieldBlur(formApi) {
+        const addingField = formApi.values;
+
+        this.setState({addingField});
+    }
+
+    _renderForm() {
         const created = moment(this.props.detail.created).format(constants.config.DATE_FORMAT);
 
         return (
@@ -393,8 +411,8 @@ class UnitsDetail extends Component {
                         { this.props.templates  
                         ? <TemplatesList onChange={this._onTemplatesChange.bind(this)} templates={this.props.templates} unitTemplates={this.state.templates} />
                         :null
-                        }
-                        <TabsList onEditTab={this.onEditTab.bind(this)} onDeleteTab={this.onToggleDeleteModal.bind(this)} onDeleteField={this.onToggleDeleteModal.bind(this)} onEditField={this.onEditField.bind(this)} addFieldClick={this.addFieldClick.bind(this)} addingField={this.state.addingField} addingTab={this.state.addingTab} tabs={this.state.tabs || this.props.detail.tabs} />
+                    }
+                        <TabsList onEditTab={this.onEditTab.bind(this)} onDeleteTab={this.onToggleDeleteModal.bind(this)} onDeleteField={this.onToggleDeleteModal.bind(this)} onEditField={this.onEditField.bind(this)} addFieldClick={this.addFieldClick.bind(this)} addingFieldTab={this.state.addingFieldTab} addingTab={this.state.addingTab} tabs={this.state.tabs || this.props.detail.tabs} />
                         <AddLink className="text-center" onClick={this.addTabClick.bind(this)} disabled={!!this.state.addingTab || !!this.props.addingField} text="Add a new Tab" />
                     </Form>
                 </div>
@@ -403,18 +421,16 @@ class UnitsDetail extends Component {
     }
 
     render() {
-        console.warn(this.state);
-
         const menu = [
-            <AddFieldMenu key='addFieldMenu' onAddOptionClick={this.toggleAddOptionMenu(true)} defaultValues={this.state.editingField} onClose={this._resetUIState.bind(this)} onSubmit={this.onFieldFormSubmit.bind(this)} unitFields={this.props.unitFields} tab={this.state.addingField} show={this.state.addingField && !this.state.addingTab} />,
-            <AddTabMenu key='addTabMenu' defaultValues={this.state.editingTab} onClose={this._resetUIState.bind(this)} show={this.state.addingTab && !this.state.addingField} onSubmit={this.onTabFormSubmit.bind(this)} />,
-            <DropdownOptionsMenu key="dopdownOptionsMenu" onOptionsSubmit={this.onOptionsSubmit.bind(this)} field={this.state.editingField} show={!!(this.state.editingOptions &&  (this.state.addingField || this.state.editingField))} onClose={this.toggleAddOptionMenu(false)}  />
+            <AddFieldMenu onFieldBlur={this.onfieldBlur.bind(this)} key='addFieldMenu' onAddOptionClick={this.toggleAddOptionMenu(true)} defaultValues={this.state.addingField || this.state.editingField} onClose={this._resetUIState.bind(this)} onSubmit={this.onFieldFormSubmit.bind(this)} unitFields={this.props.unitFields} tab={this.state.addingFieldTab} show={this.state.addingFieldTab && !this.state.addingTab} />,
+            <AddTabMenu key='addTabMenu' defaultValues={this.state.editingTab} onClose={this._resetUIState.bind(this)} show={this.state.addingTab && !this.state.addingFieldTab} onSubmit={this.onTabFormSubmit.bind(this)} />,
+            <DropdownOptionsMenu key="dopdownOptionsMenu" onOptionsSubmit={this.onOptionsSubmit.bind(this)} field={this.state.editingField} show={!!(this.state.editingOptions &&  (this.state.addingFieldTab || this.state.editingField))} onClose={this.toggleAddOptionMenu(false)}  />
         ];
 
         return (
             <Panel title={`${this.props.detail.name}`} className="col-xs-8 full-height" menu={menu}>
                 {this.props.detail._id  
-                ?   this.renderForm()
+                ?   this._renderForm() 
                 :   null
                 }
                 <Overlay show={this.props.fetchingList || this.props.savingDetail}/>

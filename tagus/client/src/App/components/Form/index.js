@@ -17,11 +17,11 @@ class CustomForm extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(typeof nextProps.disabled !== undefined && nextProps.disabled !== this.props.disabled) {
+        if(typeof nextProps.disabled !== undefined) {
             this.setState({
-                formWasTouched: nextProps.disabled
+                formWasTouched: !nextProps.disabled
             });
-        }
+        } 
     }
 
     _errorValidator(values) {
@@ -38,6 +38,7 @@ class CustomForm extends Component {
     _onSubmit(formApi) {
         return () => {
             if(this.state.formWasTouched && !this._formHasErrors(formApi)){
+                // formApi.submitForm();
                 const formValues = {};
 
                 formValues[this.props.name] = formApi.values;
@@ -45,8 +46,6 @@ class CustomForm extends Component {
                 if(this.props.onSubmit){
                     this.props.onSubmit(formValues);
                 }
-                
-                formApi.submitForm();
             }
         };
     }
@@ -98,13 +97,14 @@ class CustomForm extends Component {
 
     render() {
         const buttons = this.props.buttons || true;
-        const disabled = !this.state.formWasTouched;
+        const disabled = typeof this.props.disabled !== 'undefined' ? this.props.disabled : !this.state.formWasTouched;
+
 
         return (
             <Form className="tagus-form" dontValidateOnMount={true} validateError={this._errorValidator.bind(this)} defaultValues={this.props.defaultValues}>
                 {formApi => (
                     <form onSubmit={formApi.submitForm} className="container-fluid">
-                        <FormFields formApi={formApi} submits={formApi.submits} formName={this.props.name} onFieldChange={this._touchTheForm(formApi.getFormState())} fields={this.props.fields} />
+                        <FormFields formApi={formApi} submits={formApi.submits} formName={this.props.name} onFieldBlur={this.props.onFieldBlur} onFieldChange={this._touchTheForm(formApi.getFormState())} fields={this.props.fields} />
                         {this.props.children}
                         {buttons 
                         ?   <FormButtons onSubmit={this._onSubmit(formApi).bind(this)} onReset={this._toggleCancelModal(true).bind(this)} disabled={disabled} />

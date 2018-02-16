@@ -79,7 +79,7 @@ module.exports = {
                         
                         model.findOne({'alias': alias})
                         .then(doc => {
-                            if (doc && doc._id !== req.params.id) {
+                            if (doc && doc._id != req.params.id) {
                                 res.json({message: "warning", result: alias})
                             } else {
                                 model.findOne({'_id': req.params.id})

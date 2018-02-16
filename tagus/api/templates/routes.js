@@ -18,7 +18,7 @@ module.exports = app => {
             }
         }
         
-        res.json(templates);
+        res.json({list:templates});
     });
 
     return router;

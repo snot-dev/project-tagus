@@ -41,7 +41,7 @@ class TabsList extends Component {
                     return (
                         <div className="col-xs-12 tagus-unit-tab-container" key={`${tab.alias}_${index}`}>
                             {index > 0 ? this.renderTabOptions(tab) : null}
-                            <TabContent onDeleteField={this.props.onDeleteField} onEditField={this.props.onEditField} addFieldClick={this.props.addFieldClick} addingField={this.props.addingField} addingTab={this.props.addingTab} tab={tab} />
+                            <TabContent onDeleteField={this.props.onDeleteField} onEditField={this.props.onEditField} addFieldClick={this.props.addFieldClick} addingFieldTab={this.props.addingFieldTab} addingTab={this.props.addingTab} tab={tab} />
                         </div>
                     );
                 })}

@@ -7,7 +7,7 @@ class Menu extends Component {
     constructor(props) {
         super(props);
 
-        this.transitionTimeout = 50;
+        this.transitionTimeout = 150;
 
         this.duration = {
             opacity: 150,
@@ -42,24 +42,24 @@ class Menu extends Component {
     _render(state) {
         return (
             <div className="row">
-                    <div className="col-xs-12">
-                    {this.props.title
-                        ? <div className="row">
-                                <div className="col-xs-12 tagus-menu-header">
-                                {this.props.title}
-                                {this.props.onCloseButton 
-                                ? <div className="tagus-menu-close-button" onClick={this.props.onCloseButton}>X</div>
-                                : null}
-                                </div>
+                <div className="col-xs-12">
+                {this.props.title
+                    ? <div className="row">
+                            <div className="col-xs-12 tagus-menu-header">
+                            {this.props.title}
+                            {this.props.onCloseButton 
+                            ? <div className="tagus-menu-close-button" onClick={this.props.onCloseButton}>X</div>
+                            : null}
                             </div>
-                        : null}
-                        <div className="row">
-                            <div className="col-xs-12 tagus-menu-content">
-                                {this.props.children}   
-                            </div>
+                        </div>
+                    : null}
+                    <div className="row">
+                        <div className="col-xs-12 tagus-menu-content">
+                            {this.props.children}   
                         </div>
                     </div>
                 </div>
+            </div>
         );
     }
     
@@ -88,7 +88,7 @@ class Menu extends Component {
 Menu.propTypes = {
     title: PropTypes.string.isRequired,
     onCloseButton: PropTypes.func,
-    show: PropTypes.bool.isRequired,
+    show: PropTypes.bool,
     children: PropTypes.oneOfType([
         PropTypes.object,
         PropTypes.array
