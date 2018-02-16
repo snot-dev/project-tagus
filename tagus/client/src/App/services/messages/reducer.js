@@ -49,7 +49,8 @@ export const messagesReducer = (state, action) => {
         }
         case constants.content.POST_CONTENT_DETAIL_FULFILLED:
         case constants.units.POST_UNIT_DETAIL_FULFILLED: 
-        case constants.bridges.POST_BRIDGES_DETAIL_FULFILLED: {
+        case constants.bridges.POST_BRIDGES_DETAIL_FULFILLED:
+        case constants.translates.POST_TRANSLATES_LIST_FULFILLED: {
             if(action.payload.data.message !== 'warning') {
                 newState.list.push({
                     type: 'success',

@@ -13,6 +13,15 @@ export const translatesReducer = (state, action) => {
             newState.fetchingList = false;
             return newState;
         }
+        case constants.translates.POST_TRANSLATES_LIST_PENDING: {
+            newState.savingList = true;
+            return newState;
+        }
+        case constants.translates.POST_TRANSLATES_LIST_FULFILLED: {
+            newState.list = action.payload.data.result.translates;
+            newState.savingList = false;
+            return newState;
+        }
         default: {
             return state || {};
         }

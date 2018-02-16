@@ -24,7 +24,9 @@
 }
 
 .tagus-dropdown-options-menu-error {
-    color:var(--bridge-red);
+    color:var(--status-error);
+    font-weight: bold;
+    font-size: 16px;
     margin-bottom: 15px;
 }
 

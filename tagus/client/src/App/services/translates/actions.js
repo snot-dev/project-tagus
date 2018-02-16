@@ -15,3 +15,12 @@ export function getListIfNedeed() {
         }
     };
 };
+
+export function saveTranslates(translates) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: constants.translates.POST_TRANSLATES_LIST,
+            payload: axios.post('/translates', translates)
+        });
+    }
+}

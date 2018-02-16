@@ -4,7 +4,9 @@ import Panel from '../../../../components/Panel';
 import Modal from '../../../../components/Modal';
 import AddLink from '../../../../components/AddLink';
 import Overlay from '../../../../components/Overlay';
+import FormButtons from '../../../../components/FormButtons';
 import store from '../../../../services/store';
+import {saveTranslates} from '../../../../services/translates/actions';
 import './translateList.css';
 
 class TranslatesList extends Component {
@@ -16,6 +18,7 @@ class TranslatesList extends Component {
             submited: false,
             timesSubmited:0,
             valid: true,
+            errorMessage: '',
             translates: [],
             fields: [],
             showWarningModal: false
@@ -24,7 +27,17 @@ class TranslatesList extends Component {
 
     componentWillReceiveProps(props) {
         if (props.list) {
-            this._convertToArrayOfKeyValue(props.list);
+            this.setState({
+                translates: this._convertKeyValueToArray(props.list)
+            }); 
+        }
+    }
+
+    _toggleWarningModal(show) {
+        return () => {
+            this.setState({
+                showWarningModal:show
+            });
         }
     }
 
@@ -45,17 +58,17 @@ class TranslatesList extends Component {
 
     _onBlur(index) {
         return (e) => {
-            const options = _.cloneDeep(this.state.options);
+            const translates = _.cloneDeep(this.state.translates);
 
-            options[index][e.target.name] = e.target.value;
+            translates[index][e.target.name] = e.target.value;
 
             this.setState({
-                options
+                translates
             });
         }
     }
 
-    _convertToArrayOfKeyValue(listObj){
+    _convertKeyValueToArray(listObj){
         const arr = [];
 
         for(const k in listObj) {
@@ -65,30 +78,117 @@ class TranslatesList extends Component {
             });
         }
 
-        this.setState({
-            translates: arr
+        return arr;
+    }
+
+    _addNewTranslate() {
+        const translates = _.cloneDeep(this.state.translates);
+
+        translates.push({
+            key: '',
+            value: ''
         });
+
+        this.setState({translates, touched: true});
+    }
+
+    _onDelete(index) {
+        return () => {
+            const translates = _.cloneDeep(this.state.translates);
+
+            translates.splice(index, 1);
+
+            this.setState({
+                translates,
+                touched:true,
+                valid: true
+            });
+        }
+    }
+
+    _validate() {
+        const translates = {};
+
+        for (const item of this.state.translates) {
+            if (translates[item.key]) {
+                this.setState({
+                    valid: false,
+                    errorMessage: 'You cannot have two similar keys!',
+                    touched: false
+                });
+                return null;
+            }
+            else if (!item.key || !item.value) {
+                this.setState({
+                    valid: false,
+                    errorMessage: 'Every translate should have a key and a value filled!',
+                    touched: false
+                });
+                return null;
+            }
+            else {
+                translates[item.key] = item.value;
+            }
+        }
+
+        this._saveTranslates(translates);
+    }
+
+    _resetState() {
+        this.setState({
+            touched: false,
+            submited: false,
+            timesSubmited:0,
+            valid: true,
+            errorMessage: '',
+            translates: this._convertKeyValueToArray(this.props.list),
+            fields: [],
+            showWarningModal: false
+        });
+    }
+
+    _saveTranslates(translates) {
+        this.setState({
+            timesSubmited: this.state.timesSubmited+1,
+            submited: true,
+            touched: false,
+            valid: true,
+            errorMessage: '',
+            showWarningModal: false
+        })
+        store.dispatch(saveTranslates(translates));
     }
 
     render() {
         return (
             <Panel title="Translates" className="col-xs-6 full-height">
                 <div className="container-fluid tagus-translates-list">
+                {!this.state.valid 
+                    ?  <div className="row"> <p className="tagus-translates-list-error col-xs-12">{this.state.errorMessage}</p> </div>
+                    : null }
                     {this.state.translates.map((translate, index) => {
                         return (
                             <div key={`${index}_${translate.key}`} className="row tagus-translates-list-item">
-                                <div className="col-xs-12 col-sm-6">
+                               <div className="tagus-translates-list-item-delete">
+                                        <a onClick={this._onDelete(index)} className="tagus-translates-list-item-delete-icon">
+                                            <i className="fa fa-trash-o" aria-hidden="true"></i>
+                                        </a>
+                                    </div>                                <div className="col-xs-12 col-sm-6">
                                     <label htmlFor="key" className="tagus-label tagus-translate-list-item-key">Key</label>
-                                    <input name="key" type='text' className="tagus-translate-input" defaultValue={translate.key}  />
+                                    <input name="key" type='text' className="tagus-input tagus-translate-input" onChange={this._onChange.bind(this)} onBlur={this._onBlur(index)} defaultValue={translate.key}  />
                                 </div>
                                 <div className="col-xs-12 col-sm-6">
                                     <label htmlFor="value" className="tagus-label tagus-translate-list-item-key">Value</label>
-                                    <input name="value" type='text' className="tagus-translate-input" defaultValue={translate.value} />
+                                    <input name="value" type='text' className="tagus-input tagus-translate-input" onChange={this._onChange.bind(this)} onBlur={this._onBlur(index)} defaultValue={translate.value} />
                                 </div>
                             </div>
                         );
                     })}
+                    <AddLink onClick={this._addNewTranslate.bind(this)} text="Add new translate" />
+                    <FormButtons disabled={!this.state.touched} onSubmit={this._validate.bind(this)} onReset={this._toggleWarningModal(true)} />
                 </div>
+                <Modal type='warning' title="Warning!" body="Are you sure you want to discard all changes?" show={this.state.showWarningModal} confirmButton={{onClick:this._resetState.bind(this), text: "Discard Changes!"}}  closeButton={{onClick: this._toggleWarningModal(false), text: "Cancel"}} />
+                <Overlay show={this.props.fetchingList || this.props.savingList} />
             </Panel>
         )
     }

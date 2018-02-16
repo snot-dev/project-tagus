@@ -108,7 +108,8 @@ class DropdownOptionsMenu extends Component {
 
             this.setState({
                 options,
-                touched:true
+                touched:true,
+                valid: true
             });
         }
     }
@@ -165,17 +166,17 @@ class DropdownOptionsMenu extends Component {
                             return (
                                 <div key={`options_${i}`} className="row tagus-dropdown-menu-options-list-item">
                                     <div className="tagus-dropdown-menu-options-list-item-delete">
-                                    <a onClick={this._onDelete(i)} className="tagus-dropdown-menu-options-list-item-delete-icon">
-                                        <i className="fa fa-trash-o" aria-hidden="true"></i>
-                                    </a>
+                                        <a onClick={this._onDelete(i)} className="tagus-dropdown-menu-options-list-item-delete-icon">
+                                            <i className="fa fa-trash-o" aria-hidden="true"></i>
+                                        </a>
                                     </div>
                                     <div className="col-xs-12 col-sm-6">
                                         <label htmlFor="label" className="tagus-drodpdown-label">Label</label>
-                                        <input name="label" type='text' className="tagus-dropdown-input" defaultValue={option.label} onChange={this._onChange.bind(this)} onBlur={this._onBlur(i)} />
+                                        <input name="label" type='text' className="tagus-input tagus-dropdown-input" defaultValue={option.label} onChange={this._onChange.bind(this)} onBlur={this._onBlur(i)} />
                                     </div>
                                     <div className="col-xs-12 col-sm-6">
                                         <label htmlFor="value" className="tagus-label">Value</label>
-                                        <input name="value" type='text' className="tagus-dropdown-input" defaultValue={option.value} onChange={this._onChange.bind(this)} onBlur={this._onBlur(i)}/>
+                                        <input name="value" type='text' className="tagus-input tagus-dropdown-input" defaultValue={option.value} onChange={this._onChange.bind(this)} onBlur={this._onBlur(i)}/>
                                     </div>
                                 </div>
                             );
