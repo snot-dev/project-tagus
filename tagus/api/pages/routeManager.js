@@ -5,7 +5,6 @@ var router = require('express').Router();
 module.exports = function(initializerUrl) {
     pageModel.find({}, function(err, docs) {
         if (err) {
-            console.log(err);
         }
 
         if( docs && docs.length > 0 ) {

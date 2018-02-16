@@ -1,6 +1,5 @@
 const Content = require('./model');
 const S = require('string');
-//const router = require('../router/router');
 const router = require('express').Router();
 
 const convertToAlias = name => {
