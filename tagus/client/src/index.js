@@ -6,6 +6,7 @@ import './vendor/bootstrap/css/bootstrap.min.css';
 import './vendor/bootstrap/css/bootstrap-theme.min.css';
 import './vendor/font-awesome/css/font-awesome.min.css';
 import App from './App';
+import LoginPage from './App/scenes/login';
 import registerServiceWorker from './registerServiceWorker';
 import store from './App/services/store';
 
@@ -14,7 +15,8 @@ ReactDOM.render(
     <Provider store={store}>
         <HashRouter >
             <Switch>
-                <Route path="/" component={App} />
+                <Route exact path="/" component={App} />
+                <Route path="/login" component={LoginPage} />
                 <Redirect to="/" />
             </Switch>
         </HashRouter>

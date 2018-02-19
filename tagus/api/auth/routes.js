@@ -15,13 +15,19 @@ module.exports = User => {
 
                     const token = jwt.encode(payload, process.env.AUTHSECRETORKEY);
                         
-                    res.json({
-                        token
+                    res.json({ 
+                        success: {
+                            token
+                        }
                     })
                 }
                 else {
                     console.log("not found!");
-                    res.sendStatus(401);
+                    res.json({
+                        error: {
+                            message: "No user was found"
+                        }
+                    });
                 }
             });
         }
