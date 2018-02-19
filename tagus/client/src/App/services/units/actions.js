@@ -3,11 +3,11 @@ import {constants} from '../constants';
 import axios from '../axios';
 
 
-let _shouldGetUnitsList = function(state) {
+let _shouldGetUnitsList = state => {
     return state.units.list.length === 0;
 };
 
-let _shouldGetUnitDetail = function(state, id) {
+let _shouldGetUnitDetail = (state, id) => {
     //TODO: add more debug code
 
     return !state.units.detail._id || state.units.detail._id !== id;

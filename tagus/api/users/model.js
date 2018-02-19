@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema ({
     created: {type:Date, default: Date.now(), required: true},
     isCreator: Boolean,
     lastActivity: Date,
-    isAdmin: {type: Boolean, default: false}
+    logs: {type: Array, default: []}
 });
 
 userSchema.methods = {

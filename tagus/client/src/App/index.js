@@ -7,6 +7,7 @@ import Content from './scenes/content';
 import Units from './scenes/units';
 import Bridges from './scenes/bridges';
 import Translates from './scenes/translates';
+import Users from './scenes/users';
 import {Route} from 'react-router-dom';
 import  './app.css';
 
@@ -39,6 +40,12 @@ class App extends Component {
         component: Translates,
         icon: 'list'
       },
+      {
+        name: "Users",
+        path: '/users',
+        component: Users,
+        icon: 'users'
+      }
     ];
   }
   render() {

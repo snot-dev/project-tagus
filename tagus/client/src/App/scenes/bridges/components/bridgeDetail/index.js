@@ -27,7 +27,7 @@ class  BridgeDetail extends Component {
         ];
     }
 
-    componentWillMount() {
+    componentDidMount() {
         if(this.props.match.params.id) {
             store.dispatch(getBridgeDetailIfNeeded(this.props.match.params.id));
         }

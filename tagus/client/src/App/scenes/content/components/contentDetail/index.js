@@ -19,7 +19,7 @@ class ContentDetail extends Component {
         };
     }
     
-    componentWillMount() {
+    componentDidMount() {
         if(this.props.match.params.id) {
             store.dispatch(getContentDetailIfNeeded(this.props.match.params.id));
         }

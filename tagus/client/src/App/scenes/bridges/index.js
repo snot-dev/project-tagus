@@ -8,7 +8,7 @@ import BridgeDetail from './components/bridgeDetail';
 import './bridges.css';
 
 class Bridges extends Component {
-    componentWillMount() {
+    componentDidMount() {
         store.dispatch(getBridgesListIfNeeded());
         store.dispatch(getUnitsListIfNeeded());
     }

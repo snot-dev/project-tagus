@@ -7,6 +7,6 @@ module.exports = [
                         surname: "userino",
                         created: new Date(),
                         isCreator: true,
-                        lastActivity: new Date()
+                        logs: []
                     }
                 ];

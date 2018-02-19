@@ -35,7 +35,7 @@ class UnitsDetail extends Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         if (this.props.match.params.id) {
             store.dispatch(getUnitDetailIfNeeded(this.props.match.params.id));
         }

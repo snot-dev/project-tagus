@@ -5,7 +5,7 @@ import store from '../../services/store';
 import {getListIfNedeed} from '../../services/translates/actions';
 
 class Translates extends Component {
-    componentWillMount() {
+    componentDidMount() {
         store.dispatch(getListIfNedeed());
     }
 

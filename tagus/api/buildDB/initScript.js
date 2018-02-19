@@ -21,6 +21,8 @@ let collectionCreated = false;
 
 console.log("Connecting to " + process.env.MONGO_CONNECTION_STRING)
 
+
+//TODO: Refactor this to a loop!
 mongoose.connect(process.env.MONGO_CONNECTION_STRING)
 .then(() => {
 
@@ -36,6 +38,19 @@ mongoose.connect(process.env.MONGO_CONNECTION_STRING)
     })
     .then(settings => {
         console.log(collectionCreated ? 'Settings already created!': 'Inserted Settings!' );
+        collectionCreated = false;
+        return User.find({});
+    })
+    .then( users => {
+        if(users.length === 0) {
+            return User.insertMany(usersSeed);
+        } 
+        else {
+            collectionCreated = true;
+        }
+    })
+    .then(settings => {
+        console.log(collectionCreated ? 'Users already created!': 'Inserted Users!' );
         collectionCreated = false;
         return Translate.find({});
     })
@@ -65,7 +80,7 @@ mongoose.connect(process.env.MONGO_CONNECTION_STRING)
         return Unit.find({});
     })
     .then(units => {
-        if(units.length ===0) {
+        if(units.length === 0) {
             return Unit.insertMany(unitsSeed);
         } 
         else {
