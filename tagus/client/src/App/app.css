@@ -122,8 +122,9 @@ label {
 .tagus-input {
   width: 100%;
   padding: 6px;
-  border: 1px solid #ddd;
+  border: 2px solid #ddd;
   border-radius: 5px;
+  transition: all 0.25s ease;
 }
 
 .tagus-input.checkbox,
@@ -136,6 +137,7 @@ label {
 .tagus-input > select:focus {
   outline-color:none;
   outline: none;
+  border: 2px solid var(--status-default);
 }
 
 

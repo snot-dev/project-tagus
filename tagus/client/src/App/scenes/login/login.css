@@ -1,0 +1,28 @@
+#tagus-login {
+    height: 100%;
+    background-color: var(--bridge-red);
+    padding-top: 120px;
+}
+
+.tagus-login-form-container {
+    padding: 30px;
+    position: relative;
+    background-color: #f5f5f5;
+    max-width: 350px;
+    margin: 0 auto;
+    border-radius: 5px;
+    border: 2px solid rgba(206,219,236,0.75);
+    box-shadow: 0px 2px 0px 0px rgba(107, 103, 103, 0.5);
+}
+
+.tagus-login-form-container .tagus-login-field-container {
+    margin-bottom: 15px;
+}
+
+.tagus-login-error-message {
+    color:var(--status-error);
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 15px;
+    min-height: 22px;
+}

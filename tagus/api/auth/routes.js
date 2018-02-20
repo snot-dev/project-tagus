@@ -17,12 +17,12 @@ module.exports = User => {
                         
                     res.json({ 
                         success: {
-                            token
+                            token,
+                            user: user  
                         }
                     })
                 }
                 else {
-                    console.log("not found!");
                     res.json({
                         error: {
                             message: "No user was found"

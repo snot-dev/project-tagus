@@ -5,6 +5,7 @@ import { bridgesReducer } from './bridges/reducer';
 import { messagesReducer } from './messages/reducer';
 import { translatesReducer } from './translates/reducer';
 import { usersReducer } from './users/reducer';
+import { authReducer } from './auth/reducer';
 import thunk from 'redux-thunk';
 import promise from 'redux-promise-middleware';
 import {createLogger} from 'redux-logger';
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
     bridges: bridgesReducer,
     messages: messagesReducer,
     translates: translatesReducer,
-    users: usersReducer
+    users: usersReducer,
+    auth: authReducer
 });
 
 const initialState = {
@@ -68,6 +70,11 @@ const initialState = {
         fetchingList: false,
         fetchingDetail: false,
         savingDetail: false
+    },
+    auth: {
+        loggingIn: false,
+        result: null,
+        user: {}
     }
     // ,
     // unitFields: {

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {HashRouter, Route, Switch, Redirect} from 'react-router-dom';
 import {Provider} from 'react-redux';
+import {PrivateRoute} from './App/components/PrivateRoute';
 import './vendor/bootstrap/css/bootstrap.min.css';
 import './vendor/bootstrap/css/bootstrap-theme.min.css';
 import './vendor/font-awesome/css/font-awesome.min.css';
@@ -15,7 +16,7 @@ ReactDOM.render(
     <Provider store={store}>
         <HashRouter >
             <Switch>
-                <Route exact path="/" component={App} />
+                <PrivateRoute exact path="/" component={App} />
                 <Route path="/login" component={LoginPage} />
                 <Redirect to="/" />
             </Switch>

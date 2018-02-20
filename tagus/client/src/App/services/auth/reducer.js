@@ -1,0 +1,27 @@
+import { constants } from '../constants';
+
+export const authReducer = (state, action) => {
+    const newState = Object.assign({}, state);
+
+    switch (action.type) {
+        case constants.auth.LOGIN_PENDING: {
+            newState.loggingIn = true;
+            return newState;
+        }
+        case constants.auth.LOGIN_FULFILLED: {
+            newState.loggingIn = false;
+            if(action.payload.data.error) {
+                newState.result = action.payload.data;
+            }
+            else if (action.payload.data.success) {
+                newState.result = 'success';
+                newState.user = action.payload.data.success.user;
+                localStorage.setItem('user', JSON.stringify(action.payload.data.success.token));
+            }
+
+            return newState;
+        }
+        default: 
+            return newState || {};
+    }
+}
