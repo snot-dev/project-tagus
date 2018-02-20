@@ -29,6 +29,11 @@
     height: 40px;
 }
 
+.tagus-top-buttons-container {
+    padding: 5px 15px;
+    font-size: 22px;
+}
+
 @media (min-width: 768px) {
     #top-bar {
         max-height: 40px;

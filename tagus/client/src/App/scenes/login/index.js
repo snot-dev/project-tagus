@@ -35,6 +35,7 @@ class LoginPage extends Component {
         }
 
         if (props.auth.loggedIn) {
+            console.warn("here!");
             this.props.history.push('/');
         }
     }
@@ -118,7 +119,7 @@ class LoginPage extends Component {
                                     <Button disabled={!this.state.touched} type='success' className="full-width pull-right">Submit</Button>
                                     </div>
                                 </div>
-                                <Overlay show={this.props.loggingIn} />
+                                <Overlay show={this.props.auth.loggingIn} />
                             </form>
                         </div>
                     </div>

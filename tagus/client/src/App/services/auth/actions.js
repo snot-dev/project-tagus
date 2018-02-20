@@ -9,3 +9,11 @@ export function login(user) {
         });
     }
 }
+
+export function logoff() {
+    return(dispatch, getState) => {
+        dispatch({
+            type: constants.auth.LOGOFF
+        });
+    }
+}

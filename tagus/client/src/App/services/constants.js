@@ -131,6 +131,7 @@ export const constants = {
     auth: {
         LOGIN: 'LOGIN',
         LOGIN_PENDING: 'LOGIN_PENDING',
-        LOGIN_FULFILLED: 'LOGIN_FULFILLED'
+        LOGIN_FULFILLED: 'LOGIN_FULFILLED',
+        LOGOFF: 'LOGOFF'
     }
 };

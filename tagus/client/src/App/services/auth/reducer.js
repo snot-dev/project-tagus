@@ -21,6 +21,12 @@ export const authReducer = (state, action) => {
 
             return newState;
         }
+        case constants.auth.LOGOFF: {
+            newState.loggedIn = false;
+            newState.user = {};
+            localStorage.removeItem('user');
+            return newState;
+        }
         default: 
             return newState || {};
     }
