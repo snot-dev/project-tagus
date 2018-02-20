@@ -73,6 +73,7 @@ const initialState = {
     },
     auth: {
         loggingIn: false,
+        loggedIn: false,
         result: null,
         user: {}
     }

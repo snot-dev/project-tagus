@@ -33,6 +33,10 @@ class LoginPage extends Component {
                 valid: false
             });
         }
+
+        if (props.auth.loggedIn) {
+            this.props.history.push('/');
+        }
     }
 
     _onChange(e) {
@@ -86,7 +90,6 @@ class LoginPage extends Component {
     }
 
     render() {
-        console.warn(this.props.auth);
         return (
             <div id="tagus-login" className="container-fluid">
                 <div className="row">

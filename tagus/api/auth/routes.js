@@ -16,10 +16,9 @@ module.exports = User => {
                     const token = jwt.encode(payload, process.env.AUTHSECRETORKEY);
                         
                     res.json({ 
-                        success: {
-                            token,
-                            user: user  
-                        }
+                        success: true,
+                        token,
+                        user: user  
                     })
                 }
                 else {

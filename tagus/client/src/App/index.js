@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
 import AppBar from './components/AppBar';
 import TopBar from './components/TopBar';
 import AppContainer from './components/AppContainer';
@@ -48,6 +49,17 @@ class App extends Component {
       }
     ];
   }
+
+  componentDidMount() {
+    if(localStorage.getItem('user')) {
+      console.warn("user!");
+    }
+  }
+
+  componentWillReceiveProps(props) {
+    console.warn(props);
+  }
+
   render() {
     return (  
       <div id ="tagus-app" className="App container-fluid">
@@ -66,4 +78,10 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    auth: state.auth
+  };
+};
+
+export default connect(mapStateToProps)(App);

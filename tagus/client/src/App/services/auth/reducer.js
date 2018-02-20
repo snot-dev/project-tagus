@@ -10,13 +10,13 @@ export const authReducer = (state, action) => {
         }
         case constants.auth.LOGIN_FULFILLED: {
             newState.loggingIn = false;
-            if(action.payload.data.error) {
+            if (action.payload.data.error) {
                 newState.result = action.payload.data;
             }
             else if (action.payload.data.success) {
-                newState.result = 'success';
-                newState.user = action.payload.data.success.user;
-                localStorage.setItem('user', JSON.stringify(action.payload.data.success.token));
+                newState.loggedIn = true;
+                newState.user = action.payload.data.user;
+                localStorage.setItem('user', JSON.stringify(action.payload.data.token));
             }
 
             return newState;
