@@ -27,7 +27,6 @@ class LoginPage extends Component {
     }
 
     componentWillReceiveProps(props) {
-        console.warn(props);
         if (props.auth.result && props.auth.result.error) {
             this.setState({
                 errorMessage: props.auth.result.error.message,

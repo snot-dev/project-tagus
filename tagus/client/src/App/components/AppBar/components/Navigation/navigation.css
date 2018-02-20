@@ -4,7 +4,7 @@
 
 .tagus-navigation {
     width: 100%;
-    padding-top: 65px;
+    padding-top: 165px;
 }
 
 .tagus-side-navigation {
@@ -27,7 +27,7 @@
 
 @media (min-width: 768px) {
     .tagus-navigation {
-        padding-top: 65px;
+        padding-top: 165px;
     }
     
     .icon {

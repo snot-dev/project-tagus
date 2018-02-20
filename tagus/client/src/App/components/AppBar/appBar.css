@@ -1,11 +1,13 @@
 #tagus-side-menu {
-    width: 250px;
+    width: 248px;
     height: 100%;
     position: fixed;
     margin-top: 0;
     top: 0;
     background-color: var(--navigation-bg-color);
-    z-index: 1000;
+    z-index: 750;
+    border-right: 4px solid var(--bridge-red);
+    box-shadow: 2px 0px 0px 0px rgba(0,0,0,0.6);
 }
 
 #tagus-side-menu.responsive {
