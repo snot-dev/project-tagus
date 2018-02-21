@@ -13,7 +13,7 @@ const Cookies = require('universal-cookie');
 const api = (app, strategy) => {
     const router = require('express').Router();
 
-        let protectMiddleware = (req, res, next) => {
+    let protectMiddleware = (req, res, next) => {
         next();
     };
 
@@ -23,6 +23,7 @@ const api = (app, strategy) => {
         protectMiddleware =  auth.passport.authenticate(strategy, session)
     }
     
+
     router.use('/content', protectMiddleware, content.routes);
     router.use('/bridges', protectMiddleware, bridges.routes);
     router.use('/units', protectMiddleware, units);

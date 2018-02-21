@@ -27,6 +27,24 @@ export const authReducer = (state, action) => {
             localStorage.removeItem('user');
             return newState;
         }
+        case constants.auth.GET_LOGGED_USER_PENDING: {
+            newState.fetchingLoggedUser = true;
+            return newState;
+        }
+        case constants.auth.GET_LOGGED_USER_FULFILLED: {
+            newState.fetchingLoggedUser = false;
+            if (action.payload.data.user) {
+                newState.loggedIn = true;
+                newState.user = action.payload.data.user;
+            } 
+            else {
+                newState.loggedIn = false;
+                newState.user = {};
+                localStorage.removeItem('user');
+            }
+
+            return newState;
+        }
         default: 
             return newState || {};
     }

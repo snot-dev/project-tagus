@@ -74,6 +74,7 @@ const initialState = {
     auth: {
         loggingIn: false,
         loggedIn: false,
+        fetchingLoggedUser: false,
         result: null,
         user: {}
     }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
+import {Route} from 'react-router-dom';
 import AppBar from './components/AppBar';
 import TopBar from './components/TopBar';
 import AppContainer from './components/AppContainer';
@@ -9,9 +10,9 @@ import Units from './scenes/units';
 import Bridges from './scenes/bridges';
 import Translates from './scenes/translates';
 import Users from './scenes/users';
-import {Route} from 'react-router-dom';
+import Overlay from './components/Overlay';
 import store from './services/store';
-import {logoff} from './services/auth/actions';
+import {logoff, getLoggedUser} from './services/auth/actions';
 import  './app.css';
 
 class App extends Component {
@@ -54,7 +55,9 @@ class App extends Component {
 
   componentDidMount() {
     //check if theres a token and fetch user
-    console.warn(this.props);
+    if (localStorage.getItem('user')) {
+      store.dispatch(getLoggedUser());
+    }
   }
 
   _logoff() {
@@ -75,6 +78,7 @@ class App extends Component {
             );
           })}
         </AppContainer>
+        <Overlay show={this.props.auth.fetchingLoggedUser} />
       </div>
     );
   }

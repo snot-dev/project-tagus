@@ -10,7 +10,6 @@ const jwtOptions = {
 
 const jwt = User => {
     const strategy = new JwtStrategy(jwtOptions, (jwt_payload, next) => {
-        
         User.findOne({'_id': jwt_payload.id}).then(user => {
             if(user) {
                 return next(null, {
@@ -22,6 +21,7 @@ const jwt = User => {
             }
         });
     }); 
+
     passport.use(strategy);
 }
 

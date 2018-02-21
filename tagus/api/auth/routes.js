@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const jwt = require('jwt-simple');
+const ExtractJwt = require('passport-jwt').ExtractJwt;
 
 module.exports = User => {
     router.post('/', (req, res) => {
@@ -33,6 +34,32 @@ module.exports = User => {
         else {
             res.sendStatus(401);
         }
+    });
+
+    router.get('/', (req, res) => {
+        const token = ExtractJwt.fromAuthHeaderAsBearerToken()(req);
+
+        if (token) {
+            try {
+                const user = jwt.decode(token, process.env.AUTHSECRETORKEY);
+                
+                User.findOne({'_id': user.id})
+                .then(doc => {  
+                    if (doc) {
+                        res.json({
+                            user: doc
+                        });
+                    } 
+                });
+            }
+            catch (error) {
+                res.sendStatus(401);
+            }
+        }
+        else {
+            res.sendStatus(401);
+        }
+
     });
 
     return router;
