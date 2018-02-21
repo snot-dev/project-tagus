@@ -33,6 +33,13 @@ class UnitsDetail extends Component {
             deletingTab: null,
             modalBodyText: null
         };
+
+        this._fields = [{
+            name: "Name",
+            alias: "name",
+            type: "text",
+            required: true
+        }];
     }
 
     componentDidMount() {
@@ -43,18 +50,12 @@ class UnitsDetail extends Component {
         store.dispatch(getUnitFieldsIfNeeded());
         store.dispatch(getTemplatesIfNeeded());
 
-        this._fields = [{
-            name: "Name",
-            alias: "name",
-            type: "text",
-            required: true
-        }];
 
         this._defaultValues = {
             name: this.props.detail.name
         };
     }
-  
+
     shouldComponentUpdate(nextProps, nextState) {
         const hasNeededUnit = !!nextProps.detail._id || nextProps.match.params.id !== this.props.detail._id;
         const templates = nextProps.templates !== this.props.templates || this.props.fetchingTemplates !== nextProps.fetchingTemplates;
@@ -266,6 +267,14 @@ class UnitsDetail extends Component {
         });
     }
 
+    onFieldChange() {
+        if (!this.state.touched) {
+            this.setState({
+                touched: true
+            });
+        }
+    }
+
     deleteField() {
         let tabIndex = 0;
         let fieldIndex = 0;
@@ -407,7 +416,7 @@ class UnitsDetail extends Component {
                     </div>
                 </div>
                 <div className="row">
-                    <Form disabled={!this.state.touched} onReset={this._onReset(false)} onSubmit={this.saveUnit.bind(this)} name="unit" fields={this._fields} defaultValues={this._defaultValues} >
+                    <Form disabled={!this.state.touched} onChange={this.onFieldChange.bind(this)} onReset={this._onReset(false)} onSubmit={this.saveUnit.bind(this)} name="unit" fields={this._fields} defaultValues={this._defaultValues} >
                         { this.props.templates  
                         ? <TemplatesList onChange={this._onTemplatesChange.bind(this)} templates={this.props.templates} unitTemplates={this.state.templates} />
                         :null

@@ -4,7 +4,16 @@
     padding-top: 120px;
 }
 
+.tagus-login-welcome-container {
+    color: #fff;
+    font-weight: bold;
+    font-size: 26px;
+    font-style: italic;
+    margin-bottom: 15px;
+}
+
 .tagus-login-form-container {
+    text-align: left;
     padding: 30px;
     position: relative;
     background-color: #f5f5f5;

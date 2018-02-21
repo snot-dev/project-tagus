@@ -11,14 +11,13 @@ import LoginPage from './App/scenes/login';
 import registerServiceWorker from './registerServiceWorker';
 import store from './App/services/store';
 
-
 ReactDOM.render(
     <Provider store={store}>
         <HashRouter >
             <Switch>
-                <PrivateRoute exact path="/" component={App} />
+                <PrivateRoute path="/home" component={App} />
                 <Route path="/login" component={LoginPage} />
-                <Redirect to="/" />
+                <Redirect to="/home" />
             </Switch>
         </HashRouter>
     </Provider>,

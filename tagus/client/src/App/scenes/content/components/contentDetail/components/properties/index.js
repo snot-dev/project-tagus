@@ -137,28 +137,28 @@ class properties extends Component {
             <div className="row">
                 <div className="col-xs-12">
                     <div className="container-fluid tagus-form-info-fields">
-                            <div className="row tagus-form-control">
-                                <div className="col-xs-12 col-sm-6 tagus-form-field">
-                                    <label className="tagus-label" >Alias</label>
-                                    <p className="tagus-info">{this.props.detail.alias}</p>
-                                </div>
-                                <div className="col-xs-12 col-sm-6 tagus-form-field text-right">
-                                    <label className="tagus-label" >Created</label>
-                                    <p className="tagus-info">{created}</p>
-                                </div>
+                        <div className="row tagus-form-control">
+                            <div className="col-xs-12 col-sm-6 tagus-form-field">
+                                <label className="tagus-label" >Alias</label>
+                                <p className="tagus-info">{this.props.detail.alias}</p>
                             </div>
-                            <div className="row tagus-form-control">
-                                <div className="col-xs-12 col-sm-6 tagus-form-field">
-                                    <label className="tagus-label" >Unit</label>
-                                    <p className="tagus-info">{this.props.unit.name}</p>
-                                </div>
+                            <div className="col-xs-12 col-sm-6 tagus-form-field text-right">
+                                <label className="tagus-label" >Created</label>
+                                <p className="tagus-info">{created}</p>
                             </div>
                         </div>
-                        {this._getPropertiesDefaultValues().name //hack to pass the defaultValues
-                        ?   <Form onSubmit={this._onSubmit.bind(this)} name="properties" defaultValues={this._getPropertiesDefaultValues()} fields={this.propertiesFields} /> 
-                        :null }
+                        <div className="row tagus-form-control">
+                            <div className="col-xs-12 col-sm-6 tagus-form-field">
+                                <label className="tagus-label" >Unit</label>
+                                <p className="tagus-info">{this.props.unit.name}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {this._getPropertiesDefaultValues().name //hack to pass the defaultValues
+                    ?   <Form disabled={this.props.disabled} onChange={this.props.onChange} onSubmit={this._onSubmit.bind(this)} name="properties" defaultValues={this._getPropertiesDefaultValues()} fields={this.propertiesFields} /> 
+                    :null }
 
-                        <Modal type='warning' show={this.state.showWarningModal} title="Warning!" body={this.state.modalBody} closeButton={{onClick: this._toggleModal(false), text: "Cancel"}} confirmButton={{onClick:this._confirmModal.bind(this), text: "Yes, I'm sure!"}} />
+                    <Modal type='warning' show={this.state.showWarningModal} title="Warning!" body={this.state.modalBody} closeButton={{onClick: this._toggleModal(false), text: "Cancel"}} confirmButton={{onClick:this._confirmModal.bind(this), text: "Yes, I'm sure!"}} />
                 </div>
             </div>
         )

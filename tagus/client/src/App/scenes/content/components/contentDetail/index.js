@@ -35,6 +35,9 @@ class ContentDetail extends Component {
     componentWillUpdate(newProps) {
         if(newProps.match.params.id !== this.props.match.params.id) {
             store.dispatch(getContentDetailIfNeeded(newProps.match.params.id));
+            this.setState({
+                disabled: true
+            });
         }
     }
     
@@ -61,6 +64,14 @@ class ContentDetail extends Component {
         });
     }
 
+    _onFieldChange() {
+        if (this.state.disabled) {
+            this.setState({
+                disabled: false
+            });
+        }
+    }
+
     _getPropertiesDefaultValues() {
         const defaultValues = {};
 
@@ -76,12 +87,12 @@ class ContentDetail extends Component {
             <Tabs activeKey={this.state.key} onSelect={this._handleTabchange.bind(this)} id="tagus-content-tabs">
                 {tabs.map((tab, index) => (
                         <Tab eventKey={index} title={tab.name} key={`${this.props.detail._id}_${tab.alias}_${index}`}>
-                            <Form disabled={this.state.disabled} onSubmit={this.onSubmitContent.bind(this)} name={tab.alias} defaultValues={this.props.detail.content[tab.alias]} fields={tab.fields} />
+                            <Form onChange={this._onFieldChange.bind(this)} disabled={this.state.disabled} onSubmit={this.onSubmitContent.bind(this)} name={tab.alias} defaultValues={this.props.detail.content[tab.alias]} fields={tab.fields} />
                         </Tab>
                     ))
                 }
                 <Tab eventKey={tabs.length} key={`${this.props.detail._id}_Properties_${tabs.length}`} title='Properties'>
-                    <Properties detail={this.props.detail} unit={this.props.unit} onSubmit={this.onSubmitProperties.bind(this)} />
+                    <Properties disabled={this.state.disabled} onChange={this._onFieldChange.bind(this)} detail={this.props.detail} unit={this.props.unit} onSubmit={this.onSubmitProperties.bind(this)} />
                 </Tab>
 
                 <Preview id={this.props.detail._id} />

@@ -22,39 +22,42 @@ class App extends Component {
     this.routes = [
       {
         name: "Content",
-        path: '/content',
+        path: this._generatePath(props, '/content'),
         component: Content,
         icon: 'file'
       },
       {
         name: "Units",
-        path: '/units',
+        path: this._generatePath(props, '/units'),
         component: Units,
         icon: 'ship'
       },
       {
         name: "Bridges",
-        path: '/bridges',
+        path: this._generatePath(props, '/bridges'),
         component: Bridges,
         icon: 'life-ring'
       },
       {
         name: "Translates",
-        path: '/translates',
+        path: this._generatePath(props, '/translates'),
         component: Translates,
         icon: 'list'
       },
       {
         name: "Users",
-        path: '/users',
+        path: this._generatePath(props, '/users'),
         component: Users,
         icon: 'users'
       }
     ];
   }
 
+  _generatePath(props, path) {
+    return `${props.match.url}${path}`;
+  }
+
   componentDidMount() {
-    //check if theres a token and fetch user
     if (localStorage.getItem('user')) {
       store.dispatch(getLoggedUser());
     }

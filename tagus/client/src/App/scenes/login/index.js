@@ -27,6 +27,7 @@ class LoginPage extends Component {
     }
 
     componentWillReceiveProps(props) {
+        console.warn(props);
         if (props.auth.result && props.auth.result.error) {
             this.setState({
                 errorMessage: props.auth.result.error.message,
@@ -35,7 +36,6 @@ class LoginPage extends Component {
         }
 
         if (props.auth.loggedIn) {
-            console.warn("here!");
             this.props.history.push('/');
         }
     }
@@ -95,6 +95,11 @@ class LoginPage extends Component {
             <div id="tagus-login" className="container-fluid">
                 <div className="row">
                     <div className="col-xs-12 col-sm-4 col-sm-offset-4">
+                        <div className="row">
+                            <div className="col-xs-12 text-center tagus-login-welcome-container">
+                                Welcome
+                            </div>
+                        </div>
                         <div className="row">
                             <form onSubmit={this._submitForm.bind(this)} className="tagus-login-form-container container-fluid">
                                 <div className="row tagus-login-error-message-container">
