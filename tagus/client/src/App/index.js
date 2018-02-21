@@ -66,7 +66,7 @@ class App extends Component {
     return (  
       <div id ="tagus-app" className="App container-fluid">
         <Messages />
-        <TopBar onLogoffClick={this._logoff.bind(this)} />
+        <TopBar onLogoffClick={this._logoff.bind(this)} user={this.props.auth.user} />
         <AppBar routes={this.routes} />
         <AppContainer>
           {this.routes.map((route, index) => {

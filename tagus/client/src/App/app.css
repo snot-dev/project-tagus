@@ -127,6 +127,10 @@ label {
   transition: all 0.25s ease;
 }
 
+.tagus-input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 30px white inset;
+}
+
 .tagus-input.checkbox,
 .tagus-input.trueOrFalse {
   width: auto;

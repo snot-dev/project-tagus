@@ -31,7 +31,22 @@
 
 .tagus-top-buttons-container {
     padding: 5px 15px;
-    font-size: 22px;
+}
+
+.tagus-top-buttons-container .tagus-top-button {
+    font-size: 20px;
+    padding: 10px 15px;
+}
+
+.tagus-top-buttons-container .tagus-top-button:hover {
+    background-color: var(--main-red);
+    cursor: pointer;
+}
+
+.tagus-top-user-username {
+    margin-left: 5px;
+    font-size: 18px;
+    display: inline-block;
 }
 
 @media (min-width: 768px) {
