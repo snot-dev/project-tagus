@@ -14,13 +14,6 @@ const bridgesSeed = require('../bridges/data');
 const Bridges = require('../bridges').model;
 const contentSeed = require('../content/data');
 const Content = require('../content').model;
-require('../../../config');
-
-mongoose.Promise = require('bluebird');
-
-let collectionCreated = false;
-
-console.log("Connecting to " + process.env.MONGO_CONNECTION_STRING)
 
 const collections = [
     {
@@ -53,8 +46,9 @@ const collections = [
     }
 ];
 
-
 function insertCollection(collection, done) {
+    let collectionCreated = false;
+
      collection.model.find({})
     .then(docs => {
         if (docs.length === 0) {
@@ -71,20 +65,47 @@ function insertCollection(collection, done) {
     })
     .catch( err => {
         console.log(err);
-        process.exit(1);
         done();
+        process.exit(1);
     });
 }
 
-mongoose.connect(process.env.MONGO_CONNECTION_STRING)
-.then(() => {
-
+function insertCollections() {
     console.log("Connected! Building DB....");
 
     async.eachSeries(collections, (collection, done) => {
         insertCollection(collection, done);
-    }, (err) => {
-        console.log("DB was built!");
+    }, err => {
+        console.log(err || "DB was built!");
         process.exit(0);
     });
-});
+}
+
+function removeCollection(collection, done) {
+    collection.model.remove({})
+    .then((result, err) => {
+        console.log(err || `${collection.model.collection.collectionName} was deleted!`);
+        done();
+    })
+    .catch( err => {
+        console.log(err);
+        done();
+        process.exit(1);
+    });
+}
+
+function removeCollections() {
+    console.log("Connected! Removing Collections....");
+
+    async.eachSeries(collections, (collection, done) => {
+        removeCollection(collection, done);
+    }, err => {
+        console.log(err || "All collections were deleted!");
+        process.exit(0);
+    });
+}
+
+module.exports = {
+    insertCollections,
+    removeCollections
+};

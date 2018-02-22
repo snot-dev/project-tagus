@@ -5,7 +5,9 @@
   "main": "app.js",
   "scripts": {
     "_test": "mocha ./tagus/api/tests/*.js",
-    "_buildDB": "node ./tagus/api/buildDB/initScript",
+    "_buildDB": "node ./tagus/api/buildDB/buildScript",
+    "_dropCollections": "node ./tagus/api/buildDB/dropScript",
+    "_rebuildDB": "npm run _dropCollections && npm run _buildDB",
     "start": "concurrently \"nodemon app.js\" \"cd tagus/client && npm start\""
   },
   "author": "Snot",
