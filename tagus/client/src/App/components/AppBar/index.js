@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-// import Avatar from './components/Avatar';
 import Navigation from './components/Navigation';
 import NavItem from './components/NavItem';
 import './appBar.css';

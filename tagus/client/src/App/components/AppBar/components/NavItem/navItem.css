@@ -7,6 +7,7 @@
 
 .tagus-menu-link {
     color: var(--nav-text-color);
+    transition: all 0.10s ease;
 } 
 
 .tagus-menu-link.active,

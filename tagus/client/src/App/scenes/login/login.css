@@ -1,7 +1,7 @@
 #tagus-login {
     height: 100%;
     background-color: var(--bridge-red);
-    padding-top: 120px;
+    padding-top: 60px;
 }
 
 .tagus-login-welcome-container {
@@ -28,12 +28,16 @@
     margin-bottom: 15px;
 }
 
-.tagus-login-error-message {
-    color:var(--status-error);
+.tagus-login-message {
+    color: var(--title-color);
     font-weight: bold;
     font-size: 16px;
     margin-bottom: 15px;
     min-height: 22px;
+}
+
+.tagus-login-message.error {
+    color:var(--status-error);
 }
 
 .tagus-login-logo-container {

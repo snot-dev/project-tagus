@@ -91,13 +91,15 @@ class LoginPage extends Component {
     }
 
     render() {
+        const errorClass = this.state.errorMessage ? 'error' : '';
+
         return (
             <div id="tagus-login" className="container-fluid">
                 <div className="row">
                     <div className="col-xs-12 col-sm-4 col-sm-offset-4">
                         <div className="row">
                             <div className="col-xs-12 text-center tagus-login-welcome-container">
-                                Welcome
+                                Welcome to
                             </div>
                         </div>
                         <div className="row text-center">
@@ -107,9 +109,9 @@ class LoginPage extends Component {
                         </div>
                         <div className="row">
                             <form onSubmit={this._submitForm.bind(this)} className="tagus-login-form-container container-fluid">
-                                <div className="row tagus-login-error-message-container">
+                                <div className="row tagus-login-message-container">
                                     <div className="col-xs-12">
-                                        <p className="tagus-login-error-message">{this.state.errorMessage}</p>
+                                        <p className={`tagus-login-message ${errorClass}`}>{this.state.errorMessage || 'Please login'}</p>
                                     </div>
                                 </div>
                                 <div className="row tagus-login-field-container">
