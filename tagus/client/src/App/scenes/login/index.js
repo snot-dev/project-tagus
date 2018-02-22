@@ -100,6 +100,11 @@ class LoginPage extends Component {
                                 Welcome
                             </div>
                         </div>
+                        <div className="row text-center">
+                            <div className="col-xs-12">
+                            <div className="tagus-login-logo-container"></div>
+                            </div>
+                        </div>
                         <div className="row">
                             <form onSubmit={this._submitForm.bind(this)} className="tagus-login-form-container container-fluid">
                                 <div className="row tagus-login-error-message-container">

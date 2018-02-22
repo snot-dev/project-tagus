@@ -35,3 +35,12 @@
     margin-bottom: 15px;
     min-height: 22px;
 }
+
+.tagus-login-logo-container {
+    display: block;
+    margin: 0 auto;
+    width: 250px;
+    height: 105px;
+    margin-bottom: 15px;
+    background: url('/logo/Tagus_Logo_Horizontal_White_Small.png') no-repeat;
+}
