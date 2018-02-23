@@ -1,4 +1,5 @@
 import { constants } from '../constants';
+import {update} from '../axios';
 
 export const authReducer = (state, action) => {
     const newState = Object.assign({}, state);
@@ -17,6 +18,7 @@ export const authReducer = (state, action) => {
                 newState.loggedIn = true;
                 newState.user = action.payload.data.user;
                 localStorage.setItem('user', JSON.stringify(action.payload.data.token));
+                update(action.payload.data.token);
             }
 
             return newState;

@@ -5,7 +5,6 @@ import './panel.css'
 
 class Panel extends Component {
     render() {
-        const header = this.props.title ? 'header' : '';
         const panelClass = this.props.className || '';
         return (
             <div className={`tagus-panel-container ${panelClass}`}>

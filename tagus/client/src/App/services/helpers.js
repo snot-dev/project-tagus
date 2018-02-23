@@ -19,7 +19,6 @@ const buildContentTree = content => {
         }
     }
     
-
     return contentTree;
 }
 
@@ -39,6 +38,5 @@ const camelize = str => {
         return index === 0 ? letter.toLowerCase() : letter.toUpperCase();
         }).replace(/\s+/g, '');
 }
-
 
 export {buildContentTree, convertArrayToDictionary, camelize};

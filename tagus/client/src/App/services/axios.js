@@ -9,14 +9,24 @@ const setHeaders =  () => {
 	};
 
     if (user) {
-        headers['Authorization'] =  'Bearer ' + user;
+        headers['Authorization'] =  `Bearer ${user}`;
 	} 
 
 	return headers;
 };
 
-export default axios.create( {
+const instance = axios.create( {
 	baseURL: '/api/',
 	withCredentials: true,
 	headers: setHeaders()
 });
+
+const update = token => {
+	console.warn(instance);
+	instance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+}
+
+export  {
+	instance as default,
+	update
+};
