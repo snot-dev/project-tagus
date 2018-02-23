@@ -27,6 +27,7 @@ export const authReducer = (state, action) => {
             newState.loggedIn = false;
             newState.user = {};
             localStorage.removeItem('user');
+            update();
             return newState;
         }
         case constants.auth.GET_LOGGED_USER_PENDING: {
