@@ -9,6 +9,8 @@ class FormFields extends Component {
         switch(field.type) {
             case'text':
                 return {component: StyledText};
+            case 'password':
+                return {component: StyledText, type: 'password'}
             case 'checkbox':
             case 'trueOrFalse':
                 return {component: Checkbox};
@@ -56,7 +58,7 @@ class FormFields extends Component {
         return (
             <div className="col-xs-12 tagus-form-field">
                 <label className="tagus-label" htmlFor={field.alias}>{field.name}</label>
-                <Component onBlur={this._onFieldBlur(field)} onChange={this._onFieldChange(field)} default={this.props.formApi.values[field.alias]} className={`tagus-input ${field.type}`}  field={field.alias} id={field.alias} options={fieldType.options} />                
+                <Component type={field.type} onBlur={this._onFieldBlur(field)} onChange={this._onFieldChange(field)} default={this.props.formApi.values[field.alias]} className={`tagus-input ${field.type}`}  field={field.alias} id={field.alias} options={fieldType.options} />                
             </div>
         )
     }

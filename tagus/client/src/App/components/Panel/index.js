@@ -8,8 +8,8 @@ class Panel extends Component {
         const header = this.props.title ? 'header' : '';
         const panelClass = this.props.className || '';
         return (
-            <div className={`tagus-panel ${panelClass}`}>
-                <div className="child container-fluid">
+            <div className={`tagus-panel-container ${panelClass}`}>
+                <div className="tagus-panel container-fluid">
                     {this.props.title
                     ?   
                         <Header className={this.props.header}>
@@ -17,7 +17,7 @@ class Panel extends Component {
                         </Header>
                     : null
                     }
-                    <div className={`tagus-panel-content-container ${header}`}>
+                    <div className={`tagus-panel-content-container row ${header}`}>
                         {this.props.menu}
                         <div className="tagus-panel-content col-xs-12">
                                 {this.props.children}
