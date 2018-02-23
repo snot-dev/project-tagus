@@ -5,12 +5,12 @@
     --tagus-panel-bg: #fff;
 }
 
-.tagus-panel.full-height {
+.tagus-panel-container.full-height {
     height: 100%;
     min-height: 100%;
 }
 
-.tagus-panel .child {
+.tagus-panel {
     min-height: 100%;
     background-color: var(--tagus-panel-bg);
     border-radius: 5px;
@@ -20,15 +20,15 @@
 }
 
 .tagus-panel-content-container {
-    position: absolute;
-    top: 0;
+    /* position: absolute; */
+    /* top: 0;
     bottom: 0;
     right: 0;
-    left: 0;
+    left: 0; */
 }
 
 .tagus-panel-content-container.header {
-    padding-top: 56px
+    /* padding-top: 56px */
 }
 
 .tagus-panel-content {
