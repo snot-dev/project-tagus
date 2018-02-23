@@ -17,7 +17,7 @@ class Panel extends Component {
                         </Header>
                     : null
                     }
-                    <div className={`tagus-panel-content-container row ${header}`}>
+                    <div className="row tagus-panel-content-container">
                         {this.props.menu}
                         <div className="tagus-panel-content col-xs-12">
                                 {this.props.children}
