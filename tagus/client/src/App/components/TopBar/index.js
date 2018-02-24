@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
+import {Link, NavLink} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import './topBar.css';
 
@@ -14,7 +14,7 @@ class TopBar extends Component {
                 </div>
                 <div className="tagus-top-bar-container">
                     <div className="pull-right tagus-top-buttons-container">
-                         <a className="tagus-top-avatar tagus-top-button"><i className="fa fa-user"></i><span className="tagus-top-user-username">{this.props.user.username}</span></a>
+                         <NavLink to='/home/profile' className="tagus-top-avatar tagus-top-button"><i className="fa fa-user"></i><span className="tagus-top-user-username">{this.props.user.username}</span></NavLink>
                          <a onClick={this.props.onLogoffClick} className="tagus-logoff-button tagus-top-button" title="log off"><i className="fa fa-power-off"></i></a>
                     </div>
                 </div>

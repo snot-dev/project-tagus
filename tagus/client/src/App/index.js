@@ -10,6 +10,7 @@ import Units from './scenes/units';
 import Bridges from './scenes/bridges';
 import Translates from './scenes/translates';
 import Users from './scenes/users';
+import Profile from './scenes/profile';
 import Overlay from './components/Overlay';
 import store from './services/store';
 import {logoff, getLoggedUser} from './services/auth/actions';
@@ -24,31 +25,41 @@ class App extends Component {
         name: "Content",
         path: this._generatePath(props, '/content'),
         component: Content,
-        icon: 'file'
+        icon: 'file',
+        nav: true
       },
       {
         name: "Units",
         path: this._generatePath(props, '/units'),
         component: Units,
-        icon: 'ship'
+        icon: 'ship',
+        nav: true
       },
       {
         name: "Bridges",
         path: this._generatePath(props, '/bridges'),
         component: Bridges,
-        icon: 'life-ring'
+        icon: 'life-ring',
+        nav: true
       },
       {
         name: "Translates",
         path: this._generatePath(props, '/translates'),
         component: Translates,
-        icon: 'list'
+        icon: 'list',
+        nav: true
       },
       {
         name: "Users",
         path: this._generatePath(props, '/users'),
         component: Users,
-        icon: 'users'
+        icon: 'users',
+        nav: true
+      },
+      {
+        name: "Profile",
+        path: this._generatePath(props, '/profile'),
+        component: Profile
       }
     ];
   }

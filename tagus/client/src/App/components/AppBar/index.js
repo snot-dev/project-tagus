@@ -11,6 +11,10 @@ class AppBar extends Component {
                 <div className="nav-container">
                     <Navigation title="Menu">
                         {this.props.routes.map((route, index) => {
+                            if (!route.nav) {
+                                return null;   
+                            }
+
                             return (
                                 <NavItem key={`${index}_${route.name}`} to={route.path} icon={route.icon}>{route.name}</NavItem>
                             );

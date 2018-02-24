@@ -65,6 +65,10 @@
     display: inline-block;
 }
 
+.tagus-top-avatar.active {
+    background-color: var(--main-red);
+}
+
 @media (min-width: 768px) {
     #top-bar {
         max-height: 40px;
