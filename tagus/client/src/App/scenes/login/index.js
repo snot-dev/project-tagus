@@ -24,10 +24,10 @@ class LoginPage extends Component {
 
     componentDidMount() {
         this.emailInput.focus();
+
     }
 
     componentWillReceiveProps(props) {
-        console.warn(props);
         if (props.auth.result && props.auth.result.error) {
             this.setState({
                 errorMessage: props.auth.result.error.message,

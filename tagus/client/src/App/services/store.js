@@ -75,6 +75,7 @@ const initialState = {
         loggingIn: false,
         loggedIn: false,
         fetchingLoggedUser: false,
+        hasUsers: true,
         result: null,
         user: {}
     }
