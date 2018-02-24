@@ -38,7 +38,8 @@ Panel.propTypes = {
     ]),
     children: PropTypes.oneOfType([
         PropTypes.array,
-        PropTypes.object
+        PropTypes.object,
+        PropTypes.string
     ])
 };
 

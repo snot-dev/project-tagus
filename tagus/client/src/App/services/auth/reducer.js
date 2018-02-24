@@ -17,7 +17,6 @@ export const authReducer = (state, action) => {
             else if (action.payload.data.success) {
                 newState.loggedIn = true;
                 newState.user = action.payload.data.user;
-                console.warn(newState.user);
                 localStorage.setItem('user', JSON.stringify(action.payload.data.token));
                 update(action.payload.data.token);
             }

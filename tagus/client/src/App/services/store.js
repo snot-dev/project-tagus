@@ -6,6 +6,7 @@ import { messagesReducer } from './messages/reducer';
 import { translatesReducer } from './translates/reducer';
 import { usersReducer } from './users/reducer';
 import { authReducer } from './auth/reducer';
+import { profileReducer} from './profile/reducer';
 import thunk from 'redux-thunk';
 import promise from 'redux-promise-middleware';
 import {createLogger} from 'redux-logger';
@@ -17,7 +18,8 @@ const rootReducer = combineReducers({
     messages: messagesReducer,
     translates: translatesReducer,
     users: usersReducer,
-    auth: authReducer
+    auth: authReducer,
+    profile: profileReducer
 });
 
 const initialState = {
@@ -78,6 +80,10 @@ const initialState = {
         hasUsers: true,
         result: null,
         user: {}
+    },
+    profile: {
+        user: {},
+        savingUser: false
     }
     // ,
     // unitFields: {
