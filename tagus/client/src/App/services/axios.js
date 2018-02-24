@@ -22,7 +22,6 @@ const instance = axios.create( {
 });
 
 const update = token => {
-	console.warn(instance);
 	instance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 }
 

@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema ({
     surname: String,
     created: {type:Date, default: Date.now(), required: true},
     isCreator: Boolean,
+    isAdmin: {type: Boolean, default: false},
     lastActivity: Date,
     logs: {type: Array, default: []}
 });
@@ -19,5 +20,10 @@ userSchema.methods = {
         return bcrypt.compareSync(password, this.password);
     }
 };
+
+userSchema.pre('save', next => {
+    console.log("PRE SAVE!");
+    next();
+});
 
 module.exports = mongoose.model('User', userSchema);

@@ -1,12 +1,13 @@
 module.exports = [
                     {
-                        username: "user",
-                        email: "user@email.com",
-                        password: "test",
-                        name: "user",
-                        surname: "userino",
+                        username: "Admin",
+                        email: "admin@tagus.com",
+                        password: "tagusAdministrator",
+                        name: "Tagus",
+                        surname: "Administrator",
                         created: new Date(),
                         isCreator: true,
+                        isAdmin: true,
                         logs: []
                     }
                 ];
