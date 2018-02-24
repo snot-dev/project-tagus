@@ -5,7 +5,7 @@ export function updateProfile(user) {
     return (dispatch, getState) => {
         dispatch({
             type: constants.profile.UPDATE_PROFILE,
-            payload: axios.post(`user/${user._id}`, user)
+            payload: axios.put(`users/${user._id}`, user)
         });
     }
 }

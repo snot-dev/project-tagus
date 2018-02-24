@@ -48,6 +48,10 @@ export const authReducer = (state, action) => {
 
             return newState;
         }
+        case constants.profile.UPDATE_PROFILE_FULFILLED: {
+            newState.user = action.payload.data.result;
+            return newState;
+        }
         default: 
             return newState || {};
     }

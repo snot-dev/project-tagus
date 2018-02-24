@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import {constants} from '../../../../services/constants';
 import Form from '../../../../components/Form';
+import {updateProfile} from '../../../../services/profile/actions';
+import store from '../../../../services/store';
 
 
 class ProfileForm extends Component {
@@ -40,6 +42,14 @@ class ProfileForm extends Component {
 
         return values;
     }
+
+    onSubmit(values) {
+        const updatedUser = values.userProfile;
+        updatedUser._id = this.props.user._id;
+        
+        store.dispatch(updateProfile(updatedUser));
+    }
+
     render() {
         const created = moment(this.props.user.created).format(constants.config.DATE_FORMAT);
 
@@ -57,7 +67,7 @@ class ProfileForm extends Component {
                 </div>
                 <div className="row">
                     {this.props.user._id 
-                    ?   <Form name="userProfile" defaultValues={this._getDefaultValues()} fields={this.fields}/>
+                    ?   <Form name="userProfile" defaultValues={this._getDefaultValues()} fields={this.fields} onSubmit={this.onSubmit.bind(this)} />
                     :   null }
                 </div>
             </div>

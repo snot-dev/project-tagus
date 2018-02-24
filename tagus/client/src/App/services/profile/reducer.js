@@ -16,6 +16,15 @@ export const profileReducer = (state, action) => {
             } 
             return newState;
         }
+        case constants.profile.UPDATE_PROFILE_PENDING: {
+            newState.savingUser = true;
+            return newState;
+        }
+        case constants.profile.UPDATE_PROFILE_FULFILLED: {
+            newState.savingUser = false;
+            newState.user = action.payload.data.result;
+            return newState;
+        }
         default:
             return newState || {};
     }
