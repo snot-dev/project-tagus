@@ -21,10 +21,4 @@ userSchema.methods = {
     }
 };
 
-userSchema.pre('save', next => {
-    console.log(arguments);
-    
-    next();
-});
-
 module.exports = mongoose.model('User', userSchema);
