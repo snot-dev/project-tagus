@@ -25,11 +25,15 @@ class CustomForm extends Component {
     }
 
     _errorValidator(values) {
-        const errors = {};
+        let errors = {};
 
         for(const field of this.props.fields) {
 
             errors[field.alias] = field.required && !values[field.alias] ?"This field is required!":null;
+        }
+
+        if (this.props.onValidate) {
+            errors = this.props.onValidate(values, errors); 
         }
 
         return errors;
@@ -44,7 +48,7 @@ class CustomForm extends Component {
                 formValues[this.props.name] = formApi.values;
             
                 if(this.props.onSubmit){
-                    this.props.onSubmit(formValues);
+                    this.props.onSubmit(formValues, formApi);
                 }
 
                 this.setState({

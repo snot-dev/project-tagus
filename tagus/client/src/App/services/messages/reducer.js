@@ -104,6 +104,26 @@ export const messagesReducer = (state, action) => {
 
             return newState;
         }
+        case constants.profile.UPDATE_PASSWORD_FULFILLED: {
+            if (action.payload.data.error) {
+                newState.list.push({
+                    type: 'error',
+                    subject: 'Error:',
+                    verb: 'has occurred:',
+                    result: action.payload.data.error
+                })                
+            } 
+            else {
+                newState.list.push({
+                    type: 'success',
+                    subject: `${action.payload.data.result.name}`,
+                    verb: 'was updated',
+                    result: 'with success'
+                });
+            }
+
+            return newState;
+        }
         default: {
             return state || {};
         }

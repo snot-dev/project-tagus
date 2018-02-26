@@ -11,7 +11,7 @@ class FormButtons extends Component {
             <div className="row">
                 <div className="tagus-form-button-container col-xs-12">
                     <Button type='success' disabled={this.props.disabled} onClick={this.props.onSubmit} className={`pull-right ${disabled}`}>Save</Button>
-                    <Button disabled={this.props.disabled} onClick={this.props.onReset} className={`pull-left ${disabled}`}>Cancel</Button>
+                    <Button type='warning' disabled={this.props.disabled} onClick={this.props.onReset} className={`pull-left ${disabled}`}>Cancel</Button>
                 </div>
             </div>
         );

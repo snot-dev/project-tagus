@@ -16,13 +16,18 @@ export const profileReducer = (state, action) => {
             } 
             return newState;
         }
-        case constants.profile.UPDATE_PROFILE_PENDING: {
+        case constants.profile.UPDATE_PROFILE_PENDING:
+        case constants.profile.UPDATE_PASSWORD_PENDING: {
             newState.savingUser = true;
             return newState;
         }
         case constants.profile.UPDATE_PROFILE_FULFILLED: {
             newState.savingUser = false;
             newState.user = action.payload.data.result;
+            return newState;
+        }
+        case constants.profile.UPDATE_PASSWORD_FULFILLED: {
+            newState.savingUser = false;
             return newState;
         }
         default:

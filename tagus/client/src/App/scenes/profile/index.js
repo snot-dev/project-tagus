@@ -27,12 +27,12 @@ class Profile extends Component {
         return (
             <section id="profile" className="full-height col-xs-12">
                 <Panel className="col-xs-12 col-sm-6" title="Profile"> 
-                <Button onClick={this.togglePassword.bind(this)} className="tagus-profile-change-password">{buttonString}</Button>
                 {this.state.changingPassword
-                ?   <PasswordForm />
+                ?   <PasswordForm user={this.props.profile.user} />
                 :   <ProfileForm user={this.props.profile.user} />}
                     
-                    <Overlay show={this.props.profile.savingUser} />
+                <Button onClick={this.togglePassword.bind(this)} className="tagus-profile-change-password">{buttonString}</Button>
+                <Overlay show={this.props.profile.savingUser} />
                 </Panel>
             </section> 
         );
