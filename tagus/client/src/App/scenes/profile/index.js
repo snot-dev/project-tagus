@@ -2,14 +2,36 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import Panel from '../../components/Panel';
 import Overlay from '../../components/Overlay';
+import Button from '../../components/Button';
 import ProfileForm from './components/profileForm';
+import PasswordForm from './components/passwordForm';
+import './profile.css';
 
 class Profile extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            changingPassword: false
+        };
+    }
+
+    togglePassword() {
+        this.setState({
+            changingPassword: !this.state.changingPassword
+        });
+    }
+
     render() {
+        const buttonString = this.state.changingPassword ? 'Back' : 'Change Password';
         return (
             <section id="profile" className="full-height col-xs-12">
-                <Panel className="col-xs-8" title="Profile"> 
-                    <ProfileForm user={this.props.profile.user} />
+                <Panel className="col-xs-12 col-sm-6" title="Profile"> 
+                <Button onClick={this.togglePassword.bind(this)} className="tagus-profile-change-password">{buttonString}</Button>
+                {this.state.changingPassword
+                ?   <PasswordForm />
+                :   <ProfileForm user={this.props.profile.user} />}
+                    
                     <Overlay show={this.props.profile.savingUser} />
                 </Panel>
             </section> 

@@ -17,7 +17,7 @@ class CustomForm extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(typeof nextProps.disabled !== undefined) {
+        if(typeof nextProps.disabled !== 'undefined') {
             this.setState({
                 formWasTouched: !nextProps.disabled
             });
@@ -42,10 +42,14 @@ class CustomForm extends Component {
                 const formValues = {};
 
                 formValues[this.props.name] = formApi.values;
-
+            
                 if(this.props.onSubmit){
                     this.props.onSubmit(formValues);
                 }
+
+                this.setState({
+                    formWasTouched: false
+                });
             }
         };
     }
