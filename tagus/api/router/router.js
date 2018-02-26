@@ -18,6 +18,12 @@ module.exports = {
                 return 0;
             }
 
+            if (routes.alt) {
+                for(const route of routes.alt) {
+                    router[route.method](route.path, route.func);
+                }
+            }
+
             router.get('/', (req, res)=> {
                 if(routes.getAll) {
                     routes.getAll(req, res);

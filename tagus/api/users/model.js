@@ -22,7 +22,8 @@ userSchema.methods = {
 };
 
 userSchema.pre('save', next => {
-    console.log("PRE SAVE!");
+    console.log(arguments);
+    
     next();
 });
 
