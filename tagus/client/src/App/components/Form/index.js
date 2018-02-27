@@ -111,9 +111,10 @@ class CustomForm extends Component {
     render() {
         const buttons = this.props.buttons || true;
         const disabled = typeof this.props.disabled !== 'undefined' ? this.props.disabled : !this.state.formWasTouched;
+        const className = this.props.className | ''
 
         return (
-            <Form className="tagus-form" dontValidateOnMount={true} validateError={this._errorValidator.bind(this)} defaultValues={this.props.defaultValues}>
+            <Form className={`tagus-form ${className}`} dontValidateOnMount={true} validateError={this._errorValidator.bind(this)} defaultValues={this.props.defaultValues}>
                 {formApi => (
                     <form onSubmit={formApi.submitForm} className="container-fluid">
                         <FormFields formApi={formApi} submits={formApi.submits} formName={this.props.name} onFieldBlur={this.props.onFieldBlur} onFieldChange={this.onChange(formApi.getFormState())} fields={this.props.fields} />
@@ -142,7 +143,8 @@ CustomForm.propTypes = {
         PropTypes.object,
         PropTypes.array
     ]),
-    buttons: PropTypes.bool
+    buttons: PropTypes.bool,
+    className: PropTypes.string
 };
 
 export default CustomForm;

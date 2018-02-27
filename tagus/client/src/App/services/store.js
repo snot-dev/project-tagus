@@ -7,6 +7,7 @@ import { translatesReducer } from './translates/reducer';
 import { usersReducer } from './users/reducer';
 import { authReducer } from './auth/reducer';
 import { profileReducer} from './profile/reducer';
+import {installerReducer} from './installer/reducer';
 import thunk from 'redux-thunk';
 import promise from 'redux-promise-middleware';
 import {createLogger} from 'redux-logger';
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
     translates: translatesReducer,
     users: usersReducer,
     auth: authReducer,
+    installer: installerReducer,
     profile: profileReducer
 });
 
@@ -84,25 +86,12 @@ const initialState = {
     profile: {
         user: {},
         savingUser: false
+    },
+    installer: {
+        shouldInstall: true,
+        checkingInfo: false,
+        checkedInfo: false
     }
-    // ,
-    // unitFields: {
-    //     list: [],
-    //     detail: {},
-    //     fetchingList: false,
-    //     fetchingDetail: false,
-    //     savingDetail: false
-    // },
-    // initializer: {
-    //     savingUser: false,
-    //     userCreated: false,
-    //     user: {
-    //         username: "",
-    //         email: "",
-    //         password: "",
-    //         isAdmin: false,
-    //     }
-    // }
 };
 
 export default applyMiddleware(promise(), thunk, createLogger())(createStore)(rootReducer, initialState);
