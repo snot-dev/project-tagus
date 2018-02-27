@@ -42,7 +42,7 @@ class CustomForm extends Component {
     _onSubmit(formApi) {
         return () => {
             if(this.state.formWasTouched && !this._formHasErrors(formApi)){
-                // formApi.submitForm();
+                formApi.submitForm();
                 const formValues = {};
 
                 formValues[this.props.name] = formApi.values;

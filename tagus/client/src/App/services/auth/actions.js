@@ -9,7 +9,7 @@ export function login(user) {
     return (dispatch, getState) => {
         dispatch({
             type: constants.auth.LOGIN,
-            payload: axios.post('authenticate', user)
+            payload: axios.post('auth', user)
         });
     }
 }
@@ -29,7 +29,7 @@ export function getLoggedUser() {
         if (_shouldFetchUser(state)) {
             dispatch({
                 type: constants.auth.GET_LOGGED_USER,
-                payload: axios.get('authenticate')
+                payload: axios.get('auth')
             });
         }
     }

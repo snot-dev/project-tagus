@@ -7,7 +7,7 @@ import './vendor/bootstrap/css/bootstrap.min.css';
 import './vendor/bootstrap/css/bootstrap-theme.min.css';
 import './vendor/font-awesome/css/font-awesome.min.css';
 import App from './App';
-import LoginPage from './App/scenes/login';
+import SigninPage from './App/scenes/signin';
 import registerServiceWorker from './registerServiceWorker';
 import store from './App/services/store';
 
@@ -16,7 +16,7 @@ ReactDOM.render(
         <HashRouter >
             <Switch>
                 <PrivateRoute path="/home" component={App} />
-                <Route path="/login" component={LoginPage} />
+                <Route path="/signin" component={SigninPage} />
                 <Redirect to="/home" />
             </Switch>
         </HashRouter>

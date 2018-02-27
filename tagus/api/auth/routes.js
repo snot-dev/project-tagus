@@ -25,7 +25,7 @@ module.exports = User => {
                 else {
                     res.json({
                         error: {
-                            message: "No user was found"
+                            message: "Wrong Email/Password"
                         }
                     });
                 }
@@ -34,6 +34,28 @@ module.exports = User => {
         else {
             res.sendStatus(401);
         }
+    });
+
+    router.post('/create', (req, res) => {
+        User.find({})
+        .then(users => {
+            if(users.length === 0) {
+                const user = new User(req.body);
+
+                //TODO: encrypt password
+
+                return user.save();
+            } 
+            else {
+                throw 'Unauthorized';
+            }
+        })
+        .then(result => {
+            res.json({});
+        })
+        .catch(error => {
+            res.sendStatus(401);
+        });
     });
 
     router.get('/', (req, res) => {

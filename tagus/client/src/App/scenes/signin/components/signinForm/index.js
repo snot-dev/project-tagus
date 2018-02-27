@@ -5,7 +5,7 @@ import Overlay from '../../../../components/Overlay';
 import store from '../../../../services/store';
 import {login} from '../../../../services/auth/actions';
 
-class LoginForm extends Component {
+class SigninForm extends Component {
     constructor(props) {
         super(props);
 
@@ -20,21 +20,16 @@ class LoginForm extends Component {
         };
     }
 
-    componentDidMount() {
-        this.emailInput.focus();
-
-    }
-
     componentWillReceiveProps(props) {
-        if (props.result && props.result.error) {
+        if (props.auth.result && props.auth.result.error) {
             this.setState({
                 errorMessage: props.auth.result.error.message,
                 valid: false
             });
         }
 
-        if (props.loggedIn) {
-            this.props.history.push('/');
+        if (props.auth.loggedIn) {
+            // this.props.history.push('/');
         }
     }
 
@@ -88,12 +83,13 @@ class LoginForm extends Component {
         return false;
     }
 
-    render() {
-        const errorClass = this.state.errorMessage ? 'error' : '';
 
+    _render() {
+        const errorClass = this.state.errorMessage ? 'error' : '';
+        
         return (
             <div className="row">
-                <form onSubmit={this._submitForm.bind(this)} className="tagus-login-form-container container-fluid">
+                <form onSubmit={this._submitForm.bind(this)} className="tagus-intro-form-container login container-fluid">
                     <div className="row tagus-login-message-container">
                         <div className="col-xs-12">
                             <p className={`tagus-login-message ${errorClass}`}>{this.state.errorMessage || 'Please login'}</p>
@@ -121,6 +117,12 @@ class LoginForm extends Component {
             </div>
         );
     }
+
+    render() {
+        const showForm = !this.props.installer.shouldInstall && this.props.installer.checkedInfo;
+
+        return showForm ? this._render() : null;
+    }
 }
 
-export default LoginForm;
+export default SigninForm;

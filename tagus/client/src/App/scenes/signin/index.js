@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
+import {Route} from 'react-router-dom';
 import {connect} from 'react-redux';
 import store from '../../services/store';
 import {checkIfInstall} from '../../services/installer/actions';
-import LoginForm from './components/loginForm';
-import InstallerForm from './components/installerForm';
-import './login.css';
+import SigninForm from './components/signinForm';
+import SignupForm from './components/signupForm';
+import './signin.css';
 
-class LoginPage extends Component {
+class SigninPage extends Component {
     constructor(props) {
         super(props);
 
@@ -19,10 +20,7 @@ class LoginPage extends Component {
         store.dispatch(checkIfInstall());
     }
 
-    render() {
-        const showLogin = !this.props.installer.shouldInstall && this.props.installer.checkedInfo;   
-        console.warn(this.props.installer);
-        console.warn(showLogin);
+        render() {
         return (
             <div id="tagus-login" className="container-fluid">
                 <div className="row">
@@ -37,9 +35,8 @@ class LoginPage extends Component {
                             <div className="tagus-login-logo-container"></div>
                             </div>
                         </div>
-                        {showLogin
-                        ?   <LoginForm />
-                        :   <InstallerForm />}
+                        <SigninForm history={this.props.history} installer={this.props.installer} auth={this.props.auth} />
+                        <SignupForm checkedInfo={this.props.installer.checkedInfo} shouldInstall={this.props.installer.shouldInstall}/>
                     </div>
                 </div>
             </div>
@@ -54,4 +51,4 @@ const mapStateToProps = state => {
     };
   };
   
-  export default connect(mapStateToProps)(LoginPage);
+  export default connect(mapStateToProps)(SigninPage);

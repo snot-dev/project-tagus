@@ -33,7 +33,7 @@ const api = (app, strategy) => {
     router.use('/translates', protectMiddleware, translates);
     router.use('/settings', protectMiddleware, settings);
     router.use('/templates', protectMiddleware, templates(app));
-    router.use('/authenticate', auth.routes(User));
+    router.use('/auth', auth.routes(User));
     router.use('/info', info);
 
     return router;
