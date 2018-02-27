@@ -32,8 +32,9 @@ class SigninPage extends Component {
                             <div className="tagus-login-logo-container"></div>
                             </div>
                         </div>
-                        <SigninForm history={this.props.history} auth={this.props.auth} />
-                        <SignupForm checkedInfo={this.props.auth.checkedInfo} shouldInstall={this.props.auth.shouldInstall}/>
+                        {this.props.auth.checkedInfo
+                        ? this.props.auth.shouldInstall ? <SignupForm checkedInfo={this.props.auth.checkedInfo} shouldInstall={this.props.auth.shouldInstall}/> : <SigninForm auth={this.props.auth} />
+                        : null}
                     </div>
                 </div>
             </div>

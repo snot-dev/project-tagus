@@ -7,6 +7,7 @@ export const authReducer = (state, action) => {
     switch (action.type) {
         case constants.auth.LOGIN_PENDING: {
             newState.loggingIn = true;
+            newState.result = null;
             return newState;
         }
         case constants.auth.LOGIN_FULFILLED: {

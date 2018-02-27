@@ -8,25 +8,26 @@ module.exports = User => {
             const email = req.body.email;
             const password = req.body.password;
             
-            User.findOne({email, password}).then(user => {
-                if (user) {
+            User.findOne({email}).select('+password').then(user => {
+                if (user && user.validPassword(password, user.password)) {
                     const payload = {
                         id: user._id
-                    }
-
+                    };
+                    
                     const token = jwt.encode(payload, process.env.AUTHSECRETORKEY);
-                        
+                    
+                    const clonedUser = Object.assign({}, user._doc);
+                    delete clonedUser.password;
+
                     res.json({ 
                         success: true,
                         token,
-                        user: user  
-                    })
+                        user: clonedUser  
+                    });
                 }
                 else {
                     res.json({
-                        error: {
-                            message: "Wrong Email/Password"
-                        }
+                        error: "Wrong Email/Password"
                     });
                 }
             });
@@ -35,15 +36,15 @@ module.exports = User => {
             res.sendStatus(401);
         }
     });
-
+    
     router.post('/create', (req, res) => {
         User.find({})
         .then(users => {
             if(users.length === 0) {
                 const admin = new User(req.body);
-
-                //TODO: encrypt password
-
+                
+                admin.password = admin.generateHash(req.body.password);
+                
                 return admin.save();
             } 
             else {
@@ -53,13 +54,13 @@ module.exports = User => {
         .then(result => {
             const user = Object.assign({}, result._doc);
             delete user.password;
-
+            
             const payload = {
                 id: user._id
             }
-
+            
             const token = jwt.encode(payload, process.env.AUTHSECRETORKEY);
-               
+            
             res.json({ 
                 success: true,
                 token,
@@ -70,10 +71,10 @@ module.exports = User => {
             res.sendStatus(401);
         });
     });
-
+    
     router.get('/', (req, res) => {
         const token = ExtractJwt.fromAuthHeaderAsBearerToken()(req);
-
+        
         if (token) {
             try {
                 const user = jwt.decode(token, process.env.AUTHSECRETORKEY);
@@ -95,14 +96,14 @@ module.exports = User => {
             res.sendStatus(401);
         }
     });
-
+    
     router.get('/info', (req, res) => {
-        User.find({})
-        .then(docs => {
-            res.json(docs.length === 0);
+        User.findOne({})
+        .then(doc => {
+            res.json(!doc);
         });
     });
-
+    
     return router;
 };
 

@@ -83,7 +83,7 @@ class SignupForm extends Component {
         return reg.test(email.trim());
     }
 
-    _render() {
+    render() {
         return (
             <div className="row tagus-intro-form-container">
                 <div className="row tagus-login-message-container">
@@ -96,10 +96,6 @@ class SignupForm extends Component {
                 </div>
             </div>
         );
-    }
-
-    render() {
-        return this.props.shouldInstall && this.props.checkedInfo ? this._render() : null;
     }
 }
  

@@ -20,13 +20,17 @@ class SigninForm extends Component {
         };
     }
 
+    componentDidMount() {
+        this.emailInput.focus();
+    }
+
     componentWillReceiveProps(props) {
         if (props.auth.result && props.auth.result.error) {
             this.setState({
-                errorMessage: props.auth.result.error.message,
+                errorMessage: props.auth.result.error,
                 valid: false
             });
-        }
+        }   
     }
 
     _onChange(e) {
@@ -80,7 +84,7 @@ class SigninForm extends Component {
     }
 
 
-    _render() {
+    render() {
         const errorClass = this.state.errorMessage ? 'error' : '';
         
         return (
@@ -108,16 +112,10 @@ class SigninForm extends Component {
                         <Button disabled={!this.state.touched} type='success' className="full-width pull-right">Submit</Button>
                         </div>
                     </div>
-                    <Overlay show={this.props.loggingIn} />
+                    <Overlay show={this.props.auth.loggingIn} />
                 </form>
             </div>
         );
-    }
-
-    render() {
-        const showForm = !this.props.auth.shouldInstall && this.props.auth.checkedInfo;
-
-        return showForm ? this._render() : null;
     }
 }
 

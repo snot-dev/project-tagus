@@ -8,7 +8,6 @@ export const profileReducer = (state, action) => {
         case constants.auth.CREATE_ADMIN_FULFILLED: {
             if (action.payload.data.success) {
                 newState.user = action.payload.data.user;
-                console.warn(newState.user);
             }
             return newState;
         }
