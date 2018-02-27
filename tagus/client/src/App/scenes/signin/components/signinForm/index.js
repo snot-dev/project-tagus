@@ -27,10 +27,6 @@ class SigninForm extends Component {
                 valid: false
             });
         }
-
-        if (props.auth.loggedIn) {
-            // this.props.history.push('/');
-        }
     }
 
     _onChange(e) {
@@ -119,7 +115,7 @@ class SigninForm extends Component {
     }
 
     render() {
-        const showForm = !this.props.installer.shouldInstall && this.props.installer.checkedInfo;
+        const showForm = !this.props.auth.shouldInstall && this.props.auth.checkedInfo;
 
         return showForm ? this._render() : null;
     }

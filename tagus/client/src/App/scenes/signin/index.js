@@ -1,26 +1,23 @@
 import React, { Component } from 'react';
-import {Route} from 'react-router-dom';
 import {connect} from 'react-redux';
 import store from '../../services/store';
-import {checkIfInstall} from '../../services/installer/actions';
+import {checkIfInstall} from '../../services/auth/actions';
 import SigninForm from './components/signinForm';
 import SignupForm from './components/signupForm';
 import './signin.css';
 
 class SigninPage extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            
-        };
-    }
-
     componentDidMount() {
         store.dispatch(checkIfInstall());
     }
 
-        render() {
+    componentWillReceiveProps(props) {
+        if (props.auth.loggedIn) {
+            this.props.history.push('/');
+        }
+    }
+
+    render() {
         return (
             <div id="tagus-login" className="container-fluid">
                 <div className="row">
@@ -35,19 +32,18 @@ class SigninPage extends Component {
                             <div className="tagus-login-logo-container"></div>
                             </div>
                         </div>
-                        <SigninForm history={this.props.history} installer={this.props.installer} auth={this.props.auth} />
-                        <SignupForm checkedInfo={this.props.installer.checkedInfo} shouldInstall={this.props.installer.shouldInstall}/>
+                        <SigninForm history={this.props.history} auth={this.props.auth} />
+                        <SignupForm checkedInfo={this.props.auth.checkedInfo} shouldInstall={this.props.auth.shouldInstall}/>
                     </div>
                 </div>
             </div>
-        )
+        );
     }
 }
 
 const mapStateToProps = state => {
     return {
-      auth: state.auth,
-      installer: state.installer
+      auth: state.auth
     };
   };
   

@@ -4,9 +4,11 @@ export const profileReducer = (state, action) => {
     const newState = Object.assign({}, state);
 
     switch(action.type) {
-        case constants.auth.LOGIN_FULFILLED: {
+        case constants.auth.LOGIN_FULFILLED:
+        case constants.auth.CREATE_ADMIN_FULFILLED: {
             if (action.payload.data.success) {
                 newState.user = action.payload.data.user;
+                console.warn(newState.user);
             }
             return newState;
         }

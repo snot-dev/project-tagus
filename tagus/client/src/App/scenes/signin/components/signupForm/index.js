@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import Form from '../../../../components/Form';
 import store from '../../../../services/store';
-import {createAdmin} from '../../../../services/installer/actions';
+import {createAdmin} from '../../../../services/auth/actions';
 
 
 class SignupForm extends Component {
@@ -77,9 +77,10 @@ class SignupForm extends Component {
     }
 
     _validateEmail(email){
-        const reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+        //https://stackoverflow.com/questions/43439895/js-ling-unnecessary-escape-character-no-useless-escape
+        const reg = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
 
-        return reg.test(email);
+        return reg.test(email.trim());
     }
 
     _render() {

@@ -52,6 +52,35 @@ export const authReducer = (state, action) => {
             newState.user = action.payload.data.result;
             return newState;
         }
+        case constants.auth.GET_INFO_PENDING: {
+            newState.checkingInfo = true;
+            return newState;
+        }
+        case constants.auth.GET_INFO_FULFILLED: {
+            newState.checkingInfo = false;
+            newState.checkedInfo = true;
+            newState.shouldInstall = action.payload.data;
+            return newState;
+        }
+        case constants.auth.CREATE_ADMIN_PENDING: {
+            newState.loggingIn = false;
+            return newState;
+        }
+        case constants.auth.CREATE_ADMIN_FULFILLED: {
+            newState.loggingIn = false;
+            if (action.payload.data.error) {
+                newState.result = action.payload.data;
+            }
+            else if (action.payload.data.success) {
+                newState.loggedIn = true;
+                newState.user = action.payload.data.user;
+                newState.shouldInstall = false;
+                localStorage.setItem('user', JSON.stringify(action.payload.data.token));
+                update(action.payload.data.token);
+            }
+
+            return newState;
+        }
         default: 
             return newState || {};
     }

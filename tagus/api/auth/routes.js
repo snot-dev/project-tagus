@@ -40,18 +40,31 @@ module.exports = User => {
         User.find({})
         .then(users => {
             if(users.length === 0) {
-                const user = new User(req.body);
+                const admin = new User(req.body);
 
                 //TODO: encrypt password
 
-                return user.save();
+                return admin.save();
             } 
             else {
                 throw 'Unauthorized';
             }
         })
         .then(result => {
-            res.json({});
+            const user = Object.assign({}, result._doc);
+            delete user.password;
+
+            const payload = {
+                id: user._id
+            }
+
+            const token = jwt.encode(payload, process.env.AUTHSECRETORKEY);
+               
+            res.json({ 
+                success: true,
+                token,
+                user  
+            });
         })
         .catch(error => {
             res.sendStatus(401);
@@ -81,7 +94,13 @@ module.exports = User => {
         else {
             res.sendStatus(401);
         }
+    });
 
+    router.get('/info', (req, res) => {
+        User.find({})
+        .then(docs => {
+            res.json(docs.length === 0);
+        });
     });
 
     return router;

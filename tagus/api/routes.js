@@ -8,7 +8,6 @@ const settings = require('./settings').routes;
 const User = require('./users').model;
 const auth = require('./auth');
 const templates = require('./templates/routes');
-const info = require('./info/routes');
 const Cookies = require('universal-cookie');
 
 const api = (app, strategy) => {
@@ -24,7 +23,6 @@ const api = (app, strategy) => {
         protectMiddleware =  auth.passport.authenticate(strategy, session)
     }
     
-
     router.use('/content', protectMiddleware, content.routes);
     router.use('/bridges', protectMiddleware, bridges.routes);
     router.use('/units', protectMiddleware, units);
@@ -34,7 +32,6 @@ const api = (app, strategy) => {
     router.use('/settings', protectMiddleware, settings);
     router.use('/templates', protectMiddleware, templates(app));
     router.use('/auth', auth.routes(User));
-    router.use('/info', info);
 
     return router;
 };

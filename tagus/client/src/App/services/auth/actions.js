@@ -34,3 +34,22 @@ export function getLoggedUser() {
         }
     }
 }
+
+export function checkIfInstall() {
+    return (dispatch, getState) => {
+        dispatch ({
+            type: constants.auth.GET_INFO,
+            payload: axios.get('auth/info')
+        }); 
+    }
+}
+
+export function createAdmin(user) {
+    return (dispatch, getState) => {
+        user.isCreator = true;
+        dispatch ({
+            type: constants.auth.CREATE_ADMIN,
+            payload: axios.post('auth/create', user)
+        });
+    };
+}

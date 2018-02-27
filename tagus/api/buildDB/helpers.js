@@ -20,10 +20,10 @@ const collections = [
         model: Settings,
         seed: settingsSeed
     },
-    {
-        model: User,
-        seed: usersSeed
-    },
+    // {
+    //     model: User,
+    //     seed: usersSeed
+    // },
     {
         model: Translate,
         seed: translatesSeed    
