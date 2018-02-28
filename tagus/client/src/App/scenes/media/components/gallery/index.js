@@ -7,25 +7,36 @@ class Gallery extends Component {
         super(props);
 
         this.state = {
-            currentImage: null
+            currentImage: 0,
+            isLightBoxOpen: false,
+            showLink: false
         };
+    }
+
+    toggleLightBox(show) {
+        return () => {
+            this.setState({
+                isLightBoxOpen: false
+            });
+        }
     }
 
     setImage(img) {
         return () => {
             this.setState({
+                isLightBoxOpen: true,
                 currentImage: img
             });
         };
     }
 
-    getNextImg() {
+    gotoNextLightboxImage() {
        this.setState({
             currentImage: this.state.currentImage +1 % this.props.images.length
        }); 
     }
 
-    getPrevImg() {
+    gotoPrevLightboxImage() {
         this.setState({
              currentImage: this.state.currentImage -1 % this.props.images.length
         }); 
@@ -34,14 +45,18 @@ class Gallery extends Component {
     render() {
         return (
             <div className="container-fluid tagus-gallery">
-                {this.props.images.map((img, index) => {
-                    return (
-                        <div key={index} className="col-xs-12 col-sm-2 tagus-gallery-image-container">
-                            <span class="helper"></span>
-                            <img className="tagus-gallery-image" src={img.src} alt={img.name} title={img.name} />
-                        </div>
-                     )
-                })}
+                <div className="row">
+                    {this.props.images.map((img, index) => {
+                        return (
+                            <div key={index} className="col-xs-12 col-sm-2 tagus-gallery-image-container">
+                                <a className="tagus-gallery-image-link"><i className="fa fa-link"></i></a>
+                                <span className="helper"></span>
+                                <img onClick={this.setImage(index)} className="tagus-gallery-image" src={img.src} alt={img.name} title={img.name} />
+                            </div>
+                        )
+                    })}
+                </div>
+                <Lightbox images={this.props.images} isOpen={this.state.isLightBoxOpen} currentImage={this.state.currentImage} onClickNext={this.gotoNextLightboxImage.bind(this)} onClickPrev={this.gotoPrevLightboxImage.bind(this)} onClose={this.toggleLightBox(false)} />
             </div>
         )
     }

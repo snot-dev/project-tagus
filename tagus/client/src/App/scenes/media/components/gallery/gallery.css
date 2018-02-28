@@ -3,6 +3,26 @@
     margin-bottom: 15px;
     text-align: center;
     white-space: nowrap;
+    position: relative;
+}
+
+.tagus-gallery-image-container:hover .tagus-gallery-image-link {
+    display: inline-block;
+}
+
+.tagus-gallery-image-link {
+    display: none;
+    padding: 5px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    font-size: 20px;
+    color: var(--text-color);
+}
+
+.tagus-gallery-image-link:hover {
+    color: var(--main-red);
 }
 
 .helper {
