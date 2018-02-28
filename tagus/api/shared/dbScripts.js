@@ -1,5 +1,4 @@
 const async = require('async');
-const mongoose = require('mongoose');
 const usersSeed = require('../users/data');
 const User = require('../users').model;
 const unitFieldsSeed = require('../unitFields/data');
@@ -20,10 +19,9 @@ const collections = [
         model: Settings,
         seed: settingsSeed
     },
-    // {
-    //     model: User,
-    //     seed: usersSeed
-    // },
+    {
+        model: User
+    },
     {
         model: Translate,
         seed: translatesSeed    
@@ -51,7 +49,7 @@ function insertCollection(collection, done) {
 
      collection.model.find({})
     .then(docs => {
-        if (docs.length === 0) {
+        if (docs.length === 0 && collection.seed) {
             return collection.model.insertMany(collection.seed);
         }
         else {
@@ -70,14 +68,19 @@ function insertCollection(collection, done) {
     });
 }
 
-function insertCollections() {
-    console.log("Connected! Building DB....");
-
-    async.eachSeries(collections, (collection, done) => {
-        insertCollection(collection, done);
-    }, err => {
-        console.log(err || "DB was built!");
-        process.exit(0);
+function insertCollections(exit) {
+    return new Promise((resolve, reject) => {
+        console.log("Connected! Building DB....");
+        
+        async.eachSeries(collections, (collection, done) => {
+            insertCollection(collection, done);
+        }, err => {
+            console.log(err || "DB was built!");
+            if (exit) {
+                exit();
+            }
+            resolve();
+        });
     });
 }
 

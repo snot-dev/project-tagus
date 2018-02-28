@@ -1,11 +1,13 @@
 const mongoose = require('mongoose');
 require('../../../config');
 mongoose.Promise = require('bluebird');
-const insertCollections = require('./helpers').insertCollections;
+const insertCollections = require('../shared/dbScripts').insertCollections;
 
 console.log("Connecting to " + process.env.MONGO_CONNECTION_STRING)
 
 mongoose.connect(process.env.MONGO_CONNECTION_STRING)
 .then(() => {
-    insertCollections();
+    insertCollections(() => {
+        process.exit(0);
+    });
 });

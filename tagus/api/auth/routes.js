@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const jwt = require('jwt-simple');
 const ExtractJwt = require('passport-jwt').ExtractJwt;
+const insertCollections = require('../shared/dbScripts').insertCollections;
 
 module.exports = User => {
     router.post('/', (req, res) => {
@@ -38,9 +39,15 @@ module.exports = User => {
     });
     
     router.post('/create', (req, res) => {
+        let response = {};
+
         User.find({})
         .then(users => {
-            if(users.length === 0) {
+            if (users.length === 0) {
+                if (req.body.password !== req.body.confirmPassword) {
+                    throw "Password don't match!";
+                }
+
                 const admin = new User(req.body);
                 
                 admin.password = admin.generateHash(req.body.password);
@@ -60,14 +67,23 @@ module.exports = User => {
             }
             
             const token = jwt.encode(payload, process.env.AUTHSECRETORKEY);
-            
-            res.json({ 
+
+            response = { 
                 success: true,
                 token,
                 user  
-            });
+            }; 
+        })
+        .then(() => {
+            console.log("before");
+            return insertCollections();
+        })
+        .then(() => {
+            console.log("after");
+            res.json(response);
         })
         .catch(error => {
+            console.log(error);
             res.sendStatus(401);
         });
     });
