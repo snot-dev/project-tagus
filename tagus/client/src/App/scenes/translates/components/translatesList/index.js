@@ -159,7 +159,7 @@ class TranslatesList extends Component {
 
     render() {
         return (
-            <Panel title="Translates" className="col-xs-6 full-height">
+            <Panel title={this.props.name} className="col-xs-6 full-height">
                 <div className="container-fluid tagus-translates-list">
                 {!this.state.valid 
                     ?  <div className="row"> <p className="tagus-translates-list-error col-xs-12">{this.state.errorMessage}</p> </div>

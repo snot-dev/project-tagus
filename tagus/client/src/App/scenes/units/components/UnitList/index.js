@@ -41,7 +41,7 @@ class UnitsList extends Component {
         ];
 
         return (
-            <Panel title="Units" className="col-xs-4 full-height" menu={menu} >
+            <Panel title={this.props.name} className="col-xs-4 full-height" menu={menu} >
                 <List id="tagus-units-list" className="tagus-units-list">
                     {this.props.list && this.props.list.length > 0
                     ?   this.props.list.map((unit, key) => {

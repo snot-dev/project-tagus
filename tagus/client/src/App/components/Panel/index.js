@@ -12,7 +12,10 @@ class Panel extends Component {
                     {this.props.title
                     ?   
                         <Header className={this.props.header}>
-                            {this.props.title}
+                             {this.props.icon
+                            ?   <i className={`fa fa-${this.props.icon}`}></i>   
+                            : null}
+                             {this.props.title}
                         </Header>
                     : null
                     }

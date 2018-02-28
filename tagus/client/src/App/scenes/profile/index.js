@@ -26,7 +26,7 @@ class Profile extends Component {
         const buttonString = this.state.changingPassword ? 'Back' : 'Change Password';
         return (
             <section id="profile" className="full-height col-xs-12">
-                <Panel className="col-xs-12 col-sm-6" title="Profile"> 
+                <Panel className="col-xs-12 col-sm-6" title={this.props.name}> 
                 {this.state.changingPassword
                 ?   <PasswordForm user={this.props.profile.user} />
                 :   <ProfileForm user={this.props.profile.user} />}

@@ -61,7 +61,7 @@ class BridgeList extends Component {
         ];
 
         return (
-            <Panel title="Bridges" className="col-xs-4 full-height" menu={menu}>
+            <Panel title={this.props.name} className="col-xs-4 full-height" menu={menu}>
                 <List id="tagus-bridges-list" className="tagus-bridges-list">
                     {this.props.list && this.props.list.length > 0
                     ?   this.props.list.map((bridge, key) => {

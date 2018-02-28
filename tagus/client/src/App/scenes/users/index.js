@@ -14,7 +14,7 @@ class Users extends Component {
     render() {
         return (
             <section id="users" className="full-height col-xs-12">
-                <UserList url={this.props.match.url} list={this.props.users.list} techingList={this.props.users.fetchingList} />
+                <UserList name={this.props.name} url={this.props.match.url} list={this.props.users.list} techingList={this.props.users.fetchingList} />
                 <Route exact={false}  path={`${this.props.match.url}/:id`} render={(props)=>(<UserDetail {...props} savingContent={this.props.users.savingDetail} detail={this.props.users.detail} />)} />
             </section>
         )

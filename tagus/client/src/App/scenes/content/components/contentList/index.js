@@ -107,7 +107,7 @@ class ContentList extends Component {
         ];
         
         return (
-            <Panel title="Content" className="col-xs-4 full-height" menu={menu}>
+            <Panel title={this.props.name} className="col-xs-4 full-height" menu={menu}>
                 {this._buildContentList()}
                 <AddLink text="Create a new Root page" onClick={this._toggleCreateRootContentMenu(true)} show={this.props.contentList.length ===0} disabled={this.state.creatingRootContent} />
                 <Overlay show={this.props.savingContent || this.props.fetchingList}/>

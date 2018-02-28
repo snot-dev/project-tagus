@@ -15,7 +15,7 @@ class Units extends Component {
     render() {
         return (
             <section id="units" className="full-height col-xs-12">
-                <UnitList url={this.props.match.url} list={this.props.units.list} fetchingList={this.props.units.fetchingList} savingDetail={this.props.savingDetail} />
+                <UnitList name={this.props.name} url={this.props.match.url} list={this.props.units.list} fetchingList={this.props.units.fetchingList} savingDetail={this.props.savingDetail} />
                 <Route path={`${this.props.match.url}/detail/:id`} render={(props)=>(<UnitDetail {...props} fetchingUnitFields={this.props.units.fetchingUnitFields} unitFields={this.props.units.unitFields} fetchingTemplates={this.props.units.fetchingTemplates} templates={this.props.units.templates} addingTab={this.props.units.addingTab} addingField={this.props.units.addingField} detail={this.props.units.detail} />)} />
             </section>
         )

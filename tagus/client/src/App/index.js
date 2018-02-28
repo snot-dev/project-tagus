@@ -11,6 +11,7 @@ import Bridges from './scenes/bridges';
 import Translates from './scenes/translates';
 import Users from './scenes/users';
 import Profile from './scenes/profile';
+import Media from './scenes/media';
 import Overlay from './components/Overlay';
 import store from './services/store';
 import {logoff, getLoggedUser} from './services/auth/actions';
@@ -32,14 +33,21 @@ class App extends Component {
         name: "Units",
         path: this._generatePath(props, '/units'),
         component: Units,
-        icon: 'ship',
+        icon: 'anchor',
         nav: true
       },
       {
         name: "Bridges",
         path: this._generatePath(props, '/bridges'),
         component: Bridges,
-        icon: 'life-ring',
+        icon: 'chevron-circle-up',
+        nav: true
+      },
+      {
+        name: "Media",
+        path: this._generatePath(props, '/media'),
+        component: Media,
+        icon: 'image',
         nav: true
       },
       {
@@ -88,7 +96,7 @@ class App extends Component {
         <AppContainer>
           {this.routes.map((route, index) => {
             return(
-              <Route key={`${index}_${route.name}`} path={route.path} component={route.component} />
+              <Route key={`${index}_${route.name}`} test="this is a test" path={route.path} render={(props) => (<route.component name={route.name} {...props}/>) } />
             );
           })}
         </AppContainer>

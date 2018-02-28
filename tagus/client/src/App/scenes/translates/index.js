@@ -12,7 +12,7 @@ class Translates extends Component {
     render() {
         return (
             <section id="translates" className="full-height col-xs-12">
-                <TranslatesList list={this.props.translates.list} fetchingList={this.props.translates.fetchingList} savingList={this.props.translates.savingList} />
+                <TranslatesList name={this.props.name} list={this.props.translates.list} fetchingList={this.props.translates.fetchingList} savingList={this.props.translates.savingList} />
             </section>
         );
     }
