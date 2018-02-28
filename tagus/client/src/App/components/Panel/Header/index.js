@@ -17,7 +17,11 @@ class Header extends Component {
 }
 
 Header.propTypes = {
-    children: PropTypes.string
+    children: PropTypes.oneOfType([
+        PropTypes.array,
+        PropTypes.object,
+        PropTypes.string
+    ])
 };
 
 export default Header;

@@ -7,6 +7,7 @@ import { translatesReducer } from './translates/reducer';
 import { usersReducer } from './users/reducer';
 import { authReducer } from './auth/reducer';
 import { profileReducer} from './profile/reducer';
+import { mediaReducer} from './media/reducer';
 import thunk from 'redux-thunk';
 import promise from 'redux-promise-middleware';
 import {createLogger} from 'redux-logger';
@@ -19,7 +20,8 @@ const rootReducer = combineReducers({
     translates: translatesReducer,
     users: usersReducer,
     auth: authReducer,
-    profile: profileReducer
+    profile: profileReducer,
+    media: mediaReducer
 });
 
 const initialState = {
@@ -86,6 +88,10 @@ const initialState = {
     profile: {
         user: {},
         savingUser: false
+    },
+    media: {
+        list: [],
+        fetchingList: false
     }
 };
 

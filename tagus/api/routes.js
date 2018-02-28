@@ -8,6 +8,7 @@ const settings = require('./settings').routes;
 const User = require('./users').model;
 const auth = require('./auth');
 const templates = require('./templates/routes');
+const media = require('./media/routes');
 const Cookies = require('universal-cookie');
 
 const api = (app, strategy) => {
@@ -32,6 +33,7 @@ const api = (app, strategy) => {
     router.use('/settings', protectMiddleware, settings);
     router.use('/templates', protectMiddleware, templates(app));
     router.use('/auth', auth.routes(User));
+    router.use('/media', media(app));
 
     return router;
 };
