@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import {Popover, OverlayTrigger} from 'react-bootstrap';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
+import './imgLink.css';
 
 class ImgLink extends Component {
     _popover() {
         return (
-            <Popover id="tagus-popover" >
-                src="<strong>{this.props.link}</strong>"
+            <Popover id="tagus-popover" className="tagus-gallery-popover" >
+                src="<strong>{this.props.link}</strong>" <CopyToClipboard text={this.props.link}><i className="fa fa-clipboard copy" title="Copy to clipboard"></i></CopyToClipboard>
             </Popover> 
         );
     }
