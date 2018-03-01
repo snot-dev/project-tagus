@@ -21,8 +21,10 @@
     color: var(--text-color);
 }
 
-.tagus-gallery-image-link:hover {
+.tagus-gallery-image-link:hover,
+.tagus-gallery-image-link[aria-describedby="tagus-popover"] {
     color: var(--main-red);
+    display: inline-block;
 }
 
 .helper {

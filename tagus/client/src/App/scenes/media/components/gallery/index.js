@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Lightbox from 'react-images';
+import ImgLink from '../imgLink';
 import './gallery.css';
 
 class Gallery extends Component {
@@ -49,7 +50,7 @@ class Gallery extends Component {
                     {this.props.images.map((img, index) => {
                         return (
                             <div key={index} className="col-xs-12 col-sm-2 tagus-gallery-image-container">
-                                <a className="tagus-gallery-image-link"><i className="fa fa-link"></i></a>
+                                <ImgLink link={img.src} />
                                 <span className="helper"></span>
                                 <img onClick={this.setImage(index)} className="tagus-gallery-image" src={img.src} alt={img.name} title={img.name} />
                             </div>
