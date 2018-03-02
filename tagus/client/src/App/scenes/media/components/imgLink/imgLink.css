@@ -11,3 +11,7 @@
     color: var(--main-red);
     cursor: pointer;
 }
+
+.tagus-gallery-popover.popover {
+    max-width: 500px;
+}
