@@ -22,7 +22,12 @@ function _getAllFromFolder(path, dir, currentFiles = []) {
             _getAllFromFolder(newPath, newDir, currentFiles);
         }
         else {
-            currentFiles.push( {src: newDir, name: file.split('.').shift()});
+            const mediaTypes = ['jpeg', 'jpg', 'gif', 'png'];
+            const fileFormat = file.split('.').pop();
+
+            if (mediaTypes.includes(fileFormat)){
+                currentFiles.push( {src: newDir, name: file.split('.').shift()});
+            }
         }
     }
 
