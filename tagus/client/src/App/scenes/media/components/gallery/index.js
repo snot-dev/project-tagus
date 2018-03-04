@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Lightbox from 'react-images';
 import ImgLink from '../imgLink';
+import InputFile from '../inputFile';
 import './gallery.css';
 
 class Gallery extends Component {
@@ -56,6 +57,10 @@ class Gallery extends Component {
                             </div>
                         )
                     })}
+                    <div className="col-xs-12 col-sm-2 tagus-gallery-image-container text-center">
+                        <span className="helper"></span>
+                        <InputFile />
+                    </div>
                 </div>
                 <Lightbox images={this.props.images} isOpen={this.state.isLightBoxOpen} currentImage={this.state.currentImage} onClickNext={this.gotoNextLightboxImage.bind(this)} onClickPrev={this.gotoPrevLightboxImage.bind(this)} onClose={this.toggleLightBox(false)} />
             </div>

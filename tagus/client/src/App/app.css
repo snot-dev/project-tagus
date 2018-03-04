@@ -46,6 +46,7 @@ a:focus {
   color: inherit;
   border: none;
   outline: none;
+  cursor: pointer;
 }
 
 h3, p {
