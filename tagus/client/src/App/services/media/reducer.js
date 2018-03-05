@@ -16,6 +16,16 @@ export const mediaReducer = (state, action) => {
 
             return newState;
         }
+        case constants.media.UPLOAD_MEDIA_PENDING: {
+            newState.uploadingMedia = true;
+
+            return newState;
+        }
+        case constants.media.UPLOAD_MEDIA_FULFILLED: {
+            newState.uploadingMedia = false;
+
+            return newState;
+        }
         default: 
             return newState || {};
     }

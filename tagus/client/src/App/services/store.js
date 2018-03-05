@@ -91,7 +91,8 @@ const initialState = {
     },
     media: {
         list: [],
-        fetchingList: false
+        fetchingList: false,
+        uploadingMedia: false
     }
 };
 

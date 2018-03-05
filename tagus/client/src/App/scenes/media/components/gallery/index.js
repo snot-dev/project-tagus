@@ -59,7 +59,7 @@ class Gallery extends Component {
                     })}
                     <div className="col-xs-12 col-sm-2 tagus-gallery-image-container text-center">
                         <span className="helper"></span>
-                        <InputFile />
+                        <InputFile uploadingMedia={this.props.uploadingMedia} />
                     </div>
                 </div>
                 <Lightbox images={this.props.images} isOpen={this.state.isLightBoxOpen} currentImage={this.state.currentImage} onClickNext={this.gotoNextLightboxImage.bind(this)} onClickPrev={this.gotoPrevLightboxImage.bind(this)} onClose={this.toggleLightBox(false)} />
