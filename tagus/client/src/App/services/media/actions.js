@@ -29,3 +29,12 @@ export function uploadMedia(file, name) {
         });
     };
 }
+
+export function deleteMedia(file) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: constants.media.DELETE_MEDIA,
+            payload: axios.put('media', {file})
+        });
+    }
+}

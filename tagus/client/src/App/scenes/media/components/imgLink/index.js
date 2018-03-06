@@ -14,8 +14,8 @@ class ImgLink extends Component {
 
     render() {
         return (
-            <OverlayTrigger trigger="click" rootClose placement="bottom" overlay={this._popover()}>
-                <a className="tagus-gallery-image-link"><i className="fa fa-link"></i></a>
+            <OverlayTrigger trigger="click" rootClose placement="top" overlay={this._popover()}>
+                <a className="tagus-gallery-image-link tagus-gallery-image-control-bar-icon"><i className="fa fa-link"></i></a>
             </OverlayTrigger>
         )
     }

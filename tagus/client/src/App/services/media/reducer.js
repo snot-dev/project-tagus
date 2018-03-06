@@ -26,6 +26,16 @@ export const mediaReducer = (state, action) => {
 
             return newState;
         }
+        case constants.media.DELETE_MEDIA_PENDING: {
+            newState.deletingMedia = true;
+
+            return newState;
+        }
+        case constants.media.DELETE_MEDIA_FULFILLED: {
+            newState.deletingMedia = false;
+
+            return newState;
+        }
         default: 
             return newState || {};
     }

@@ -92,7 +92,8 @@ const initialState = {
     media: {
         list: [],
         fetchingList: false,
-        uploadingMedia: false
+        uploadingMedia: false,
+        deletingMedia: false
     }
 };
 
