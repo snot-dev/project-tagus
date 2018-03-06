@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import Lightbox from 'react-images';
+import Modal from '../../../../components/Modal';
 import ImgLink from '../imgLink';
 import InputFile from '../inputFile';
-import Modal from '../../../../components/Modal';
+import {deleteMedia} from '../../../../services/media/actions';
+import store from '../../../../services/store';
 import './gallery.css';
 
 class Gallery extends Component {
@@ -56,6 +58,8 @@ class Gallery extends Component {
      }
 
      _deleteMedia() {
+         store.dispatch(deleteMedia(this.state.deleteMode));
+         
         this.setState({
             deleteMode: null
         });

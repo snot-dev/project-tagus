@@ -73,7 +73,8 @@ export const messagesReducer = (state, action) => {
         }
         case constants.content.CREATE_CONTENT_FULFILLED:
         case constants.bridges.CREATE_BRIDGE_FULFILLED:
-        case constants.units.CREATE_UNIT_FULFILLED: {
+        case constants.units.CREATE_UNIT_FULFILLED:
+        case constants.media.UPLOAD_MEDIA_FULFILLED: {
             if (action.payload.data.message !== 'warning') {
                 newState.list.push({
                     type: 'success',
@@ -94,7 +95,8 @@ export const messagesReducer = (state, action) => {
             return newState;
         }
         case constants.content.DELETE_CONTENT_FULFILLED:
-        case constants.bridges.DELETE_BRIDGE_FULFILLED: {
+        case constants.bridges.DELETE_BRIDGE_FULFILLED:
+        case constants.media.DELETE_MEDIA_FULFILLED: {
             newState.list.push({
                 type: 'success',
                 subject: "Item",

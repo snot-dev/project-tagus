@@ -16,7 +16,7 @@ class Media extends Component {
             <section id="media" className="col-xs-12 full-height">
                 <Panel title={this.props.name} className="col-xs-12 full-height">
                     <Gallery images={this.props.media.list} uploadingMedia={this.props.media.uploadingMedia} />
-                    <Overlay show={this.props.media.uploadingMedia || this.props.media.fetchingList} />
+                    <Overlay show={this.props.media.uploadingMedia || this.props.media.fetchingList || this.props.media.deletingMedia} />
                 </Panel>
             </section>
         )

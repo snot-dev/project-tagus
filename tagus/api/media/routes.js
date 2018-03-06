@@ -1,8 +1,6 @@
 const fs = require('fs');
 const multer = require('multer');
 
-
-
 module.exports = app => {
     const router = require('express').Router();
     const media = app.settings.media;
@@ -26,8 +24,26 @@ module.exports = app => {
 
     router.post('/', upload.single('media'), (req, res) => {
         res.json({
-            success: true
+            success: true,
+            result: {name: 'media'}
         });
+    });
+
+    router.put('/', (req, res) => {
+        const response = {
+            success: true
+        };
+
+        try {
+            fs.unlinkSync(`${media.root}${req.body.file}`);
+        }
+        catch (err) {
+            response.success = false;
+            response.error = err;
+        }
+
+        res.json(response);
+        
     });
 
 

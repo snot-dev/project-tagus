@@ -15,7 +15,7 @@ const portNumber = process.env.PORT_NUMBER;
 const partialsDir = '/SiteName/views/partials';
 app.set('views', [ path.join(__dirname, 'SiteName/views'), path.join(__dirname, partialsDir)]);
 app.set('view engine', 'hbs');
-app.set('media', {path:'SiteName/img', dir: '/img'});
+app.set('media', {path:'SiteName/img', dir: '/img', root: 'SiteName'});
 
 hbs.registerPartials(path.join(__dirname + partialsDir));
 hbs.registerHelper('partial', name => {

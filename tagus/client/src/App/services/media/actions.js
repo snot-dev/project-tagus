@@ -35,6 +35,12 @@ export function deleteMedia(file) {
         dispatch({
             type: constants.media.DELETE_MEDIA,
             payload: axios.put('media', {file})
+        })
+        .then(() => {
+            dispatch({
+                type: constants.media.GET_MEDIA,
+                payload: axios('media')
+            });
         });
     }
 }
