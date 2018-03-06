@@ -14,7 +14,15 @@ router.get('/', (req, res) => {
     Content.find({})
     .populate('children')
     .exec((err,docs) => {
-        res.json(err ||{list: docs});
+        const response = {success: true};
+        if (err) {
+            response.error =  err;
+            response.success = false;
+        }
+        else {
+            response.list = docs;
+        }
+        res.json(response);
     });  
 });
 
@@ -39,7 +47,9 @@ router.post('/', (req, res) => {
     Content.findOne({'alias': newContent.alias})
     .then(doc => {
         if(doc) {
-            res.json({message: "warning", result: newContent.alias})
+            res.json({
+                success: false, warning: true, result: newContent.alias
+            });
         }
         else {
             //TODO: Change this to an actual user
@@ -59,17 +69,22 @@ router.post('/', (req, res) => {
                 }
             })
             .then( () => {
-                res.json({ message: "Document successfully created!", result: newContent });
+                res.json({ success: true, message: "Document successfully created!", result: newContent });
+            })
+            .catch(err => {
+                res.json({ success: false, error: err });
             });
         }
-    })
-
+    });
 });
 
 router.get('/:id', (req, res) => {
     Content.findOne({'_id': req.params.id})
     .then( result => {
-        res.json( result );
+        res.json( {success: true, result} );
+    })
+    .catch(err => {
+        res.json({success: false, error: err});
     });
 });
 
@@ -79,12 +94,11 @@ router.put('/:id', (req, res) => {
         alias = convertToAlias(req.body.name);
     }
 
-    
     //TODO: Assign to a new Parent
     Content.findOne({'alias': alias})
     .then( doc => {
         if(doc && doc._id != req.params.id) {
-            res.json({message: "warning", result:alias})
+            res.json({success:false, warning: true, message:`${alias} alias already exists!`})
         } 
         else {
             Content.findOne({'_id': req.params.id})
@@ -97,7 +111,7 @@ router.put('/:id', (req, res) => {
                 return updatedContent.save();
             })
             .then(result =>{
-                res.json({message: "Document updated!", result});
+                res.json({success: true, message: "Document updated!", result});
             });
         }
     })

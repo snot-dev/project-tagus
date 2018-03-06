@@ -16,7 +16,7 @@ const setHeaders =  () => {
 };
 
 const instance = axios.create( {
-	baseURL: '/api/',
+	baseURL: '/tagus/api/',
 	withCredentials: true,
 	headers: setHeaders()
 });
