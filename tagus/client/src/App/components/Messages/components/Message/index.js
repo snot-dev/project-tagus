@@ -26,7 +26,7 @@ class Message extends Component {
     }
 
     render() {
-        const text = `${this.props.subject} ${this.props.verb} ${ this.props.result}`;
+        const text = `${this.props.message}`;
         return ( 
             <div className={`tagus-message ${this.props.type}`}>
                 <a onClick={this._onClick.bind(this)} className="tagus-message-close-button">x</a>
@@ -39,8 +39,7 @@ class Message extends Component {
 Message.propTypes = {
     index: PropTypes.number.isRequired,
     type: PropTypes.string.isRequired,
-    subject: PropTypes.string.isRequired,
-    verb: PropTypes.string.isRequired,
+    message: PropTypes.string.isRequired,
     result: PropTypes.string
 };
 

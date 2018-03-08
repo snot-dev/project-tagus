@@ -36,12 +36,10 @@ export const messagesReducer = (state, action) => {
         case constants.units.GET_UNITS_FIELDS_REJECTED:
         case constants.units.POST_UNIT_DETAIL_REJECTED:
         case constants.units.CREATE_UNIT_REJECTED: {
-            if (!action.payload.data.list) {
+            if (!action.payload.data.success) {
                 newState.list.push({
                     type: 'error',
-                    subject: `An error`,
-                    verb: 'has ocurred',
-                    result: `in "${action.payload.config.url}"`
+                    message: action.payload.data.message
                 });
             }
 
@@ -51,78 +49,28 @@ export const messagesReducer = (state, action) => {
         case constants.units.POST_UNIT_DETAIL_FULFILLED: 
         case constants.bridges.POST_BRIDGES_DETAIL_FULFILLED:
         case constants.translates.POST_TRANSLATES_LIST_FULFILLED:
-        case constants.profile.UPDATE_PROFILE_FULFILLED: {
-            if(action.payload.data.message !== 'warning') {
-                newState.list.push({
-                    type: 'success',
-                    subject: `"${action.payload.data.result.name}"`,
-                    verb: 'was updated',
-                    result: 'with success'
-                });
-            }
-            else {
-                newState.list.push({
-                    type: 'warning',
-                    subject: `"${action.payload.data.result}" alias`,
-                    verb: 'already exist',
-                    result: ''
-                });
-            }
-
-            return newState;
-        }
+        case constants.profile.UPDATE_PROFILE_FULFILLED:
         case constants.content.CREATE_CONTENT_FULFILLED:
         case constants.bridges.CREATE_BRIDGE_FULFILLED:
         case constants.units.CREATE_UNIT_FULFILLED:
-        case constants.media.UPLOAD_MEDIA_FULFILLED: {
-            if (action.payload.data.message !== 'warning') {
-                newState.list.push({
-                    type: 'success',
-                    subject: `"${action.payload.data.result.name}"`,
-                    verb: 'was created',
-                    result: 'with success'
-                });
-            }
-            else {
-                newState.list.push({
-                    type: 'warning',
-                    subject: `"${action.payload.data.result}" alias`,
-                    verb: 'already exist',
-                    result: ''
-                });
-            }
-
-            return newState;
-        }
+        case constants.media.UPLOAD_MEDIA_FULFILLED:
         case constants.content.DELETE_CONTENT_FULFILLED:
         case constants.bridges.DELETE_BRIDGE_FULFILLED:
-        case constants.media.DELETE_MEDIA_FULFILLED: {
-            newState.list.push({
-                type: 'success',
-                subject: "Item",
-                verb: 'was deleted',
-                result: 'with success'
-            });
-
-            return newState;
-        }
+        case constants.media.DELETE_MEDIA_FULFILLED:
         case constants.profile.UPDATE_PASSWORD_FULFILLED: {
+            let type = 'success';
+
             if (action.payload.data.error) {
-                newState.list.push({
-                    type: 'error',
-                    subject: 'Error:',
-                    verb: 'has occurred:',
-                    result: action.payload.data.error
-                })                
+                type = 'error';
             } 
-            else {
-                newState.list.push({
-                    type: 'success',
-                    subject: `${action.payload.data.result.name}`,
-                    verb: 'was updated',
-                    result: 'with success'
-                });
+            else if (action.payload.data.warning) {
+                type = 'warning';
             }
+            
+            newState.list.push({
+                type,
+                message: action.payload.data.message
+            });
 
             return newState;
         }

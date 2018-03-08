@@ -11,8 +11,11 @@ module.exports = {
         whileCreating: item => {
             return `An error occurred while creating ${item}`;
         },
-        whileCreating: item => {
+        whileUpdating: item => {
             return `An error occurred while updating ${item}`;
+        },
+        whileDeleting: item => {
+            return `An error occurred while deleting ${item}`;
         }
     },
     success: {

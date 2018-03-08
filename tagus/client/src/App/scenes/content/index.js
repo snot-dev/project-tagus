@@ -21,7 +21,7 @@ class Content extends Component {
                 <Route exact path={`${this.props.match.url}/create/:id`} render={(props)=>( 
                     this.props.content.createUnit
                     ?   <CreateContent {...props} savingContent={this.props.content.savingContent} unit={this.props.content.createUnit} parent={this.props.content.editingContent}/>
-                    :   <Redirect to="/content"/>)} 
+                    :   <Redirect to={this.props.match.url}/>)} 
                 />
                 <Route exact={false}  path={`${this.props.match.url}/detail/:id`} render={(props)=>(<ContentDetail {...props} savingContent={this.props.content.savingContent} detail={this.props.content.detail} unit={this.props.content.units[this.props.content.detail.unitType]} />)} />
             </section>

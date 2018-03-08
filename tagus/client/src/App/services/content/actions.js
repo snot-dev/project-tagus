@@ -47,7 +47,7 @@ export function getContentDetailIfNeeded(id) {
                 dispatch({
                     type: constants.content.GET_CONTENT_DETAIL_FULFILLED,
                     payload:{
-                        data: state.content.list[id]
+                        data: {item: state.content.list[id]}
                     } 
                 });
             } else {

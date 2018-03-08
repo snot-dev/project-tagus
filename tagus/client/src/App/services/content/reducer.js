@@ -11,7 +11,7 @@ export const contentReducer = (state, action) => {
         }
         case constants.content.GET_CONTENT_LIST_FULFILLED: {
             newState.fetchingList = false;
-            if(action.payload.data.list) {
+            if(action.payload.data.success) {
                 newState.list = convertArrayToDictionary(action.payload.data.list);
                 newState.treeList = buildContentTree(action.payload.data.list);
             }
@@ -34,7 +34,7 @@ export const contentReducer = (state, action) => {
         }    
         case constants.content.GET_CONTENT_DETAIL_FULFILLED: {
             newState.fetchingDetail = false;
-            newState.detail = action.payload.data;
+            newState.detail = action.payload.data.item;
             newState.editingContent = null;
             return newState;
         }    
@@ -56,7 +56,7 @@ export const contentReducer = (state, action) => {
             return newState;
         }
         case constants.content.POST_CONTENT_DETAIL_FULFILLED: {
-            if (action.payload.data.message !== 'warning') {
+            if (action.payload.data.success) {
                 newState.detail = action.payload.data.result;
                 newState.editingContent = null;
             } 
@@ -78,7 +78,7 @@ export const contentReducer = (state, action) => {
         }
         case constants.content.CREATE_CONTENT_FULFILLED: {
             newState.savingContent = false;
-            if (action.payload.data.message !== 'warning') {
+            if (action.payload.data.success) {
                 newState.editingContent = null;
                 newState.createUnit = null;
                 newState.detail = {};

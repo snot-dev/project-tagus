@@ -1,10 +1,7 @@
 const mongoose = require('mongoose');
-const S = require('string');
+const helpers = require('../shared').helpers;
+const messages = require('../shared').messages;
 mongoose.Promise = require('bluebird');
-
-const convertToAlias = name => {
-    return S(name).slugify().camelize().s;
-};
 
 module.exports = {
         defineCRUDRoutes: (model, routes = {}, router = require('express').Router()) => {
@@ -31,10 +28,10 @@ module.exports = {
                 else {
                     model.find({})
                     .then(items => {
-                        res.json({list:items});
+                        res.json({success: true, list:items});
                     })
                     .catch(err => {
-                        res.json(err);
+                        res.json({success: false, error: messages.error.whileFetching(model.collection.collectionName)});
                     });
                 }
             });
@@ -47,15 +44,15 @@ module.exports = {
                     const newModel = new model(req.body);
                     
                     if(newModel.name) {
-                        newModel.alias = convertToAlias(newModel.name);
+                        newModel.alias = helpers.convertToAlias(newModel.name);
                     }
 
                     newModel.save()
                     .then(result => {
-                        res.json({ message: "Document successfully created!", result });
+                        res.json({ success: true, message: messages.success.created('Document'), result});
                     })
                     .catch(err =>{
-                        res.json(err);
+                        res.json({success: false, error: messages.error.whileCreating('Document')});
                     });
                 }
             });
@@ -67,10 +64,10 @@ module.exports = {
                 else {
                     model.findOne({'_id': req.params.id})
                     .then(item => {
-                        res.json(item);
+                        res.json({success: true, item});
                     })
                     .catch(err => {
-                        res.json(err);
+                        res.json({success: false, error: messages.error.whileFetching(model.collection.collectionName)});
                     });
                 }
             });
@@ -81,28 +78,28 @@ module.exports = {
                 }
                 else {
                     if(req.body.name) {
-                        const alias = convertToAlias(req.body.name);
+                        const alias = helpers.convertToAlias(req.body.name);
                         
                         model.findOne({'alias': alias})
                         .then(doc => {
                             if (doc && doc._id != req.params.id) {
-                                res.json({message: "warning", result: alias})
+                                res.json({success:false, warning: true, message: messages.warning.alreadyExists(alias)})
                             } else {
                                 model.findOne({'_id': req.params.id})
                                 .then(doc => {
                                     const updatedDoc = Object.assign(doc, req.body);
                                     
                                     if(updatedDoc.name) {
-                                        updatedDoc.alias = convertToAlias(updatedDoc.name);
+                                        updatedDoc.alias = helpers.convertToAlias(updatedDoc.name);
                                     }
             
                                     return updatedDoc.save();
                                 })
                                 .then(result =>{
-                                    res.json({message: "Document updated!", result});
+                                    res.json({success: true, message: messages.success.updated(result.name), result});
                                 })
                                 .catch( err => {
-                                    res.json(err);
+                                    res.json({success: false, error: messages.error.whileUpdating(alias)});
                                 })
                             }
                         })
@@ -116,7 +113,12 @@ module.exports = {
                 }
                 else {
                     model.remove({_id : req.params.id}, (err, result) => {
-                        res.json(err || { message: "Document successfully deleted!", result });
+                        if (err) {
+                            res.json({success: false, error: messages.error.whileDeleting('item')});
+                        } 
+                        else {
+                            res.json({success: true, docs, message: messages.success.deleted('item')});
+                        }
                     });
                 }
             });

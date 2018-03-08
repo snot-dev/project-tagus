@@ -1,14 +1,7 @@
 const Content = require('./model');
-const S = require('string');
 const router = require('express').Router();
-
-const convertToAlias = name => {
-    return S(name).slugify().camelize().s;
-};
-
-const convertToUrl = name => {
-    return S(name).slugify().s;
-}
+const helpers = require('../shared').helpers;
+const messages = require('../shared').messages;
 
 router.get('/', (req, res) => {
     Content.find({})
@@ -16,8 +9,8 @@ router.get('/', (req, res) => {
     .exec((err,docs) => {
         const response = {success: true};
         if (err) {
-            response.error =  err;
             response.success = false;
+            response.error =  messages.error.whileFetching('Content');
         }
         else {
             response.list = docs;
@@ -32,7 +25,7 @@ router.post('/', (req, res) => {
     newContent.markModified('content');
   
     if(newContent.name) {
-        newContent.alias = convertToAlias(newContent.name);
+        newContent.alias = helpers.convertToAlias(newContent.name);
         if (!newContent.parent) {
             newContent.url = '/'; 
         }
@@ -40,7 +33,7 @@ router.post('/', (req, res) => {
             if(newContent.url === '/') {
                 newContent.url = '';
             }
-            newContent.url = `${newContent.url}/${convertToUrl(newContent.name)}`;
+            newContent.url = `${newContent.url}/${helpers.convertToUrl(newContent.name)}`;
         }
     }
     
@@ -48,7 +41,7 @@ router.post('/', (req, res) => {
     .then(doc => {
         if(doc) {
             res.json({
-                success: false, warning: true, result: newContent.alias
+                success:false, warning: true, message: messages.warning.alreadyExists(alias)
             });
         }
         else {
@@ -69,10 +62,10 @@ router.post('/', (req, res) => {
                 }
             })
             .then( () => {
-                res.json({ success: true, message: "Document successfully created!", result: newContent });
+                res.json({ success: true, message: messages.success.created('Document'), result: newContent });
             })
             .catch(err => {
-                res.json({ success: false, error: err });
+                res.json({ success: false, error: messages.error.whileCreating('new Content') });
             });
         }
     });
@@ -80,25 +73,25 @@ router.post('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
     Content.findOne({'_id': req.params.id})
-    .then( result => {
-        res.json( {success: true, result} );
+    .then( item => {
+        res.json( {success: true, item} );
     })
     .catch(err => {
-        res.json({success: false, error: err});
+        res.json({success: false, error: messages.error.whileFetching('content')});
     });
 });
 
 router.put('/:id', (req, res) => {
     let alias = '';
     if(req.body.name) {
-        alias = convertToAlias(req.body.name);
+        alias = helpers.convertToAlias(req.body.name);
     }
 
     //TODO: Assign to a new Parent
     Content.findOne({'alias': alias})
     .then( doc => {
         if(doc && doc._id != req.params.id) {
-            res.json({success:false, warning: true, message:`${alias} alias already exists!`})
+            res.json({success:false, warning: true, message: messages.warning.alreadyExists(alias)})
         } 
         else {
             Content.findOne({'_id': req.params.id})
@@ -106,17 +99,17 @@ router.put('/:id', (req, res) => {
                 const updatedContent = Object.assign(result, req.body);
         
                 if(updatedContent.name) {
-                    updatedContent.alias = convertToAlias(updatedContent.name);
+                    updatedContent.alias = helpers.convertToAlias(updatedContent.name);
                 }
                 return updatedContent.save();
             })
             .then(result =>{
-                res.json({success: true, message: "Document updated!", result});
+                res.json({success: true, message: messages.success.updated(result.name), result});
             });
         }
     })
     .catch( err => {
-        res.json(err);
+        res.json({success: false, error: messages.error.whileUpdating(alias)});
     });
 });
 
@@ -153,9 +146,9 @@ router.delete('/:id', (req, res)=>{
         return Content.remove({'_id': {$in:docsArray}})
     })
     .then(docs => {
-        res.json(docs);
+        res.json({success: true, docs, message: messages.success.deleted('item')});
     }).catch(err => {
-        res.json(err);
+        res.json({success: false, error: messages.error.whileDeleting('item')});
     });
 
     const addChildrenToArray = (dictionary, id, arr) => {

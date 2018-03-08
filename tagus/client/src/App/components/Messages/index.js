@@ -10,11 +10,11 @@ class Messages extends Component {
         const messages = [];
 
         for(let i = 0; i < this.props.messages.list.length; i++) {
-            const {type, subject, verb, result} = this.props.messages.list[i];
+            const {type, message} = this.props.messages.list[i];
 
             messages.unshift(
                 <CSSTransition key={`${i}_${type}`} timeout={500} classNames="fade">
-                    <Message index={i} type={type} subject={subject} verb={verb} result={result} />
+                    <Message index={i} type={type} message={message} />
                 </CSSTransition>
             );
         }
