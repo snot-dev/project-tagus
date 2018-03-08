@@ -8,6 +8,7 @@ const contentSchema = new mongoose.Schema({
     createdBy: { type: String, required: true },
     created: { type: Date, default: Date.now() },
     edited: Date,
+    lastEditedBy:String,
     published: {type: Boolean, default: false},
     accessible: {type: Boolean, default: false},
     nav: {type: Boolean, default: false},

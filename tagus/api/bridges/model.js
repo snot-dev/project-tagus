@@ -8,7 +8,8 @@ const bridgeSchema = new mongoose.Schema({
     unitType: {type: String, required: true},
     createdBy: String,
     created: {type:Date, default: Date.now()},
-    edited: {type:Date, default: Date.now()}
+    edited: {type:Date, default: Date.now()},
+    lastEditedBy:String
 }, {minimize: false});
 
 module.exports = mongoose.model('Bridge', bridgeSchema);

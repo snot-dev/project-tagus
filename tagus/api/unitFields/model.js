@@ -7,7 +7,8 @@ const unitFieldSchema = new mongoose.Schema({
     type: {type: String, required: true },
     createdBy: String,
     created: {type:Date, default: Date.now()},
-    edited: Date
+    edited: {type:Date, default: Date.now()},
+    lastEditedBy:String
 });
 
 module.exports = mongoose.model('UnitField', unitFieldSchema);
