@@ -1,18 +1,18 @@
 const async = require('async');
 const usersSeed = require('../users/data');
-const User = require('../users').model;
+const User = require('../users/model');
 const unitFieldsSeed = require('../unitFields/data');
-const UnitField = require('../unitFields').model;
+const UnitField = require('../unitFields/model');
 const unitsSeed = require('../units/data');
-const Unit = require('../units').model;
+const Unit = require('../units/model');
 const translatesSeed = require('../translates/data');
-const Translate = require('../translates').model;
+const Translate = require('../translates/model');
 const settingsSeed = require('../settings/data');
-const Settings = require('../settings').model;
+const Settings = require('../settings/model');
 const bridgesSeed = require('../bridges/data');
-const Bridges = require('../bridges').model;
+const Bridges = require('../bridges/model');
 const contentSeed = require('../content/data');
-const Content = require('../content').model;
+const Content = require('../content/model');
 
 const collections = [
     {

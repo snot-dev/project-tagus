@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 require('../../../config');
 mongoose.Promise = require('bluebird');
-const insertCollections = require('../shared/dbScripts').insertCollections;
+const insertCollections = require('./dbScripts').insertCollections;
 
 console.log("Connecting to " + process.env.MONGO_CONNECTION_STRING)
 
