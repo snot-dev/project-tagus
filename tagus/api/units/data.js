@@ -11,6 +11,7 @@ module.exports = [
         ],
         edited: new Date(),
         created: new Date(),
+        createdBy: "System",
         tabs: [
             {
                 name: "Default",
@@ -55,6 +56,7 @@ module.exports = [
         ],
         edited: new Date(),
         created: new Date(),
+        createdBy: "System",
         tabs: [
             {
                 name: "Default",

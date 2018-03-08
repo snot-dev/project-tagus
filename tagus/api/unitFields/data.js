@@ -3,7 +3,7 @@ module.exports = [
                 name: "Text",
                 alias: 'text',
                 type: "text",
-                createdBy: "user",
+                createdBy: "System",
                 created: new Date(),
                 edited: new Date()
             },
@@ -11,7 +11,7 @@ module.exports = [
                 name: "Dropdown List",
                 alias: 'dropdownList',
                 type: "select",
-                createdBy: "user",
+                createdBy: "System",
                 created: new Date(),
                 edited: new Date()
             },
@@ -19,7 +19,7 @@ module.exports = [
                 name: "True or False",
                 alias: 'trueOrFalse',
                 type: "checkbox",
-                createdBy: "user",
+                createdBy: "System",
                 created: new Date(),
                 edited: new Date()
             },
@@ -27,7 +27,7 @@ module.exports = [
                 name: "Rich Text Editor",
                 alias: 'richTextEditor',
                 type: "richText",
-                createdBy: "user",
+                createdBy: "System",
                 created: new Date(),
                 edited: new Date()
             }
