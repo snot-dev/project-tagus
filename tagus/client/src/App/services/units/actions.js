@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import {constants} from '../constants';
+import {createFakeItemResponse} from '../helpers';
 import axios from '../axios';
 
 
@@ -21,15 +22,13 @@ export function getUnitDetailIfNeeded(id) {
                 //TODO: Check if should get the object from db or clone it like this
                 dispatch({
                     type: constants.units.GET_UNITS_DETAIL_FULFILLED,
-                    payload:{
-                        data: _.cloneDeep(state.units.dictionary[id])
-                    } 
+                    payload: createFakeItemResponse( _.cloneDeep(state.units.dictionary[id]))
                 });
             }
             else {
                 dispatch({
                     type: constants.units.GET_UNITS_DETAIL,
-                    payload: axios('units/' + id)
+                    payload: axios(`units/${id}`)
                 });
             }
         }

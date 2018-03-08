@@ -1,9 +1,11 @@
 const fs = require('fs');
 const multer = require('multer');
+const messages = require('../shared').messages;
 
 module.exports = app => {
     const router = require('express').Router();
     const media = app.settings.media;
+    const name = 'media';
     
     const storage = multer.diskStorage({
         destination: function (req, file, cb) {
@@ -19,19 +21,20 @@ module.exports = app => {
     });
 
     router.get('/', (req, res) => {
-        res.json({list: _getAllFromFolder(media.path, media.dir)});
+        res.json({success: true, list: _getAllFromFolder(media.path, media.dir)});
     });
 
     router.post('/', upload.single('media'), (req, res) => {
         res.json({
             success: true,
-            result: {name: 'media'}
+            message: messages.success.created(name)
         });
     });
 
     router.put('/', (req, res) => {
         const response = {
-            success: true
+            success: true,
+            message: messages.success.deleted(name)
         };
 
         try {
@@ -39,11 +42,10 @@ module.exports = app => {
         }
         catch (err) {
             response.success = false;
-            response.error = err;
+            response.message = messages.error.whileDeleting(name)
         }
 
         res.json(response);
-        
     });
 
 

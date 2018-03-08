@@ -11,7 +11,9 @@ export const unitsReducer = function(state, action) {
         }
         case constants.units.GET_UNITS_DETAIL_FULFILLED: {
             newState.fetchingList = false;
-            newState.detail = action.payload.data;
+            if (action.payload.data.success) {
+                newState.detail = action.payload.data.item;
+            }
             return newState;
         }
         case constants.units.GET_UNITS_LIST_PENDING: {
@@ -20,7 +22,7 @@ export const unitsReducer = function(state, action) {
         }
         case constants.units.GET_UNITS_LIST_FULFILLED: {
             newState.fetchingList = false;
-            if(action.payload.data.list) {
+            if(action.payload.data.success) {
                 newState.list = action.payload.data.list;
                 newState.dictionary = convertArrayToDictionary(action.payload.data.list);
             }
@@ -32,7 +34,7 @@ export const unitsReducer = function(state, action) {
         }
         case constants.units.GET_UNITS_TEMPLATES_FULFILLED: {
             newState.fetchingTemplates = false;
-            if(action.payload.data.list) {
+            if(action.payload.data.success) {
                 newState.templates = action.payload.data.list;
             }
             return newState;
@@ -65,7 +67,7 @@ export const unitsReducer = function(state, action) {
             return newState;
         }
         case constants.units.POST_UNIT_DETAIL_FULFILLED: { 
-            if (action.payload.data.message !== 'warning') {
+            if (action.payload.data.success) {
                 newState.detail = action.payload.data.result;
             }
             newState.savingDetail = false;

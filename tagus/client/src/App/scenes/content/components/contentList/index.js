@@ -102,8 +102,8 @@ class ContentList extends Component {
 
     render() {
         const menu = [
-            <ContentMenu key='ContentMenu' savingContent={this.props.savingContent} history={this.props.history} className="col-xs-6" onCloseButton={this._onMenuButtonClick()} units={this.props.units} detail={this.props.editingContent} />,
-            <NewRootContent key='NewRootContent' show={this.state.creatingRootContent}  savingContent={this.props.savingContent} history={this.props.history} className="col-xs-6" onCloseButton={this._toggleCreateRootContentMenu(false)} units={this.props.units} />
+            <ContentMenu key='ContentMenu' savingContent={this.props.savingContent} history={this.props.history} url={this.props.url} className="col-xs-6" onCloseButton={this._onMenuButtonClick()} units={this.props.units} detail={this.props.editingContent} />,
+            <NewRootContent key='NewRootContent' show={this.state.creatingRootContent}  savingContent={this.props.savingContent} url={this.props.url} history={this.props.history} className="col-xs-6" onCloseButton={this._toggleCreateRootContentMenu(false)} units={this.props.units} />
         ];
         
         return (

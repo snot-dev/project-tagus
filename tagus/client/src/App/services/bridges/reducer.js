@@ -11,7 +11,7 @@ export const bridgesReducer = (state, action) => {
         }
         case constants.bridges.GET_BRIDGES_LIST_FULFILLED: {
             newState.fetchingList = false;
-            if (action.payload.data.list) {
+            if (action.payload.data.success) {
                 newState.list = action.payload.data.list;
             }
             return newState;
@@ -22,7 +22,7 @@ export const bridgesReducer = (state, action) => {
         }
         case constants.bridges.GET_BRIDGES_UNITS_LIST_FULFILLED: {
             newState.fetchingList = false;
-            if (action.payload.data.list) {
+            if (action.payload.data.success) {
                 newState.units = convertArrayToDictionary(action.payload.data.list);
             }
             return newState;
@@ -32,7 +32,9 @@ export const bridgesReducer = (state, action) => {
             return newState;
         }
         case constants.bridges.GET_BRIDGES_DETAIL_FULFILLED: {
-            newState.detail = action.payload.data;
+            if (action.payload.data.item) {
+                newState.detail = action.payload.data.item;
+            }
             newState.fetchingDetail = false;
             return newState;
         }
@@ -41,7 +43,7 @@ export const bridgesReducer = (state, action) => {
             return newState;
         }
         case constants.bridges.POST_BRIDGES_DETAIL_FULFILLED: {
-            if (action.payload.data.message !== 'warning') {
+            if (action.payload.data.success) {
                 newState.detail = action.payload.data.result;
             }
             newState.savingDetail = false;

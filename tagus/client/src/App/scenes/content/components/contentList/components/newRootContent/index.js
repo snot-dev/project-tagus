@@ -13,7 +13,7 @@ class NewRootContent extends Component {
             if(this.props.units.hasOwnProperty(key)) {
                 const unit = this.props.units[key];
                 units.push(
-                    <li className="tagus-menu-item" key={key}><Link onClick={this.onLinkClick(unit)} to={`/content/create/${unit._id}`} className="tagus-menu-link">{unit.name}</Link></li>
+                    <li className="tagus-menu-item" key={key}><Link onClick={this.onLinkClick(unit)} to={`${this.props.url}/create/${unit._id}`} className="tagus-menu-link">{unit.name}</Link></li>
                 );
             }
         }

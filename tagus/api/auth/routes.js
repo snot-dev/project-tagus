@@ -75,11 +75,9 @@ module.exports = User => {
             }; 
         })
         .then(() => {
-            console.log("before");
             return insertCollections();
         })
         .then(() => {
-            console.log("after");
             res.json(response);
         })
         .catch(error => {

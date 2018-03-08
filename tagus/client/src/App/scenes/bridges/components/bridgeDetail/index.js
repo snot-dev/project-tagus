@@ -108,7 +108,7 @@ class  BridgeDetail extends Component {
                     ? this._renderTabs(this.props.unit.tabs)
                     : null
                 }
-                <Overlay show={this.props.savingDetail}/>
+                <Overlay show={this.props.savingDetail || this.props.fetchingDetail}/>
             </Panel>
         )
     }

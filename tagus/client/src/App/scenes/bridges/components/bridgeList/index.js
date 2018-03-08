@@ -43,7 +43,7 @@ class BridgeList extends Component {
             deleteBridge: null
         });
 
-        this.props.history.push('/bridges');
+        this.props.history.push(this.props.url);
     }
 
     _onSubmitCreatingBridge(values) {
@@ -51,7 +51,7 @@ class BridgeList extends Component {
             creatingBridge: null
         });
 
-        this.props.history.push('/bridges');
+        this.props.history.push(this.props.url);
         store.dispatch(createBridge(values.newBridge));
     }
 

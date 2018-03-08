@@ -1,10 +1,7 @@
 var Unit = require('./model');
 const router = require('../router/router');
-const S = require('string');
-
-const convertToAlias = name => {
-    return S(name).slugify().camelize().s;
-};
+const helpers = require('../shared').helpers;
+const messages = require('../shared').messages;
 
 module.exports = router.defineCRUDRoutes(Unit, {
     postOne: (req, res) => {
@@ -26,12 +23,15 @@ module.exports = router.defineCRUDRoutes(Unit, {
         Unit.findOne({'alias': unit.alias})
         .then( doc => {
             if(doc && doc._id != req.params.id) {
-                res.json({message: "warning", result: unit.alias})
+                res.json({success:false, warning: true, message: messages.warning.alreadyExists(alias)})
             } 
             else {
                 newUnit.save()
                 .then(result => {
-                    res.json({ message: "Document successfully created!", result });
+                    res.json({success: true, message: messages.success.updated(result.name), result});
+                })
+                .catch(err => {
+                    res.json({success: false, error: messages.error.whileUpdating(alias)});
                 });
             }
         })

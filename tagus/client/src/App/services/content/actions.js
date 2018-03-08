@@ -1,4 +1,5 @@
 import {constants} from '../constants';
+import {createFakeItemResponse} from '../helpers';
 import axios from '../axios';
 
 const _shouldGetPageList = state => {
@@ -46,9 +47,7 @@ export function getContentDetailIfNeeded(id) {
             if(state.content.list[id]) {
                 dispatch({
                     type: constants.content.GET_CONTENT_DETAIL_FULFILLED,
-                    payload:{
-                        data: {item: state.content.list[id]}
-                    } 
+                    payload: createFakeItemResponse(state.content.list[id])
                 });
             } else {
                 dispatch({

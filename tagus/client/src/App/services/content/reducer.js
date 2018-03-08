@@ -34,7 +34,9 @@ export const contentReducer = (state, action) => {
         }    
         case constants.content.GET_CONTENT_DETAIL_FULFILLED: {
             newState.fetchingDetail = false;
-            newState.detail = action.payload.data.item;
+            if (action.payload.data.success) {
+                newState.detail = action.payload.data.item;
+            }
             newState.editingContent = null;
             return newState;
         }    

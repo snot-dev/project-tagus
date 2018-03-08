@@ -1,4 +1,5 @@
 import {constants} from '../constants';
+import {createFakeItemResponse} from '../helpers';
 import axios from '../axios';
 
 const _shouldFetchBridgesList = state => {
@@ -45,9 +46,7 @@ export function getBridgeDetailIfNeeded(id) {
             if(state.bridges.list[id]) {
                 dispatch({
                     type: constants.bridges.GET_BRIDGES_DETAIL_FULFILLED,
-                    payload:{
-                        data: state.bridges.list[id]
-                    } 
+                    payload: createFakeItemResponse(state.bridges.list[id])
                 });
             } else {
                 dispatch({

@@ -36,7 +36,7 @@ class ContentMenu extends Component {
             if(this.props.units.hasOwnProperty(key)) {
                 const unit = this.props.units[key];
                 units.push(
-                    <li className="tagus-menu-item" key={key}><Link onClick={this.onLinkClick(unit)} to={`/home/content/create/${unit._id}`} className="tagus-menu-link">{unit.name}</Link></li>
+                    <li className="tagus-menu-item" key={key}><Link onClick={this.onLinkClick(unit)} to={`${this.props.url}/create/${unit._id}`} className="tagus-menu-link">{unit.name}</Link></li>
                 );
             }
         }
@@ -59,7 +59,7 @@ class ContentMenu extends Component {
     _deleteContent() {
         this.setState({deleteMode:false});
         store.dispatch(deleteContent(this.props.detail._id));
-        this.props.history.push('/home/content');
+        this.props.history.push(this.props.url);
     }
 
     render() {

@@ -39,4 +39,8 @@ const camelize = str => {
         }).replace(/\s+/g, '');
 }
 
-export {buildContentTree, convertArrayToDictionary, camelize};
+const createFakeItemResponse = item => {
+    return {data:{success: true, item}};
+}
+
+export {buildContentTree, convertArrayToDictionary, camelize, createFakeItemResponse};

@@ -17,7 +17,7 @@ class Bridges extends Component {
         return (
             <section id="bridges" className="full-height col-xs-12">
                 <BridgeList name={this.props.name} url={this.props.match.url} history={this.props.history} fetchingList={this.props.bridges.fetchingList} list={this.props.bridges.list} units={this.props.bridges.units} />
-                <Route exact={false}  path={`${this.props.match.url}/detail/:id`} render={(props)=>(<BridgeDetail {...props} savingDetail={this.props.bridges.savingDetail} detail={this.props.bridges.detail} unit={this.props.bridges.units[this.props.bridges.detail.unitType]} />)} />
+                <Route exact={false}  path={`${this.props.match.url}/detail/:id`} render={(props)=>(<BridgeDetail {...props} savingDetail={this.props.bridges.savingDetail} fetchingDetail={this.props.bridges.fetchingDetail} detail={this.props.bridges.detail} unit={this.props.bridges.units[this.props.bridges.detail.unitType]} />)} />
             </section>
         );
     }

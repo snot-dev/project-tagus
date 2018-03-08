@@ -117,7 +117,7 @@ module.exports = {
                             res.json({success: false, error: messages.error.whileDeleting('item')});
                         } 
                         else {
-                            res.json({success: true, docs, message: messages.success.deleted('item')});
+                            res.json({success: true, message: messages.success.deleted('item')});
                         }
                     });
                 }
