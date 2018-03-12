@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import {constants} from '../constants';
 import {createFakeItemResponse} from '../helpers';
 import axios from '../axios';
@@ -70,9 +71,11 @@ export function updateContentField(data) {
 
 export function saveContent(content) {
     return (dispatch, getState) => {
+        const updatedContent = _.cloneDeep(content);
+        updatedContent.lastEditedBy = getState().auth.user.email;
         dispatch({
             type:constants.content.POST_CONTENT_DETAIL,
-            payload: axios.put(`content/${content._id}`, content)
+            payload: axios.put(`content/${updatedContent._id}`, updatedContent)
             
         })
         .then(()  => {
@@ -102,8 +105,11 @@ export function createUnit(unit) {
     };
 };
 
-export function createContent(newContent) {
+export function createContent(content) {
     return (dispatch, getState) => {
+        const newContent = _.cloneDeep(content);
+        newContent.createdBy = getState().auth.user.email;
+
         dispatch({
             type: constants.content.CREATE_CONTENT,
             payload: axios.post('content', newContent)

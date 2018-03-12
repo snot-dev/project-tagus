@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const jwt = require('jwt-simple');
 const ExtractJwt = require('passport-jwt').ExtractJwt;
-const insertCollections = require('../shared/dbScripts').insertCollections;
+const insertCollections = require('../buildDB/dbScripts').insertCollections;
 
 module.exports = User => {
     router.post('/', (req, res) => {

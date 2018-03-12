@@ -45,8 +45,6 @@ router.post('/', (req, res) => {
             });
         }
         else {
-            //TODO: Change this to an actual user
-            newContent.createdBy = 'User';
             newContent.created = new Date();
             
             newContent.save()
@@ -65,7 +63,8 @@ router.post('/', (req, res) => {
                 res.json({ success: true, message: messages.success.created('Document'), result: newContent });
             })
             .catch(err => {
-                res.json({ success: false, error: messages.error.whileCreating('new Content') });
+                console.log(err);
+                res.json({ success: false, error: true, message: messages.error.whileCreating('new Content') });
             });
         }
     });
