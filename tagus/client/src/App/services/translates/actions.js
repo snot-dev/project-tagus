@@ -2,7 +2,7 @@ import {constants} from '../constants';
 import axios from '../axios';
 
 const _shouldGetTranslatesList = state => {
-    return state.translates.list;
+    return state.translates.doc;
 };
 
 export function getListIfNedeed() {  
@@ -18,9 +18,13 @@ export function getListIfNedeed() {
 
 export function saveTranslates(translates) {
     return (dispatch, getState) => {
+        const update = {
+            translates,
+            lastEditedBy: getState().auth.user.email
+        };
         dispatch({
             type: constants.translates.POST_TRANSLATES_LIST,
-            payload: axios.post('/translates', translates)
+            payload: axios.post('/translates', update)
         });
     }
 }

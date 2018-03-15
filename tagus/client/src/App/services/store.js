@@ -63,7 +63,7 @@ const initialState = {
         list: []
     },
     translates: {
-        list: [],
+        doc: [],
         fetchingList: false, 
         savingList: false
     },

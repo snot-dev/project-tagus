@@ -16,9 +16,6 @@ module.exports = router.defineCRUDRoutes(Bridge, {
             newBridge.alias = helpers.convertToAlias(newBridge.name);
         }
         
-        // TODO: Change this
-        newBridge.createdBy = 'Admin';
-
         Bridge.findOne({'alias': newBridge.alias})
         .then( doc => {
             if (doc && doc._id !== req.params.id) {

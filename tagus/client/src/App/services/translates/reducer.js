@@ -9,7 +9,7 @@ export const translatesReducer = (state, action) => {
             return newState;
         }
         case constants.translates.GET_TRANSLATES_LIST_FULFILLED: {
-            newState.list = action.payload.data.translates;
+            newState.list = action.payload.data.list;
             newState.fetchingList = false;
             return newState;
         }
@@ -18,7 +18,6 @@ export const translatesReducer = (state, action) => {
             return newState;
         }
         case constants.translates.POST_TRANSLATES_LIST_FULFILLED: {
-            // newState.list = action.payload.data.result.translates;
             newState.savingList = false;
             return newState;
         }

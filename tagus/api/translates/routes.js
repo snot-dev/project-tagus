@@ -5,15 +5,20 @@ const messages = require('../shared').messages;
 router.get('/', (req, res) => {
     Translate.findOne()
     .then(doc => {
-        res.json(doc);
-    });
+        res.json({sucess: true, list: doc.translates});
+    })
+    .catch(err => {
+        res.json({success: false, error: messages.error.whileFetching("Translates")});
+    })
 });
 
 router.post('/', (req, res) => {
     Translate.findOne()
     .then(doc => {
-        doc.translates = req.body;
-
+        doc.translates = req.body.translates;
+        doc.lastEditedBy = req.body.lastEditedBy;
+        doc.edited = new Date();
+        
         return doc.save();
     })
     .then( result => {
@@ -21,7 +26,7 @@ router.post('/', (req, res) => {
     })
     .catch(err => {
         res.json({success: false, error: messages.error.whileUpdating("Translates")});
-    })
+    });
 }); 
 
 module.exports = router;

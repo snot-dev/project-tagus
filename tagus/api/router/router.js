@@ -28,7 +28,7 @@ module.exports = {
                 else {
                     model.find({})
                     .then(items => {
-                        res.json({success: true, list:items});
+                        res.json({success: true, list: items});
                     })
                     .catch(err => {
                         res.json({success: false, error: messages.error.whileFetching(model.collection.collectionName)});
@@ -46,6 +46,8 @@ module.exports = {
                     if(newModel.name) {
                         newModel.alias = helpers.convertToAlias(newModel.name);
                     }
+
+                    newModel.created = new Date();
 
                     newModel.save()
                     .then(result => {
@@ -93,6 +95,8 @@ module.exports = {
                                         updatedDoc.alias = helpers.convertToAlias(updatedDoc.name);
                                     }
             
+                                    updatedDoc.edited = new Date();
+                                    
                                     return updatedDoc.save();
                                 })
                                 .then(result =>{

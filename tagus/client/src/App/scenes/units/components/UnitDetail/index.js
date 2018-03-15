@@ -402,6 +402,7 @@ class UnitsDetail extends Component {
 
     _renderForm() {
         const created = moment(this.props.detail.created).format(constants.config.DATE_FORMAT);
+        const edited = moment(this.props.detail.edited).format(constants.config.DATE_FORMAT);
 
         return (
             <div key={this.props.detail._id} className="container-fluid tagus-form-info-fields">
@@ -410,11 +411,30 @@ class UnitsDetail extends Component {
                         <label className="tagus-label" >Alias</label>
                         <p className="tagus-info">{this.props.detail.alias}</p>
                     </div>
-                    <div className="col-xs-12 col-sm-6 tagus-form-field text-right">
+                </div>
+                <div className="row tagus-form-control">
+                    <div className="col-xs-12 col-sm-6 tagus-form-field">
+                        <label className="tagus-label" >Created By</label>
+                        <p className="tagus-info">{this.props.detail.createdBy}</p>
+                    </div>
+                    <div className="col-xs-12 col-sm-6 tagus-form-field">
                         <label className="tagus-label" >Created</label>
                         <p className="tagus-info">{created}</p>
                     </div>
                 </div>
+                {this.props.detail.lastEditedBy
+                ?   <div className="row tagus-form-control">
+                    <div className="col-xs-12 col-sm-6 tagus-form-field">
+                        <label className="tagus-label" >Last Edited By</label>
+                        <p className="tagus-info">{this.props.detail.lastEditedBy}</p>
+                    </div>
+                    <div className="col-xs-12 col-sm-6 tagus-form-field">
+                        <label className="tagus-label" >Edited</label>
+                        <p className="tagus-info">{edited}</p>
+                    </div>
+                </div>
+                :   null
+                }
                 <div className="row">
                     <Form disabled={!this.state.touched} onChange={this.onFieldChange.bind(this)} onReset={this._onReset(false)} onSubmit={this.saveUnit.bind(this)} name="unit" fields={this._fields} defaultValues={this._defaultValues} >
                         { this.props.templates  

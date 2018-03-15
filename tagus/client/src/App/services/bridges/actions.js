@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import {constants} from '../constants';
 import {createFakeItemResponse} from '../helpers';
 import axios from '../axios';
@@ -60,9 +61,12 @@ export function getBridgeDetailIfNeeded(id) {
 
 export function saveBridge(bridge) {
     return (dispatch, getState) => {
+        const updatedBridge = _.cloneDeep(bridge);
+        updatedBridge.lastEditedBy = getState().auth.user.email;
+
         dispatch({
             type:constants.bridges.POST_BRIDGES_DETAIL,
-            payload: axios.put(`bridges/${bridge._id}`, bridge)
+            payload: axios.put(`bridges/${updatedBridge._id}`, updatedBridge)
             
         })
         .then(()  => {
@@ -74,8 +78,11 @@ export function saveBridge(bridge) {
     };
 };
 
-export function createBridge(newBridge) {
+export function createBridge(bridge) {
     return (dispatch, getState) => {
+        const newBridge = _.cloneDeep(bridge);
+        newBridge.createdBy = getState().auth.user.email;
+        
         dispatch({
             type:constants.bridges.CREATE_BRIDGE,
             payload: axios.post(`bridges`, newBridge)

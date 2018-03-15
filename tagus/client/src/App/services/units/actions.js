@@ -133,9 +133,12 @@ export function addNewField(field, tab) {
 
 export function saveUnit(unit) {
     return(dispatch, getState) => {
+        const updatedUnit = _.cloneDeep(unit);
+        updatedUnit.lastEditedBy = getState().auth.user.email;
+
         dispatch({
             type: constants.units.POST_UNIT_DETAIL,
-            payload: axios.put(`units/${unit._id}`, unit)
+            payload: axios.put(`units/${updatedUnit._id}`, updatedUnit)
         })
         .then(() => {
             dispatch( {
@@ -159,9 +162,12 @@ export function resetUnit(id) {
 
 export function createNewUnit(unit) {
     return(dispatch, getState) => {
+        const newUnit = _.cloneDeep(unit);
+        newUnit.createdBy = getState().auth.user.email;
+
         dispatch({
             type: constants.units.CREATE_UNIT,
-            payload: axios.post('units', unit)
+            payload: axios.post('units', newUnit)
         })
         .then(() => {
             dispatch( {
