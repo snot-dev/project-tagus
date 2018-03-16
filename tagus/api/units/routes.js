@@ -1,4 +1,5 @@
-var Unit = require('./model');
+const Unit = require('./model');
+const Content = require('../content/model');
 const router = require('../router/router');
 const helpers = require('../shared').helpers;
 const messages = require('../shared').messages;
@@ -20,7 +21,6 @@ module.exports = router.defineCRUDRoutes(Unit, {
         };
 
         const newUnit = new Unit(unit);
-
         
         Unit.findOne({'alias': unit.alias})
         .then( doc => {
@@ -33,7 +33,6 @@ module.exports = router.defineCRUDRoutes(Unit, {
                     res.json({success: true, message: messages.success.created(result.alias), result});
                 })
                 .catch(err => {
-                    console.warn(err);
                     res.json({success: false, error: true, message: messages.error.whileCreating(unit.alias)});
                 });
             }
@@ -41,5 +40,26 @@ module.exports = router.defineCRUDRoutes(Unit, {
         .catch(err => {
             res.json({success: false, error: true, message: messages.error.whileCreating(unit.alias)});
         });
+    },
+    deleteById: (req, res) => {
+        Content.find({unitType: req.params.id})
+        .then(docs => {
+            if (docs.length === 0) {
+                Unit.remove({_id: req.params.id})
+                .then(result => {
+                    res.json({success: true, message: messages.success.deleted("Unit")});
+                })
+                .catch(err => {
+                    res.json({success: false, error: true, message: messages.error.whileDeleting("Unit")});
+                });
+            }
+            else {
+                const content = docs.map(doc => doc.name);
+                res.json({success: false, warning: true, content });
+            }
+        })
+        .catch(err => {
+            res.json({success: false, error: true, message: messages.error.whileDeleting("Unit")});
+        })
     }
 });

@@ -16,6 +16,7 @@ export const unitsReducer = function(state, action) {
             }
             return newState;
         }
+        case constants.units.DELETE_UNIT_PENDING:
         case constants.units.GET_UNITS_LIST_PENDING: {
             newState.fetchingList = true;
             return newState;
@@ -79,6 +80,18 @@ export const unitsReducer = function(state, action) {
         }
         case constants.units.CREATE_UNIT_FULFILLED: {
             newState.savingDetail = false;
+            return newState;
+        }
+        case constants.units.DELETE_UNIT_FULFILLED: {
+            newState.fetchingList = false;
+            if (action.payload.data.warning) {
+                newState.content = action.payload.data.content;
+            }
+
+            return newState;
+        }
+        case constants.units.CLEAR_CONTENT: {
+            newState.content = [];
             return newState;
         }
         default:

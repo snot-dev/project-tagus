@@ -161,7 +161,7 @@ export function resetUnit(id) {
 }
 
 export function createNewUnit(unit) {
-    return(dispatch, getState) => {
+    return (dispatch, getState) => {
         const newUnit = _.cloneDeep(unit);
         newUnit.createdBy = getState().auth.user.email;
 
@@ -176,4 +176,27 @@ export function createNewUnit(unit) {
             });
         });
     }
+}
+
+export function deleteUnit(id) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: constants.units.DELETE_UNIT,
+            payload: axios.delete(`units/${id}`)
+        })
+        .then(() => {
+            dispatch( {
+                type: constants.units.GET_UNITS_LIST,
+                payload: axios ('units')
+            });
+        });
+    };
+}
+
+export function clearContent() {
+    return (dispatch, getState) => {
+        dispatch({
+            type: constants.units.CLEAR_CONTENT
+        });
+    };
 }

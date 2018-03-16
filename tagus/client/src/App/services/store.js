@@ -48,7 +48,8 @@ const initialState = {
         templates: [],
         addingTab: false,
         addingField: false,
-        unitFields: []
+        unitFields: [],
+        content: []
     },
     bridges: {
         list: [],

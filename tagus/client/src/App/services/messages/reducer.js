@@ -35,7 +35,8 @@ export const messagesReducer = (state, action) => {
         case constants.units.GET_UNITS_TEMPLATES_REJECTED:
         case constants.units.GET_UNITS_FIELDS_REJECTED:
         case constants.units.POST_UNIT_DETAIL_REJECTED:
-        case constants.units.CREATE_UNIT_REJECTED: {
+        case constants.units.CREATE_UNIT_REJECTED: 
+        case constants.units.DELETE_UNIT_REJECTED: {
             if (!action.payload.data.success) {
                 newState.list.push({
                     type: 'error',
@@ -57,7 +58,8 @@ export const messagesReducer = (state, action) => {
         case constants.content.DELETE_CONTENT_FULFILLED:
         case constants.bridges.DELETE_BRIDGE_FULFILLED:
         case constants.media.DELETE_MEDIA_FULFILLED:
-        case constants.profile.UPDATE_PASSWORD_FULFILLED: {
+        case constants.profile.UPDATE_PASSWORD_FULFILLED: 
+        case constants.units.DELETE_UNIT_FULFILLED: {
             let type = 'success';
 
             if (action.payload.data.error) {
@@ -67,10 +69,12 @@ export const messagesReducer = (state, action) => {
                 type = 'warning';
             }
             
-            newState.list.push({
-                type,
-                message: action.payload.data.message
-            });
+            if (action.payload.data.message) {
+                newState.list.push({
+                    type,
+                    message: action.payload.data.message
+                });
+            }
 
             return newState;
         }

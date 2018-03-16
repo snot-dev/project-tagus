@@ -9,7 +9,7 @@ import Modal from '../../../../components/Modal';
 import CreateUnitMenu from './components/CreateUnitMenu';
 import Delete from './components/Delete';
 import store from '../../../../services/store';
-import {createNewUnit} from '../../../../services/units/actions';
+import {createNewUnit, deleteUnit, clearContent} from '../../../../services/units/actions';
 import './unitsList.css';
 
 class UnitsList extends Component {
@@ -39,7 +39,11 @@ class UnitsList extends Component {
     }
 
     _deleteUnit() {
+        store.dispatch(deleteUnit(this.state.deleteUnit));
 
+        this.setState({
+            deleteUnit: null
+        });
     }
 
     createUnit(values) {
@@ -49,6 +53,14 @@ class UnitsList extends Component {
         this.setState({
             creatingUnit: false
         });
+    }
+
+    _generateContentModalBody() {
+        return this.props.content.map(con => ` ${con}`).toString();
+    }
+
+    _closeContentModal() {
+        store.dispatch(clearContent());
     }
 
     render() {
@@ -73,6 +85,7 @@ class UnitsList extends Component {
                     :   null}
                 </List>
                 <Modal type="warning" show={!!this.state.deleteUnit} title="Warning!" body={"Are you sure you want to DELETE PERMANENTLY this Unit?"} closeButton={{onClick: this.toggleDeleteModal(false), text: "Cancel"}} confirmButton={{onClick:this._deleteUnit.bind(this), text: "Yes, I'm sure!"}} />
+                <Modal type="error" show={this.props.content.length > 0} title="Error! This Unit is still being used in the following content:" body={this._generateContentModalBody()} closeButton={{onClick: this._closeContentModal.bind(this), text: "Close"}} />
                 <AddLink text="Create new Unit" disabled={this.state.creatingUnit} onClick={this.toggleCreatingUnit(true)} />
                 <Overlay show={this.props.fetchingList || this.props.savingDetail}/>
             </Panel>
