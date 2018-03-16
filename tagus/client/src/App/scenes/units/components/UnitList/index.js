@@ -5,7 +5,9 @@ import Overlay from '../../../../components/Overlay';
 import List from '../../../../components/List';
 import AddLink from '../../../../components/AddLink';
 import ListItem from '../../../../components/ListItem';
+import Modal from '../../../../components/Modal';
 import CreateUnitMenu from './components/CreateUnitMenu';
+import Delete from './components/Delete';
 import store from '../../../../services/store';
 import {createNewUnit} from '../../../../services/units/actions';
 import './unitsList.css';
@@ -15,7 +17,8 @@ class UnitsList extends Component {
         super(props);
 
         this.state = {
-            creatingUnit: false
+            creatingUnit: false,
+            deleteUnit: null
         };
     }
 
@@ -27,6 +30,18 @@ class UnitsList extends Component {
         }
     }
 
+    toggleDeleteModal(id) {
+        return() => {
+            this.setState({
+                deleteUnit: id
+            });
+        };
+    }
+
+    _deleteUnit() {
+
+    }
+
     createUnit(values) {
         const newUnit = values.newUnit;
         
@@ -35,6 +50,7 @@ class UnitsList extends Component {
             creatingUnit: false
         });
     }
+
     render() {
         const menu = [
             <CreateUnitMenu key="createUnit" onSubmit={this.createUnit.bind(this)} show={this.state.creatingUnit} onClose={this.toggleCreatingUnit(false)} />
@@ -46,15 +62,17 @@ class UnitsList extends Component {
                     {this.props.list && this.props.list.length > 0
                     ?   this.props.list.map((unit, key) => {
                             return (
-                                <ListItem key={`${unit._id}_${key}`}>
+                                <ListItem key={`${unit._id}_${key}`} className="tagus-unit-list-item">
                                     <NavLink to={`${this.props.url}/detail/${unit._id}`} activeClassName="active" className="tagus-list-item-link">
                                         <i className={`fa fa-file`} aria-hidden="true"></i>{unit.name}
                                     </NavLink>
+                                    <Delete onClick={this.toggleDeleteModal(unit._id)} />
                                 </ListItem>
                             );
                         })
                     :   null}
                 </List>
+                <Modal type="warning" show={!!this.state.deleteUnit} title="Warning!" body={"Are you sure you want to DELETE PERMANENTLY this Unit?"} closeButton={{onClick: this.toggleDeleteModal(false), text: "Cancel"}} confirmButton={{onClick:this._deleteUnit.bind(this), text: "Yes, I'm sure!"}} />
                 <AddLink text="Create new Unit" disabled={this.state.creatingUnit} onClick={this.toggleCreatingUnit(true)} />
                 <Overlay show={this.props.fetchingList || this.props.savingDetail}/>
             </Panel>

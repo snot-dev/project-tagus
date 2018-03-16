@@ -38,7 +38,7 @@ CustomModal.propTypes = {
     show: PropTypes.bool.isRequired,
     title: PropTypes.string.isRequired,
     body: PropTypes.string,
-    onCloseButton: PropTypes.shape({
+    closeButton: PropTypes.shape({
         onClick: PropTypes.func,
         text: PropTypes.string
     }),
