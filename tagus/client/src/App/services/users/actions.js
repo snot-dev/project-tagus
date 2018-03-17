@@ -46,7 +46,7 @@ export function createUser(user) {
         newUser.createdBy = getState().auth.user.email;
 
         dispatch({
-            type: constants.users.CREATING_USER,
+            type: constants.users.CREATE_USER,
             payload: axios.post('users', newUser)
         })
         .then( ()=> {
@@ -60,6 +60,15 @@ export function createUser(user) {
 
 export function deleteUser(id) {
     return (dispatch, getState) => {
-
+        dispatch({
+            type: constants.users.DELETE_USER,
+            payload: axios.delete(`users/${id}`)
+        })
+        .then(()=> {
+            dispatch({
+                type: constants.users.GET_USERS_LIST,
+                payload: axios.get('users')
+            });
+        });
     }
 }

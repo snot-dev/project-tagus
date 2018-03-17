@@ -34,6 +34,16 @@ export const usersReducer = function(state, action) {
 
             return newState;
         }
+        case constants.users.DELETING_USER_PENDING: {
+            newState.deletingUser = true;
+
+            return newState;
+        }
+        case constants.users.DELETE_USER_FULFILLED: {
+            newState.deletingUser = false;
+
+            return newState;
+        }
         default: {
             return newState || {};
         }

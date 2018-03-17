@@ -4,18 +4,39 @@ import Panel from '../../../../components/Panel';
 import List from '../../../../components/List';
 import ListItem from '../../../../components/ListItem';
 import AddLink from '../../../../components/AddLink';
+import Modal from '../../../../components/Modal';
 import Overlay from '../../../../components/Overlay';
 import CreateUserMenu from './components/createUserMenu';
-import {createUser} from '../../../../services/users/actions';
+import {createUser, deleteUser} from '../../../../services/users/actions';
 import store from '../../../../services/store';
+import './userList.css';
 
 class UserList extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            creatingUser: false
+            creatingUser: false,
+            deleteUser: null
         };
+    }
+
+    _toggleDeleteModal(id) {
+        return() => {
+            this.setState({
+                deleteUser: id
+            });
+        };
+    }
+
+    deleteUser() {
+        if (this.state.deleteUser) {
+            store.dispatch(deleteUser(this.state.deleteUser));
+        }
+
+        this.setState({
+            deleteUser: null
+        });
     }
 
     _toggleCreateUserMenu(creating) {
@@ -42,17 +63,21 @@ class UserList extends Component {
                     {this.props.list && this.props.list.length > 0
                     ?   this.props.list.map((user, key) => {
                             return (
-                                <ListItem key={`${user._id}_${key}`}>
+                                <ListItem key={`${user._id}_${key}`} className="tagus-user-list-item" >
                                     <NavLink to={`${this.props.url}/${user._id}`} activeClassName="active" className="tagus-list-item-link">
                                         <i className={`fa fa-user`} aria-hidden="true"></i>{user.username}
                                     </NavLink>
+                                    <div onClick={this._toggleDeleteModal(user._id)} className="tagus-user-list-delete">
+                                        <i className="fa fa-trash-o" aria-hidden="true"></i>
+                                    </div>
                                 </ListItem>
                             );
                         })
                     :   null}
                 </List>
                 <AddLink text="Create new User" disabled={this.props.creatingUser} onClick={this._toggleCreateUserMenu(true)} />
-                <Overlay show={this.props.fetchingList || this.props.creatingUser} />
+                <Modal type='warning' show={!!this.state.deleteUser} title="Warning!" body={"Are you sure you want to DELETE PERMANENTLY this User?"} closeButton={{onClick: this._toggleDeleteModal(null), text: "Cancel"}} confirmButton={{onClick:this.deleteUser.bind(this), text: "Yes, I'm sure!"}} />
+                <Overlay show={this.props.fetchingList || this.props.creatingUser || this.props.deletingUser} />
             </Panel>
         );
     }

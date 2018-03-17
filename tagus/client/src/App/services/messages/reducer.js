@@ -37,7 +37,8 @@ export const messagesReducer = (state, action) => {
         case constants.units.POST_UNIT_DETAIL_REJECTED:
         case constants.units.CREATE_UNIT_REJECTED: 
         case constants.units.DELETE_UNIT_REJECTED:
-        case constants.users.CREATE_USER_REJECTED: {
+        case constants.users.CREATE_USER_REJECTED:
+        case constants.users.DELETE_USER_REJECTED: {
             if (!action.payload.data.success) {
                 newState.list.push({
                     type: 'error',
@@ -61,7 +62,8 @@ export const messagesReducer = (state, action) => {
         case constants.media.DELETE_MEDIA_FULFILLED:
         case constants.profile.UPDATE_PASSWORD_FULFILLED: 
         case constants.units.DELETE_UNIT_FULFILLED:
-        case constants.users.CREATE_USER_FULFILLED: {
+        case constants.users.CREATE_USER_FULFILLED:
+        case constants.users.DELETE_USER_FULFILLED: {
             let type = 'success';
 
             if (action.payload.data.error) {

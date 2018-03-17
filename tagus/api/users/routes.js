@@ -8,6 +8,8 @@ const mailer = require('../shared/mailer');
          if (!req.body.email) {
              throw 'No email';
          }
+        
+         const randomPassword = Math.random().toString(36).slice(-8);
 
         User.findOne({'email': req.email})
         .then (doc => {
@@ -16,10 +18,9 @@ const mailer = require('../shared/mailer');
             }
             else {
                 const newUser = new User(req.body);
-        
-        
-                //TODO: Generate random pass
-                newUser.password = newUser.generateHash('123456');
+
+                
+                newUser.password = newUser.generateHash(randomPassword);
         
                 newUser.created = new Date();
                 newUser.isAdmin = false;
@@ -28,18 +29,20 @@ const mailer = require('../shared/mailer');
                 .then(result => {
                     saveResult = result;
                     console.log(result);
-                    return mailer.verifyEmail(newUser.email, newUser.password);
+                    return mailer.verifyEmail(newUser.email, randomPassword);
                 })
                 .then (()=>{
                     console.log("email!");
                     res.json({ success: true, message: messages.success.created('User'), result:saveResult});
                 })
                 .catch(err =>{
+                    console.log(err);
                     res.json({success: false, error: messages.error.whileCreating('User')});
                 });
             }
         })
         .catch(err =>{
+            console.log(err);
             res.json({success: false, error: messages.error.whileCreating('User')});
         });
      },

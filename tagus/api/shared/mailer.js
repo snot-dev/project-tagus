@@ -4,7 +4,7 @@ const transporter = nodemailer.createTransport(
     {
         service: 'gmail',
         auth: {
-            user: process.env.MAILER_MAIL,
+            user: process.env.MAILER_EMAIL,
             pass: process.env.MAILER_PASS
         }
     },
@@ -23,16 +23,16 @@ const verifyEmail = (receiver, pass) => {
             <p>Your password to access Tagus is: <b>${pass}</b></p>`
     };
 
-    return new Promise((resolver, reject) => {
-        transporter.sendEmail(message, (error, info) => {
+    return new Promise((resolve, reject) => {
+        transporter.sendMail(message, (error, info) => {
             if (error) {
-                reject();
+                reject(error);
             }
             else {
                 resolve();
             }
         });
-    })
+    });
 };
 
 module.exports = {
