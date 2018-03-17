@@ -51,6 +51,8 @@ module.exports = User => {
                 const admin = new User(req.body);
                 
                 admin.password = admin.generateHash(req.body.password);
+                admin.isCreator = true;
+                admin.isAdmin = true;
                 
                 return admin.save();
             } 

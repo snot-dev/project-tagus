@@ -1,8 +1,36 @@
 const User = require('./model');
 const router = require('../router/router');
 const messages = require('../shared').messages;
+const mailer = require('../shared/mailer');
 
  const userRouter =  router.defineCRUDRoutes(User, {
+     postOne: (req, res) => {
+        const newUser = new User(req.body);
+
+        if (!newUser.email) {
+            throw 'No email';
+        }
+
+        //TODO: Generate random pass
+        newUser.password = newUser.generateHash('123456');
+
+        newUser.created = new Date();
+        newUser.isAdmin = false;
+
+        newUser.save()
+        .then(result => {
+            saveResult = result;
+
+            return mailer.verifyEmail(newUser.email, newUser.password);
+        })
+        .then (()=>{
+            res.json({ success: true, message: messages.success.created('Document'), result:saveResult});
+
+        })
+        .catch(err =>{
+            res.json({success: false, error: messages.error.whileCreating('Document')});
+        });
+     },
      alt: [
         {
             method: 'put',

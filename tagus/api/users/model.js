@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema ({
     name: String,
     surname: String,
     created: {type:Date, default: Date.now(), required: true},
+    createdBy: String,
     isCreator: Boolean,
     isAdmin: {type: Boolean, default: false},
     lastActivity: Date,
