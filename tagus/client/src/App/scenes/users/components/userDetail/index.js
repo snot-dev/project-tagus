@@ -12,6 +12,12 @@ class UserDetail extends Component {
             store.dispatch(getUserDetailIfNeeded(this.props.match.params.id));
         }
     }
+
+    componentWillUpdate(newProps) {
+        if (newProps.match.params.id !== this.props.match.params.id) {
+            store.dispatch(getUserDetailIfNeeded(newProps.match.params.id));
+        }
+    }
     
     render() {
         const created = moment(this.props.detail.created).format(constants.config.DATE_FORMAT);

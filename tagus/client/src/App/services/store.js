@@ -74,7 +74,8 @@ const initialState = {
         detail: {},
         fetchingList: false,
         fetchingDetail: false,
-        savingDetail: false
+        savingDetail: false,
+        creatingUser: false
     },
     auth: {
         loggingIn: false,

@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import axios from '../axios';
+import {createFakeItemResponse} from '../helpers';
 import {constants} from '../constants';
 
 
@@ -26,7 +27,7 @@ export function getUserDetailIfNeeded(id) {
             if (state.users.dictionary[id]) {
                 dispatch({
                     type: constants.users.GET_USER_DETAIL_FULFILLED,
-                    payload: {data: _.cloneDeep(state.users.dictionary[id])} 
+                    payload: createFakeItemResponse(state.users.dictionary[id]) 
                 });
             }
             else {
@@ -37,4 +38,28 @@ export function getUserDetailIfNeeded(id) {
             }
         }
     };
+}
+
+export function createUser(user) {
+    return (dispatch, getState) => {
+        const newUser = _.clone(user);
+        newUser.createdBy = getState().auth.user.email;
+
+        dispatch({
+            type: constants.users.CREATING_USER,
+            payload: axios.post('users', newUser)
+        })
+        .then( ()=> {
+            dispatch({
+                type: constants.users.GET_USERS_LIST,
+                payload: axios.get('users')
+            });
+        });
+    };
+}
+
+export function deleteUser(id) {
+    return (dispatch, getState) => {
+
+    }
 }

@@ -5,30 +5,42 @@ const mailer = require('../shared/mailer');
 
  const userRouter =  router.defineCRUDRoutes(User, {
      postOne: (req, res) => {
-        const newUser = new User(req.body);
+         if (!req.body.email) {
+             throw 'No email';
+         }
 
-        if (!newUser.email) {
-            throw 'No email';
-        }
-
-        //TODO: Generate random pass
-        newUser.password = newUser.generateHash('123456');
-
-        newUser.created = new Date();
-        newUser.isAdmin = false;
-
-        newUser.save()
-        .then(result => {
-            saveResult = result;
-
-            return mailer.verifyEmail(newUser.email, newUser.password);
-        })
-        .then (()=>{
-            res.json({ success: true, message: messages.success.created('Document'), result:saveResult});
-
+        User.findOne({'email': req.email})
+        .then (doc => {
+            if (doc) {
+                res.json({success:false, warning: true, message: messages.warning.alreadyExists(req.body.email)});
+            }
+            else {
+                const newUser = new User(req.body);
+        
+        
+                //TODO: Generate random pass
+                newUser.password = newUser.generateHash('123456');
+        
+                newUser.created = new Date();
+                newUser.isAdmin = false;
+        
+                newUser.save()
+                .then(result => {
+                    saveResult = result;
+                    console.log(result);
+                    return mailer.verifyEmail(newUser.email, newUser.password);
+                })
+                .then (()=>{
+                    console.log("email!");
+                    res.json({ success: true, message: messages.success.created('User'), result:saveResult});
+                })
+                .catch(err =>{
+                    res.json({success: false, error: messages.error.whileCreating('User')});
+                });
+            }
         })
         .catch(err =>{
-            res.json({success: false, error: messages.error.whileCreating('Document')});
+            res.json({success: false, error: messages.error.whileCreating('User')});
         });
      },
      alt: [

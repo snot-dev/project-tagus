@@ -58,6 +58,5 @@
 }
 
 .tagus-menu-close-button:hover {
-    background-color: var(--text-color);
-    color: white;
+    color: var(--main-red);
 }

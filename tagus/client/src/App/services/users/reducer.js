@@ -10,7 +10,7 @@ export const usersReducer = function(state, action) {
             return newState;
         }
         case constants.users.GET_USERS_LIST_FULFILLED: {
-            newState.fetchingList = true;
+            newState.fetchingList = false;
             newState.list = action.payload.data.list;
             newState.dictionary = convertArrayToDictionary(newState.list);
             return newState;
@@ -21,7 +21,17 @@ export const usersReducer = function(state, action) {
         }
         case constants.users.GET_USER_DETAIL_FULFILLED: {
             newState.fetchingDetail = false;
-            newState.detail = action.payload.data;
+            newState.detail = action.payload.data.item;
+            return newState;
+        }
+        case constants.users.CREATE_USER_PENDING: {
+            newState.creatingUser = true;
+
+            return newState;
+        }
+        case constants.users.CREATE_USER_FULFILLED: {
+            newState.creatingUser = false;
+
             return newState;
         }
         default: {
