@@ -26,7 +26,6 @@ export const usersReducer = function(state, action) {
         }
         case constants.users.CREATE_USER_PENDING: {
             newState.creatingUser = true;
-
             return newState;
         }
         case constants.users.CREATE_USER_FULFILLED: {
@@ -36,11 +35,21 @@ export const usersReducer = function(state, action) {
         }
         case constants.users.DELETING_USER_PENDING: {
             newState.deletingUser = true;
-
             return newState;
         }
         case constants.users.DELETE_USER_FULFILLED: {
             newState.deletingUser = false;
+            return newState;
+        }
+        case constants.users.UPDATE_USER_PENDING: {
+            newState.savingDetail = true;
+            return newState;
+        }
+        case constants.users.UPDATE_USER_FULFILLED: {
+            newState.savingDetail = false;
+            if (action.payload.data.success) {
+                newState.detail = action.payload.data.result;
+            }
 
             return newState;
         }

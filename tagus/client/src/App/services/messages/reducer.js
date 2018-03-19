@@ -63,7 +63,8 @@ export const messagesReducer = (state, action) => {
         case constants.profile.UPDATE_PASSWORD_FULFILLED: 
         case constants.units.DELETE_UNIT_FULFILLED:
         case constants.users.CREATE_USER_FULFILLED:
-        case constants.users.DELETE_USER_FULFILLED: {
+        case constants.users.DELETE_USER_FULFILLED:
+        case constants.users.UPDATE_USER_FULFILLED: {
             let type = 'success';
 
             if (action.payload.data.error) {

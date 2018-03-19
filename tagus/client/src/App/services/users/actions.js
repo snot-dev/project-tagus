@@ -73,3 +73,12 @@ export function deleteUser(id) {
         });
     }
 }
+
+export function updateUser(user) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: constants.users.UPDATE_USER,
+            payload: axios.put(`users/${user._id}`, user)
+        });
+    }
+}

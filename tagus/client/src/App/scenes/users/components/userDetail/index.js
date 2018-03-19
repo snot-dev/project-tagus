@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import store from '../../../../services/store';
-import {getUserDetailIfNeeded} from '../../../../services/users/actions';
-import Panel from '../../../../components/Panel';
+import _ from 'lodash';
+import {updateUser, getUserDetailIfNeeded} from '../../../../services/users/actions';
 import {constants} from '../../../../services/constants';
-
+import store from '../../../../services/store';
+import Panel from '../../../../components/Panel';
+import Overlay from '../../../../components/Overlay';
+import AdminForm from './components/adminForm';
 
 class UserDetail extends Component {
     componentDidMount() {
@@ -19,8 +21,19 @@ class UserDetail extends Component {
         }
     }
     
+    changeAdminPermissions(values) {
+        const user = _.cloneDeep(this.props.detail);
+        
+        if(values.isAdmin !== user.isAdmin) {
+            user.isAdmin = values.isAdmin;
+    
+            store.dispatch(updateUser(user));
+        }
+    }
+
     render() {
         const created = moment(this.props.detail.created).format(constants.config.DATE_FORMAT);
+        const shouldRenderForm = !this.props.detail.isCreator && this.props.loggedUser.isCreator;
 
         return (
             <Panel title={`${this.props.detail.username}`} className="col-xs-8 full-height" >
@@ -55,7 +68,13 @@ class UserDetail extends Component {
                             <p className="tagus-info">{this.props.detail.surname}</p>
                         </div>
                     </div>
+                    {shouldRenderForm
+                    ?   <div className="row tagus-form-control">
+                            <AdminForm changePermissions={this.changeAdminPermissions.bind(this)} user={this.props.detail} />
+                        </div>
+                    :null }
                 </div>
+                <Overlay show={this.props.savingDetail} />
             </Panel>
         );
     }

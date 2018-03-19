@@ -47,14 +47,16 @@ class UserList extends Component {
 
     onSubmitCreateUser(values) {
         const user = values.newUser;
-
-        store.dispatch(createUser(user));
+        
+        if (this.props.loggedUser.isAdmin) {
+            store.dispatch(createUser(user));
+        }
 
         this.setState({creatingUser: false})
     }
 
     _shouldRenderDelete(user) {
-        const self = user._id != this.props.loggedUser._id;
+        const self = user._id !== this.props.loggedUser._id;
         const isCreator = user.isCreator;
 
         return self && !isCreator;
@@ -62,7 +64,7 @@ class UserList extends Component {
 
     render() {
         const menu = [
-            <CreateUserMenu key="createUser" show={this.state.creatingUser} onClose={this._toggleCreateUserMenu(false)} onSubmit={this.onSubmitCreateUser.bind(this)} />
+            <CreateUserMenu key="createUser" show={this.state.creatingUser && this.props.loggedUser.isAdmin} onClose={this._toggleCreateUserMenu(false)} onSubmit={this.onSubmitCreateUser.bind(this)} />
         ]
         return (
             <Panel title={this.props.name} className="col-xs-4 full-height" menu={menu}>
@@ -86,7 +88,7 @@ class UserList extends Component {
                         })
                     :   null}
                 </List>
-                <AddLink text="Create new User" disabled={this.props.creatingUser} onClick={this._toggleCreateUserMenu(true)} />
+                <AddLink text="Create new User" show={this.props.loggedUser.isAdmin} disabled={this.props.creatingUser} onClick={this._toggleCreateUserMenu(true)} />
                 <Modal type='warning' show={!!this.state.deleteUser} title="Warning!" body={"Are you sure you want to DELETE PERMANENTLY this User?"} closeButton={{onClick: this._toggleDeleteModal(null), text: "Cancel"}} confirmButton={{onClick:this.deleteUser.bind(this), text: "Yes, I'm sure!"}} />
                 <Overlay show={this.props.fetchingList || this.props.creatingUser || this.props.deletingUser} />
             </Panel>

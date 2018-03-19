@@ -51,6 +51,30 @@ const mailer = require('../shared/mailer');
          }
 
      },
+     updateById: (req, res) => {
+        User.findOne({'username': req.body.username})
+        .then(doc => {
+            if (doc && doc._id != req.params.id) {
+                res.json({success:false, warning: true, message: messages.warning.alreadyExists(req.body.username)})
+            } else {
+                User.findOne({'_id': req.params.id})
+                .then(doc => {
+                    const updatedDoc = Object.assign(doc, req.body);
+
+                    updatedDoc.edited = new Date();
+                    
+                    return updatedDoc.save();
+                })
+                .then(result =>{
+                    console.log(result);
+                    res.json({success: true, message: messages.success.updated(result.username), result});
+                })
+                .catch( err => {
+                    res.json({success: false, error: messages.error.whileUpdating("User")});
+                })
+            }
+        })
+     },
      alt: [
         {
             method: 'put',

@@ -100,7 +100,7 @@ module.exports = {
                                     return updatedDoc.save();
                                 })
                                 .then(result =>{
-                                    res.json({success: true, message: messages.success.updated(result.name), result});
+                                    res.json({success: true, message: messages.success.updated(result.username || result.name), result});
                                 })
                                 .catch( err => {
                                     res.json({success: false, error: messages.error.whileUpdating(alias)});
