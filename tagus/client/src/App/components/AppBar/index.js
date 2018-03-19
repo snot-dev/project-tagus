@@ -5,13 +5,19 @@ import NavItem from './components/NavItem';
 import './appBar.css';
 
 class AppBar extends Component {
+    _shouldRender(route) {
+        const isPrivate = !route.private || (route.private && this.props.user.isAdmin);
+
+        return route.nav && isPrivate;
+    }
+
     render() {
         return (
             <nav id="tagus-side-menu">
                 <div className="nav-container">
                     <Navigation title="Menu">
                         {this.props.routes.map((route, index) => {
-                            if (!route.nav) {
+                            if (!this._shouldRender(route)) {
                                 return null;   
                             }
 
@@ -27,7 +33,8 @@ class AppBar extends Component {
 }
 
 AppBar.prototypes = {
-    routes: PropTypes.array
+    routes: PropTypes.array,
+    user: PropTypes.object
 };
 
 export default AppBar;

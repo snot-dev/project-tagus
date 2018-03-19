@@ -62,7 +62,8 @@ class App extends Component {
         path: this._generatePath(props, '/users'),
         component: Users,
         icon: 'users',
-        nav: true
+        nav: true,
+        private: true
       },
       {
         name: "Profile",
@@ -92,7 +93,7 @@ class App extends Component {
       <div id ="tagus-app" className="App container-fluid">
         <Messages />
         <TopBar onLogoffClick={this._logoff.bind(this)} user={this.props.auth.user} />
-        <AppBar routes={this.routes} />
+        <AppBar user={this.props.auth.user} routes={this.routes} />
         <AppContainer>
           {this.routes.map((route, index) => {
             return(

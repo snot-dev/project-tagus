@@ -18,8 +18,8 @@ const mailer = require('../shared/mailer');
             }
             else {
                 const newUser = new User(req.body);
+                const user = null;
 
-                
                 newUser.password = newUser.generateHash(randomPassword);
         
                 newUser.created = new Date();
@@ -27,13 +27,13 @@ const mailer = require('../shared/mailer');
         
                 newUser.save()
                 .then(result => {
-                    saveResult = result;
-                    console.log(result);
+                    user = Object.assign({}, result._doc);
+                    delete user.password;
+
                     return mailer.verifyEmail(newUser.email, randomPassword);
                 })
                 .then (()=>{
-                    console.log("email!");
-                    res.json({ success: true, message: messages.success.created('User'), result:saveResult});
+                    res.json({ success: true, message: messages.success.created('User'), result: user});
                 })
                 .catch(err =>{
                     console.log(err);
@@ -42,7 +42,6 @@ const mailer = require('../shared/mailer');
             }
         })
         .catch(err =>{
-            console.log(err);
             res.json({success: false, error: messages.error.whileCreating('User')});
         });
      },

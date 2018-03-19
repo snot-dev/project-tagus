@@ -24,7 +24,8 @@ class Users extends Component {
 
 const mapStateToProps = state => {
     return {
-      users: state.users
+      users: state.users,
+      auth: state.auth
     };
   };
   
