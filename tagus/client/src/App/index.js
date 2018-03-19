@@ -97,7 +97,7 @@ class App extends Component {
         <AppContainer>
           {this.routes.map((route, index) => {
             return(
-              <Route key={`${index}_${route.name}`} test="this is a test" path={route.path} render={(props) => (<route.component name={route.name} {...props}/>) } />
+              <Route key={`${index}_${route.name}`} path={route.path} render={(props) => (<route.component name={route.name} loggedUser={this.props.auth.user} {...props}/>) } />
             );
           })}
         </AppContainer>

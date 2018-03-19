@@ -43,11 +43,12 @@ export function getUserDetailIfNeeded(id) {
 export function createUser(user) {
     return (dispatch, getState) => {
         const newUser = _.clone(user);
-        newUser.createdBy = getState().auth.user.email;
+        const requirer = getState().auth.user;
+        newUser.createdBy = requirer.email;
 
         dispatch({
             type: constants.users.CREATE_USER,
-            payload: axios.post('users', newUser)
+            payload: axios.post('users', {requirer, user:newUser})
         })
         .then( ()=> {
             dispatch({

@@ -5,45 +5,51 @@ const mailer = require('../shared/mailer');
 
  const userRouter =  router.defineCRUDRoutes(User, {
      postOne: (req, res) => {
-         if (!req.body.email) {
-             throw 'No email';
-         }
-        
-         const randomPassword = Math.random().toString(36).slice(-8);
-
-        User.findOne({'email': req.email})
-        .then (doc => {
-            if (doc) {
-                res.json({success:false, warning: true, message: messages.warning.alreadyExists(req.body.email)});
-            }
-            else {
-                const newUser = new User(req.body);
-                const user = null;
-
-                newUser.password = newUser.generateHash(randomPassword);
-        
-                newUser.created = new Date();
-                newUser.isAdmin = false;
-        
-                newUser.save()
-                .then(result => {
-                    user = Object.assign({}, result._doc);
-                    delete user.password;
-
-                    return mailer.verifyEmail(newUser.email, randomPassword);
-                })
-                .then (()=>{
-                    res.json({ success: true, message: messages.success.created('User'), result: user});
-                })
-                .catch(err =>{
-                    console.log(err);
-                    res.json({success: false, error: messages.error.whileCreating('User')});
-                });
-            }
-        })
-        .catch(err =>{
+         if (!req.body.user.email) {
             res.json({success: false, error: messages.error.whileCreating('User')});
-        });
+         } 
+         else {
+             if (!req.body.requirer.isAdmin) {
+                res.json({success:false, warning: true, message: messages.warning.noPermission()});
+             }
+             else {
+                 const randomPassword = Math.random().toString(36).slice(-8);
+    
+                 User.findOne({'email': req.body.user.email})
+                 .then (doc => {
+                     if (doc) {
+                         res.json({success:false, warning: true, message: messages.warning.alreadyExists(req.body.user.email)});
+                     }
+                     else {
+                         const newUser = new User(req.body.user);
+                         const user = null;
+         
+                         newUser.password = newUser.generateHash(randomPassword);
+                 
+                         newUser.created = new Date();
+                         newUser.isAdmin = false;
+                 
+                         newUser.save()
+                         .then(result => {
+                             user = Object.assign({}, result._doc);
+                             delete user.password;
+         
+                             return mailer.verifyEmail(newUser.email, randomPassword);
+                         })
+                         .then (()=>{
+                             res.json({ success: true, message: messages.success.created('User'), result: user});
+                         })
+                         .catch(err =>{
+                             res.json({success: false, error: messages.error.whileCreating('User')});
+                         });
+                     }
+                 })
+                 .catch(err =>{
+                     res.json({success: false, error: messages.error.whileCreating('User')});
+                 });
+             }
+         }
+
      },
      alt: [
         {

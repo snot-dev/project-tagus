@@ -53,6 +53,13 @@ class UserList extends Component {
         this.setState({creatingUser: false})
     }
 
+    _shouldRenderDelete(user) {
+        const self = user._id != this.props.loggedUser._id;
+        const isCreator = user.isCreator;
+
+        return self && !isCreator;
+    }
+
     render() {
         const menu = [
             <CreateUserMenu key="createUser" show={this.state.creatingUser} onClose={this._toggleCreateUserMenu(false)} onSubmit={this.onSubmitCreateUser.bind(this)} />
@@ -67,9 +74,13 @@ class UserList extends Component {
                                     <NavLink to={`${this.props.url}/${user._id}`} activeClassName="active" className="tagus-list-item-link">
                                         <i className={`fa fa-user`} aria-hidden="true"></i>{user.username}
                                     </NavLink>
-                                    <div onClick={this._toggleDeleteModal(user._id)} className="tagus-user-list-delete">
-                                        <i className="fa fa-trash-o" aria-hidden="true"></i>
-                                    </div>
+                                    {this._shouldRenderDelete(user)
+                                    ?   <div onClick={this._toggleDeleteModal(user._id)} className="tagus-user-list-delete">
+                                            <i className="fa fa-trash-o" aria-hidden="true"></i>
+                                        </div>
+                                    :   null
+                                    }
+                                    
                                 </ListItem>
                             );
                         })

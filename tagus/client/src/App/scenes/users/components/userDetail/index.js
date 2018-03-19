@@ -27,8 +27,18 @@ class UserDetail extends Component {
                 <div className="container-fluid tagus-user-detail-info">
                     <div className="row tagus-form-control">
                         <div className="col-xs-12 col-sm-6 tagus-form-field">
+                            <label className="tagus-label" >email</label>
+                            <p className="tagus-info">{this.props.detail.email}</p>
+                        </div>
+                        <div className="col-xs-12 col-sm-6 tagus-form-field">
                             <label className="tagus-label" >Username</label>
                             <p className="tagus-info">{this.props.detail.username}</p>
+                        </div>
+                    </div>
+                    <div className="row tagus-form-control">
+                    <div className="col-xs-12 col-sm-6 tagus-form-field">
+                            <label className="tagus-label" >Created by</label>
+                            <p className="tagus-info">{this.props.detail.createdBy}</p>
                         </div>
                         <div className="col-xs-12 col-sm-6 tagus-form-field">
                             <label className="tagus-label" >Created</label>
@@ -43,12 +53,6 @@ class UserDetail extends Component {
                         <div className="col-xs-12 col-sm-6 tagus-form-field">
                             <label className="tagus-label" >Surname</label>
                             <p className="tagus-info">{this.props.detail.surname}</p>
-                        </div>
-                    </div>
-                    <div className="row tagus-form-control">
-                        <div className="col-xs-12 tagus-form-field">
-                            <label className="tagus-label" >email</label>
-                            <p className="tagus-info">{this.props.detail.email}</p>
                         </div>
                     </div>
                 </div>

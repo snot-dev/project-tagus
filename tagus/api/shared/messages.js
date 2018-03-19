@@ -2,6 +2,9 @@ module.exports = {
     warning: {
         alreadyExists: item => {
             return `${item} already exists`;
+        },
+        noPermission: () => {
+            return `You don't have permission to perform that action!`;
         }
     },
     error: {
