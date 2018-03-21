@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Menu from '../../../../../../components/Menu';
 import {createUnit} from '../../../../../../services/content/actions';
 import store from '../../../../../../services/store';
@@ -46,5 +47,12 @@ class NewRootContent extends Component {
         );
     }
 }
+
+NewRootContent.propTypes = {
+    units: PropTypes.object,
+    onCloseButton: PropTypes.func,
+    url: PropTypes.string.isRequired,
+    show: PropTypes.bool
+};
 
 export default NewRootContent;

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {NavLink} from 'react-router-dom';
 import CollapsableList from '../../../../components/CollapsableList';
 import Panel from '../../../../components/Panel';
@@ -52,8 +53,8 @@ class ContentList extends Component {
     _buildContentList() {
          return (
             <List id="tagus-content-list" className="tagus-content-list">
-                {this.props.contentList && this.props.contentList.length > 0 
-                ?   this.props.contentList.map((content, index) => {
+                {this.props.list && this.props.list.length > 0 
+                ?   this.props.list.map((content, index) => {
                         const branch = this._createBranch(content);
                         return (
                             <ListItem className="tagus-content-item" key={index}>
@@ -109,11 +110,22 @@ class ContentList extends Component {
         return (
             <Panel title={this.props.name} className="col-xs-4 full-height" menu={menu}>
                 {this._buildContentList()}
-                <AddLink text="Create a new Root page" onClick={this._toggleCreateRootContentMenu(true)} show={this.props.contentList.length ===0} disabled={this.state.creatingRootContent} />
+                <AddLink text="Create a new Root page" onClick={this._toggleCreateRootContentMenu(true)} show={this.props.list.length ===0} disabled={this.state.creatingRootContent} />
                 <Overlay show={this.props.savingContent || this.props.fetchingList}/>
             </Panel>  
         );
     };
 }
+
+ContentList.propTypes = {
+    name: PropTypes.string.isRequired,
+    list: PropTypes.array.isRequired,
+    units: PropTypes.object.isRequired,
+    fetchingList: PropTypes.bool.isRequired,
+    savingContent: PropTypes.bool.isRequired,
+    url: PropTypes.string.isRequired,
+    history:PropTypes.object.isRequired,
+    editingContent: PropTypes.object
+};
 
 export default ContentList;

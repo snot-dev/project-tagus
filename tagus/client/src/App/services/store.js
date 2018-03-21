@@ -27,12 +27,13 @@ const rootReducer = combineReducers({
 const initialState = {
     content: {
         list: [],
-        treeList: {},
+        treeList: [],
         detail: {},
         units: {},
         fetchingList: false,
         fetchingDetail: false,
         savingDetail: false,
+        savingContent: false,
         editingContent: null,
         createUnit: null
     },

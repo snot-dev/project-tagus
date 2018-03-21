@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Modal from '../../../../../../components/Modal';
 import Menu from '../../../../../../components/Menu';
 import CollapsableList from '../../../../../../components/CollapsableList';
@@ -82,5 +83,15 @@ class ContentMenu extends Component {
         );
     }
 }
+
+ContentMenu.propTypes = {
+    className: PropTypes.string,
+    detail: PropTypes.object,
+    history: PropTypes.object.isRequired,
+    onCloseButton: PropTypes.func,
+    savingContent: PropTypes.bool.isRequired,
+    units: PropTypes.object.isRequired,
+    url: PropTypes.string
+};
 
 export default ContentMenu;

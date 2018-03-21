@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Overlay from '../../../../components/Overlay';
 import Panel from '../../../../components/Panel';
 import Form from '../../../../components/Form';
@@ -95,5 +96,11 @@ class CreateContent extends Component {
         );
     }
 }
+
+CreateContent.propTypes = {
+    savingContent: PropTypes.bool.isRequired,
+    unit: PropTypes.object.isRequired,
+    parent: PropTypes.object.isRequired
+};
 
 export default CreateContent;

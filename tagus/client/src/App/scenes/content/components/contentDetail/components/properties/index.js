@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Form from '../../../../../../components/Form';
 import Modal from '../../../../../../components/Modal';
 import {constants} from '../../../../../../services/constants';
 import moment from 'moment';
 
-class properties extends Component {
+class Properties extends Component {
     constructor(props) {
         super(props);
 
@@ -183,4 +184,12 @@ class properties extends Component {
     }
 }
 
-export default properties;
+Properties.propTypes = {
+    detail: PropTypes.object.isRequired,
+    disabled: PropTypes.bool,
+    onchange: PropTypes.func,
+    onSubmit: PropTypes.func,
+    unit: PropTypes.object.isRequired
+};
+
+export default Properties;

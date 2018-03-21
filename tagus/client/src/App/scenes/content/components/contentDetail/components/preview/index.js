@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Cookies from 'universal-cookie';
 import './preview.css';
 
@@ -10,7 +11,7 @@ class Preview extends Component {
         window.open(`http://localhost:3001/preview/${this.props.id}`, '_blank');
     }
 
-    render() {
+    _render() {
         return (
             <div className="row">
                 <div className="col-xs-12">
@@ -19,6 +20,16 @@ class Preview extends Component {
             </div>
         );
     }
+
+    render () {
+        return (
+            this.props.id ? this._render() : null
+        );
+    }
 }
+
+Preview.propTypes = {
+    id: PropTypes.string
+};
 
 export default Preview;

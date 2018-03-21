@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import {getContentDetailIfNeeded, saveContent} from '../../../../services/content/actions';
 import {Tabs, Tab} from 'react-bootstrap';
@@ -112,5 +113,11 @@ class ContentDetail extends Component {
         );
     };
 }
+
+ContentDetail.propTypes = {
+    detail: PropTypes.object.isRequired,
+    savingContent: PropTypes.bool.isRequired,
+    unit: PropTypes.object
+};
 
 export default ContentDetail;
