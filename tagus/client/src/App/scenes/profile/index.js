@@ -41,6 +41,7 @@ class Profile extends Component {
 }
 
 Profile.propTypes = {
+    name: PropTypes.string.isRequired,
     profile: PropTypes.object.isRequired
 };
 

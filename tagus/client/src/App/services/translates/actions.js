@@ -2,7 +2,7 @@ import {constants} from '../constants';
 import axios from '../axios';
 
 const _shouldGetTranslatesList = state => {
-    return state.translates.doc;
+    return Object.keys(state.translates.list).length === 0;
 };
 
 export function getListIfNedeed() {  

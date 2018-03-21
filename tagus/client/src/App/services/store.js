@@ -65,7 +65,7 @@ const initialState = {
         list: []
     },
     translates: {
-        doc: [],
+        list: {},
         fetchingList: false, 
         savingList: false
     },

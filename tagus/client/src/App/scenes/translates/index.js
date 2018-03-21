@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import TranslatesList from './components/translatesList';
 import store from '../../services/store';
@@ -17,6 +18,11 @@ class Translates extends Component {
         );
     }
 }
+
+Translates.propTypes = {
+    name: PropTypes.string.isRequired,
+    translates: PropTypes.object.isRequired
+};
 
 const mapStateToProps = state => {
     return {

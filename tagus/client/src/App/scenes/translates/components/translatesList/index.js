@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Panel from '../../../../components/Panel';
 import Modal from '../../../../components/Modal';
@@ -25,7 +26,7 @@ class TranslatesList extends Component {
     }
 
     componentWillReceiveProps(props) {
-        if (props.list && !this.state.touched && !this.state.submited) {
+        if (Object.keys(props.list).length > 0 && !this.state.touched && !this.state.submited) {
             this.setState({
                 translates: this._convertKeyValueToArray(props.list)
             }); 
@@ -191,5 +192,12 @@ class TranslatesList extends Component {
         )
     }
 }
+
+TranslatesList.propTypes = {
+    name: PropTypes.string.isRequired,
+    list: PropTypes.object.isRequired,
+    fetchingList: PropTypes.bool.isRequired,
+    savingList: PropTypes.bool.isRequired
+};
 
 export default TranslatesList;
