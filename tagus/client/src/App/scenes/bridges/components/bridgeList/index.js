@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {NavLink} from 'react-router-dom';
 import List from '../../../../components/List';
 import Panel from '../../../../components/Panel';
@@ -85,5 +86,14 @@ class BridgeList extends Component {
         );
     }
 }
+
+BridgeList.propTypes = {
+    name: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    history: PropTypes.object.isRequired,
+    fetchingList: PropTypes.bool.isRequired,
+    list: PropTypes.array.isRequired,
+    units: PropTypes.object.isRequired
+};
 
 export default BridgeList;

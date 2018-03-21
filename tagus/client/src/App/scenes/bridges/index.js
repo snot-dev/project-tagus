@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Route} from 'react-router-dom';
 import {getBridgesListIfNeeded, getUnitsListIfNeeded} from '../../services/bridges/actions';
@@ -22,6 +23,11 @@ class Bridges extends Component {
         );
     }
 }
+
+Bridges.propTypes = {
+    name: PropTypes.string.isRequired,
+    bridges: PropTypes.object.isRequired
+};
 
 const mapStateToProps = state => {
     return {

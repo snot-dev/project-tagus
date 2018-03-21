@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {Tabs, Tab} from 'react-bootstrap';
 import moment from 'moment';
 import {constants} from '../../../../services/constants';
@@ -131,5 +132,12 @@ class  BridgeDetail extends Component {
         )
     }
 }
+
+BridgeDetail.propTypes = {
+    savingDetail: PropTypes.bool.isRequired,
+    fetchingDetail: PropTypes.bool.isRequired,
+    detail: PropTypes.object.isRequired,
+    unit: PropTypes.object
+};
 
 export default BridgeDetail;

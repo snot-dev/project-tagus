@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Menu from '../../../../../../components/Menu';
 import Form from '../../../../../../components/Form';
 import './createBridgeMenu.css';
@@ -82,5 +83,12 @@ class CreateBridgeMenu extends Component {
         );
     }
 }
+
+CreateBridgeMenu.propTypes = {
+    units: PropTypes.object.isRequired,
+    show: PropTypes.bool.isRequired,
+    onClose: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func.isRequired
+};
 
 export default CreateBridgeMenu;
