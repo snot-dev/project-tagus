@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Menu from '../../../../../../components/Menu';
 import Form from '../../../../../../components/Form';
 
@@ -34,5 +35,11 @@ class CreateUnitMenu extends Component {
         );
     }
 }
+
+CreateUnitMenu.propTypes = {
+    show: PropTypes.bool.isRequired,
+    onClose: PropTypes.func,
+    onSubmit: PropTypes.func
+};
 
 export default CreateUnitMenu;

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Menu from '../../../../../../components/Menu';
 import AddLink from '../../../../../../components/AddLink';
@@ -190,5 +191,9 @@ class DropdownOptionsMenu extends Component {
         );
     }
 }
+
+DropdownOptionsMenu.propTypes = {
+
+};
 
 export default DropdownOptionsMenu;

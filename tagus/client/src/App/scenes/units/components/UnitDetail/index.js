@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import moment from 'moment';
 import {constants} from '../../../../services/constants';
@@ -17,7 +18,7 @@ import store from '../../../../services/store';
 import {camelize} from '../../../../services/helpers';
 import './unitsDetail.css';
 
-class UnitsDetail extends Component {
+class UnitDetail extends Component {
     constructor(props) {
         super(props);
 
@@ -469,4 +470,14 @@ class UnitsDetail extends Component {
     }
 }
 
-export default UnitsDetail;   
+UnitDetail.propTypes = {
+    detail: PropTypes.object.isRequired,
+    unitFields: PropTypes.array.isRequired,
+    templates: PropTypes.array.isRequired,
+    fetchingUnitFields: PropTypes.bool.isRequired,
+    fetchingTemplates: PropTypes.bool.isRequired,
+    addingTab: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+    addingField: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+};
+
+export default UnitDetail;   

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {NavLink} from 'react-router-dom';
 import Panel from '../../../../components/Panel';
 import Overlay from '../../../../components/Overlay';
@@ -92,5 +93,16 @@ class UnitsList extends Component {
         );
     }
 }
+
+UnitsList.propTypes = {
+    name: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    list: PropTypes.array.isRequired,
+    fetchingList: PropTypes.bool.isRequired,
+    savingDetail: PropTypes.bool.isRequired,
+    content: PropTypes.array
+};
+
+//name={this.props.name} url={this.props.match.url} list={this.props.units.list} fetchingList={this.props.units.fetchingList} savingDetail={this.props.savingDetail} content={this.props.units.content}
 
 export default UnitsList;   

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Menu from '../../../../../../components/Menu';
 import Form from '../../../../../../components/Form';
 
@@ -30,5 +31,12 @@ class AddTabMenu extends Component {
         );
     }
 }
+
+AddTabMenu.propTypes = {
+    defaultValues: PropTypes.object,
+    onClose: PropTypes.func,
+    show: PropTypes.bool,
+    onSubmit: PropTypes.func.isRequired
+};
 
 export default AddTabMenu;

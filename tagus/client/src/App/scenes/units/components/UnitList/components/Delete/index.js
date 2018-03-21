@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './delete.css';
 
 class Delete extends Component {
@@ -16,5 +17,9 @@ class Delete extends Component {
         );
     }
 }
+
+Delete.propTypes = {
+    onClick: PropTypes.func
+};
 
 export default Delete; 

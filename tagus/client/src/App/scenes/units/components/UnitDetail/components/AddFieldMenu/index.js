@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Menu from '../../../../../../components/Menu';
 import Form from '../../../../../../components/Form';
@@ -120,5 +121,15 @@ class AddFieldMenu extends Component {
         );
     }
 }
+
+AddFieldMenu.propTypes = {
+    show: PropTypes.bool,
+    onFieldBlur: PropTypes.func.isRequired,
+    defaultValues: PropTypes.object,
+    onAddOptionClick: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func.isRequired,
+    tab: PropTypes.string,
+    unitFields: PropTypes.array.isRequired
+};
 
 export default AddFieldMenu;

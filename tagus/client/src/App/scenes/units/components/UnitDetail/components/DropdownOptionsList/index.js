@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import AddLink from '../../../../../../components/AddLink';
 import './dropdownOptionsList.css';
 
@@ -44,5 +45,10 @@ class DropdownOptionsList extends Component {
         );
     }
 }
+
+DropdownOptionsList.propTypes = {
+    options: PropTypes.array.isRequired,
+    onAddOptionClick: PropTypes.func.isRequired
+};
 
 export default DropdownOptionsList;
