@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Modal from '../../../../../../components/Modal'
 
 class AdminForm extends Component {
@@ -48,5 +49,10 @@ class AdminForm extends Component {
         );
     }
 }
+
+AdminForm.propTypes = {
+    changePermissions: PropTypes.func.isRequired,
+    user: PropTypes.object.isRequired
+};
 
 export default AdminForm;

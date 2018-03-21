@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {NavLink} from 'react-router-dom';
 import Panel from '../../../../components/Panel';
 import List from '../../../../components/List';
@@ -95,5 +96,15 @@ class UserList extends Component {
         );
     }
 }
+
+UserList.propTypes = {
+    name: PropTypes.string.isRequired,
+    loggedUser: PropTypes.object.isRequired,
+    url: PropTypes.string.isRequired,
+    list: PropTypes.array.isRequired,
+    fetchingList: PropTypes.bool.isRequired,
+    creatingUser: PropTypes.bool.isRequired,
+    deletingUser: PropTypes.bool.isRequired
+};
 
 export default UserList;

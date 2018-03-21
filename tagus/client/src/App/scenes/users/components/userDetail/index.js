@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import _ from 'lodash';
 import {updateUser, getUserDetailIfNeeded} from '../../../../services/users/actions';
@@ -49,14 +50,16 @@ class UserDetail extends Component {
                         </div>
                     </div>
                     <div className="row tagus-form-control">
-                    <div className="col-xs-12 col-sm-6 tagus-form-field">
-                            <label className="tagus-label" >Created by</label>
-                            <p className="tagus-info">{this.props.detail.createdBy}</p>
-                        </div>
                         <div className="col-xs-12 col-sm-6 tagus-form-field">
                             <label className="tagus-label" >Created</label>
                             <p className="tagus-info">{created}</p>
                         </div>
+                        {this.props.detail.createdBy
+                        ?   <div className="col-xs-12 col-sm-6 tagus-form-field">
+                                <label className="tagus-label" >Created by</label>
+                                <p className="tagus-info">{this.props.detail.createdBy}</p>
+                            </div>
+                        :   null}
                     </div>
                     <div className="row tagus-form-control">
                         <div className="col-xs-12 col-sm-6 tagus-form-field">
@@ -78,6 +81,12 @@ class UserDetail extends Component {
             </Panel>
         );
     }
+}
+
+UserDetail.propTypes = {
+    detail: PropTypes.object.isRequired,
+    loggedUser: PropTypes.object.isRequired,
+    savingDetail: PropTypes.bool.isRequired
 }
 
 export default UserDetail;

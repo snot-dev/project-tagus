@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {Route} from 'react-router-dom';
 import {connect} from 'react-redux';
 import UserList from './components/userList';
@@ -26,6 +27,11 @@ class Users extends Component {
     }
 }
 
+Users.propTypes = {
+    name: PropTypes.string.isRequired,
+    loggedUser: PropTypes.object.isRequired,
+    users: PropTypes.object.isRequired
+};
 
 const mapStateToProps = state => {
     return {

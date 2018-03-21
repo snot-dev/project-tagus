@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Menu from '../../../../../../components/Menu';
 import Form from '../../../../../../components/Form';
 
@@ -42,5 +43,11 @@ class CreateUserMenu extends Component {
         );
     }
 }
+
+CreateUserMenu.propTypes = {
+    show: PropTypes.bool.isRequired,
+    onClose: PropTypes.func,       
+    onSubmit: PropTypes.func       
+};
 
 export default CreateUserMenu;
