@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import Gallery from './components/gallery';
 import Panel from '../../components/Panel';
@@ -23,6 +24,10 @@ class Media extends Component {
     }
 }
 
+Media.propTypes = {
+    name: PropTypes.string.isRequired,
+    media: PropTypes.object.isRequired
+};
 
 const mapStateToProps = state => {
     return {

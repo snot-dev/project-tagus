@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import Panel from '../../components/Panel';
 import Overlay from '../../components/Overlay';
@@ -39,6 +40,9 @@ class Profile extends Component {
     }
 }
 
+Profile.propTypes = {
+    profile: PropTypes.object.isRequired
+};
 
 const mapStateToProps = state => {
     return {

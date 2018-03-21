@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Lightbox from 'react-images';
 import Modal from '../../../../components/Modal';
 import ImgLink from '../imgLink';
@@ -94,5 +95,10 @@ class Gallery extends Component {
         )
     }
 }
+
+Gallery.propTypes = {
+    images: PropTypes.array.isRequired,
+    uploadingMedia: PropTypes.bool.isRequired
+};
 
 export default Gallery;

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Form from '../../../../components/Form';
 import store from '../../../../services/store';
@@ -99,4 +100,9 @@ class SignupForm extends Component {
     }
 }
  
+SignupForm.propTypes = {
+    checkedInfo: PropTypes.bool,
+    shouldInstall: PropTypes.bool
+};
+
 export default SignupForm;

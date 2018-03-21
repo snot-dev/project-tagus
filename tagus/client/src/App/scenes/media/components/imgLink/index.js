@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {Popover, OverlayTrigger} from 'react-bootstrap';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import './imgLink.css';
@@ -20,5 +21,9 @@ class ImgLink extends Component {
         )
     }
 }
+
+ImgLink.propTypes = {
+    link: PropTypes.string.isRequired
+};
 
 export default ImgLink;

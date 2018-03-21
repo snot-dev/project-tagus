@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import store from '../../services/store';
 import {checkIfInstall} from '../../services/auth/actions';
@@ -41,6 +42,10 @@ class SigninPage extends Component {
         );
     }
 }
+
+SigninPage.propTypes = {
+    auth: PropTypes.object.isRequired
+};  
 
 const mapStateToProps = state => {
     return {

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Button from '../../../../components/Button';
 import Overlay from '../../../../components/Overlay';
@@ -118,5 +119,9 @@ class SigninForm extends Component {
         );
     }
 }
+
+SigninForm.propTypes = {
+    auth: PropTypes.object.isRequired
+}; 
 
 export default SigninForm;

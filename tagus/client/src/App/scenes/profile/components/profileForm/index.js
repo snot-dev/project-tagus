@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import {constants} from '../../../../services/constants';
 import Form from '../../../../components/Form';
@@ -74,5 +75,9 @@ class ProfileForm extends Component {
         )
     }
 }
+
+ProfileForm.propTypes = {
+    user: PropTypes.object.isRequired
+};
 
 export default ProfileForm;

@@ -8,6 +8,7 @@ class Preview extends Component {
         const cookies = new Cookies();
         cookies.set(`preview_${this.props.id}`, 'true', {path:'/', maxAge: 5});
 
+        //TODO: Change this to actual address!
         window.open(`http://localhost:3001/preview/${this.props.id}`, '_blank');
     }
 

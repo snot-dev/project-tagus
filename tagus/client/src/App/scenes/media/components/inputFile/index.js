@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {uploadMedia} from '../../../../services/media/actions';
 import store from '../../../../services/store';
 import './inputFile.css';
@@ -21,5 +22,9 @@ class InputFile extends Component {
         );
     }
 }
+
+InputFile.propTypes = {
+    uploadingMedia: PropTypes.bool.isRequired
+};
 
 export default InputFile;

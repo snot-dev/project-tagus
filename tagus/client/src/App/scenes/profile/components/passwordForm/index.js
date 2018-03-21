@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Form from '../../../../components/Form';
 import {updatePassword} from '../../../../services/profile/actions';
@@ -64,5 +65,9 @@ class PasswordForm extends Component {
         )
     }
 }
+
+PasswordForm.propTypes = {
+    user: PropTypes.object.isRequired
+};
 
 export default PasswordForm;
