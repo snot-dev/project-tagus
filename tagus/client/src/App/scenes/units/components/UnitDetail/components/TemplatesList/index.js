@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './templatesList.css';
 
 class TemplatesList extends Component {
@@ -49,5 +50,11 @@ class TemplatesList extends Component {
         );
     }
 }
+
+TemplatesList.propTypes = {
+    templates: PropTypes.array.isRequired,
+    unitTemplates: PropTypes.array.isRequired,
+    onChange: PropTypes.func.isRequired
+};
 
 export default TemplatesList;

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import TabContent from '../TabContent';
 import './tabList.css';
 
@@ -49,5 +50,15 @@ class TabsList extends Component {
         );
     }
 }
+
+TabsList.propTypes = {
+    tabs: PropTypes.array.isRequired,
+    onDeleteTab: PropTypes.func.isRequired,
+    onEditTab: PropTypes.func.isRequired,
+    addingTab: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+    onDeleteField: PropTypes.func.isRequired,
+    onEditField: PropTypes.func.isRequired,
+    addFieldClick: PropTypes.func.isRequired
+};
 
 export default TabsList;

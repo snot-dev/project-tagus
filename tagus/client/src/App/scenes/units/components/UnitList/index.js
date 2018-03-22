@@ -103,6 +103,4 @@ UnitsList.propTypes = {
     content: PropTypes.array
 };
 
-//name={this.props.name} url={this.props.match.url} list={this.props.units.list} fetchingList={this.props.units.fetchingList} savingDetail={this.props.savingDetail} content={this.props.units.content}
-
 export default UnitsList;   

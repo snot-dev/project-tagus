@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {Tabs, Tab} from 'react-bootstrap';
 import AddLink from '../../../../../../components/AddLink';
 import TabField from './components/TabField';
@@ -45,6 +46,15 @@ class TabContent extends Component {
             </Tabs>  
         );
     }
+}
+
+TabContent.propTypes = {
+    addFieldClick: PropTypes.func,
+    onEditField: PropTypes.func.isRequired,
+    onDeleteField: PropTypes.func.isRequired,
+    tab: PropTypes.object.isRequired,
+    addingTab: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+    addingField: PropTypes.oneOfType([PropTypes.object, PropTypes.bool])
 }
 
 export default TabContent;

@@ -193,6 +193,10 @@ class DropdownOptionsMenu extends Component {
 }
 
 DropdownOptionsMenu.propTypes = {
+    show: PropTypes.bool,
+    field: PropTypes.object,
+    onOptionsSubmit: PropTypes.func.isRequired,
+    onClose: PropTypes.func.isRequired
 
 };
 

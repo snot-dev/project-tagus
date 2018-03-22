@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './tabField.css';
 
 class TabField extends Component {
@@ -45,5 +46,12 @@ class TabField extends Component {
         );
     }
 }
+
+TabField.propTypes = {
+    onDeleteField: PropTypes.func.isRequired,
+    onEditField: PropTypes.func.isRequired,
+    field: PropTypes.object.isRequired,
+    tab: PropTypes.string.isRequired
+};
 
 export default TabField;
