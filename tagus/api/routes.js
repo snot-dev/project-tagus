@@ -1,4 +1,5 @@
-const content = require('./content');
+const content = require('./content/routes');
+const Content = require('./content/model');
 const units = require('./units').routes;
 const unitFields = require('./unitFields').routes;
 const users = require('./users').routes;
@@ -13,19 +14,19 @@ const Cookies = require('universal-cookie');
 
 const api = (app, strategy) => {
     const router = require('express').Router();
-
+    
     let protectMiddleware = (req, res, next) => {
         next();
     };
-
+    
     if(strategy && auth.passport.strategies[strategy]) {
         const session = {session: false};
         auth.passport.strategies[strategy](User);
         protectMiddleware =  auth.passport.authenticate(strategy, session)
     }
     
-    router.use('/content', protectMiddleware, content.routes);
-    router.use('/bridges', protectMiddleware, bridges.routes);
+    router.use('/content', protectMiddleware, content);
+    /*router.use('/bridges', protectMiddleware, bridges.routes);
     router.use('/units', protectMiddleware, units);
     router.use('/unitfields', protectMiddleware, unitFields);
     router.use('/users', protectMiddleware, users);
@@ -33,7 +34,7 @@ const api = (app, strategy) => {
     router.use('/settings', protectMiddleware, settings);
     router.use('/templates', protectMiddleware, templates(app));
     router.use('/auth', auth.routes(User));
-    router.use('/media', media(app));
+    router.use('/media', media(app));*/
 
     return router;
 };

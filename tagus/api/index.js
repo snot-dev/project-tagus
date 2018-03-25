@@ -8,7 +8,6 @@ const units = require('./units/index');
 const users = require('./users/index');
 const auth = require('./auth/index');
 
-
 module.exports = {
   routes,
   content,

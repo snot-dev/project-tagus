@@ -8,6 +8,12 @@ chai.use(chaiHttp);
 
 
 class Tests {
+    CRUD (url, model, validation = {}) {
+        return done =>  {
+
+        };
+    };
+
     getAll (url, model, validation) {
         return done => {
             chai.request(server)

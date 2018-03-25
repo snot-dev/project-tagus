@@ -1,7 +1,7 @@
 const Content = require('./model');
 const router = require('express').Router();
-const helpers = require('../shared').helpers;
-const messages = require('../shared').messages;
+const helpers = require('../shared/helpers');
+const messages = require('../shared/messages');
 
 router.get('/', (req, res) => {
     Content.find({})
