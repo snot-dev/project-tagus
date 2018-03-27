@@ -40,6 +40,9 @@ const updatedValue = "testUpdate"
 
 const updatedMock = Object.assign(mock, {name: updatedValue});
 
+describe("this is just a test", tests.CRUD());
+
+/*
 describe(testName, function() {
     before(function(){
         console.log("Before");
@@ -140,3 +143,4 @@ describe(testName, function() {
 
     
 });
+*/

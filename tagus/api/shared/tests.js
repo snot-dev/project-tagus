@@ -3,13 +3,85 @@ const chaiHttp = require('chai-http');
 const should = chai.should();
 const server = require('../../../app');
 const mongoose = require('mongoose'); 
+const User = require('../users/model');
+const jwt = require('jwt-simple');
 
 chai.use(chaiHttp);
 
+const mockUser = {
+    username: "Tester",
+    email: "admin@tagus.com",
+    password: "tester1234",
+    name: "Tagus",
+    surname: "Tester",
+    created: new Date(),
+    isAdmin: true
+}
 
 class Tests {
+    constructor() {
+
+        this._token = null;
+        this._userId = null;
+    }
+
+    _createMockUser(done) {
+        const user = new User(mockUser);
+        user.save()
+        .then(result => {
+            console.log(result);
+            console.log(process.env.AUTHSECRETORKEY);
+            this._userId = result._id;
+            this.token = jwt.encode({id: result._id}, process.env.AUTHSECRETORKEY);
+            console.log(this.token);
+            done();
+        });
+    };
+    
+    _deleteMockUser(done) {
+        User.remove({_id: this._userId}, (err, result)  => {
+            this.token = null;
+            this._userId = null;
+            console.log(this.token);
+            done();
+        });
+    };
+
     CRUD (url, model, validation = {}) {
-        return done =>  {
+        const that = this;
+        return function() {
+            beforeEach('Before each test', function(done){
+                that._createMockUser(done);
+            });
+            
+            before('Before all tests', function(done){
+                console.log("Before!");
+                done();
+            });
+            
+            afterEach('After each test', function(done){
+                that._deleteMockUser(done);
+            });
+            
+            after('After all tests', function(done){
+                console.log("After!");
+                done();
+            });
+
+            it("Test 1", function(done) {
+                console.log("test 1");
+                done();
+            });
+
+            it("Test 2", function(done) {
+                console.log("test 2");
+                done();
+            });
+
+            it("Test 3", function(done) {
+                console.log("test 3");
+                done();
+            });
 
         };
     };
