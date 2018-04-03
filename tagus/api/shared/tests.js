@@ -20,7 +20,6 @@ const mockUser = {
 
 class Tests {
     constructor() {
-
         this._token = null;
         this._userId = null;
     }
@@ -47,12 +46,20 @@ class Tests {
     };
     
     _deleteMockUser(done) {
-        User.remove({_id: this._userId}, (err, result)  => {
-            this.token = null;
-            this._userId = null;
-            console.log(this.token);
-            done();
-        });
+        return new Promise((resolve, reject) => {
+            User.remove({_id: this._userId}, (err, result)  => {
+                this.token = null;
+                this._userId = null;
+                
+                if (done) {
+                    done();
+                }
+                resolve();
+            })
+            .catch(err => {
+                reject(err);
+            });
+        })
     };
 
     CRUD (url, Model, mocks = {}, validation =  {}) {
@@ -62,13 +69,18 @@ class Tests {
                 console.log("Before create!");
                 that._createMockUser()
                 .then(function() {
-                    that._createNew(url, Model, mocks.new);
+                    return that._createNew(url, Model, mocks.new);
+                })
+                .then(function() {
                     done();
                 })
             });
             
             after('Delete item and test user', function(done) {
-
+                that._deleteById(url, Model, mocks.new._id)
+                .then(function(){
+                    that._deleteMockUser(done);
+                });
             });
 
             /*
@@ -107,7 +119,7 @@ class Tests {
     getAll (url, model, validation) {
         return done => {
             chai.request(server)
-            .get(url)
+            .get(url)            
             .end((err, res) => {
                 res.should.have.status(200);
                 res.should.be.json;
@@ -210,10 +222,12 @@ class Tests {
     };
 
     _createNew (url, Model, payload, validation) {
-        return new Promise((resolve, reject) => {
+        const that = this;
+        return new Promise(function(resolve, reject) {
             let totalDocs = 0;
             chai.request(server)
             .get(url)
+            .set('Authorization', `Bearer ${that._token}`)
             .then(function(res) {
                 res.should.have.status(200);
                 res.should.be.json;
@@ -221,6 +235,7 @@ class Tests {
                 
                 chai.request(server)
                 .post(url)
+                .set('Authorization', `Bearer ${that._token}`)
                 .send(payload)
                 .then(function(res){
                     res.should.have.status(200);
@@ -269,17 +284,21 @@ class Tests {
     }
 
     _deleteById (url, Model, id, validation) {
-        return new Promise((resolve, reject) => {
+        const that = this;
+
+        return new Promise(function(resolve, reject) {
             let totalPages = 0;
             let deletedId;
         
             chai.request(server)
             .get(url)
+            .set('Authorization', `Bearer ${that._token}`)
             .then(function(res) {
                 totalPages = res.body.list.length;
         
                 chai.request(server)
                 .delete(`${url}${id}`)
+                .set('Authorization', `Bearer ${that._token}`)
                 .then(function(res) {
                     res.should.have.status(200);
                     res.should.be.json;
