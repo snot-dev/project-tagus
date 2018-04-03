@@ -26,15 +26,23 @@ class Tests {
     }
 
     _createMockUser(done) {
-        const user = new User(mockUser);
-        user.save()
-        .then(result => {
-            console.log(result);
-            console.log(process.env.AUTHSECRETORKEY);
-            this._userId = result._id;
-            this.token = jwt.encode({id: result._id}, process.env.AUTHSECRETORKEY);
-            console.log(this.token);
-            done();
+        return new Promise((resolve, reject) => {
+            const user = new User(mockUser);
+            user.save()
+            .then(result => {
+                console.log(result);
+                console.log(process.env.AUTHSECRETORKEY);
+                this._userId = result._id;
+                this.token = jwt.encode({id: result._id}, process.env.AUTHSECRETORKEY);
+                console.log("Created!");
+                if (done) {
+                    done();
+                }
+                resolve();
+            })
+            .catch(err => {
+                reject(err);
+            });
         });
     };
     
@@ -47,13 +55,23 @@ class Tests {
         });
     };
 
-    CRUD (url, model, validation = {}) {
+    CRUD (url, Model, mocks = {}, validation =  {}) {
         const that = this;
         return function() {
-            beforeEach('Before each test', function(done){
-                that._createMockUser(done);
+            before('Create test user and new item', function(done){
+                console.log("Before create!");
+                that._createMockUser()
+                .then(function() {
+                    that._createNew(url, Model, mocks.new);
+                    done();
+                })
             });
             
+            after('Delete item and test user', function(done) {
+
+            });
+
+            /*
             before('Before all tests', function(done){
                 console.log("Before!");
                 done();
@@ -77,12 +95,12 @@ class Tests {
                 console.log("test 2");
                 done();
             });
+            */
 
             it("Test 3", function(done) {
                 console.log("test 3");
                 done();
             });
-
         };
     };
 
@@ -191,65 +209,83 @@ class Tests {
         };
     };
 
-    createNew (url, model, payload, validation) {
-        return done => {
+    _createNew (url, Model, payload, validation) {
+        return new Promise((resolve, reject) => {
             let totalDocs = 0;
             chai.request(server)
             .get(url)
-            .end((err, res) => {
+            .then(function(res) {
                 res.should.have.status(200);
                 res.should.be.json;
-                res.body.should.be.a('array');
-    
-                totalDocs = res.body.length;
-    
+                totalDocs = res.body.list.length;
+                
                 chai.request(server)
                 .post(url)
                 .send(payload)
-                .end((err, res) => {
+                .then(function(res){
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.be.a('object');
-    
+                    res.body.success.should.to.equal(true);
+                    
                     if(validation) {
                         validation(res);
                     }
                     else {
-                        const instance = new model(res.body.result);
-        
+                        const instance = new Model(res.body.result);
+                        
                         should.not.exist(instance.validateSync())
                     }
+
                     chai.request(server)
                     .get(url)
-                    .end((err, res) => {
+                    .then(function(res) {
                         res.should.have.status(200);
                         res.should.be.json;
-                        res.body.should.be.a('array');
-                        res.body.length.should.to.equal(totalDocs + 1);
-                        done();
+                        res.body.should.be.a('object');
+                        res.body.success.should.to.equal(true);
+                        res.body.list.should.be.a('array');
+                        res.body.list.length.should.to.equal(totalDocs + 1);
+                        resolve();
+                    })
+                    .catch(function(err) {
+                        throw err;
                     });
+                })
+                .catch(function(err) {
+                    throw err;
                 });
+            })
+            .catch(function(err) {
+                throw err;
             });
+        });
+    }
+
+    createNew (url, Model, payload, validation) {
+        return done => {
+            this._createNew(url, Model, payload, valiadion);
         };
     }
 
-    deleteById(url, model, id, validation) {
-        return done => {
+    _deleteById (url, Model, id, validation) {
+        return new Promise((resolve, reject) => {
             let totalPages = 0;
             let deletedId;
-    
+        
             chai.request(server)
             .get(url)
-            .end((err, res) => {
-                totalPages = res.body.length;
-    
+            .then(function(res) {
+                totalPages = res.body.list.length;
+        
                 chai.request(server)
                 .delete(`${url}${id}`)
-                .end((err, res) => {
+                .then(function(res) {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.be.a('object');
-                    
+                    res.body.message.should.to.equal(true);
+
                     if(validation) {
                         validation(res);
                     }
@@ -258,10 +294,21 @@ class Tests {
                         res.body.result.should.have.property('ok').eql(1);
                         res.body.result.should.have.property('n').eql(1);
                     }
-
-                    done();
+        
+                    resolve();
+                })
+                .catch(function(err) {
+                    reject(err);
                 });
+            })
+            .catch(function(err) {
+                reject(err);
             });
+        });
+    }
+
+    deleteById(url, model, id, validation) {
+        return done => {
         };
     }
 }

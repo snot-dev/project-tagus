@@ -40,7 +40,7 @@ const updatedValue = "testUpdate"
 
 const updatedMock = Object.assign(mock, {name: updatedValue});
 
-describe("this is just a test", tests.CRUD());
+describe("this is just a test", tests.CRUD(url, Content, {new: mock}));
 
 /*
 describe(testName, function() {
