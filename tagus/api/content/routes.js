@@ -41,7 +41,7 @@ router.post('/', (req, res) => {
     .then(doc => {
         if(doc) {
             res.json({
-                success:false, warning: true, message: messages.warning.alreadyExists(alias)
+                success:false, warning: true, message: messages.warning.alreadyExists(newContent.alias)
             });
         }
         else {
