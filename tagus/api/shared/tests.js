@@ -56,79 +56,103 @@ class Tests {
                 resolve();
             })
             .catch(err => {
+                if(done) {
+                    done(err);
+                }
                 reject(err);
             });
         })
     };
 
+    _deleteMockIfStillExists (Model, mock) {
+        return Model.remove({_id: mock._id});
+    }
+
     CRUD (url, Model, mocks = {}, validation =  {}) {
         const that = this;
         return function() {
             before('Create test user and new item', function(done){
-                that._createMockUser(done);
+                that._createMockUser()
+                .then(function () {
+                    if (mocks.new) {
+                        return that._deleteMockIfStillExists(Model, mocks.new);
+                    }
+                })
+                .then(function() {
+                    done();
+                })
+                .catch(function(err) {
+                    done(err);
+                })
             });
             
             after('Delete item and test user', function(done) {
-                that._deleteMockUser(done);
-            });
-
-            it("Create new Item", function (done) {
-                that._createNew(url, Model, mocks.new)
-                .then(function(){
-                    that._createdItem = true;
+                that._deleteMockUser()
+                .then(function () {
+                    if (mocks.new) {
+                        return that._deleteMockIfStillExists(Model, mocks.new);
+                    }
+                })
+                .then(function() {
                     done();
-                });
-            });
-
-            it("List all items", function(done) {
-                that._getAll(url, Model)
-                .then(function(){
-                    done();
-                });
-            });
-
-            it('Delete Created Item', function(done) {
-                //that._createdItem.should.to.equal(true);
-
-                that._deleteById(url, Model, mocks.new._id)
-                .then(function(){
-                    that._createdItem = true;
-                    done();
+                })
+                .catch(function(err) {
+                    done(err);
                 })
             });
 
-            /*
-            before('Before all tests', function(done){
-                console.log("Before!");
-                done();
-            });
-            
-            afterEach('After each test', function(done){
-                that._deleteMockUser(done);
-            });
-            
-            after('After all tests', function(done){
-                console.log("After!");
-                done();
-            });
+            it("Create new Item", that.createNew(url, Model, mocks.new));
 
-            it("Test 1", function(done) {
-                console.log("test 1");
-                done();
-            });
+            it("List all items",that.getAll(url, Model));
 
-            it("Test 2", function(done) {
-                console.log("test 2");
-                done();
-            });
-            */
+            it("List one item", that.getById(url, Model, mocks.new._id));
 
-            it("Test 3", function(done) {
-                console.log("test 3");
-                done();
-            });
+            it('Delete Created Item', that.deleteById(url, Model, mocks.new._id));
         };
     };
+
+    _createNew (url, Model, payload, validation) {
+        const that = this;
+        return new Promise(function(resolve, reject) {
+            chai.request(server)
+            .post(url)
+            .set('Authorization', `Bearer ${that._token}`)
+            .send(payload)
+            .then(function(res){
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.be.a('object');
+                res.body.success.should.to.equal(true);
+                    
+                if(validation) {
+                    validation(res);
+                }
+                else {
+                    const instance = new Model(res.body.result);
+                    
+                    should.not.exist(instance.validateSync())
+                }
+
+                that._createdItem = true;
+                resolve();
+            })
+            .catch(function(err) {
+                reject(err);
+            });
+        });
+    }
+
+    createNew (url, Model, payload, validation) {
+        const that = this;
+        
+        return function(done) {
+            that._createNew(url, Model, payload, validation)
+            .then(function() {
+                done();
+            })
+            .catch(that._failTest(done));
+        };
+    }
 
     _getAll (url, Model, validation) {
         const that = this;
@@ -162,35 +186,26 @@ class Tests {
         });
     }
 
-    getAll (url, model, validation) {
-        return done => {
-            chai.request(server)
-            .get(url)            
-            .end((err, res) => {
-                res.should.have.status(200);
-                res.should.be.json;
-                res.body.should.be.a('array');
-                
-                if(validation) {
-                    validation(res);
-                } 
-                else {
-                    res.body.forEach(doc => {
-                        const instance = new model(doc);
-                        should.not.exist(instance.validateSync())
-                    });
-                }
-    
+    getAll (url, Model, validation) {
+       const that = this;
+
+        return function (done) {
+            that._getAll(url, Model, validation)
+            .then (function() {
                 done();
-            });
-        };
+            })
+            .catch(that._failTest(done))
+       };
     };
     
-    getFirstFromCollection (url, model, validation) {
-        return done => {
+    _getFirstFromCollection (url, Model, validation) {
+        const that = this;
+
+        return new Promise(function (resolve, reject) {
             chai.request(server)
             .get(url)
-            .end((err, res) => {
+            .set('Authorization', `Bearer ${that._token}`)
+            .then((err, res) => {
                 chai.request(server)
                 .get(`${url}${res.body[0]._id}`)
                 .end((err, res) => {
@@ -210,42 +225,104 @@ class Tests {
                     done();
                 });
             });
-        };
-    };
+        });
+    }
     
-    getOneById (url, model, id, validation) {
-        return done => {
+    _getById (url, Model, id, validation) {
+        const that = this;
+
+        return new Promise(function (resolve, reject) {
             if(!id) {
-                console.log("You must pass a valid id");
-                return false;
+                reject(Error("You must pass a valid id"));
             }
-    
+
             chai.request(server)
             .get(`${url}${id}`)
-            .end((err, res) => {
+            .set('Authorization', `Bearer ${that._token}`)
+            .then(function (res) {
                 res.should.have.status(200);
                 res.should.be.json;
                 res.body.should.be.a('object');
+                res.body.success.should.to.equal(true);
     
                 if(validation) {
                     validation(res);
                 } 
                 else {
-                    const instance = new model(res.body);
+                    const instance = new Model(res.body.item);
                     
                     should.not.exist(instance.validateSync())
                 }
     
-                done();
+                resolve();
+            })
+            .catch(function (err) {
+                reject(err);
             });
-        }
+        });
+    }
+
+    getById (url, Model, id, validation) {
+        const that = this;
+        
+        return function (done) {
+            that._getById(url, Model, id, validation)
+            .then(function () {
+                done();
+            })
+            .catch(that._failTest(done));
+        };
     };
     
+    _update (url, Model, payload, validation) {
+        return new Promise(function (resolve, reject) {
+            chai.request(server)
+            .put(`${url}${payload.mock._id}`)
+            .send(payload.mock)
+            .set('Authorization', `Bearer ${that._token}`)
+            .then(function (res) {
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.be.a('object');
+                res.body.success.should.to.equal(true);
+
+                if(validation) {
+                    validation(res);
+                }
+                else {
+                    const instance = new model(res.body.result);
+                    
+                    instance[payload.test].should.equalt.to(payload.mock[payload.test]);
+                    
+                    should.not.exist(instance.validateSync());
+                }
+
+                resolve();
+            })
+            .catch(function(err) {
+                reject(err);
+            });
+        });
+    };
+
+    update (url, Model, payload, validation) {
+        const that = this;
+
+        return function (done) {
+            that._update(url, Model, payload, validation)
+            .then(function () {
+                done();
+            })
+            .catch(that._failTest(done));
+        };
+    };
+
     updateExisting(url, model, payload, validation) {
         return done => {
             chai.request(server)
             .put(`${url}${payload._id}`)
             .send(payload)
+            .set('Authorization', `Bearer ${that._token}`)
             .end((end, res) => {
                 res.should.have.status(200);
                 res.should.be.json;
@@ -267,46 +344,7 @@ class Tests {
         };
     };
 
-    _createNew (url, Model, payload, validation) {
-        const that = this;
-        return new Promise(function(resolve, reject) {
-            chai.request(server)
-            .post(url)
-            .set('Authorization', `Bearer ${that._token}`)
-            .send(payload)
-            .then(function(res){
-                res.should.have.status(200);
-                res.should.be.json;
-                res.body.should.be.a('object');
-                res.body.success.should.to.equal(true);
-                    
-                if(validation) {
-                    validation(res);
-                }
-                else {
-                    const instance = new Model(res.body.result);
-                    
-                    should.not.exist(instance.validateSync())
-                }
 
-                resolve();
-            })
-            .catch(function(err) {
-                reject(err);
-            });
-        });
-    }
-
-    createNew (url, Model, payload, validation) {
-        const that = this;
-        
-        return function(done) {
-            that._createNew(url, Model, payload, valiadion)
-            then(function() {
-                done();
-            });
-        };
-    }
 
     _deleteById (url, Model, id, validation) {
         const that = this;
@@ -327,6 +365,7 @@ class Tests {
                     validation(res);
                 }
         
+                that._createdItem = false;
                 resolve();
             })
             .catch(function(err) {
@@ -340,10 +379,17 @@ class Tests {
 
         return function(done) {
             that._deleteById(url, Model, id, validation)
-            .then(function(done){
+            .then(function(){
                 done();
-            });
+            })
+            .catch(that._failTest(done));
         };
+    }
+
+    _failTest(done) {
+        return function (err) {
+            done(err);
+        }
     }
 }
 

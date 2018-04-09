@@ -26,7 +26,7 @@ const api = (app, strategy) => {
     }
     
     router.use('/content', protectMiddleware, content);
-    /*router.use('/bridges', protectMiddleware, bridges.routes);
+    router.use('/bridges', protectMiddleware, bridges.routes);
     router.use('/units', protectMiddleware, units);
     router.use('/unitfields', protectMiddleware, unitFields);
     router.use('/users', protectMiddleware, users);
@@ -34,7 +34,7 @@ const api = (app, strategy) => {
     router.use('/settings', protectMiddleware, settings);
     router.use('/templates', protectMiddleware, templates(app));
     router.use('/auth', auth.routes(User));
-    router.use('/media', media(app));*/
+    router.use('/media', media(app));
 
     return router;
 };

@@ -6,19 +6,18 @@ const messages = require('../shared').messages;
 
 module.exports = router.defineCRUDRoutes(Unit, {
     postOne: (req, res) => {
-        const unit = {
-            name: req.body.name,
-            alias: helpers.convertToAlias(req.body.name),
-            tabs: [
-                {
-                    name: 'Default',
-                    alias: 'default',
-                    fields: []
-                }
-            ],
-            templates: [],
-            createdBy: req.body.createdBy
-        };
+        const unit = Object.assign({
+                alias: helpers.convertToAlias(req.body.name), 
+                tabs: [
+                    {
+                        name: 'Default',
+                        alias: 'default',
+                        fields: []
+                    }
+                ], 
+                templates: []
+            },
+            req.body);
 
         const newUnit = new Unit(unit);
         

@@ -10,6 +10,6 @@ const unitSchema = new mongoose.Schema({
     edited: {type:Date, default: Date.now()},
     lastEditedBy:String,
     templates: {type: Array, default: []}
-});
+}, {minimize: false});
 
 module.exports = mongoose.model('Unit', unitSchema);

@@ -1,6 +1,6 @@
 const Bridge = require('./model');
-const helpers = require('../shared').helpers;
-const messages = require('../shared').messages;
+const helpers = require('../shared/helpers');
+const messages = require('../shared/messages');
 const router = require('../router/router');
 
 module.exports = router.defineCRUDRoutes(Bridge, {

@@ -63,7 +63,6 @@ router.post('/', (req, res) => {
                 res.json({ success: true, message: messages.success.created('Document'), result: newContent });
             })
             .catch(err => {
-                console.log(err);
                 res.json({ success: false, error: true, message: messages.error.whileCreating('new Content') });
             });
         }
@@ -155,7 +154,7 @@ router.delete('/:id', (req, res)=>{
         
         for(const child of children) {
             arr.push(child);
-            if(dictionary[child].children) {
+            if(dictionary[child] && dictionary[child].children) {
                 addChildrenToArray(dictionary, child, arr);
             }
         }
