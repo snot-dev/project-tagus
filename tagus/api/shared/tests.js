@@ -107,9 +107,71 @@ class Tests {
 
             it("List one item", that.getById(url, Model, mocks.new._id));
 
+            it("Update item field", that.update(url, Model, mocks.update));
+
             it('Delete Created Item', that.deleteById(url, Model, mocks.new._id));
         };
     };
+    
+    createNew (url, Model, payload, validation) {
+        const that = this;
+        
+        return function(done) {
+            that._createNew(url, Model, payload, validation)
+            .then(function() {
+                done();
+            })
+            .catch(that._failTest(done));
+        };
+    }
+
+    getAll (url, Model, validation) {
+        const that = this;
+        
+        return function (done) {
+            that._getAll(url, Model, validation)
+            .then (function() {
+                done();
+            })
+            .catch(that._failTest(done))
+        };
+    };
+    
+    getById (url, Model, id, validation) {
+        const that = this;
+        
+        return function (done) {
+            that._getById(url, Model, id, validation)
+            .then(function () {
+                done();
+            })
+            .catch(that._failTest(done));
+        };
+    };
+    
+    update (url, Model, payload, validation) {
+        const that = this;
+
+        return function (done) {
+            that._update(url, Model, payload, validation)
+            .then(function () {
+                done();
+            })
+            .catch(that._failTest(done));
+        };
+    };
+
+    deleteById(url, Model, id, validation) {
+        const that = this;
+
+        return function(done) {
+            that._deleteById(url, Model, id, validation)
+            .then(function(){
+                done();
+            })
+            .catch(that._failTest(done));
+        };
+    }
 
     _createNew (url, Model, payload, validation) {
         const that = this;
@@ -142,18 +204,6 @@ class Tests {
         });
     }
 
-    createNew (url, Model, payload, validation) {
-        const that = this;
-        
-        return function(done) {
-            that._createNew(url, Model, payload, validation)
-            .then(function() {
-                done();
-            })
-            .catch(that._failTest(done));
-        };
-    }
-
     _getAll (url, Model, validation) {
         const that = this;
         
@@ -184,18 +234,6 @@ class Tests {
                 reject(err);
             });
         });
-    }
-
-    getAll (url, Model, validation) {
-       const that = this;
-
-        return function (done) {
-            that._getAll(url, Model, validation)
-            .then (function() {
-                done();
-            })
-            .catch(that._failTest(done))
-       };
     };
     
     _getFirstFromCollection (url, Model, validation) {
@@ -226,7 +264,7 @@ class Tests {
                 });
             });
         });
-    }
+    };
     
     _getById (url, Model, id, validation) {
         const that = this;
@@ -260,21 +298,11 @@ class Tests {
                 reject(err);
             });
         });
-    }
-
-    getById (url, Model, id, validation) {
-        const that = this;
-        
-        return function (done) {
-            that._getById(url, Model, id, validation)
-            .then(function () {
-                done();
-            })
-            .catch(that._failTest(done));
-        };
     };
     
     _update (url, Model, payload, validation) {
+        const that = this;
+
         return new Promise(function (resolve, reject) {
             chai.request(server)
             .put(`${url}${payload.mock._id}`)
@@ -290,9 +318,9 @@ class Tests {
                     validation(res);
                 }
                 else {
-                    const instance = new model(res.body.result);
+                    const instance = new Model(res.body.result);
                     
-                    instance[payload.test].should.equalt.to(payload.mock[payload.test]);
+                    instance[payload.test].should.to.equal(payload.mock[payload.test]);
                     
                     should.not.exist(instance.validateSync());
                 }
@@ -304,47 +332,6 @@ class Tests {
             });
         });
     };
-
-    update (url, Model, payload, validation) {
-        const that = this;
-
-        return function (done) {
-            that._update(url, Model, payload, validation)
-            .then(function () {
-                done();
-            })
-            .catch(that._failTest(done));
-        };
-    };
-
-    updateExisting(url, model, payload, validation) {
-        return done => {
-            chai.request(server)
-            .put(`${url}${payload._id}`)
-            .send(payload)
-            .set('Authorization', `Bearer ${that._token}`)
-            .end((end, res) => {
-                res.should.have.status(200);
-                res.should.be.json;
-                res.body.should.be.a('object');
-
-                if(validation) {
-                    validation(res);
-                }
-                else {
-                    const instance = new model(res.body.result);
-                    
-                    res.body.message.should.be.equal("Document updated!");
-
-                    should.not.exist(instance.validateSync());
-                }
-
-                done();
-            });
-        };
-    };
-
-
 
     _deleteById (url, Model, id, validation) {
         const that = this;
@@ -372,25 +359,13 @@ class Tests {
                 reject(err);
             });
         });
-    }
-
-    deleteById(url, Model, id, validation) {
-        const that = this;
-
-        return function(done) {
-            that._deleteById(url, Model, id, validation)
-            .then(function(){
-                done();
-            })
-            .catch(that._failTest(done));
-        };
-    }
+    };
 
     _failTest(done) {
         return function (err) {
             done(err);
         }
-    }
+    };
 }
 
 module.exports = Tests;
