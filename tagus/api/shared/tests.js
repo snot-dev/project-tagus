@@ -71,35 +71,9 @@ class Tests {
     CRUD (url, Model, mocks = {}, validation =  {}) {
         const that = this;
         return function() {
-            before('Create test user and new item', function(done){
-                that._createMockUser()
-                .then(function () {
-                    if (mocks.new) {
-                        return that._deleteMockIfStillExists(Model, mocks.new);
-                    }
-                })
-                .then(function() {
-                    done();
-                })
-                .catch(function(err) {
-                    done(err);
-                })
-            });
+            before("Create test user", that.beforeTest(Model, mocks, validation));
             
-            after('Delete item and test user', function(done) {
-                that._deleteMockUser()
-                .then(function () {
-                    if (mocks.new) {
-                        return that._deleteMockIfStillExists(Model, mocks.new);
-                    }
-                })
-                .then(function() {
-                    done();
-                })
-                .catch(function(err) {
-                    done(err);
-                })
-            });
+            after("Delete test user", that.afterTest(Model, mocks, validation));
 
             it("Create new Item", that.createNew(url, Model, mocks.new));
 
@@ -128,7 +102,7 @@ class Tests {
     getAll (url, Model, validation) {
         const that = this;
         
-        return function (done) {
+        return function(done) {
             that._getAll(url, Model, validation)
             .then (function() {
                 done();
@@ -140,7 +114,7 @@ class Tests {
     getById (url, Model, id, validation) {
         const that = this;
         
-        return function (done) {
+        return function(done) {
             that._getById(url, Model, id, validation)
             .then(function () {
                 done();
@@ -161,7 +135,7 @@ class Tests {
         };
     };
 
-    deleteById(url, Model, id, validation) {
+    deleteById (url, Model, id, validation) {
         const that = this;
 
         return function(done) {
@@ -171,6 +145,46 @@ class Tests {
             })
             .catch(that._failTest(done));
         };
+    }
+
+    //Creates a new user to get authorization to interact with the API and deletes any mock that still persists
+    beforeTest (Model, mocks = {}, validation =  {}) {
+        const that = this;
+
+        return function(done){
+            that._createMockUser()
+            .then(function() {
+                if (mocks.new) {
+                    return that._deleteMockIfStillExists(Model, mocks.new);
+                }
+            })
+            .then(function() {
+                done();
+            })
+            .catch(function(err) {
+                done(err);
+            });
+        }
+    }
+    
+    //Deletes the user previous creates to get authorization to interact with the API and deletes any mock that still persists
+    afterTest (Model, mocks = {}, validation =  {}) {
+        const that = this;
+
+        return function(done) {
+            that._deleteMockUser()
+            .then(function() {
+                if (mocks.new) {
+                    return that._deleteMockIfStillExists(Model, mocks.new);
+                }
+            })
+            .then(function() {
+                done();
+            })
+            .catch(function(err) {
+                done(err);
+            })
+        }
     }
 
     _createNew (url, Model, payload, validation) {
@@ -186,7 +200,7 @@ class Tests {
                 res.body.should.be.a('object');
                 res.body.success.should.to.equal(true);
                     
-                if(validation) {
+                if (validation) {
                     validation(res);
                 }
                 else {
@@ -216,12 +230,12 @@ class Tests {
                 res.should.be.json;
                 res.body.should.be.a('object');
                 res.body.success.should.to.equal(true);
-                res.body.list.should.be.a('array');
-
-                if(validation) {
+                
+                if (validation) {
                     validation(res);
                 } 
                 else {
+                    res.body.list.should.be.a('array');
                     res.body.list.forEach(doc => {
                         const instance = new Model(doc);
                         should.not.exist(instance.validateSync())
@@ -251,7 +265,7 @@ class Tests {
                     res.should.be.json;
                     res.body.should.be.a('object');
     
-                    if(validation) {
+                    if (validation) {
                         validation(res);
                     } 
                     else {
@@ -269,7 +283,7 @@ class Tests {
     _getById (url, Model, id, validation) {
         const that = this;
 
-        return new Promise(function (resolve, reject) {
+        return new Promise(function(resolve, reject) {
             if(!id) {
                 reject(Error("You must pass a valid id"));
             }
@@ -283,7 +297,7 @@ class Tests {
                 res.body.should.be.a('object');
                 res.body.success.should.to.equal(true);
     
-                if(validation) {
+                if (validation) {
                     validation(res);
                 } 
                 else {
@@ -303,7 +317,7 @@ class Tests {
     _update (url, Model, payload, validation) {
         const that = this;
 
-        return new Promise(function (resolve, reject) {
+        return new Promise(function(resolve, reject) {
             chai.request(server)
             .put(`${url}${payload.mock._id}`)
             .send(payload.mock)
@@ -314,7 +328,7 @@ class Tests {
                 res.body.should.be.a('object');
                 res.body.success.should.to.equal(true);
 
-                if(validation) {
+                if (validation) {
                     validation(res);
                 }
                 else {
@@ -348,7 +362,7 @@ class Tests {
                 res.body.should.be.a('object');
                 res.body.success.should.to.equal(true);
 
-                if(validation) {
+                if (validation) {
                     validation(res);
                 }
         
@@ -362,7 +376,7 @@ class Tests {
     };
 
     _failTest(done) {
-        return function (err) {
+        return function(err) {
             done(err);
         }
     };

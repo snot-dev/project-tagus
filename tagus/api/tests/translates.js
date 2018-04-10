@@ -1,37 +1,74 @@
-// const testName = "Translates";
-// const Translate = require('../translates').model;
-// const chai = require('chai');
-// const chaiHttp = require('chai-http');
-// const should = chai.should();
-// const server = require('../../../app');
-// const mongoose = require('mongoose'); 
-// const url = "/api/translates/";
-// const SharedTests = require("../shared").tests;
-// const tests = new SharedTests();
-
-// chai.use(chaiHttp);
-// mongoose.Promise = require('bluebird');
-
-// const mock = {
-//     _id: new mongoose.mongo.ObjectId('56cb91bdc3464f14678934ca'),
-//     key: "test",
-//     langs: [{
-//         "en": "test",
-//         "pt": "teste"
-//     }]
-// };
+const Translate = require('../translates').model;
+const mongoose = require('mongoose'); 
+const url = "/tagus/api/translates/";
+const SharedTests = require("../shared/tests");
+const tests = new SharedTests();
+const testName = "Translates";
 
 // const updatedValue = "testUpdate"
 // const updatedMock = Object.assign(mock, {key: updatedValue});
 
-// // describe(testName, () => {
-// //     it(`Should list all ${testName} at ${url} GET`, tests.getAll(url, Translate));
-    
-// //     it(`Should create a new ${testName} in ${url} POST`, tests.createNew(url, Translate, mock));
+const field = "testerOfTheTestsForTheTests1234";
+const value = "test";
+const updatedMock = {
+    translates: {}
+};
 
-// //     it(`Should list a single ${testName} in ${url}<id> GET`, tests.getOneById(url, Translate, mock._id));
+updatedMock.translates[field] = value;
 
-// //     it(`Should update existing ${testName} in ${url}<id> PUT`, tests.updateExisting(url, Translate, updatedMock));
+let originalResult;
+let originalTranslates;
 
-// //     it(`Should delete existing ${testName} in ${url}<id> DELETE`, tests.deleteById(url, Translate, updatedMock._id));
-// // });
+describe(testName, function() {
+    before("Create test user", tests.beforeTest());
+
+    after("Delete test user", tests.afterTest());
+
+    it('List all items', tests.getAll(url, null, function(res) {
+        res.body.list.should.be.a('object');
+    }));
+
+    it('Update item', function(done) {
+        Translate.findOne({})
+        .then(function(result) {
+            originalTranslates = Object.assign({}, result.translates);
+            originalResult = Object.assign({translates: originalTranslates}, result);
+
+            const req = {
+                translates: Object.assign(updatedMock.translates, result.translates),
+                lastEditedBy: result.lastEditedBy || "System"
+            };
+
+            return tests._createNew(url, Translate, req, function(res) {
+                const instance = new Translate(res.body.result);
+
+                console.log(instance);
+
+                instance.translates.should.be.a('object');
+                instance.translates[field].should.to.equal(value);
+                instance.name.should.to.equal('translates');
+            });
+        })
+        .then(function() {
+            
+            const req = {
+                translates: originalTranslates,
+                lastEditedBy: originalResult.lastEditedBy
+            };
+
+            return tests._createNew(url, Translate, req, function(res) {
+                const instance = new Translate(res.body.result);
+
+                instance.translates.should.be.a('object');
+                instance.translates.should.not.include.keys(field);
+                instance.name.should.to.equal('translates');
+            });
+        })
+        .then(function(){
+            done();
+        })
+        .catch(function(err) {
+            done(err);
+        });
+    });
+});

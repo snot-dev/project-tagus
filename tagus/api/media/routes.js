@@ -48,7 +48,6 @@ module.exports = app => {
         res.json(response);
     });
 
-
     return router;
 }
 

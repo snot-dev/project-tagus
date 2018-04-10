@@ -5,7 +5,7 @@ const messages = require('../shared').messages;
 router.get('/', (req, res) => {
     Translate.findOne()
     .then(doc => {
-        res.json({sucess: true, list: doc.translates});
+        res.json({success: true, list: doc.translates});
     })
     .catch(err => {
         res.json({success: false, error: messages.error.whileFetching("Translates")});
@@ -21,7 +21,7 @@ router.post('/', (req, res) => {
         
         return doc.save();
     })
-    .then( result => {
+    .then(result => {
         res.json({success: true, message: messages.success.updated("Translates"), result});
     })
     .catch(err => {
