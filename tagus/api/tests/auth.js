@@ -1,4 +1,3 @@
-const mongoose = require('mongoose'); 
 const SharedTests = require("../shared/tests");
 const tests = new SharedTests();
 

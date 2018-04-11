@@ -8,7 +8,12 @@ const convertToUrl = name => {
     return S(name).slugify().s;
 }
 
+const generateRandomPassword = () => {
+    return Math.random().toString(36).slice(-8);
+};
+
 module.exports  = {
     convertToAlias,
-    convertToUrl
+    convertToUrl,
+    generateRandomPassword
 };

@@ -5,6 +5,7 @@ const server = require('../../../app');
 const mongoose = require('mongoose'); 
 const User = require('../users/model');
 const jwt = require('jwt-simple');
+const helpers = require('./helpers');
 
 
 chai.use(chaiHttp);
@@ -16,8 +17,8 @@ class Tests {
         this._createdItem = false;
         this._mockUser = {
             username: "Tester",
-            email: "admin@tagus.com",
-            password: Math.random().toString(36).slice(-8),
+            email: "tester@tagus.com",
+            password: helpers.generateRandomPassword(),
             name: "Tagus",
             surname: "Tester",
             created: new Date(),
@@ -76,19 +77,19 @@ class Tests {
     CRUD (url, Model, mocks = {}, validation =  {}) {
         const that = this;
         return function() {
-            before("Create test user", that.beforeTest(Model, mocks, validation));
+            before("Create test user", that.beforeTest(Model, mocks, validation.before));
             
-            after("Delete test user", that.afterTest(Model, mocks, validation));
+            after("Delete test user", that.afterTest(Model, mocks, validation.after));
 
-            it("Create new Item", that.createNew(url, Model, mocks.new));
+            it("Create new Item", that.createNew(url, Model, mocks.new, validation.create));
 
-            it("List all items",that.getAll(url, Model));
+            it("List all items",that.getAll(url, Model, validation.list));
 
-            it("List one item", that.getById(url, Model, mocks.new._id));
+            it("List one item", that.getById(url, Model, mocks.new._id, validation.single));
 
-            it("Update item field", that.update(url, Model, mocks.update));
+            it("Update item field", that.update(url, Model, mocks.update, validation.update));
 
-            it('Delete Created Item', that.deleteById(url, Model, mocks.new._id));
+            it('Delete Created Item', that.deleteById(url, Model, mocks.new._id, validation.delete));
         };
     };
     
@@ -309,7 +310,7 @@ class Tests {
             .send(payload)
             .then(function(res){
                 that._validRequest(res);
-                res.body.success.should.to.equal(true);
+                // res.body.success.should.to.equal(true);
                     
                 if (validation) {
                     validation(res);
@@ -347,7 +348,7 @@ class Tests {
                     res.body.list.should.be.a('array');
                     res.body.list.forEach(doc => {
                         const instance = new Model(doc);
-                        should.not.exist(instance.validateSync())
+                        should.not.exist(instance.validateSync());
                     });
                 }
     
