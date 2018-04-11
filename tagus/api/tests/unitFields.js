@@ -1,27 +1,14 @@
-// const UnitField = require('../unitFields').model;
-// const chai = require('chai');
-// const chaiHttp = require('chai-http');
-// const should = chai.should();
-// const server = require('../../../app');
-// const mongoose = require('mongoose'); 
-// const SharedTests = require("../shared").tests;
-// const tests = new SharedTests();
+const UnitField = require('../unitFields/model');
+const SharedTests = require("../shared/tests");
+const tests = new SharedTests();
 
-// const testName = "Unit Fields";
-// const url = "/api/unitfields/";
+const testName = "Unit Fields";
+const url = "/tagus/api/unitfields/";
 
-// chai.use(chaiHttp);
-// mongoose.Promise = require('bluebird');
+describe(testName, function() {
+    before("Create test user", tests.beforeTest());
 
-// const mock = {
-//     _id: new mongoose.mongo.ObjectId('56cb91bdc3464f14678934ca'),
-//     name: "Text",
-//     type: "text",
-//     createdBy: "user",
-//     created: new Date(),
-//     edited: new Date()
-// };
+    after("Delete test user", tests.afterTest());
 
-// const updatedValue = "testUpdate"
-// const updatedMock = Object.assign(mock, {name: updatedValue});
-
+    it('List all items', tests.getAll(url, UnitField));
+});

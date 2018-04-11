@@ -1,8 +1,8 @@
 const Unit = require('./model');
 const Content = require('../content/model');
 const router = require('../router/router');
-const helpers = require('../shared').helpers;
-const messages = require('../shared').messages;
+const helpers = require('../shared/helpers');
+const messages = require('../shared/messages');
 
 module.exports = router.defineCRUDRoutes(Unit, {
     postOne: (req, res) => {

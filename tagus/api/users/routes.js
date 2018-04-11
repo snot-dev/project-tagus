@@ -1,6 +1,6 @@
 const User = require('./model');
 const router = require('../router/router');
-const messages = require('../shared').messages;
+const messages = require('../shared/messages');
 const mailer = require('../shared/mailer');
 
  const userRouter =  router.defineCRUDRoutes(User, {

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const helpers = require('../shared').helpers;
-const messages = require('../shared').messages;
+const helpers = require('../shared/helpers');
+const messages = require('../shared/messages');
 mongoose.Promise = require('bluebird');
 
 module.exports = {

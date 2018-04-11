@@ -1,6 +1,6 @@
 const Translate = require('./model');
 const router = require('express').Router();
-const messages = require('../shared').messages;
+const messages = require('../shared/messages');
 
 router.get('/', (req, res) => {
     Translate.findOne()

@@ -1,6 +1,6 @@
 const fs = require('fs');
 const multer = require('multer');
-const messages = require('../shared').messages;
+const messages = require('../shared/messages');
 
 module.exports = app => {
     const router = require('express').Router();
