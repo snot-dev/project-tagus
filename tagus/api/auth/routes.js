@@ -28,6 +28,7 @@ module.exports = User => {
                 }
                 else {
                     res.json({
+                        success: false,
                         error: "Wrong Email/Password"
                     });
                 }
@@ -57,7 +58,7 @@ module.exports = User => {
                 return admin.save();
             } 
             else {
-                throw 'Unauthorized';
+                throw 'Unauthorized!!!';
             }
         })
         .then(result => {
@@ -83,7 +84,6 @@ module.exports = User => {
             res.json(response);
         })
         .catch(error => {
-            console.log(error);
             res.sendStatus(401);
         });
     });
@@ -99,6 +99,7 @@ module.exports = User => {
                 .then(doc => {  
                     if (doc) {
                         res.json({
+                            success: true,
                             user: doc
                         });
                     } 

@@ -1,4 +1,4 @@
-const Translate = require('../translates').model;
+const Translate = require('../translates/model');
 const mongoose = require('mongoose'); 
 const url = "/tagus/api/translates/";
 const SharedTests = require("../shared/tests");
@@ -42,15 +42,12 @@ describe(testName, function() {
             return tests._createNew(url, Translate, req, function(res) {
                 const instance = new Translate(res.body.result);
 
-                console.log(instance);
-
                 instance.translates.should.be.a('object');
                 instance.translates[field].should.to.equal(value);
                 instance.name.should.to.equal('translates');
             });
         })
         .then(function() {
-            
             const req = {
                 translates: originalTranslates,
                 lastEditedBy: originalResult.lastEditedBy

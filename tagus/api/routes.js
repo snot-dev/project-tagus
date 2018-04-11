@@ -33,8 +33,8 @@ const api = (app, strategy) => {
     router.use('/translates', protectMiddleware, translates);
     router.use('/settings', protectMiddleware, settings);
     router.use('/templates', protectMiddleware, templates(app));
+    router.use('/media', protectMiddleware, media(app));
     router.use('/auth', auth.routes(User));
-    router.use('/media', media(app));
 
     return router;
 };

@@ -9,30 +9,35 @@ const jwt = require('jwt-simple');
 
 chai.use(chaiHttp);
 
-const mockUser = {
-    username: "Tester",
-    email: "admin@tagus.com",
-    password: "tester1234",
-    name: "Tagus",
-    surname: "Tester",
-    created: new Date(),
-    isAdmin: true
-}
-
 class Tests {
     constructor() {
         this._token = null;
         this._userId = null;
         this._createdItem = false;
+        this._mockUser = {
+            username: "Tester",
+            email: "admin@tagus.com",
+            password: Math.random().toString(36).slice(-8),
+            name: "Tagus",
+            surname: "Tester",
+            created: new Date(),
+            isAdmin: true
+        };
     }
 
-    _createMockUser(done) {
+    _createMockUser(generateToken = true, done) {
         return new Promise((resolve, reject) => {
-            const user = new User(mockUser);
+            const user = new User(this._mockUser);
+
+            user.password = user.generateHash(user.password);
+
             user.save()
             .then(result => {
                 this._userId = result._id;
-                this._token = jwt.encode({id: result._id}, process.env.AUTHSECRETORKEY);
+                if (generateToken) {
+                    this._token = jwt.encode({id: result._id}, process.env.AUTHSECRETORKEY);
+                }
+
                 if (done) {
                     done();
                 }
@@ -148,11 +153,11 @@ class Tests {
     }
 
     //Creates a new user to get authorization to interact with the API and deletes any mock that still persists
-    beforeTest (Model, mocks = {}, validation =  {}) {
+    beforeTest (Model, mocks = {}, validation =  {}, generateToken = true) {
         const that = this;
 
         return function(done){
-            that._createMockUser()
+            that._createMockUser(generateToken)
             .then(function() {
                 if (mocks.new) {
                     return that._deleteMockIfStillExists(Model, mocks.new);
@@ -183,21 +188,127 @@ class Tests {
             })
             .catch(function(err) {
                 done(err);
+            });
+        }
+    }
+
+    getMockUser() {
+        return this._mockUser;
+    }
+
+    requestGet (url, validation) {
+        const that = this;
+
+        return function(done) {
+            that._requestGet(url, validation)
+            .then(function() {
+                done();
             })
+            .catch(function(err) {
+                done(err);
+            });
+        };
+    }
+
+
+    requestGetWithHeader (url, validation) {
+        const that = this;
+
+        return function(done) {
+            that. _requestGetWithHeader(url, validation)
+            .then(function() {
+                done();
+            })
+            .catch(function(err) {
+                done(err);
+            });
+        };
+    }
+
+    requestPost (url, payload, validation) {
+        const that = this;
+        return function(done) {
+            that._requestPost(url, payload, validation)
+            .then(function() {
+                done();
+            })
+            .catch(function(err) {
+                done(err);
+            });
+        }
+    }
+
+    _requestGet (url, validation) {
+        const that = this;
+
+        return new Promise(function(resolve, reject) {
+            chai.request(server)
+            .get(url)
+            .then(function(res){
+                that._validRequest(res, validation);
+                resolve();
+            })
+            .catch(function(err) {
+                reject(err);
+            });
+        });
+    }
+
+    _requestPost(url, payload, validation) {
+        const that = this;
+
+        return new Promise(function(resolve, reject) {
+            chai.request(server)
+            .post(url)
+            .send(payload)
+            .then(function(res) {
+                that._validRequest(res, validation);
+                resolve();
+            })
+            .catch(function(err) {
+                reject(err);
+            });
+        });
+    }
+
+    _requestGetWithHeader (url, validation) {
+        const that = this;
+
+        return new Promise(function(resolve, reject) {
+            chai.request(server)
+            .get(url)
+            .set('Authorization', `Bearer ${that._token}`)
+            .then(function(res){
+                that._validRequest(res, validation);
+                resolve();
+            })
+            .catch(function(err) {
+                reject(err);
+            });
+        });
+    }
+
+
+    _validRequest(res, validation) {
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.be.a('object');
+            
+        if (validation) {
+            validation(res);
         }
     }
 
     _createNew (url, Model, payload, validation) {
         const that = this;
+
         return new Promise(function(resolve, reject) {
             chai.request(server)
             .post(url)
             .set('Authorization', `Bearer ${that._token}`)
             .send(payload)
             .then(function(res){
-                res.should.have.status(200);
-                res.should.be.json;
-                res.body.should.be.a('object');
+                that._validRequest(res);
                 res.body.success.should.to.equal(true);
                     
                 if (validation) {
@@ -226,9 +337,7 @@ class Tests {
             .get(url)   
             .set('Authorization', `Bearer ${that._token}`)         
             .then(function(res) {
-                res.should.have.status(200);
-                res.should.be.json;
-                res.body.should.be.a('object');
+                that._validRequest(res);
                 res.body.success.should.to.equal(true);
                 
                 if (validation) {
@@ -261,9 +370,7 @@ class Tests {
                 chai.request(server)
                 .get(`${url}${res.body[0]._id}`)
                 .end((err, res) => {
-                    res.should.have.status(200);
-                    res.should.be.json;
-                    res.body.should.be.a('object');
+                    that._validRequest(res);
     
                     if (validation) {
                         validation(res);
@@ -292,9 +399,7 @@ class Tests {
             .get(`${url}${id}`)
             .set('Authorization', `Bearer ${that._token}`)
             .then(function (res) {
-                res.should.have.status(200);
-                res.should.be.json;
-                res.body.should.be.a('object');
+                that._validRequest(res);
                 res.body.success.should.to.equal(true);
     
                 if (validation) {
@@ -323,9 +428,7 @@ class Tests {
             .send(payload.mock)
             .set('Authorization', `Bearer ${that._token}`)
             .then(function (res) {
-                res.should.have.status(200);
-                res.should.be.json;
-                res.body.should.be.a('object');
+                that._validRequest(res);
                 res.body.success.should.to.equal(true);
 
                 if (validation) {
@@ -357,9 +460,7 @@ class Tests {
             .delete(`${url}${id}`)
             .set('Authorization', `Bearer ${that._token}`)
             .then(function(res) {
-                res.should.have.status(200);
-                res.should.be.json;
-                res.body.should.be.a('object');
+                that._validRequest(res);
                 res.body.success.should.to.equal(true);
 
                 if (validation) {
@@ -375,8 +476,15 @@ class Tests {
         });
     };
 
+    _passTest(done) {
+        return function() {
+            done();
+        };
+    }
+
     _failTest(done) {
         return function(err) {
+
             done(err);
         }
     };

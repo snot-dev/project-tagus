@@ -1,4 +1,4 @@
-const Unit = require('../units').model;
+const Unit = require('../units/model');
 const mongoose = require('mongoose'); 
 const SharedTests = require("../shared/tests");
 const tests = new SharedTests();
