@@ -12,8 +12,12 @@ class AppBar extends Component {
             window: {
                 width: 0,
                 height: 0
-            }
+            },
+            xs: false,
+            collapsed: false
         };
+
+        this._windowMinWidth = 768;
 
         this._updateWindowDimensions = this._updateWindowDimensions.bind(this);
     }
@@ -24,12 +28,23 @@ class AppBar extends Component {
     }
       
     componentWillUnmount() {
-    window.removeEventListener('resize', this._updateWindowDimensions);
+        window.removeEventListener('resize', this._updateWindowDimensions);
     }
     
     _updateWindowDimensions() {
-    this.setState({ window: {width: window.innerWidth, height: window.innerHeight }});
-      }
+        const min = window.innerWidth <= this._windowMinWidth;
+
+        this.setState(
+            {
+                window: {
+                    width: window.innerWidth,
+                    height: window.innerHeight 
+                },
+                min,
+                collapsed: min 
+            }
+        );
+    }
 
     _shouldRender(route) {
         const isPrivate = !route.private || (route.private && this.props.user.isAdmin);
@@ -37,11 +52,26 @@ class AppBar extends Component {
         return route.nav && isPrivate;
     }
 
+    _onButtonClick() {
+        this.setState({
+            collapsed: !this.state.collapsed
+        });
+    }
+
+    _onNavClick() {
+        this.setState({
+            collapsed: true
+        });
+    }
+
     render() {
-        console.warn(this.state);
+        const collapsed = this.state.min && this.state.collapsed ? "collapsed" : '';
         return (
             <nav id="tagus-side-menu-container">
-                <div id="tagus-side-menu">
+                {this.state.min
+                ?   <div className="tagus-side-menu-button-container"><button onClick={this._onButtonClick.bind(this)} className={collapsed} id="tagus-side-menu-button"><i className="fa fa-bars"></i></button></div>
+                :   null}
+                <div className={collapsed} id="tagus-side-menu">
                     <Navigation title="Menu">
                         {this.props.routes.map((route, index) => {
                             if (!this._shouldRender(route)) {
@@ -49,7 +79,7 @@ class AppBar extends Component {
                             }
 
                             return (
-                                <NavItem key={`${index}_${route.name}`} to={route.path} icon={route.icon}>{route.name}</NavItem>
+                                <NavItem onClick={this._onNavClick.bind(this)} key={`${index}_${route.name}`} to={route.path} icon={route.icon}>{route.name}</NavItem>
                             );
                         })}
                     </Navigation>
