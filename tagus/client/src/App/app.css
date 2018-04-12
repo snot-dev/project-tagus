@@ -2,6 +2,11 @@
   PROJECT VARIABLES
 */
 :root {
+  /* Screen Widths */
+  --screen-xs: 768px;
+  --screen-md: 992px;
+  --screen-lg: 1200px;
+
   /* Main Colors */
   --main-red: #EC6052;
   --bridge-red: #892532;
