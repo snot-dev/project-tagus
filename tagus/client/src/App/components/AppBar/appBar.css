@@ -1,11 +1,16 @@
-#tagus-side-menu {
-    width: 248px;
+#tagus-side-menu-container { 
     height: 100%;
     position: fixed;
     margin-top: 0;
     top: 0;
-    background-color: var(--navigation-bg-color);
     z-index: 750;
+
+}
+
+#tagus-side-menu {
+    height: 100%;
+    width: 248px;
+    background-color: var(--navigation-bg-color);
     border-right: 4px solid var(--bridge-red);
     box-shadow: 2px 0px 0px 0px rgba(0,0,0,0.6);
 }

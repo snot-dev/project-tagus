@@ -5,12 +5,14 @@
 .tagus-navigation {
     width: 100%;
     padding-top: 165px;
+    height: 100%;
 }
 
 .tagus-side-navigation {
     padding: 0;
     display: block;
     list-style-type: none;
+    float: left;
 }
 
 .tagus-navigation-header {

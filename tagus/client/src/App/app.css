@@ -82,6 +82,7 @@ label {
   padding: 0;
   display: block;
   list-style-type: none;
+  float: left;
 }
 
 .tagus-menu-item {
