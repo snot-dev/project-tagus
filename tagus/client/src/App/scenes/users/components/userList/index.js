@@ -68,7 +68,7 @@ class UserList extends Component {
             <CreateUserMenu key="createUser" show={this.state.creatingUser && this.props.loggedUser.isAdmin} onClose={this._toggleCreateUserMenu(false)} onSubmit={this.onSubmitCreateUser.bind(this)} />
         ]
         return (
-            <Panel title={this.props.name} className="col-xs-4 full-height" menu={menu}>
+            <Panel title={this.props.name} className="col-xs-12 col-sm-4 full-height" menu={menu}>
                 <List id="tagus-users-list" className="tagus-users-list">
                     {this.props.list && this.props.list.length > 0
                     ?   this.props.list.map((user, key) => {

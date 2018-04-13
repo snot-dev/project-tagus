@@ -32,7 +32,9 @@ class Profile extends Component {
                 ?   <PasswordForm user={this.props.profile.user} />
                 :   <ProfileForm user={this.props.profile.user} />}
                     
-                <Button onClick={this.togglePassword.bind(this)} className="tagus-profile-change-password">{buttonString}</Button>
+                <div className="col-xs-12">
+                    <Button onClick={this.togglePassword.bind(this)} className="tagus-profile-change-password">{buttonString}</Button>
+                </div>
                 <Overlay show={this.props.profile.savingUser} />
                 </Panel>
             </section> 

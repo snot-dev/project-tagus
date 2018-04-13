@@ -37,7 +37,7 @@ class UserDetail extends Component {
         const shouldRenderForm = !this.props.detail.isCreator && this.props.loggedUser.isCreator;
 
         return (
-            <Panel title={`${this.props.detail.username}`} className="col-xs-8 full-height" >
+            <Panel title={`${this.props.detail.username}`} className="col-xs-12 col-sm-8 full-height" >
                 <div className="container-fluid tagus-user-detail-info">
                     <div className="row tagus-form-control">
                         <div className="col-xs-12 col-sm-6 tagus-form-field">

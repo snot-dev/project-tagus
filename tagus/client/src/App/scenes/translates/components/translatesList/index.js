@@ -160,7 +160,7 @@ class TranslatesList extends Component {
 
     render() {
         return (
-            <Panel title={this.props.name} className="col-xs-6 full-height">
+            <Panel title={this.props.name} className="col-xs-12 col-sm-6 full-height">
                 <div className="container-fluid tagus-translates-list">
                 {!this.state.valid 
                     ?  <div className="row"> <p className="tagus-translates-list-error col-xs-12">{this.state.errorMessage}</p> </div>
@@ -172,11 +172,11 @@ class TranslatesList extends Component {
                                         <a onClick={this._onDelete(index)} className="tagus-translates-list-item-delete-icon">
                                             <i className="fa fa-trash-o" aria-hidden="true"></i>
                                         </a>
-                                    </div>                                <div className="col-xs-12 col-sm-6">
+                                    </div>                                <div className="col-xs-6">
                                     <label htmlFor="key" className="tagus-label tagus-translate-list-item-key">Key</label>
                                     <input name="key" type='text' className="tagus-input tagus-translate-input" onChange={this._onChange.bind(this)} onBlur={this._onBlur(index)} defaultValue={translate.key}  />
                                 </div>
-                                <div className="col-xs-12 col-sm-6">
+                                <div className="col-xs-6">
                                     <label htmlFor="value" className="tagus-label tagus-translate-list-item-key">Value</label>
                                     <input name="value" type='text' className="tagus-input tagus-translate-input" onChange={this._onChange.bind(this)} onBlur={this._onBlur(index)} defaultValue={translate.value} />
                                 </div>
