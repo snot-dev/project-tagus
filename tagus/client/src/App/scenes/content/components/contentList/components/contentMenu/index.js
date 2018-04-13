@@ -67,7 +67,7 @@ class ContentMenu extends Component {
         const show = !!this.props.detail;
         const button = show ? <div onClick={this.onClick.bind(this)} className="tagus-menu-link">Add child to {this.props.detail.name}</div> : null;
         return (
-            <Menu show={show} onCloseButton={this.props.onCloseButton} title="Menu" className="col-xs-6 content-menu">
+            <Menu show={show} onCloseButton={this.props.onCloseButton} title="Menu" className="col-xs-9 col-sm-6 content-menu">
                 <ul className="tagus-menu-list row">
                     <li className="tagus-menu-item">
                         <CollapsableList buttonChildren={button}>

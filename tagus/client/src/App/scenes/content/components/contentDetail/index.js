@@ -101,7 +101,7 @@ class ContentDetail extends Component {
     
     render() {
         return (
-            <Panel title={this.props.detail.name} className="col-xs-8 full-height">
+            <Panel title={this.props.detail.name} className="col-xs-12 col-sm-8 full-height">
                 <Preview id={this.props.detail._id} />
                 {
                     this.props.unit

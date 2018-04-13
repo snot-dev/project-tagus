@@ -103,12 +103,12 @@ class ContentList extends Component {
 
     render() {
         const menu = [
-            <ContentMenu key='ContentMenu' savingContent={this.props.savingContent} history={this.props.history} url={this.props.url} className="col-xs-6" onCloseButton={this._onMenuButtonClick()} units={this.props.units} detail={this.props.editingContent} />,
+            <ContentMenu key='ContentMenu' savingContent={this.props.savingContent} history={this.props.history} url={this.props.url} onCloseButton={this._onMenuButtonClick()} units={this.props.units} detail={this.props.editingContent} />,
             <NewRootContent key='NewRootContent' show={this.state.creatingRootContent}  savingContent={this.props.savingContent} url={this.props.url} history={this.props.history} className="col-xs-6" onCloseButton={this._toggleCreateRootContentMenu(false)} units={this.props.units} />
         ];
         
         return (
-            <Panel title={this.props.name} className="col-xs-4 full-height" menu={menu}>
+            <Panel title={this.props.name} className="col-xs-12 col-sm-4 full-height" menu={menu}>
                 {this._buildContentList()}
                 <AddLink text="Create a new Root page" onClick={this._toggleCreateRootContentMenu(true)} show={this.props.list.length ===0} disabled={this.state.creatingRootContent} />
                 <Overlay show={this.props.savingContent || this.props.fetchingList}/>

@@ -81,7 +81,7 @@ class CreateContent extends Component {
     render() {
         const title = this.props.parent ? `Create a new ${this.props.unit.name} under ${this.props.parent.name}` : `Create a new ${this.props.unit.name}`;
         return (
-            <Panel title={title} className="col-xs-8 full-height">
+            <Panel title={title} className="col-xs-12 col-sm-8 full-height">
                 <div className="container-fluid tagus-form-info-fields">
                     <div className="row tagus-form-control">
                         <div className="col-xs-12 col-sm-6 tagus-form-field">
