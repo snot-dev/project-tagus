@@ -12,6 +12,7 @@ import Translates from './scenes/translates';
 import Users from './scenes/users';
 import Profile from './scenes/profile';
 import Media from './scenes/media';
+import Home from './scenes/home';
 import Overlay from './components/Overlay';
 import store from './services/store';
 import {logoff, getLoggedUser} from './services/auth/actions';
@@ -95,6 +96,7 @@ class App extends Component {
         <TopBar onLogoffClick={this._logoff.bind(this)} user={this.props.auth.user} />
         <AppBar user={this.props.auth.user} routes={this.routes} />
         <AppContainer>
+          <Route exact path={'/home'} render={(props) => (<Home />)} />
           {this.routes.map((route, index) => {
             return(
               <Route key={`${index}_${route.name}`} path={route.path} render={(props) => (<route.component name={route.name} loggedUser={this.props.auth.user} {...props}/>) } />
