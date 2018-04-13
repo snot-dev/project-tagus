@@ -458,7 +458,7 @@ class UnitDetail extends Component {
         ];
 
         return (
-            <Panel title={`${this.props.detail.name}`} className="col-xs-8 full-height" menu={menu}>
+            <Panel title={`${this.props.detail.name}`} className="col-xs-12 col-sm-8 full-height" menu={menu}>
                 {this.props.detail._id  
                 ?   this._renderForm() 
                 :   null
