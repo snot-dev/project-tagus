@@ -86,7 +86,7 @@ const site = () => {
                 }
             }
     
-            content.model.findOne({'url': req.url})
+            Content.findOne({'url': req.url})
             .populate({
                 path: 'children',
                 populate: {path: 'children'}
