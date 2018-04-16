@@ -11,7 +11,7 @@ const media = new SchemaObject({
     root: String
 });
 
-const settings = new SchemaObject({
+const Settings = new SchemaObject({
     email: email,
     media: media, 
     authSecretKey: String,
@@ -19,3 +19,4 @@ const settings = new SchemaObject({
     domain: String
 });
 
+module.exports = Settings;
