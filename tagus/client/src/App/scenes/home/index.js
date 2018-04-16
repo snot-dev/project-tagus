@@ -42,7 +42,7 @@ class Home extends Component {
                                     <span className="tagus-home-intruction-item">Media</span> holds the images that are used in your website.
                             </p>
                         </div>
-                        <div className="row">
+                        <div className="row">   
                             <p className="col-xs-12 tagus-home-intruction">
                                     <span className="tagus-home-intruction-item">Translates</span> are a neat type of content, that is also available in all your website! It does not need a <span className="tagus-home-intruction-item">Unit</span>. Think of this when you want to add a text to a 'button' type of content.
                             </p>
