@@ -4,7 +4,9 @@ const units = require('./units/routes');
 const unitFields = require('./unitFields/routes');
 const users = require('./users/routes');
 const translates = require('./translates/routes');
-const bridges = require('./bridges');
+const Translates = require('./translates/model');
+const bridges = require('./bridges/routes');
+const Bridges = require('./bridges/model');
 const settings = require('./settings/routes');
 const User = require('./users/model');
 const auth = require('./auth');
@@ -26,7 +28,7 @@ const api = (app, strategy) => {
     }
     
     router.use('/content', protectMiddleware, content);
-    router.use('/bridges', protectMiddleware, bridges.routes);
+    router.use('/bridges', protectMiddleware, bridges);
     router.use('/units', protectMiddleware, units);
     router.use('/unitfields', protectMiddleware, unitFields);
     router.use('/users', protectMiddleware, users);
@@ -42,6 +44,7 @@ const api = (app, strategy) => {
 const site = () => {
     const router = require('express').Router();
     const bridgesContent = {};
+    let translatesContent = {};
     const fields = 'name alias url template partial content'
     
     router.get('/preview/:id', (req, res) => {
@@ -49,28 +52,33 @@ const site = () => {
         const shouldPreview = cookies.get(`preview_${req.params.id}`);
         
         if (shouldPreview) {
-            bridges.model.find({})
-            .then( docs => {
+            Bridges.find({})
+            .then(docs => {
                 if(docs) {
                     for(const bridge of docs) {
                         bridgesContent[bridge.alias] = bridge.content;
                     }
                 }
-        
-                content.model.findOne({'_id': req.params.id})
+    
+                return Translates.findOne({})
+            })
+            .then(doc => {
+                translatesContent = doc.translates;
+    
+                Content.findOne({'url': req.url})
                 .populate({
                     path: 'children',
                     populate: {path: 'children'}
                 })
                 .exec((err, result) => {
-                    if(result) {
-                        res.render(result.template, {viewContent: result, bridges: bridgesContent});
+                    if(result && result.published ) {
+                        res.render(result.template, {viewContent: result, bridges: bridgesContent, translates: translatesContent});
                     }
                     else {
                         res.json("404 - not found");
                     }
                 });
-            })
+            });
         }
         else {
             res.json("404 - not found");
@@ -78,14 +86,19 @@ const site = () => {
     });
 
     router.get('*', (req, res) => {
-        bridges.model.find({})
-        .then( docs => {
+        Bridges.find({})
+        .then(docs => {
             if(docs) {
                 for(const bridge of docs) {
                     bridgesContent[bridge.alias] = bridge.content;
                 }
             }
-    
+
+            return Translates.findOne({})
+        })
+        .then(doc => {
+            translatesContent = doc.translates;
+            
             Content.findOne({'url': req.url})
             .populate({
                 path: 'children',
@@ -93,13 +106,13 @@ const site = () => {
             })
             .exec((err, result) => {
                 if(result && result.published ) {
-                    res.render(result.template, {viewContent: result, bridges: bridgesContent});
+                    res.render(result.template, {viewContent: result, bridges: bridgesContent, translates: translatesContent});
                 }
                 else {
                     res.json("404 - not found");
                 }
             });
-        })
+        });
     });
 
     return router;
