@@ -1,22 +1,22 @@
 const SchemaObject = require('schema-object');
 
 const email = new SchemaObject({
-    email: String,
-    pass: String
+    email: {type: String, required: true},
+    pass: {type: String, required: true}
 });
 
 const media = new SchemaObject({
-    path: String,
-    dir: String, 
-    root: String
+    path: {type: String, required: true},
+    dir: {type: String, required: true}, 
+    root: {type: String, required: true}
 });
 
 const Settings = new SchemaObject({
-    email: email,
-    media: media, 
-    authSecretKey: String,
-    mongoConnectionString: String,
-    domain: String
+    email: {type:email, required: true},
+    media: {type: media, required: true}, 
+    authSecretKey: {type: String, required: true},
+    mongoConnectionString: {type: String, required: true},
+    domain: {type: String, required: true}
 });
 
 module.exports = Settings;

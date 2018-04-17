@@ -6,6 +6,13 @@ const passport = require('./api/auth/passport');
 const extend = (app, settings) => {
     const config = new Settings(settings);
     
+    if (config.isErrors()) {
+        console.error(config.getErrors());
+
+        process.exit(1);
+    }
+
+
     app.set('media', config.media);
 
     app.use(passport.initialize());

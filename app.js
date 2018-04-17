@@ -3,7 +3,6 @@ require('./config');
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-const db = require('./tagus/config/db_config');
 const morgan = require('morgan');
 const hbs = require('hbs');
 const app = express();
@@ -15,7 +14,6 @@ const partialsDir = '/SiteName/views/partials';
 app.set('views', [ path.join(__dirname, 'SiteName/views'), path.join(__dirname, partialsDir)]);
 app.set('view engine', 'hbs');
 
-// app.set('media', {path:'SiteName/img', dir: '/img', root: 'SiteName'});
 
 hbs.registerPartials(path.join(__dirname + partialsDir));
 hbs.registerHelper('partial', name => {
@@ -35,16 +33,12 @@ tagusCMS.extend(app, {
   },
   mongoConnectionString: process.env.MONGO_CONNECTION_STRING,
   domain: process.env.DOMAIN,
-  authSecretKey: process.env.AUTHSECRETORKEY
+  authSecretKey: process.env.AUTHSECRETORKEY,
+  email: {
+    email: 'hello',
+    pass: 'hello'
+  }
 });
-
-
-// app.use(tagusApi.auth.passport.initialize());
-// app.use('/tagus/api', tagusApi.routes.api(app, 'jwt'));
-// app.use('/', tagusApi.routes.site());
-// db.connect(db.connectionSettings.url);
-// db.checkIfConnected();
-
 
 app.listen(portNumber, function () {  
   console.log("listening to " + portNumber);
