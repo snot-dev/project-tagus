@@ -3,7 +3,7 @@ const jwt = require('jwt-simple');
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const insertCollections = require('../buildDB/dbScripts').insertCollections;
 
-module.exports = User => {
+module.exports = (User, secretKey) => {
     router.post('/', (req, res) => {
         if (req.body.email && req.body.password) {
             const email = req.body.email;
@@ -15,7 +15,7 @@ module.exports = User => {
                         id: user._id
                     };
                     
-                    const token = jwt.encode(payload, process.env.AUTHSECRETORKEY);
+                    const token = jwt.encode(payload, secretKey);
                     
                     const clonedUser = Object.assign({}, user._doc);
                     delete clonedUser.password;
@@ -69,7 +69,7 @@ module.exports = User => {
                 id: user._id
             }
             
-            const token = jwt.encode(payload, process.env.AUTHSECRETORKEY);
+            const token = jwt.encode(payload, secretKey);
 
             response = { 
                 success: true,
@@ -93,7 +93,7 @@ module.exports = User => {
         
         if (token) {
             try {
-                const user = jwt.decode(token, process.env.AUTHSECRETORKEY);
+                const user = jwt.decode(token, secretKey);
                 
                 User.findOne({'_id': user.id})
                 .then(doc => {  

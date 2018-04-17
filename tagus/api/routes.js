@@ -9,34 +9,35 @@ const bridges = require('./bridges/routes');
 const Bridges = require('./bridges/model');
 const settings = require('./settings/routes');
 const User = require('./users/model');
-const auth = require('./auth');
+const auth = require('./auth/routes');
+const passport = require('./auth/passport');
 const templates = require('./templates/routes');
 const media = require('./media/routes');
 const Cookies = require('universal-cookie');
 
-const api = (app, strategy) => {
+const api = (app, strategy, settings) => {
     const router = require('express').Router();
     
     let protectMiddleware = (req, res, next) => {
         next();
     };
     
-    if(strategy && auth.passport.strategies[strategy]) {
+    if(strategy && passport.strategies[strategy]) {
         const session = {session: false};
-        auth.passport.strategies[strategy](User);
-        protectMiddleware =  auth.passport.authenticate(strategy, session)
+        passport.strategies[strategy](User, settings.authSecretKey);
+        protectMiddleware =  passport.authenticate(strategy, session)
     }
     
     router.use('/content', protectMiddleware, content);
     router.use('/bridges', protectMiddleware, bridges);
     router.use('/units', protectMiddleware, units);
     router.use('/unitfields', protectMiddleware, unitFields);
-    router.use('/users', protectMiddleware, users);
+    router.use('/users', protectMiddleware, users(settings.email));
     router.use('/translates', protectMiddleware, translates);
-    router.use('/settings', protectMiddleware, settings);
+    // router.use('/settings', protectMiddleware, settings);
     router.use('/templates', protectMiddleware, templates(app));
     router.use('/media', protectMiddleware, media(app));
-    router.use('/auth', auth.routes(User));
+    router.use('/auth', auth(User, settings.authSecretKey));
 
     return router;
 };

@@ -2,11 +2,8 @@ var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 
 module.exports = {
-    connectionSettings: {
-        'url': process.env.MONGO_CONNECTION_STRING
-    },
-    connect: function() {
-        return mongoose.connect(this.connectionSettings.url);
+    connect: function(url) {
+        return mongoose.connect(url);
     },
     checkConnection: mongoose.connection.readyState,
     checkIfConnected: function(){

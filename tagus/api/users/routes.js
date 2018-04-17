@@ -4,7 +4,10 @@ const messages = require('../shared/messages');
 const mailer = require('../shared/mailer');
 const helpers = require('../shared/helpers');
 
-const userRouter =  router.defineCRUDRoutes(User, {
+module.exports = settings => {
+    const transporter = mailer(settings);
+    
+    const userRouter =  router.defineCRUDRoutes(User, {
         postOne: (req, res) => {
             if (!req.body.user.email) {
                 res.json({success: false, error: messages.error.whileCreating('User')});
@@ -35,7 +38,7 @@ const userRouter =  router.defineCRUDRoutes(User, {
                                 user = Object.assign({}, result._doc);
                                 delete user.password;
             
-                                return mailer.verifyEmail(newUser.email, randomPassword);
+                                return transporter.verifyEmail(newUser.email, randomPassword);
                             })
                             .then (()=>{
                                 res.json({ success: true, message: messages.success.created('User'), result: user});
@@ -76,40 +79,43 @@ const userRouter =  router.defineCRUDRoutes(User, {
         })
         },
         alt: [
-        {
-            method: 'put',
-            path: '/:id/update_password',
-            func: (req, res) => {
-                User.findOne({'_id': req.params.id}).select('+password')
-                .then(doc => {
-                    if (!req.body.oldPassword || !req.body.newPassword || !req.body.confirmPassword ) {
-                        throw "You must send all required fields";
-                    }
-                    else if (req.body.oldPassword === req.body.newPassword) {
-                        throw "The new password can't be the same as the old";
-                    } 
-                    else if (req.body.newPassword.length <= 4) {
-                        throw "Password must have more ther 4 characters";
-                    }
-                    else if (!doc.validPassword(req.body.oldPassword, doc.password)) {
-                        throw "Password is incorrect";
-                    }
-                    else {
-                        doc.password = doc.generateHash(req.body.newPassword);
-                        return doc.save()
-                    }
-                })
-                .then(result => {
-                    const user = Object.assign({}, result._doc);
-                    delete user.password;
-                    res.json({success: true, message: messages.success.updated("Password"), result: user});
-                })
-                .catch(error => {
-                    res.json({success: false, error: true, message:error});
-                });
-            }
-        }   
-    ]
-});
+            {
+                method: 'put',
+                path: '/:id/update_password',
+                func: (req, res) => {
+                    User.findOne({'_id': req.params.id}).select('+password')
+                    .then(doc => {
+                        if (!req.body.oldPassword || !req.body.newPassword || !req.body.confirmPassword ) {
+                            throw "You must send all required fields";
+                        }
+                        else if (req.body.oldPassword === req.body.newPassword) {
+                            throw "The new password can't be the same as the old";
+                        } 
+                        else if (req.body.newPassword.length <= 4) {
+                            throw "Password must have more ther 4 characters";
+                        }
+                        else if (!doc.validPassword(req.body.oldPassword, doc.password)) {
+                            throw "Password is incorrect";
+                        }
+                        else {
+                            doc.password = doc.generateHash(req.body.newPassword);
+                            return doc.save()
+                        }
+                    })
+                    .then(result => {
+                        const user = Object.assign({}, result._doc);
+                        delete user.password;
+                        res.json({success: true, message: messages.success.updated("Password"), result: user});
+                    })
+                    .catch(error => {
+                        res.json({success: false, error: true, message:error});
+                    });
+                }
+            }   
+        ]
+    });
 
-module.exports = userRouter;
+    return userRouter;
+}
+
+

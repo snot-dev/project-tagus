@@ -3,12 +3,13 @@ const passportJWT = require('passport-jwt');
 const ExtractJwt = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
 
-const jwtOptions = {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: process.env.AUTHSECRETORKEY
-};
 
-const jwt = User => {
+const jwt = (User, authSecretKey) => {
+    const jwtOptions = {
+        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+        secretOrKey: authSecretKey
+    };
+
     const strategy = new JwtStrategy(jwtOptions, (jwt_payload, next) => {
         User.findOne({'_id': jwt_payload.id}).then(user => {
             if(user) {
