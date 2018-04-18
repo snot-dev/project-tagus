@@ -1,3 +1,5 @@
+const express = require('express');
+const path = require('path');
 const db = require('./config/db_config');
 const routes = require('./api/routes');
 const Settings = require('./api/shared/validation');
@@ -12,9 +14,9 @@ const extend = (app, settings) => {
         process.exit(1);
     }
 
-    app.set('media', config.media);
-
     app.use(passport.initialize());
+    app.set('media', config.media);
+    app.use('/tagus-admin', express.static(path.join(__dirname, '/client/public')));
     app.use('/tagus/api', routes.api(app, 'jwt', config));
     app.use('/', routes.site());
     db.connect(config.mongoConnectionString);

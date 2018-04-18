@@ -31,6 +31,7 @@ tagusCMS.extend(app, {
     dir: '/img',
     root: 'SiteName'
   },
+  public: 'SiteName',
   mongoConnectionString: process.env.MONGO_CONNECTION_STRING,
   domain: process.env.DOMAIN,
   authSecretKey: process.env.AUTHSECRETORKEY,

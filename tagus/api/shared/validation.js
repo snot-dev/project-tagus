@@ -16,6 +16,7 @@ const Settings = new SchemaObject({
     media: {type: media, required: true}, 
     authSecretKey: {type: String, required: true},
     mongoConnectionString: {type: String, required: true},
+    public: {type: String, required: true},
     domain: {type: String, required: true}
 });
 
