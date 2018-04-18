@@ -4,13 +4,10 @@ import {createFakeItemResponse} from '../helpers';
 import axios from '../axios';
 
 const _shouldGetPageList = state => {
-    //TODO: add more debug code
     return state.content.list;
 };
 
 const _shouldGetContentDetail = (state, id) => {
-    //TODO: add more debug code
-
     return !state.content.detail._id || state.content.detail._id !== id;
 };
 

@@ -87,7 +87,7 @@ class ContentDetail extends Component {
         return (
             <Tabs activeKey={this.state.key} onSelect={this._handleTabchange.bind(this)} id="tagus-content-tabs">
                 {tabs.map((tab, index) => (
-                    <Tab eventKey={index} title={tab.name} key={`${this.props.detail._id}_${tab.alias}_${index}`}>
+                        <Tab eventKey={index} title={tab.name} key={`${this.props.detail._id}_${tab.alias}_${index}`}>
                             <Form onChange={this._onFieldChange.bind(this)} disabled={this.state.disabled} onSubmit={this.onSubmitContent.bind(this)} name={tab.alias} defaultValues={this.props.detail.content[tab.alias]} fields={tab.fields} />
                         </Tab>
                     ))
@@ -100,6 +100,7 @@ class ContentDetail extends Component {
     }
     
     render() {
+        console.warn(this.props);
         return (
             <Panel title={this.props.detail.name} className="col-xs-12 col-sm-8 full-height">
                 <Preview id={this.props.detail._id} />

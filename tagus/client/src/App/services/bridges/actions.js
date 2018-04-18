@@ -8,8 +8,6 @@ const _shouldFetchBridgesList = state => {
 }
 
 const _shouldGetBridgeDetail = (state, id) => {
-    //TODO: add more debug code
-
     return !state.bridges.detail._id || state.bridges.detail._id !== id;
 };
 

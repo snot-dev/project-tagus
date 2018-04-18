@@ -85,7 +85,6 @@ router.put('/:id', (req, res) => {
         alias = helpers.convertToAlias(req.body.name);
     }
 
-    //TODO: Assign to a new Parent
     Content.findOne({'alias': alias})
     .then( doc => {
         if(doc && doc._id != req.params.id) {

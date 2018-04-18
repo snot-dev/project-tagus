@@ -9,7 +9,7 @@ class Preview extends Component {
         cookies.set(`preview_${this.props.id}`, 'true', {path:'/', maxAge: 5});
 
         //TODO: Change this to actual address!
-        window.open(`http://localhost:3001/preview/${this.props.id}`, '_blank');
+        window.open(`http://localhost:3001/tagus/preview/${this.props.id}`, '_blank');
     }
 
     _render() {

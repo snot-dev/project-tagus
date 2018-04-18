@@ -48,7 +48,7 @@ const site = () => {
     let translatesContent = {};
     const fields = 'name alias url template partial content'
     
-    router.get('/preview/:id', (req, res) => {
+    router.get('/tagus/preview/:id', (req, res) => {
         const cookies = new Cookies(req.headers.cookie);
         const shouldPreview = cookies.get(`preview_${req.params.id}`);
         
@@ -60,19 +60,20 @@ const site = () => {
                         bridgesContent[bridge.alias] = bridge.content;
                     }
                 }
-    
+                
                 return Translates.findOne({})
             })
             .then(doc => {
                 translatesContent = doc.translates;
-    
-                Content.findOne({'url': req.url})
+                
+                Content.findOne({'_id': req.params.id})
                 .populate({
                     path: 'children',
                     populate: {path: 'children'}
                 })
                 .exec((err, result) => {
-                    if(result && result.published ) {
+                    console.log(result);
+                    if(result) {
                         res.render(result.template, {viewContent: result, bridges: bridgesContent, translates: translatesContent});
                     }
                     else {

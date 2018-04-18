@@ -9,7 +9,6 @@ let _shouldGetUnitsList = state => {
 };
 
 let _shouldGetUnitDetail = (state, id) => {
-    //TODO: add more debug code
 
     return !state.units.detail._id || state.units.detail._id !== id;
 };
@@ -19,7 +18,6 @@ export function getUnitDetailIfNeeded(id) {
         const state = getState();
         if(_shouldGetUnitDetail(state, id)) {
             if(state.units.dictionary[id]) {
-                //TODO: Check if should get the object from db or clone it like this
                 dispatch({
                     type: constants.units.GET_UNITS_DETAIL_FULFILLED,
                     payload: createFakeItemResponse( _.cloneDeep(state.units.dictionary[id]))
