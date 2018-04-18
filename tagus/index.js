@@ -12,7 +12,6 @@ const extend = (app, settings) => {
         process.exit(1);
     }
 
-
     app.set('media', config.media);
 
     app.use(passport.initialize());
