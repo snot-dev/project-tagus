@@ -16,7 +16,7 @@ const extend = (app, settings) => {
 
     app.use(passport.initialize());
     app.set('media', config.media);
-    app.use('/tagus-admin', express.static(path.join(__dirname, '/client/public')));
+    app.use('/tagus-admin', express.static(path.join(__dirname, '/client/build/')));
     app.use('/tagus/api', routes.api(app, 'jwt', config));
     app.use('/', routes.site());
     db.connect(config.mongoConnectionString);
