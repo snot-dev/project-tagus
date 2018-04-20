@@ -1,8 +1,7 @@
 /node_modules
 /.sass-cache
 config.js
-/tagus/build/css
-/tagus/build/js
+/tagus/client/build
 /tagus/client/node_modules
 /.vscode
 .eslintrc.js
