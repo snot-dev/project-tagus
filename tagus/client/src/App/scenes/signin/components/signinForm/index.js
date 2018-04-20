@@ -99,7 +99,7 @@ class SigninForm extends Component {
                     <div className="row tagus-login-field-container">
                         <div className="col-xs-12">
                             <label className="tagus-label" htmlFor="email">Email</label>
-                            <input ref={(input) => { this.emailInput = input; }} value={this.state.values.email || ''} name="email" id="email" type="email" className="tagus-input" onChange={this._onChange.bind(this)} />
+                            <input autoComplete="off" ref={(input) => { this.emailInput = input; }} value={this.state.values.email || ''} name="email" id="email" type="email" className="tagus-input" onChange={this._onChange.bind(this)} />
                         </div>
                     </div>
                     <div className="row tagus-login-field-container">
