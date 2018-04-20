@@ -30,7 +30,9 @@ class SigninPage extends Component {
                         </div>
                         <div className="row text-center">
                             <div className="col-xs-12">
-                            <div className="tagus-login-logo-container"></div>
+                                <div className="tagus-login-logo-container">
+                                    <img id="tagus-login-logo"  src="logo/Tagus_Logo_White_Horizontal.svg" alt="tagus" title="tagus" />    
+                                </div>
                             </div>
                         </div>
                         {this.props.auth.checkedInfo

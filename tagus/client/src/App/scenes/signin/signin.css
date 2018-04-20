@@ -24,6 +24,7 @@
     box-shadow: 0px 2px 0px 0px rgba(107, 103, 103, 0.5);
 }
 
+
 .tagus-intro-form-container .tagus-login-field-container {
     margin-bottom: 15px;
 }
@@ -50,5 +51,8 @@
     width: 250px;
     height: 105px;
     margin-bottom: 15px;
-    background: url('/logo/Tagus_Logo_Horizontal_White_Small.png') no-repeat;
+}
+
+#tagus-login-logo {
+    height: 100%;
 }
