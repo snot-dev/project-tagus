@@ -1,9 +1,9 @@
 const express = require('express');
 const path = require('path');
 const db = require('./config/db_config');
-const routes = require('./api/index');
-const Settings = require('./api/shared/validation');
-const passport = require('./api/auth/passport');
+const server = require('./api/index');
+const Settings = require('./server/shared/validation');
+const passport = require('./server/auth/passport');
 const mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 
@@ -19,8 +19,8 @@ const extend = (app, settings) => {
     app.use(passport.initialize());
     app.set('media', config.media);
     app.use('/tagus-admin', express.static(path.join(__dirname, '/client/build/')));
-    app.use('/tagus/api', routes.api(app, 'jwt', config));
-    app.use('/', routes.site());
+    app.use('/tagus/api', server.api(app, 'jwt', config));
+    app.use('/', server.site());
 
     mongoose.connect(config.mongoConnectionString);
     mongoose.connection.on('connected', function () {
