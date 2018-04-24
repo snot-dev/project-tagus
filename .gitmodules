@@ -1,0 +1,3 @@
+[submodule "tagus/client"]
+	path = tagus/client
+	url = https://github.com/snot-dev/tagus-client.git
