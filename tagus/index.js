@@ -1,9 +1,11 @@
 const express = require('express');
 const path = require('path');
 const db = require('./config/db_config');
-const routes = require('./api/routes');
+const routes = require('./api/index');
 const Settings = require('./api/shared/validation');
 const passport = require('./api/auth/passport');
+const mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
 
 const extend = (app, settings) => {
     const config = new Settings(settings);
@@ -19,8 +21,12 @@ const extend = (app, settings) => {
     app.use('/tagus-admin', express.static(path.join(__dirname, '/client/build/')));
     app.use('/tagus/api', routes.api(app, 'jwt', config));
     app.use('/', routes.site());
-    db.connect(config.mongoConnectionString);
-    db.checkIfConnected();
+
+    mongoose.connect(config.mongoConnectionString);
+    mongoose.connection.on('connected', function () {
+        console.log("mongoose " + mongoose.connection.readyState);
+        console.log('Connected to ' +  mongoose.connection.db.s.databaseName);
+    });
 };
 
 module.exports = {extend};
