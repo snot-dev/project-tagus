@@ -1,0 +1,6 @@
+[submodule "tagus/tagus-cms"]
+	path = tagus/tagus-cms
+	url = https://github.com/snot-dev/tagus-cms.git
+[submodule "tagus/tagus-client"]
+	path = tagus/tagus-client
+	url = https://github.com/snot-dev/tagus-client.git

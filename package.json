@@ -4,11 +4,11 @@
   "description": "A Simple CMS using only Javascript.",
   "main": "app.js",
   "scripts": {
-    "_test": "mocha ./tagus/api/tests/*.js",
-    "_buildDB": "node ./tagus/api/buildDB/buildScript",
-    "_dropDB": "node ./tagus/api/buildDB/dropScript",
+    "_test": "mocha ./tagus/tagus-cms/server/tests/*.js",
+    "_buildDB": "node ./tagus/tagus-cms/server/buildDB/buildScript",
+    "_dropDB": "node ./tagus/tagus-cms/server/buildDB/dropScript",
     "_rebuildDB": "npm run _dropDB && npm run _buildDB",
-    "start": "concurrently \"nodemon app.js\" \"cd tagus/client && npm start\""
+    "start": "concurrently \"nodemon app.js\" \"cd tagus/tagus-client && npm start\""
   },
   "author": "Snot",
   "license": "ISC",

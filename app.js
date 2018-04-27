@@ -6,7 +6,7 @@ const path = require('path');
 const morgan = require('morgan');
 const hbs = require('hbs');
 const app = express();
-const tagusCMS = require('./tagus');
+const tagusCMS = require('./tagus/tagus-cms');
 const portNumber = process.env.PORT_NUMBER;
 
 // override this settings to choose the view engine to be used
@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('SiteName'));
 
 tagusCMS.extend(app, {
-  media:{
+  media: {
     path:'SiteName/img',
     dir: '/img',
     root: 'SiteName'
