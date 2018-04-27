@@ -8,6 +8,7 @@
     "_buildDB": "node ./tagus/tagus-cms/server/buildDB/buildScript",
     "_dropDB": "node ./tagus/tagus-cms/server/buildDB/dropScript",
     "_rebuildDB": "npm run _dropDB && npm run _buildDB",
+    "_buildClient": "cd tagus/tagus-client && npm run build && rm -rf ../tagus-cms/client/build && cp -a build ../tagus-cms/client/build/", 
     "start": "concurrently \"nodemon app.js\" \"cd tagus/tagus-client && npm start\""
   },
   "author": "Snot",

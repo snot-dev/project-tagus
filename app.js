@@ -11,9 +11,6 @@ const portNumber = process.env.PORT_NUMBER;
 
 // override this settings to choose the view engine to be used
 const partialsDir = '/SiteName/views/partials';
-app.set('views', [ path.join(__dirname, 'SiteName/views'), path.join(__dirname, partialsDir)]);
-app.set('view engine', 'hbs');
-
 
 hbs.registerPartials(path.join(__dirname + partialsDir));
 hbs.registerHelper('partial', name => {
@@ -30,6 +27,10 @@ tagusCMS.extend(app, {
     path:'SiteName/img',
     dir: '/img',
     root: 'SiteName'
+  },
+  views: {
+    path: [path.join(__dirname, 'SiteName/views'), path.join(__dirname, partialsDir)],
+    engine: 'hbs'
   },
   public: 'SiteName',
   mongoConnectionString: process.env.MONGO_CONNECTION_STRING,
