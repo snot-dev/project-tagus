@@ -8,7 +8,7 @@
     "_buildDB": "node ./tagus/tagus-cms/server/buildDB/buildScript",
     "_dropDB": "node ./tagus/tagus-cms/server/buildDB/dropScript",
     "_rebuildDB": "npm run _dropDB && npm run _buildDB",
-    "_buildClient": "cd tagus/tagus-client && npm run build && rm -rf ../tagus-cms/client/build && cp -a build ../tagus-cms/client/build/", 
+    "_buildClient": "cd tagus/tagus-client && npm run build && rm -rf ../tagus-cms/client/build && cp -a build ../tagus-cms/client/build/",
     "start": "concurrently \"nodemon app.js\" \"cd tagus/tagus-client && npm start\""
   },
   "author": "Snot",
@@ -34,8 +34,10 @@
     "passport-local": "^1.0.0",
     "passport-token": "^0.1.3",
     "path": "^0.12.7",
+    "rfr": "^1.2.3",
     "schema-object": "^4.0.11",
     "string": "^3.3.3",
+    "tagus-cms": "0.0.2",
     "universal-cookie": "^2.1.2"
   },
   "devDependencies": {

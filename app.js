@@ -6,7 +6,7 @@ const path = require('path');
 const morgan = require('morgan');
 const hbs = require('hbs');
 const app = express();
-const tagusCMS = require('./tagus/tagus-cms');
+const tagusCMS = require('tagus-cms');
 const portNumber = process.env.PORT_NUMBER;
 
 // override this settings to choose the view engine to be used
