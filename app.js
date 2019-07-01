@@ -1,4 +1,4 @@
-require('./config');
+require("dotenv").config();
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -42,7 +42,7 @@ tagusCMS.extend(app, {
   }
 });
 
-app.listen(portNumber, function () {  
+app.listen(portNumber, function () {
   console.log("listening to " + portNumber);
 });
 
