@@ -4,3 +4,4 @@ config.js
 /tagus/client/build
 /tagus/client/node_modules
 .eslintrc.js
+.env
