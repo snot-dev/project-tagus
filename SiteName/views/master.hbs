@@ -36,7 +36,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
-            {{#each viewContent.children}}
+            {{#each mainNavigation}}
             <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="#{{this.alias}}">{{this.name}}</a>
             </li>
@@ -62,7 +62,6 @@
         </div>
       </div>
     </header>
-
     {{#each viewContent.children}}
       {{#if this.accessible}}
         {{> ( partial this.partial this )}}
